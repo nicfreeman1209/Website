@@ -1,5 +1,5 @@
 -- Copyright Nic Freeman (2014).
--- This code is licensed under GPL v3, see http://www.maths.bris.ac.uk/~nf12462 for licence.txt.
+-- This code is licensed under GPL v3
 
 #include <iostream>
 #include <vector>
