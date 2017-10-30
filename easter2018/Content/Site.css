@@ -75,11 +75,15 @@ a {
     text-decoration: none;
 }
 
+	a:visited {
+		color: #800090;
+	}
+
     a:hover {
         background-color: #323232;
         color: #d7ebfa;
     }
-
+	
 #page {
     width: 1165px;
     margin: 0 auto;
@@ -115,6 +119,10 @@ nav {
         outline: none;
     }
 
+		nav a:visited {
+			color: #323232;
+		}
+
         nav a:hover {
             background-color: #323232;
             color: #d7ebfa;
@@ -127,6 +135,8 @@ nav {
             border-top: 2px solid #d7ebfa;
         }
 
+		
+		
 section {
     width: 650px;
     background-color: rgba(255,255,255,0.9);
