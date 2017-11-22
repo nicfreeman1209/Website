@@ -134,6 +134,12 @@ nav {
             color: #d7ebfa;
             border-top: 2px solid #d7ebfa;
         }
+		
+	nav hr { 
+		margin-left: 10%;
+		margin-right: 70%;
+		margin-bottom: 0.2em;
+	}
 
 		
 		
