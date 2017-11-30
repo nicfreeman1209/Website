@@ -156,6 +156,14 @@ section {
         line-height: 150%;
     }
 
+	section p small {
+		font-size: 11px;
+		line-height: 155%;
+		display: block;
+	}
+
+
+
 h1 {
     font-size: 20px;
     margin-bottom: 15px;
