@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
+	<script type="text/javascript">
+	  function unhide(divID) {
+		var item = document.getElementById(divID);
+		if (item) {
+		  item.className=(item.className=='abstract_hidden')?'abstract_unhidden':'abstract_hidden';
+		}
+	  }
+	</script>
     <head>
         <meta charset="UTF-8">
         <title>Abstracts</title>
-        <link href="Content/Site2.css" type="text/css" rel="stylesheet" />
+        <link href="Content/Site3.css" type="text/css" rel="stylesheet" />
         
     </head>
     <body>
@@ -36,17 +44,25 @@
             <section>
                 	
 <p>
-	The invited talks will be in and around the minicourse areas: <br>
+	The invited talks will be in and around the <a href="minicourses.html">minicourse</a> areas: <br>
 	Random Geometry, Stochastic Dynamical Systems, Random Reinforced Processes.<br> <br>
-    <i>(titles and abstracts to appear...)</i>
 </p>
 					
 <p>
-	<b> Invited Speakers </b>
+	<i> Invited Speakers: </i>
 </p>
 
 <p>
 	<b><a href=https://www2.warwick.ac.uk/fac/sci/statistics/staff/academic-research/candellero/ target="_blank">Elisabetta Candellero</a></b> (University of Warwick) <br>
+	<b> Coexistence of competing first-passage percolation on hyperbolic graphs. </b>
+	<a href="javascript:unhide('abstract_EC');">Show/hide abstract</a>
+	<br>
+	<span id="abstract_EC" class="abstract_hidden">
+	We consider two first-passage percolation processes FPP_1 and FPP_{\lambda}, spreading with rates 1 and \lambda > 0 respectively, on a non-amenable hyperbolic graph G with bounded degree.
+ FPP_1 starts from a single source at the origin of G, while the initial con figuration of FPP_{\lambda} consists of countably many seeds distributed according to a product of iid Bernoulli random variables of parameter \mu > 0 on V (G)\{o}.   Seeds start spreading FPP_{\lambda} after they are reached by either FPP_1 or FPP_{\lambda}. We show that for any such graph G, and any fixed value of \lambda > 0 there is a value
+ \mu_0 = \mu_0(G,\lambda ) > 0 such that for all 0 < \mu < \mu_0 the two processes coexist with positive probability. This shows a fundamental difference with the behavior of such processes on Z^d.
+ (Joint work with Alexandre Stauffer.)
+	</span>
 </p>
 
 <p>
@@ -54,7 +70,7 @@
 </p>
 
 <p>
-	<b><a href=https://people.maths.bris.ac.uk/~maajg/>Ayalvadi Ganesh</a></b> (University of Bristol) <br>
+	<b><a href=http://page.math.tu-berlin.de/~hammer/ target="blank">Matthias Hammer</a></b> (Technische Universität Berlin) <br>
 </p>
 
 <p>
@@ -63,14 +79,45 @@
 
 <p>
 	<b><a href=http://www.lancaster.ac.uk/maths/about-us/people/david-leslie target="_blank">David Leslie</a></b> (University of Lancaster) <br>
+	<b> Stochastic approximation of a distributed mirror descent method </b>
+	<a href="javascript:unhide('abstract_DL');">Show/hide abstract</a>
+	<br>
+	<span id="abstract_DL" class="abstract_hidden">
+	A set of controllers, each with control over a continuous parameter, each wish to optimise their payoff.  However gradient information is not available.  We introduce a distributed mirror descent method for this problem, and analyse the convergence properties.  New techniques for stochastic approximation are required; in particular an asymptotic pseudotrajectory result using Lyapunov functions when there is no global attractor. This allows us to prove convergence to a non-compact set, which is required by the motivating example.
+	</span>
 </p>
 
 <p>
 	<b><a href=http://people.bath.ac.uk/cdm37/ target="_blank">Cécile Mailler</a></b> (University of Bath) <br>
+	<b> Infinitely-many-colour urns by stochastic approximation.</b>
+	<a href="javascript:unhide('abstract_CM');">Show/hide abstract</a>
+	<br>
+	<span id="abstract_CM" class="abstract_hidden">
+	Measure-valued Pólya processes (MVPPs) were introduced in 2017 as a generalisation of Pólya urns to infinitely-many colours. In this joint work with Denis Villemonais (Nancy), we exploit the link between Pólya urns and quasi-stationary distributions (already exhibited by Aldous, Flannery and Palacios in 1988) and use stochastic approximation techniques on a space of measures to prove almost sure convergence of a large class of MVPPs.
+	</span>
 </p>
 
 <p>
 	<b><a href=http://math.bme.hu/~rathb/>Balázs Ráth</a></b> (Budapest University of Technology) <br>
+	<b> The window process of slightly subcritical frozen percolation </b>
+	<a href="javascript:unhide('abstract_BR');">Show/hide abstract</a>
+	<br>
+	<span id="abstract_BR" class="abstract_hidden">
+	The mean field frozen percolation process is a dynamic random graph
+ model which starts with the empty graph on N vertices,  an edge
+ between a pair of vertices is added at rate 1/N and connected
+ components of size k are deleted at rate r * k, where r is a constant
+ that depends on N. This model is known to exhibit self-organized
+ criticality when 1 << N and 1/N << r << 1, see [Rath, Toth, 2009,
+ EJP], [Rath, 2009, JSP], i.e., the dynamics keep the graph in a state
+ which is essentially a near-critical critical Erdos-Renyi graph. One
+ defines the window process w(t) = A(t) * t  / N, where A(t) is the
+ number of vertices alive at time t. We derive scaling limits for the
+ time evolution of w(t) when (1/N)^3 << r << 1, thus giving a detailed
+ picture of the mechanism that produces the self-organized criticality
+ of the model. Joint work with James Martin (Oxford) and Dominic Yeo
+ (Technion).
+	</span>
 </p>
 
 <p>
@@ -79,6 +126,28 @@
 
 <p>
     <b><a href=http://www.professoren.tum.de/en/rolles-silke/ target="_blank">Silke Rolles</a></b> (Technische Universität Munchen) <br>
+	<b> Convergence of vertex-reinforced jump processes
+ to an extension of the supersymmetric hyperbolic nonlinear
+ sigma model </b>
+	<a href="javascript:unhide('abstract_SR');">Show/hide abstract</a>
+	<br>
+	<span id="abstract_SR" class="abstract_hidden">
+	Sabot and Tarres discovered that the discrete time process
+ associated with the vertex-reinforced jump process is a
+ mixture of Markov chains. Surprisingly, the mixing measure
+ can be expressed in terms of a supersymmetric hyperbolic nonlinear
+ sigma model, which was introduced by Zirnbauer in a completely
+ different context.
+<br>
+ In the talk, I will present an extension of Zirnbauer's model.
+ It is shown that it arises as a weak joint limit of a time-changed
+ version introduced by Sabot and Tarres of the vertex-reinforced
+ jump process. It describes the asymptotics of rescaled crossing
+ numbers, rescaled fluctuations of local times, asymptotic local
+ times on a logarithmic scale, endpoints of paths, and last exit trees.
+<br>
+ This is joint work with Franz Merkl and Pierre Tarres
+	</span>
 </p>
 
 <p>
@@ -87,28 +156,55 @@
 
 <p>		
     <b><a href=http://www.stochastik.math.uni-goettingen.de/~sturm/ target="_blank">Anja Sturm</a></b> (Universität Göttingen) <br>
+	<b> On classifying genealogies for general (diploid) exchangeable population models </b>
+	<a href="javascript:unhide('abstract_AS');">Show/hide abstract</a>
+	<br>
+	<span id="abstract_AS" class="abstract_hidden">
+	The genetic variation in a sample of individuals/genes depends on their relatedness
+which is described by their genealogy. In this talk we consider classifying the genealogies
+of exchangeable population models with fixed size N asymptotically as N tends to infinity.
+<br>
+In the first part of the talk we review classical results regarding the haploid Cannings model. Here, each individual
+is represented by one of its genes and thus each offspring (gene) has a unique parent. In each generation,
+the offspring vector to the N parents is exchangeable. With an appropriate rescaling the corresponding
+coalescence processes describing the genealogy converge to a limit process. Möhle and Sagitov (2001) classified
+all possible limit processes and showed that  depending on the tail behavior of the offspring numbers the limit
+process is Kingman's coalescent with coalescence of pairs or is be given by coalescents with (simultaneous) 
+multiple mergers in which (several) larger groups may find a common ancestor at the same time. 
+<br>
+In the second part of the talk we extend this result to diploid  bi-parental analogues of the Cannings model.
+Here, the next generation is composed of offspring of parent pairs, which form an exchangeable (symmetric) array. 
+Also, every individual carries two gene copies, each of which is inherited from one of its parents. Our result 
+classifies the limiting coalescent processes describing the gene genealogies.  Using this general result we determine 
+the limiting coalescent in a number of examples  of which some have been studied previously (in special cases) 
+and some are new. We also point out connections to the theory of random graphs.
+<br>
+This talk is based on joint work with Matthias Birkner (Universität Mainz) and Huili Liu (Hebei Normal University).
+	</span>
 </p>		
 
 <p>
 	<b><a href=http://www.cmap.polytechnique.fr/~veber/ target="_blank">Amandine Véber</a></b> (École Polytechnique) <br>
 	<b> The effects of a weak selection pressure in a spatially structured population </b>
+	<a href="javascript:unhide('abstract_AV');">Show/hide abstract</a>
 	<br>
-	<small>
+	<span id="abstract_AV" class="abstract_hidden">
 	One of the motivations for the introduction of the Fisher-KPP equation was to model the wave of advance of a favourable (genetic) type in a population distributed over some continuous space. This model relies on the fact that reproductions occur very locally in space, so that if we assume that individuals can be of two types only, the drift term modelling the competition between the types is of the form sp_{t,x}(1-p_{t,x}). Here, s is the strength of the selection pressure and p_{t,x} is the frequency of the favoured type at location x and time
 t. However, large-scale extinction-recolonisation events may happen at some nonnegligible frequency, potentially disturbing the wave of advance. In this talk, we shall address and compare the effect of weak selection in the presence or absence of occasional large-scale events, based on a model of evolution in a spatial continuum called the spatial
 Lambda-Fleming-Viot process. This is a joint work with Alison Etheridge and Feng Yu. 
-</small>
+</span>
 </p>
 
 <p>
     <b><a href=http://www.maths.lth.se/matstat/staff/s.volkov/personal.htm target="_blank">Stas Volkov</a></b> (Lund University) <br>
 	<b> Border aggregation model. </b>
+	<a href="javascript:unhide('abstract_SV');">Show/hide abstract</a>
 	<br>
-	<small>
+	<span id="abstract_SV" class="abstract_hidden">
 	Consider a graph G with a subset of "sick" vertices called "the border". A particle released from the origin performs a random walk on G until it comes in the direct contact with a sick particle, at which point it becomes sick itself, and stops walking, thus increasing "the border" by one point. A new particle is then released from the origin, and the process repeats until the origin itself becomes a part of the border. We are interested in the total number xi of particles to be released by this final moment. Incidentally, this model can be viewed as a generalization of the OK Corral model.
 	<br>
 	We obtain distributions and bounds for xi when G is a star graph, a regular tree, and a d-dimensional lattice. (Based on the joint work with Debleena Thacker).
-	</small>
+	</span>
 </p>
 
             </section>
