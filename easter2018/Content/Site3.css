@@ -27,6 +27,7 @@ body {
 
 ol, ul {
     list-style: none;
+    line-height: 1.25;
 }
 
 blockquote, q {
