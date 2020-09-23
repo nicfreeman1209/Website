@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MAS350 — The Lebesgue Integral for Non-negative Measurable Functions</title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes-autopage-96"></a>
+<nav class="topnavigation" ><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+MAS350 Probability with Measure
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Probability with Measure</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Preliminaries.html#autosec-13" class="tocsection" >
+<span class="sectionnumber" >0.2</span>&#x2003;Preliminaries</a>
+</p>
+
+
+
+<p>
+<a href="Measure-Spaces-Measure.html#autosec-16" class="tocchapter" >
+<span class="sectionnumber" >1</span>&#x2003;Measure Spaces and Measure</a>
+</p>
+
+
+
+<p>
+<a href="Measure-Spaces-Measure.html#autosec-17" class="tocsection" >
+<span class="sectionnumber" >1.1</span>&#x2003;What is Measure?</a>
+</p>
+
+
+
+<p>
+<a href="Sigma-Fields.html#autosec-20" class="tocsection" >
+<span class="sectionnumber" >1.2</span>&#x2003;Sigma Fields</a>
+</p>
+
+
+
+<p>
+<a href="Measure.html#autosec-27" class="tocsection" >
+<span class="sectionnumber" >1.3</span>&#x2003;Measure</a>
+</p>
+
+
+
+<p>
+<a href="The-Borel-field-Lebesgue-Measure.html#autosec-34" class="tocsection" >
+<span class="sectionnumber" >1.4</span>&#x2003;The Borel \(\sigma \)-field and Lebesgue Measure</a>
+</p>
+
+
+
+<p>
+<a href="An-example-non-measurable-set.html#autosec-38" class="tocsection" >
+<span class="sectionnumber" >1.5</span>&#x2003;An example of a non-measurable set \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Two-Useful-Theorems-About-Measure.html#autosec-42" class="tocsection" >
+<span class="sectionnumber" >1.6</span>&#x2003;Two Useful Theorems About Measure</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures.html#autosec-46" class="tocsection" >
+<span class="sectionnumber" >1.7</span>&#x2003;Product Measures</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-1.html#autosec-51" class="tocsection" >
+<span class="sectionnumber" >1.8</span>&#x2003;Exercises 1</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions.html#autosec-54" class="tocchapter" >
+<span class="sectionnumber" >2</span>&#x2003;Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions.html#autosec-55" class="tocsection" >
+<span class="sectionnumber" >2.1</span>&#x2003;Liminf and Limsup</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions-Basic-Concepts.html#autosec-58" class="tocsection" >
+<span class="sectionnumber" >2.2</span>&#x2003;Measurable Functions - Basic Concepts</a>
+</p>
+
+
+
+<p>
+<a href="Examples-Measurable-Functions.html#autosec-64" class="tocsection" >
+<span class="sectionnumber" >2.3</span>&#x2003;Examples of Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Algebra-Measurable-Functions.html#autosec-69" class="tocsection" >
+<span class="sectionnumber" >2.4</span>&#x2003;Algebra of Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Simple-Functions.html#autosec-82" class="tocsection" >
+<span class="sectionnumber" >2.5</span>&#x2003;Simple Functions</a>
+</p>
+
+
+
+<p>
+<a href="Extended-Real-Functions.html#autosec-85" class="tocsection" >
+<span class="sectionnumber" >2.6</span>&#x2003;Extended Real Functions</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-2.html#autosec-87" class="tocsection" >
+<span class="sectionnumber" >2.7</span>&#x2003;Exercises 2</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integration.html#autosec-90" class="tocchapter" >
+<span class="sectionnumber" >3</span>&#x2003;Lebesgue Integration</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integration.html#autosec-91" class="tocsection" >
+<span class="sectionnumber" >3.1</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="The-Lebesgue-Integral-Simple-Functions.html#autosec-94" class="tocsection" >
+<span class="sectionnumber" >3.2</span>&#x2003;The Lebesgue Integral for Simple Functions</a>
+</p>
+
+
+
+<p>
+<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#autosec-97" class="tocsection" >
+<span class="sectionnumber" >3.3</span>&#x2003;The Lebesgue Integral for Non-negative Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="The-Monotone-Convergence-Theorem.html#autosec-108" class="tocsection" >
+<span class="sectionnumber" >3.4</span>&#x2003;The Monotone Convergence Theorem</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integrability-Dominated-Convergence.html#autosec-114" class="tocsection" >
+<span class="sectionnumber" >3.5</span>&#x2003;Lebesgue Integrability and Dominated Convergence</a>
+</p>
+
+
+
+<p>
+<a href="Fubini-Theorem-Function-Spaces.html#autosec-126" class="tocsection" >
+<span class="sectionnumber" >3.6</span>&#x2003;Fubini’s Theorem and Function Spaces \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Riemann-Integration.html#autosec-133" class="tocsection" >
+<span class="sectionnumber" >3.7</span>&#x2003;Riemann Integration \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-3.html#autosec-144" class="tocsection" >
+<span class="sectionnumber" >3.8</span>&#x2003;Exercises 3</a>
+</p>
+
+
+
+<p>
+<a href="Probability-Measure.html#autosec-148" class="tocchapter" >
+<span class="sectionnumber" >4</span>&#x2003;Probability and Measure</a>
+</p>
+
+
+
+<p>
+<a href="Probability-Measure.html#autosec-149" class="tocsection" >
+<span class="sectionnumber" >4.1</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Basic-Concepts-Probability-Theory.html#autosec-151" class="tocsection" >
+<span class="sectionnumber" >4.2</span>&#x2003;Basic Concepts of Probability Theory</a>
+</p>
+
+
+
+<p>
+<a href="The-Borel-Cantelli-lemmas.html#autosec-162" class="tocsection" >
+<span class="sectionnumber" >4.3</span>&#x2003;The Borel-Cantelli lemmas</a>
+</p>
+
+
+
+<p>
+<a href="Kolmogorov-0-1-law.html#autosec-166" class="tocsection" >
+<span class="sectionnumber" >4.4</span>&#x2003;Kolmogorov’s 0-1 law</a>
+</p>
+
+
+
+<p>
+<a href="Convergence-Random-Variables.html#autosec-169" class="tocsection" >
+<span class="sectionnumber" >4.5</span>&#x2003;Convergence of Random Variables</a>
+</p>
+
+
+
+<p>
+<a href="Laws-Large-Numbers.html#autosec-174" class="tocsection" >
+<span class="sectionnumber" >4.6</span>&#x2003;Laws of Large Numbers</a>
+</p>
+
+
+
+<p>
+<a href="Characteristic-Functions-Weak-Convergence.html#autosec-179" class="tocsection" >
+<span class="sectionnumber" >4.7</span>&#x2003;Characteristic Functions and Weak Convergence</a>
+</p>
+
+
+
+<p>
+<a href="The-Central-Limit-Theorem.html#autosec-187" class="tocsection" >
+<span class="sectionnumber" >4.8</span>&#x2003;The Central Limit Theorem</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-4.html#autosec-191" class="tocsection" >
+<span class="sectionnumber" >4.9</span>&#x2003;Exercises 4</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-194" class="tocchapter" >
+<span class="sectionnumber" >5</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-195" class="tocsection" >
+<span class="sectionnumber" >5.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measure.html#autosec-200" class="tocsection" >
+<span class="sectionnumber" >5.2</span>&#x2003;Product Measure \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Fubini-Theorem.html#autosec-204" class="tocsection" >
+<span class="sectionnumber" >5.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-5.html#autosec-208" class="tocsection" >
+<span class="sectionnumber" >5.4</span>&#x2003;Exercises 5</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-210" class="tocchapter" >
+<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Probability with Measure</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+</div>
+
+<p>
+<h4 id="autosec-97"><span class="sectionnumber" >3.3&#x2003;</span>The Lebesgue Integral for Non-negative Measurable Functions</h4>
+<a id="notes-autopage-97"></a>
+<a id="notes-autofile-20"></a> <a id="sec:leb_2"></a>
+
+<p>
+We haven’t done any analysis yet and at some stage we surely need to take some sort of limit! If \(f\) is measurable and non-negative, it may seem attractive to try to take advantage of Theorem 2.4.1 and define
+“\(\int _{S}fdm = \lim _{n \rightarrow \infty }\int _{S}s_{n}dm\)”. But there are many different choices of simple functions that we could take to make an approximating sequence, and this risks making
+the limiting integral depend on that choice, which is undesirable. Instead Lebesgue used the weaker notion of the supremum to “approximate \(f\) from below” as follows:
+</p>
+
+<p>
+Step 3. Non-negative measurable functions
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{3.}{3}\)</span>
+
+<!--
+
+                  Z                                                                   Z                 
+Let \(f:   S \rightarrow \R \) be non-negative and measurable and define \(I_{A}(f) = \int _{A}f
+dm\) for \(A \in \Sigma \). We have \(\int _{\emptyset }f dm = 0\) by Theorem <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a> part (4). To
+prove that \(A \rightarrow I_{A}(f)\) is a measure we then need only prove that it is \(\sigma \)-additive, i.e. that \(I_{A}(f) = \sum _{n=1}^{\infty }I_{A_{n}}(f)\) whenever we have a disjoint union
+\(A = \bigcup _{n=1}^{\infty }A_{n}\).
+</p>
+<div class="theorembodytheorem" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-75"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Theorem 3.3.5</span> <a id="autoid-76" ></a ><a id="thm:fmeas"></a> If \(f:                 S \rightarrow \R \) is a non-negative measurable function, the mapping from
+\(\Sigma \) to \([0, \infty ]\) given by \(A \rightarrow I_{A}(f)\) is \(\sigma \)-additive.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> First assume that \(f = {\1}_{B}\) for some \(B \in \Sigma \). Then by (<a
+href="The-Lebesgue-Integral-Simple-Functions.html#Lebind">3.2</a>)
+</p>
+
+<p>
+\[ \begin {aligned} I_{A}(f) = m(B \cap A) &amp; = m\left (B \cap \bigcup _{n=1}^{\infty }A_{n}\right )\\ &amp; = \sum _{n=1}^{\infty }m(B \cap A_{n}) = \sum _{n=1}^{\infty
+}I_{A_{n}}(f), \end {aligned} \]
+</p>
+
+<p>
+so the result holds in this case. You can then use linearity to show that it is true for non-negative simple functions.
+</p>
+
+<p>
+Now let \(f\) be measurable and non-negative. Then by definition of the supremum, for any \(\epsilon &gt; 0\) there exists a simple function \(s\) with \(0 \leq s \leq f\) so that \(I_{A}(f) \leq
+I_{A}(s) + \epsilon \). The result holds for simple functions and so by monotonicity we have
+</p>
+
+<p>
+\[ I_{A}(s) = \sum _{n=1}^{\infty }I_{A_{n}}(s) \leq \sum _{n=1}^{\infty }I_{A_{n}}(f).\]
+</p>
+
+<p>
+Combining this with the earlier inequality we find that
+</p>
+
+<p>
+\[I_{A}(f) \leq \sum _{n=1}^{\infty }I_{A_{n}}(f) + \epsilon .\]
+</p>
+
+<p>
+But \(\epsilon \) was arbitrary and so we conclude that
+</p>
+
+<p>
+\[ I_{A}(f) \leq \sum _{n=1}^{\infty }I_{A_{n}}(f).\]
+</p>
+
+<p>
+The second half of the proof will aim to establish the opposite inequality. First let \(A_{1}, A_{2} \in \Sigma \) be disjoint. Given any \(\epsilon &gt; 0\) we can, as above, find simple functions \(s_{1},
+s_{2}\) with \(0 \leq s_{j} \leq f\), so that \(I_{A_{j}}(s_{j}) \geq I_{A_{j}}(f) - \epsilon /2\) for \(j = 1,2\). Let \(s = s_{1} \vee s_{2} = \max \{s_{1}, s_{2}\}\). Then \(s\) is simple
+(check this), \(0 \leq s \leq f\) and \(s_{1} \leq s, s_{2} \leq s\). So by monotonicity, \(I_{A_{j}}(s) \geq I_{A_{j}}(f) - \epsilon /2\) for \(j=1,2\). Add these two inequalities to find that
+</p>
+
+<p>
+\[ I_{A_{1}}(s) + I_{A_{2}}(s) \geq I_{A_{1}}(f) + I_{A_{2}}(f) - \epsilon .\]
+</p>
+
+<p>
+But the result is true for simple functions and so we have
+</p>
+
+<p>
+\[ I_{A_{1} \cup A_{2}}(s) \geq I_{A_{1}}(f) + I_{A_{2}}(f) - \epsilon .\]
+</p>
+
+<p>
+By the definition (<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#Lebgen1">3.4</a>), \(I_{A_{1} \cup A_{2}}(f) \geq I_{A_{1} \cup A_{2}}(s)\) and so we have that
+</p>
+
+<p>
+\[ I_{A_{1} \cup A_{2}}(f) \geq I_{A_{1}}(f) + I_{A_{2}}(f) - \epsilon .\]
+</p>
+
+<p>
+But \(\epsilon \) was arbitrary and so we conclude that
+</p>
+
+<p>
+\[ I_{A_{1} \cup A_{2}}(f) \geq I_{A_{1}}(f) + I_{A_{2}}(f),\]
+</p>
+
+<p>
+which is the required inequality for unions of two disjoint sets. By induction we have
+</p>
+
+<p>
+\[ I_{A_{1} \cup A_{2} \cup \cdots \cup A_{n}}(f) \geq \sum _{i=1}^{n}I_{A_{i}}(f),\]
+</p>
+
+<p>
+for any \(n \geq 2\). But as \(A_{1} \cup A_{2} \cup \cdots \cup A_{n} \subseteq A\) we can use Theorem <a
+href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a> (3) to find that
+</p>
+
+<p>
+\[ I_{A}(f) \geq \sum _{i=1}^{n}I_{A_{i}}(f).\]
+</p>
+
+<p>
+Now take the limit as \(n \rightarrow \infty \) to deduce that
+</p>
+
+<p>
+\[ I_{A}(f) \geq \sum _{i=1}^{\infty }I_{A_{i}}(f),\]
+</p>
+
+<p>
+as was required. &#x2003;&#x2003;&#x220E;
+</p>
+<div class="theorembodyexample" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-77"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Example 3.3.6</span> <a id="autoid-78" ></a >The famous Gaussian measure on \(\R \) is obtained in this way by taking
+</p>
+<div class="center" >
+
+<p>
+\(f(x) = \frac {1}{\sqrt {2\pi }}e^{-\frac {x^{2}}{2}}\) for \(x \in \R \),
+</p>
+</div>
+
+<p>
+with \(m\) being Lebesgue measure. In this case, \(\int _{\R }f(x)dx = 1\). To connect more explicitly with probability theory, let \((\Omega , {\cal F}, P)\) be a probability space and \(X:\Omega
+\rightarrow \R \) be a random variable. Equip \((\R , {\cal B}(\R ))\) with Lebesgue measure. In Chapter 2, we introduced the probability law \(p_{X}\) of \(X\) as a probability measure on \((\R ,
+{\cal B}(\R ))\). If for all \(A \in {\cal B}(\R ),\)
+</p>
+
+<p>
+\[p_{X}(A) = I_{A}(f_{X}) (= I(f_{X}{\1}_{A}))\]
+</p>
+
+<p>
+for some non-negative measurable function \(f_{X}:   \R \rightarrow \R \), then \(f_{X}\) is called the probability density function or pdf of \(X\). So for all \(A \in {\cal B}(\R )\),
+</p>
+
+<p>
+\[ P(X \in A) = p_{X}(A) = \int _{A}f_{X}(x)dx.\]
+</p>
+
+<p>
+We say that \(X\) is a standard normal if \(p_{X}\) is Gaussian measure.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+We present two useful corollaries to Theorem <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:fmeas">3.3.5</a>:
+</p>
+<div class="theorembodycor" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-79"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Corollary 3.3.7</span> <a id="autoid-80" ></a ><a id="cor:premct"></a> Let \(f:S \rightarrow \R \) be a non-negative measurable function and \((E_{n})\) be
+a sequence of sets in \(\Sigma \) with \(E_{n} \subseteq E_{n+1}\) for all \(\nN \). Set \(E = \bigcup _{n=1}^{\infty }E_{n}\), Then
+</p>
+
+<p>
+\[ \int _{E}f dm = \lim _{n \rightarrow \infty } \int _{E_{n}}f dm.            \]
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> This is in fact an immediate consequence of Theorems <a
+href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:fmeas">3.3.5</a> and 1.5.1, but it might be helpful to spell out the proof in a little detail, so here goes: We use the “disjoint
+union trick”, so write \(A_{1} = E_{1}, A_{2} = E_{2} - E_{1}, A_{3} = E_{3} - E_{2}, \ldots \). Then the \(A_{n}\)s are mutually disjoint, \(\bigcup _{n=1}^{\infty }A_{n} = E\) and \(\bigcup
+_{i=1}^{n}A_{i} = E_{n}\) for all \(\nN \) . Then by Theorem <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:fmeas">3.3.5</a>
+</p>
+
+<p>
+\[ \begin {aligned} \int _{E}f dm &amp; = \sum _{i=1}^{\infty }\int _{A_{i}}f dm \\ &amp; = \lim _{n \rightarrow \infty } \sum _{i=1}^{n}\int _{A_{i}}f dm \\ &amp; = \lim _{n
+\rightarrow \infty } \int _{A_{1} \cup A_{2} \cup \cdots \cup A_{n}}fdm\\ &amp; = \lim _{n \rightarrow \infty } \int _{E_{n}}f dm.                    \end {aligned} \]
+</p>
+
+<p>
+&#x2003;&#x2003;&#x220E;
+</p>
+<div class="theorembodycor" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-81"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Corollary 3.3.8</span> <a id="autoid-82" ></a >If \(f\) and \(g\) are non-negative measurable functions and \(f = g\) (a.e.) then \(I(f) = I(g)\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(A_{1} = \{x \in S; f(x) = g(x)\}\) and \(A_{2} = \{x \in S; f(x) \neq
+g(x)\}\). Then \(A_{1}, A_{2} \in \Sigma \) with \(A_{1} \cup A_{2} = S, A_{1} \cap A_{2} = \emptyset \) and \(m(A_{2}) = 0\). So by Theorem 3.3.1 (4), \(\int _{A_{2}}f dm = \int
+_{A_{2}}g dm = 0\). But \(\int _{A_{1}}f dm = \int _{A_{1}}g dm\) as \(f = g\) on \(A_{1}\) and so by Theorem <a
+href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:fmeas">3.3.5</a>,
+</p>
+
+<p>
+\[\begin {aligned} \int _{S}f dm &amp; = \int _{A_{1}}f dm + \int _{A_{2}}f dm \\ &amp; = \int _{A_{1}}g dm + \int _{A_{2}}g dm = \int _{S}g dm.\end {aligned}\]
+</p>
+
+<p>
+&#x2003;&#x2003;&#x220E;
+</p>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 22, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

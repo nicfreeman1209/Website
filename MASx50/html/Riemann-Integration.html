@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MAS350 — Riemann Integration </title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes-autopage-132"></a>
+<nav class="topnavigation" ><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+MAS350 Probability with Measure
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Probability with Measure</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Preliminaries.html#autosec-13" class="tocsection" >
+<span class="sectionnumber" >0.2</span>&#x2003;Preliminaries</a>
+</p>
+
+
+
+<p>
+<a href="Measure-Spaces-Measure.html#autosec-16" class="tocchapter" >
+<span class="sectionnumber" >1</span>&#x2003;Measure Spaces and Measure</a>
+</p>
+
+
+
+<p>
+<a href="Measure-Spaces-Measure.html#autosec-17" class="tocsection" >
+<span class="sectionnumber" >1.1</span>&#x2003;What is Measure?</a>
+</p>
+
+
+
+<p>
+<a href="Sigma-Fields.html#autosec-20" class="tocsection" >
+<span class="sectionnumber" >1.2</span>&#x2003;Sigma Fields</a>
+</p>
+
+
+
+<p>
+<a href="Measure.html#autosec-27" class="tocsection" >
+<span class="sectionnumber" >1.3</span>&#x2003;Measure</a>
+</p>
+
+
+
+<p>
+<a href="The-Borel-field-Lebesgue-Measure.html#autosec-34" class="tocsection" >
+<span class="sectionnumber" >1.4</span>&#x2003;The Borel \(\sigma \)-field and Lebesgue Measure</a>
+</p>
+
+
+
+<p>
+<a href="An-example-non-measurable-set.html#autosec-38" class="tocsection" >
+<span class="sectionnumber" >1.5</span>&#x2003;An example of a non-measurable set \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Two-Useful-Theorems-About-Measure.html#autosec-42" class="tocsection" >
+<span class="sectionnumber" >1.6</span>&#x2003;Two Useful Theorems About Measure</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures.html#autosec-46" class="tocsection" >
+<span class="sectionnumber" >1.7</span>&#x2003;Product Measures</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-1.html#autosec-51" class="tocsection" >
+<span class="sectionnumber" >1.8</span>&#x2003;Exercises 1</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions.html#autosec-54" class="tocchapter" >
+<span class="sectionnumber" >2</span>&#x2003;Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions.html#autosec-55" class="tocsection" >
+<span class="sectionnumber" >2.1</span>&#x2003;Liminf and Limsup</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions-Basic-Concepts.html#autosec-58" class="tocsection" >
+<span class="sectionnumber" >2.2</span>&#x2003;Measurable Functions - Basic Concepts</a>
+</p>
+
+
+
+<p>
+<a href="Examples-Measurable-Functions.html#autosec-64" class="tocsection" >
+<span class="sectionnumber" >2.3</span>&#x2003;Examples of Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Algebra-Measurable-Functions.html#autosec-69" class="tocsection" >
+<span class="sectionnumber" >2.4</span>&#x2003;Algebra of Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Simple-Functions.html#autosec-82" class="tocsection" >
+<span class="sectionnumber" >2.5</span>&#x2003;Simple Functions</a>
+</p>
+
+
+
+<p>
+<a href="Extended-Real-Functions.html#autosec-85" class="tocsection" >
+<span class="sectionnumber" >2.6</span>&#x2003;Extended Real Functions</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-2.html#autosec-87" class="tocsection" >
+<span class="sectionnumber" >2.7</span>&#x2003;Exercises 2</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integration.html#autosec-90" class="tocchapter" >
+<span class="sectionnumber" >3</span>&#x2003;Lebesgue Integration</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integration.html#autosec-91" class="tocsection" >
+<span class="sectionnumber" >3.1</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="The-Lebesgue-Integral-Simple-Functions.html#autosec-94" class="tocsection" >
+<span class="sectionnumber" >3.2</span>&#x2003;The Lebesgue Integral for Simple Functions</a>
+</p>
+
+
+
+<p>
+<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#autosec-97" class="tocsection" >
+<span class="sectionnumber" >3.3</span>&#x2003;The Lebesgue Integral for Non-negative Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="The-Monotone-Convergence-Theorem.html#autosec-108" class="tocsection" >
+<span class="sectionnumber" >3.4</span>&#x2003;The Monotone Convergence Theorem</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integrability-Dominated-Convergence.html#autosec-114" class="tocsection" >
+<span class="sectionnumber" >3.5</span>&#x2003;Lebesgue Integrability and Dominated Convergence</a>
+</p>
+
+
+
+<p>
+<a href="Fubini-Theorem-Function-Spaces.html#autosec-126" class="tocsection" >
+<span class="sectionnumber" >3.6</span>&#x2003;Fubini’s Theorem and Function Spaces \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Riemann-Integration.html#autosec-133" class="tocsection" >
+<span class="sectionnumber" >3.7</span>&#x2003;Riemann Integration \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-3.html#autosec-144" class="tocsection" >
+<span class="sectionnumber" >3.8</span>&#x2003;Exercises 3</a>
+</p>
+
+
+
+<p>
+<a href="Probability-Measure.html#autosec-148" class="tocchapter" >
+<span class="sectionnumber" >4</span>&#x2003;Probability and Measure</a>
+</p>
+
+
+
+<p>
+<a href="Probability-Measure.html#autosec-149" class="tocsection" >
+<span class="sectionnumber" >4.1</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Basic-Concepts-Probability-Theory.html#autosec-151" class="tocsection" >
+<span class="sectionnumber" >4.2</span>&#x2003;Basic Concepts of Probability Theory</a>
+</p>
+
+
+
+<p>
+<a href="The-Borel-Cantelli-lemmas.html#autosec-162" class="tocsection" >
+<span class="sectionnumber" >4.3</span>&#x2003;The Borel-Cantelli lemmas</a>
+</p>
+
+
+
+<p>
+<a href="Kolmogorov-0-1-law.html#autosec-166" class="tocsection" >
+<span class="sectionnumber" >4.4</span>&#x2003;Kolmogorov’s 0-1 law</a>
+</p>
+
+
+
+<p>
+<a href="Convergence-Random-Variables.html#autosec-169" class="tocsection" >
+<span class="sectionnumber" >4.5</span>&#x2003;Convergence of Random Variables</a>
+</p>
+
+
+
+<p>
+<a href="Laws-Large-Numbers.html#autosec-174" class="tocsection" >
+<span class="sectionnumber" >4.6</span>&#x2003;Laws of Large Numbers</a>
+</p>
+
+
+
+<p>
+<a href="Characteristic-Functions-Weak-Convergence.html#autosec-179" class="tocsection" >
+<span class="sectionnumber" >4.7</span>&#x2003;Characteristic Functions and Weak Convergence</a>
+</p>
+
+
+
+<p>
+<a href="The-Central-Limit-Theorem.html#autosec-187" class="tocsection" >
+<span class="sectionnumber" >4.8</span>&#x2003;The Central Limit Theorem</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-4.html#autosec-191" class="tocsection" >
+<span class="sectionnumber" >4.9</span>&#x2003;Exercises 4</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-194" class="tocchapter" >
+<span class="sectionnumber" >5</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-195" class="tocsection" >
+<span class="sectionnumber" >5.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measure.html#autosec-200" class="tocsection" >
+<span class="sectionnumber" >5.2</span>&#x2003;Product Measure \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Fubini-Theorem.html#autosec-204" class="tocsection" >
+<span class="sectionnumber" >5.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-5.html#autosec-208" class="tocsection" >
+<span class="sectionnumber" >5.4</span>&#x2003;Exercises 5</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-210" class="tocchapter" >
+<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Probability with Measure</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+</div>
+
+<p>
+<h4 id="autosec-133"><span class="sectionnumber" >3.7&#x2003;</span>Riemann Integration \((\star )\)</h4>
+<a id="notes-autopage-133"></a>
+<a id="notes-autofile-24"></a> <a id="sec:rie_leb_ints"></a>
+
+<p>
+In this section, our aim is to show that if a bounded function \(f:   [a,b] \rightarrow \R \) is Riemann integrable, then it is measurable and Lebesgue integrable. Moreover, in this case the Riemann and
+Lebesgue integrals of \(f\) are equal. We begin by briefly revising the Riemann integral.
+</p>
+
+<p>
+Note that this whole section is marked with a \((\star )\), meaning that it is off-syllabus. It will be discussed briefly in lectures.
+</p>
+<h5 id="autosec-134">The Riemann Integral \((\star )\)</h5>
+<a id="notes-autopage-134"></a>
+
+
+
+<p>
+A partition \(\cal P\) of \([a, b]\) is a set of points \(\{x_{0}, x_{1}, \ldots , x_{n}\}\) with \(a = x_{0} &lt; x_{1} &lt; \cdots &lt; x_{n-1} &lt; x_{n} = b\). Define \(m_{j} = \inf
+_{x_{j-1} \leq x \leq x_{j}}f(x)\) and \(M_{j} = \sup _{x_{j-1} \leq x \leq x_{j}}f(x)\). We underestimate by defining
+</p>
+
+<p>
+\[ L(f, {\cal P}) = \sum _{j=1}^{n}m_{j}(x_{j} - x_{j-1}),\]
+</p>
+
+<p>
+and overestimate by defining
+</p>
+
+<p>
+\[ U(f, {\cal P}) = \sum _{j=1}^{n}M_{j}(x_{j} - x_{j-1}),\]
+</p>
+
+<p>
+A partition \({\cal P}^{\prime }\) is said to be a refinement of \(\cal P\) if \({\cal P} \subset {\cal P}^{\prime }\). We then have
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{3.}{9}\)</span>
+
+<!--
+
+
+
+                                            L(f, P) ≤ L(f, P 0 ),   U (f, P 0 ) ≤ U (f, P).                                      (3.10)                                            --><a id="ref"></a><!--
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {ref} L(f, {\cal P}) \leq L(f, {\cal P}^{\prime }),~~~ U(f, {\cal P}^{\prime }) \leq U(f, {\cal P}).
+\end{equation}
+
+
+</p>
+
+<p>
+A sequence of partitions \(({\cal P}_{n})\) is said to be increasing if \({\cal P}_{n+1}\) is a refinement of \({\cal P}_{n}\) for all \(\nN \).
+</p>
+
+<p>
+Now define the lower integral \(L_{a,b}f = \sup _{{\cal P}}L(f, {\cal P})\), and the upper integral \(U_{a,b}f = \inf _{{\cal P}}U(f, {\cal P})\). We say that \(f\) is Riemann integrable over \([a,
+b]\) if \(L_{a,b}f = U_{a,b}f\), and we then write the common value as \(\int _{a}^{b}f(x)dx\). In particular, every continuous function on \([a, b]\) is Riemann integrable. The next result is very useful:
+</p>
+<div class="theorembodytheorem" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-110"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Theorem 3.7.1</span> <a id="autoid-111" ></a ><a id="thm:Pfind"></a> The bounded function \(f\) is Riemann integrable on \([a, b]\) if and only if for every
+\(\epsilon &gt; 0\) there exists a partition \(\cal P\) for which
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{3.}{10}\)</span>
+
+<!--
+
+
+
+                                                    U (f, P) − L(f, P) < .                                                   (3.11)                                   --><a id="part"></a><!--
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {part} U(f, {\cal P}) - L(f, {\cal P}) &lt; \epsilon .
+\end{equation}
+
+
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+If (<a href="Riemann-Integration.html#part">3.11</a>) holds for some \(\cal P\), it also holds for all refinements of \(\cal P\). A useful corollary is
+</p>
+<div class="theorembodycor" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-112"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Corollary 3.7.2</span> <a id="autoid-113" ></a ><a id="cor:Pcor"></a> If the bounded function \(f\) is Riemann integrable on \([a, b]\), then there exists an
+increasing sequence \(({\cal P}_{n})\) of partitions of \([a,b]\) for which
+</p>
+
+<p>
+\[ \lim _{n \rightarrow \infty }U(f, {\cal P}_{n}) = \lim _{n \rightarrow \infty }L(f, {\cal P}_{n}) = \int _{a}^{b}f(x)dx\]
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> This follows from Theorem (<a
+href="Riemann-Integration.html#thm:Pfind">3.7.1</a>) by successively choosing \(\epsilon = 1, \frac {1}{2}, \frac {1}{3}, \ldots , \frac {1}{n}, \ldots .\) If the sequence \(({\cal
+P}_{n})\) is not increasing, then just replace \({\cal P}_{n}\) with \({\cal P}_{n} \cup {\cal P}_{n-1}\) and observe that this can only improve the
+</p>
+
+<p>
+inequality (<a href="Riemann-Integration.html#part">3.11</a>). &#x2003;&#x2003;&#x220E;
+</p>
+<h5 id="autosec-137">The Connection \((\star )\)</h5>
+<a id="notes-autopage-137"></a>
+
+
+
+<p>
+We have already stated the connection between Riemann and Lebesgue integration as Theorem <a href="Lebesgue-Integrability-Dominated-Convergence.html#thm:RiL">3.5.4</a>. We re-state it here for
+convenience, now with a proof.
+</p>
+<div class="theorembodytheorem-nonum" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-114"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Theorem</span> <a id="autoid-115" ></a >If \(f:           [a, b] \rightarrow \R \) is Riemann integrable, then it is Lebesgue integrable, and the two integrals coincide.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We use the notation \(\lambda \) for Lebsgue measure in this section. We also write \(M =
+\sup _{x \in [a,b]}|f(x)|\) and \(m = \inf _{x \in [a,b]}|f(x)|\).
+</p>
+
+<p>
+Let \(\cal P\) be a partition as above and define simple functions,
+</p>
+
+<p>
+\[ g_{\cal P} = \sum _{j=1}^{n}m_{j}{\1}_{(x_{j-1}, x_{j}]}, ~~~h_{\cal P} = \sum _{j=1}^{n}M_{j}{\1}_{(x_{j-1}, x_{j}]}.\]
+</p>
+
+<p>
+Consider the sequences \((g_{n})\) and \((h_{n})\) which correspond to the partitions of Corollary <a href="Riemann-Integration.html#cor:Pcor">3.7.2</a> and note that
+</p>
+
+<p>
+\[ L_{n}(f) = \int _{[a,b]}g_{n}d\lambda ,~~~U_{n}f = \int _{[a,b]}h_{n}d\lambda ,\]
+</p>
+
+<p>
+where \(U_{n}(f) = U(f, {\cal P}_{n})\) and \(L_{n}(f) = L(f, {\cal P}_{n})\). Clearly we also have for each \(\nN \),
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{3.}{11}\)</span>
+
+<!--
+
+
+
+                                                          gn ≤ f ≤ hn .                                                    (3.12)                                               --><a id="order"></a><!--
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {order} g_{n} \leq f \leq h_{n}.
+\end{equation}
+
+
+</p>
+
+<p>
+Since \((g_{n})\) is increasing (by (<a href="Riemann-Integration.html#ref">3.10</a>)) and bounded above by \(M\), it converges pointwise to a measurable function \(g\). Similarly \((h_{n})\) is
+decreasing and bounded below by \(m\), so it converges pointwise to a measurable function \(h\). By (<a href="Riemann-Integration.html#order">3.12</a>) we have
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{3.}{12}\)</span>
+
+<!--
+
+
+
+                                                          g ≤ f ≤ h.                                                      (3.13)                                               --><a id="order1"></a><!--
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {order1} g \leq f \leq h.
+\end{equation}
+
+
+</p>
+
+<p>
+Again since \(\max _{n \in \N }\{|g_{n}|, |h_{n}|\} \leq M\), we can use dominated convergence to deduce that \(g\) and \(h\) are both integrable on \([a,b]\) and by Corollary <a
+href="Riemann-Integration.html#cor:Pcor">3.7.2</a>,
+</p>
+
+<p>
+\[ \int _{[a, b]}g d \lambda = \lim _{n \rightarrow \infty }L_{n}(f) = \int _{a}^{b}f(x)dx = \lim _{n \rightarrow \infty }U_{n}(f) = \int _{[a, b]}h d \lambda .\]
+</p>
+
+<p>
+Hence we have
+</p>
+
+<p>
+\[ \int _{[a, b]} (h - g)d \lambda = 0,\]
+</p>
+
+<p>
+and so by Corollary 3.3.1, \(h(x) = g(x)\) (a.e.). Then by (<a href="Riemann-Integration.html#order1">3.13</a>) \(f = g\) (a.e.) and so \(f\) is measurable<sup>5</sup> and also integrable. So \(\int
+_{[a, b]}f d \lambda = \int _{[a, b]}g d\lambda \), and hence we have
+</p>
+
+<p>
+\[ \int _{[a, b]}f d \lambda = \int _{a}^{b}f(x)dx.\]
+</p>
+
+<p>
+&#x2003;&#x2003;&#x220E;
+</p>
+<div class="footnotes" >
+
+<p>
+<sup>5</sup>&nbsp;I’m glossing over a subtlety here. It is not true in general, that a function that is almost everywhere equal to a measurable function is measurable. It works in this case due to a special property
+of Lebesgue measure called “completeness.”
+</p>
+
+</div>
+<h5 id="autosec-140">Discussion \((\star )\)</h5>
+<a id="notes-autopage-140"></a>
+
+
+
+<p>
+An important caveat is that Theorem <a href="Lebesgue-Integrability-Dominated-Convergence.html#thm:RiL">3.5.4</a> only applies to finite closed intervals. On infinite intervals, there are examples of
+functions are Riemann integrable<sup>6</sup> but not Lebesgue integrable. One such example is \(\int _0^\infty \frac {\sin x}{x}\,dx\). Crucially, \(\frac {\sin x}{x}\) oscillates above and below
+\(0\) as \(x\to \infty \), and the Riemann integral only exists because these oscillations cancel each other out. In Lebesgue integration this isn’t allowed to happen, and \(\frac {\sin x}{x}\) fails to be
+Lebesgue integrable because \(\int _0^\infty \|\frac {\sin x}{x}\|\,dx=\infty \).
+</p>
+
+<p>
+You might think of this as analogous to something you’ve already seen with infinite series. When infinite series are absolutely convergent (\(\sum |a_n|&lt;\infty \)) they are much better behaved. The following
+result, which we won’t prove, makes this point very clearly. A ‘re-ordering’ of a series simply means arranging its terms in a different order.
+</p>
+<div class="theorembodytheorem-nonum" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-116"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Theorem</span> <a id="autoid-117" ></a >Let \((a_n)\) be a real sequence.
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. Suppose \(\sum |a_n|=\infty \). Then, for any \(\alpha \in \R \), there is a re-ordering \(b_n=a_{p(n)}\) such that \(a_n\to \alpha \).
+</p>
+
+
+</li>
+<li>
+<p>
+2. Suppose \(\sum |a_n|&lt;\infty \). Then, for any re-ordering \(b_n=a_{p(n)}\), we have \(\sum a_n=\sum b_n\).
+</p>
+</li>
+</ul>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+Imagine if we allowed something similar to happen in integration. It would mean that re-ordering the \(x\)-axis (i.e.&nbsp;permuting it around) could change the value of \(\int f(x)\,dx\)! This would be
+nonsensical, and mean that integration no longer had anything to do with ‘area under the curve’.
+</p>
+
+<p>
+Similarly, when integrals satisfy \(\int _0^\infty |f(x)|\,dx&lt;\infty \), as Lebesgue integration requires, they are much better behaved, and we can then prove important convergence results like the
+MCT/DCT – both of which fail to be true if we use Riemann integration.
+</p>
+<div class="footnotes" >
+
+<p>
+<sup>6</sup>&nbsp;Strictly, we should say ‘improperly’ Riemann integrable.
+</p>
+
+</div>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 22, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MASx52 — Exercises on Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes_2-autopage-164"></a>
+<nav class="topnavigation" ><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 23, 2020
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+(part two)</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes_2.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="The-transition-continuous-time.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >9</span>&#x2003;The transition to continuous time</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-11" class="tocchapter" >
+<span class="sectionnumber" >10</span>&#x2003;Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-12" class="tocsection" >
+<span class="sectionnumber" >10.1</span>&#x2003;The limit of random walks</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
+</p>
+
+
+
+<p>
+<a href="Properties-Brownian-motion.html#autosec-32" class="tocsection" >
+<span class="sectionnumber" >10.4</span>&#x2003;Properties of Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#autosec-41" class="tocsection" >
+<span class="sectionnumber" >10.5</span>&#x2003;Exercises on Chapter <a href="Brownian-motion.html#chap:bm">10</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-45" class="tocchapter" >
+<span class="sectionnumber" >11</span>&#x2003;Stochastic integration</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-46" class="tocsection" >
+<span class="sectionnumber" >11.1</span>&#x2003;Introduction to Ito calculus</a>
+</p>
+
+
+
+<p>
+<a href="Ito-integrals.html#autosec-51" class="tocsection" >
+<span class="sectionnumber" >11.2</span>&#x2003;Ito integrals</a>
+</p>
+
+
+
+<p>
+<a href="Existence-Ito-integrals.html#autosec-55" class="tocsection" >
+<span class="sectionnumber" >11.3</span>&#x2003;Existence of Ito integrals \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Ito-processes.html#autosec-60" class="tocsection" >
+<span class="sectionnumber" >11.4</span>&#x2003;Ito processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#autosec-68" class="tocsection" >
+<span class="sectionnumber" >11.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-integration.html#chap:ito">11</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-72" class="tocchapter" >
+<span class="sectionnumber" >12</span>&#x2003;Stochastic differential equations</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-76" class="tocsection" >
+<span class="sectionnumber" >12.1</span>&#x2003;Ito’s formula</a>
+</p>
+
+
+
+<p>
+<a href="Geometric-Brownian-motion.html#autosec-84" class="tocsection" >
+<span class="sectionnumber" >12.2</span>&#x2003;Geometric Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-exponentials-martingale-representation.html#autosec-87" class="tocsection" >
+<span class="sectionnumber" >12.3</span>&#x2003;Stochastic exponentials and martingale representation</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#autosec-93" class="tocsection" >
+<span class="sectionnumber" >12.4</span>&#x2003;Exercises on Chapter <a href="Stochastic-differential-equations.html#chap:sdes">12</a></a>
+</p>
+
+
+
+<p>
+<a href="Connections-between-SDEs-PDEs.html#autosec-98" class="tocchapter" >
+<span class="sectionnumber" >13</span>&#x2003;Connections between SDEs and PDEs</a>
+</p>
+
+
+
+<p>
+<a href="Connections-between-SDEs-PDEs.html#autosec-99" class="tocsection" >
+<span class="sectionnumber" >13.1</span>&#x2003;The Feynman-Kac formula</a>
+</p>
+
+
+
+<p>
+<a href="The-Markov-property.html#autosec-107" class="tocsection" >
+<span class="sectionnumber" >13.2</span>&#x2003;The Markov property</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#autosec-110" class="tocsection" >
+<span class="sectionnumber" >13.3</span>&#x2003;Exercises on Chapter <a href="Connections-between-SDEs-PDEs.html#chap:fk">13</a></a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-114" class="tocchapter" >
+<span class="sectionnumber" >14</span>&#x2003;The Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-115" class="tocsection" >
+<span class="sectionnumber" >14.1</span>&#x2003;The Black-Scholes market</a>
+</p>
+
+
+
+<p>
+<a href="Completeness.html#autosec-123" class="tocsection" >
+<span class="sectionnumber" >14.2</span>&#x2003;Completeness</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-equation.html#autosec-130" class="tocsection" >
+<span class="sectionnumber" >14.3</span>&#x2003;The Black-Scholes equation</a>
+</p>
+
+
+
+<p>
+<a href="Martingales-risk-neutral-world.html#autosec-137" class="tocsection" >
+<span class="sectionnumber" >14.4</span>&#x2003;Martingales and ‘the risk-neutral world’</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-formula.html#autosec-141" class="tocsection" >
+<span class="sectionnumber" >14.5</span>&#x2003;The Black-Scholes formula</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#autosec-144" class="tocsection" >
+<span class="sectionnumber" >14.6</span>&#x2003;Exercises on Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-150" class="tocchapter" >
+<span class="sectionnumber" >15</span>&#x2003;Application and extension of the Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-151" class="tocsection" >
+<span class="sectionnumber" >15.1</span>&#x2003;Transaction costs and parity relations</a>
+</p>
+
+
+
+<p>
+<a href="The-Greeks.html#autosec-155" class="tocsection" >
+<span class="sectionnumber" >15.2</span>&#x2003;The Greeks</a>
+</p>
+
+
+
+<p>
+<a href="Delta-Gamma-Hedging.html#autosec-158" class="tocsection" >
+<span class="sectionnumber" >15.3</span>&#x2003;Delta and Gamma Hedging</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#autosec-165" class="tocsection" >
+<span class="sectionnumber" >15.4</span>&#x2003;Exercises on Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></a>
+</p>
+
+
+
+<p>
+<a href="Further-extensions.html#autosec-172" class="tocsection" >
+<span class="sectionnumber" >15.5</span>&#x2003;Further extensions \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-financial-crisis-2007-08.html#autosec-188" class="tocchapter" >
+<span class="sectionnumber" >16</span>&#x2003;The financial crisis of 2007/08 \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-199" class="tocchapter" >
+<span class="sectionnumber" >17</span>&#x2003;Financial networks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-200" class="tocsection" >
+<span class="sectionnumber" >17.1</span>&#x2003;Graphs and random graphs \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-Gai-Kapadia-model-debt-contagion.html#autosec-206" class="tocsection" >
+<span class="sectionnumber" >17.2</span>&#x2003;The Gai-Kapadia model of debt contagion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Approximating-contagion-Galton-Watson-process.html#autosec-213" class="tocsection" >
+<span class="sectionnumber" >17.3</span>&#x2003;Approximating contagion by a Galton-Watson process \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#autosec-218" class="tocsection" >
+<span class="sectionnumber" >17.5</span>&#x2003;Exercises on Chapter <a href="Financial-networks.html#chap:fin_net">17</a></a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-226" class="tocchapter" >
+<span class="sectionnumber" >C</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-239" class="tocchapter" >
+<span class="sectionnumber" >D</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Formula-sheet-part-two.html#autosec-243" class="tocchapter" >
+<span class="sectionnumber" >E</span>&#x2003;Formula sheet (part two)</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Stochastic Processes and Financial Mathematics<br />
+(part two)</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\DeclareMathOperator {\indeg }{deg_{in}}\)
+
+\(\DeclareMathOperator {\outdeg }{deg_{out}}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \ra {\Rightarrow }\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \wt {\widetilde }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \p {\partial }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \|{\,|\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \F {\mc {F}}\)
+
+\(\def \G {\mc {G}}\)
+
+\(\def \H {\mc {H}}\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+\(\def \Vega {\mc {V}}\)
+
+</div>
+
+<p>
+<h4 id="autosec-165"><span class="sectionnumber" >15.4&#x2003;</span>Exercises on Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></h4>
+<a id="notes_2-autopage-165"></a>
+<a id="notes_2-autofile-28"></a>
+<h5 id="autosec-166">On parity relations</h5>
+<a id="notes_2-autopage-166"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<b>15.1</b> <a id="q:put-call"></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Draw graphs of the functions \(\Phi ^{cash}(S_T)\), \(\Phi ^{stock}(S_T)\), \(\Phi
+^{call}(S_T)\) and \(\Phi ^{put}(S_T)\) defined in Section <a href="Application-extension-Black-Scholes-model.html#sec:transaction_costs">15.1</a>, as functions of \(S_T\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Verify that the put-call parity relation <span class="textup" >(<a
+href="Application-extension-Black-Scholes-model.html#eq:put-call">15.1</a>)</span> holds.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>15.2</b> <a id="q:put_price"></a> Use the put-call parity relation to show that the price at time \(0\) of a European put option with strike price \(K\) and exercise date \(T\) is given by \(Ke^{-rT}\mc
+{N}(-d_2)-S_0\mc {N}(-d_1)\), where \(d_1\) and \(d_2\) are from <span class="textup" >(<a href="The-Black-Scholes-formula.html#eq:bs_formula">14.23</a>)</span>.
+</p>
+</li>
+<li>
+<p>
+<b>15.3</b> <a id="q:parity_0"></a> Write down a constant portfolio, which may consist of cash, stock and/or European call and put options, that would replicate the contingent claim
+</p>
+<p>
+\[ \begin {cases} S_T-1 &amp; \text { if }S_T&gt;1,\\ 0 &amp; \text { if }S_T\in [-1,1]\\ -1-S_T &amp; \text { if }S_T&lt;-1.                     \end {cases} \]
+</p>
+</li>
+<li>
+<p>
+<b>15.4</b> <a id="q:parity_1"></a> Let \(A\geq 0\) and \(K\geq 0\) be deterministic constants. Consider the contingent claim, with exercise date \(T\),
+</p>
+<p>
+\[\Phi (S_T)= \begin {cases} K &amp; \text { if }S_T\leq A,\\ K+A-S_T &amp; \text { if }A\leq S_T\leq K+A,\\ 0 &amp; \text { if }K+A&lt;S_T. \end {cases} \]
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Sketch (for general \(A\geq 0\)) a graph of \(\Phi (S_T)\) as a function of \(S_T\). Find a constant
+portfolio consisting of European put options, with exercise dates and strike prices of your choice, that replicates \(\Phi (S_T)\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Find a constant portfolio consisting of cash, stock, and European call options (with exercise dates and
+strike prices of your choice) that replicates \(\Phi (S_T)\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> In parts (a) and (b) we found two different replicating portfolios for \(\Phi (S_T)\). However Corollary
+<a href="The-Black-Scholes-equation.html#cor:repl_uniq">14.3.3</a> claimed that ‘replicating portfolios are unique’. Why is this not a contradiction?
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>15.5</b> <a id="q:parity_2"></a> Let \(A\) and \(B\) be deterministic constants with \(A&lt;B\). Consider the contingent claim
+</p>
+<p>
+\[ \Phi ^{bull}(S_T)= \begin {cases} B &amp; \text { if }S_T&gt;B,\\ S_T &amp; \text { if }A\leq S_T\leq B,\\ A &amp; \text { if }S_T&lt;A. \end {cases} \]
+</p>
+<p>
+This is known as a ‘bull spread’. Find a constant portfolio consisting of cash and call options that replicates \(\Phi ^{bull}(S_T)\).
+</p>
+</li>
+</ul>
+<h5 id="autosec-167">On the Greeks and delta/gamma hedging</h5>
+<a id="notes_2-autopage-167"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<b>15.6</b> <a id="q:greeks"></a> Let \(\beta &gt;2\). Find the values of all the Greeks, at time \(t\in [0,T]\), for the derivative with contingent claim \(\Phi (S_T)=S_T^\beta \). (<i>Hint: You will
+need part (b) of <a href="Exercises-on-Chapter-ref-chap-bs.html#q:pricing_gbm_beta"><b>14.4</b></a>.</i>)
+</p>
+</li>
+<li>
+<p>
+<b>15.7</b> <a id="q:delta_gamma_hedge"></a> At time \(t\) you hold a portfolio \(h\) with value \(F(t,S_t)\), for which (at time \(t\)) \(\Delta _F=2\) and \(\Gamma _F=3\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> You want to make this portfolio delta neutral by adding a quantity of the underlying stock \(S_t\). How
+much should you add? What is the cost of doing so?
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> You want to make this portfolio both delta and gamma neutral, by adding a combination of the
+underlying stock \(S_t\) as well a second financial derivative with value \(D(t,S_t)\), for which \(\Delta _D=1\) and \(\Gamma _D=2\). How much of each should you add? What is the cost of doing so?
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>15.8</b> <a id="q:gamma_stock"></a> Consider trying to gamma hedge a portfolio with value \(F(t,S_t)\), by adding in an amount \(w_t\) of a financial derivative with value \(W(t,S_t)\) and an amount
+\(z_t\) of a financial derivative with value \(Z(t,S_t)\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> An excitable mathematician suggests the following idea:
+</p>
+<blockquote>
+<p>
+<i>First, delta hedge using \(W\): add in \(w_t=-\frac {\Delta _F}{\Delta _W}\) of the first derivative to make our portfolio delta neutral. Then, add in a suitable amount \(z_t\) of \(Z\) to make the
+portfolio gamma neutral.</i>
+</p>
+</blockquote>
+<p>
+Why does this idea not work?
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Consider the case in which \(Z(t,S_t)=S_t\). In this case, solve the equations <span class="textup"
+>(<a href="Delta-Gamma-Hedging.html#eq:gamma_eqs">15.4</a>)</span> to find explicit expressions for \(w_t\) and \(z_t\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Does the following idea work? Explain why, or why not.
+</p>
+<blockquote>
+<p>
+<i>First, add in an amount \(w_t\) of the first derivative to make the portfolio <i>gamma</i> neutral. Then, add in a suitable amount \(z_t\) of stock to make the portfolio delta neutral.</i>
+</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="autosec-170">Challenge Questions</h5>
+<a id="notes_2-autopage-170"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<b>15.9</b> <a id="q:greeks_call"></a> Use the Black-Scholes formula <span class="textup" >(<a href="The-Black-Scholes-formula.html#eq:bs_formula">14.23</a>)</span> to verify that, in the
+case of a European call option with strike price \(K\) and exercise date \(T\), the Greeks are given by
+</p>
+<p>
+\[\Delta =\mc {N}(d_1),\hspace {5pc} \Gamma =\frac {\phi (d_1)}{s\delta \sqrt {T-t}},\]
+</p>
+<p>
+\[\rho =K(T-t)e^{-r(T-t)}\mc {N}(d_2),\hspace {1.7pc} \Theta =-\frac {s\phi (d_1)\sigma }{2\sqrt {T-t}}-rKe^{-r(T-t)}\mc {N}(d_2),\hspace {1.7pc} \mc {V}=s\phi (d_1)\sqrt {T-t}.\]
+</p>
+<p>
+Here, \(\phi (x)=\frac {1}{\sqrt {2\pi }}e^{-x^2/2}\) is the p.d.f.&nbsp;of a \(N(0,1)\) distribution, and \(\mc {N}(x)\) is its c.d.f.
+</p>
+<p>
+Use the put-call parity relation to find the values of the Greeks in the case of a European put option.
+</p>
+</li>
+</ul>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

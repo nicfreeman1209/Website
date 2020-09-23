@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MASx52 — Stochastic differential equations</title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes_2-autopage-71"></a>
+<nav class="topnavigation" ><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 23, 2020
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+(part two)</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes_2.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="The-transition-continuous-time.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >9</span>&#x2003;The transition to continuous time</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-11" class="tocchapter" >
+<span class="sectionnumber" >10</span>&#x2003;Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-12" class="tocsection" >
+<span class="sectionnumber" >10.1</span>&#x2003;The limit of random walks</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
+</p>
+
+
+
+<p>
+<a href="Properties-Brownian-motion.html#autosec-32" class="tocsection" >
+<span class="sectionnumber" >10.4</span>&#x2003;Properties of Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#autosec-41" class="tocsection" >
+<span class="sectionnumber" >10.5</span>&#x2003;Exercises on Chapter <a href="Brownian-motion.html#chap:bm">10</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-45" class="tocchapter" >
+<span class="sectionnumber" >11</span>&#x2003;Stochastic integration</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-46" class="tocsection" >
+<span class="sectionnumber" >11.1</span>&#x2003;Introduction to Ito calculus</a>
+</p>
+
+
+
+<p>
+<a href="Ito-integrals.html#autosec-51" class="tocsection" >
+<span class="sectionnumber" >11.2</span>&#x2003;Ito integrals</a>
+</p>
+
+
+
+<p>
+<a href="Existence-Ito-integrals.html#autosec-55" class="tocsection" >
+<span class="sectionnumber" >11.3</span>&#x2003;Existence of Ito integrals \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Ito-processes.html#autosec-60" class="tocsection" >
+<span class="sectionnumber" >11.4</span>&#x2003;Ito processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#autosec-68" class="tocsection" >
+<span class="sectionnumber" >11.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-integration.html#chap:ito">11</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-72" class="tocchapter" >
+<span class="sectionnumber" >12</span>&#x2003;Stochastic differential equations</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-76" class="tocsection" >
+<span class="sectionnumber" >12.1</span>&#x2003;Ito’s formula</a>
+</p>
+
+
+
+<p>
+<a href="Geometric-Brownian-motion.html#autosec-84" class="tocsection" >
+<span class="sectionnumber" >12.2</span>&#x2003;Geometric Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-exponentials-martingale-representation.html#autosec-87" class="tocsection" >
+<span class="sectionnumber" >12.3</span>&#x2003;Stochastic exponentials and martingale representation</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#autosec-93" class="tocsection" >
+<span class="sectionnumber" >12.4</span>&#x2003;Exercises on Chapter <a href="Stochastic-differential-equations.html#chap:sdes">12</a></a>
+</p>
+
+
+
+<p>
+<a href="Connections-between-SDEs-PDEs.html#autosec-98" class="tocchapter" >
+<span class="sectionnumber" >13</span>&#x2003;Connections between SDEs and PDEs</a>
+</p>
+
+
+
+<p>
+<a href="Connections-between-SDEs-PDEs.html#autosec-99" class="tocsection" >
+<span class="sectionnumber" >13.1</span>&#x2003;The Feynman-Kac formula</a>
+</p>
+
+
+
+<p>
+<a href="The-Markov-property.html#autosec-107" class="tocsection" >
+<span class="sectionnumber" >13.2</span>&#x2003;The Markov property</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#autosec-110" class="tocsection" >
+<span class="sectionnumber" >13.3</span>&#x2003;Exercises on Chapter <a href="Connections-between-SDEs-PDEs.html#chap:fk">13</a></a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-114" class="tocchapter" >
+<span class="sectionnumber" >14</span>&#x2003;The Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-115" class="tocsection" >
+<span class="sectionnumber" >14.1</span>&#x2003;The Black-Scholes market</a>
+</p>
+
+
+
+<p>
+<a href="Completeness.html#autosec-123" class="tocsection" >
+<span class="sectionnumber" >14.2</span>&#x2003;Completeness</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-equation.html#autosec-130" class="tocsection" >
+<span class="sectionnumber" >14.3</span>&#x2003;The Black-Scholes equation</a>
+</p>
+
+
+
+<p>
+<a href="Martingales-risk-neutral-world.html#autosec-137" class="tocsection" >
+<span class="sectionnumber" >14.4</span>&#x2003;Martingales and ‘the risk-neutral world’</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-formula.html#autosec-141" class="tocsection" >
+<span class="sectionnumber" >14.5</span>&#x2003;The Black-Scholes formula</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#autosec-144" class="tocsection" >
+<span class="sectionnumber" >14.6</span>&#x2003;Exercises on Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-150" class="tocchapter" >
+<span class="sectionnumber" >15</span>&#x2003;Application and extension of the Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-151" class="tocsection" >
+<span class="sectionnumber" >15.1</span>&#x2003;Transaction costs and parity relations</a>
+</p>
+
+
+
+<p>
+<a href="The-Greeks.html#autosec-155" class="tocsection" >
+<span class="sectionnumber" >15.2</span>&#x2003;The Greeks</a>
+</p>
+
+
+
+<p>
+<a href="Delta-Gamma-Hedging.html#autosec-158" class="tocsection" >
+<span class="sectionnumber" >15.3</span>&#x2003;Delta and Gamma Hedging</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#autosec-165" class="tocsection" >
+<span class="sectionnumber" >15.4</span>&#x2003;Exercises on Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></a>
+</p>
+
+
+
+<p>
+<a href="Further-extensions.html#autosec-172" class="tocsection" >
+<span class="sectionnumber" >15.5</span>&#x2003;Further extensions \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-financial-crisis-2007-08.html#autosec-188" class="tocchapter" >
+<span class="sectionnumber" >16</span>&#x2003;The financial crisis of 2007/08 \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-199" class="tocchapter" >
+<span class="sectionnumber" >17</span>&#x2003;Financial networks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-200" class="tocsection" >
+<span class="sectionnumber" >17.1</span>&#x2003;Graphs and random graphs \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-Gai-Kapadia-model-debt-contagion.html#autosec-206" class="tocsection" >
+<span class="sectionnumber" >17.2</span>&#x2003;The Gai-Kapadia model of debt contagion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Approximating-contagion-Galton-Watson-process.html#autosec-213" class="tocsection" >
+<span class="sectionnumber" >17.3</span>&#x2003;Approximating contagion by a Galton-Watson process \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#autosec-218" class="tocsection" >
+<span class="sectionnumber" >17.5</span>&#x2003;Exercises on Chapter <a href="Financial-networks.html#chap:fin_net">17</a></a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-226" class="tocchapter" >
+<span class="sectionnumber" >C</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-239" class="tocchapter" >
+<span class="sectionnumber" >D</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Formula-sheet-part-two.html#autosec-243" class="tocchapter" >
+<span class="sectionnumber" >E</span>&#x2003;Formula sheet (part two)</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Stochastic Processes and Financial Mathematics<br />
+(part two)</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\DeclareMathOperator {\indeg }{deg_{in}}\)
+
+\(\DeclareMathOperator {\outdeg }{deg_{out}}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \ra {\Rightarrow }\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \wt {\widetilde }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \p {\partial }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \|{\,|\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \F {\mc {F}}\)
+
+\(\def \G {\mc {G}}\)
+
+\(\def \H {\mc {H}}\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+\(\def \Vega {\mc {V}}\)
+
+</div>
+
+<p>
+<h3 id="autosec-72">Chapter&nbsp;<span class="sectionnumber" >12&#x2003;</span>Stochastic differential equations</h3>
+<a id="notes_2-autopage-72"></a>
+<a id="notes_2-autofile-12"></a>
+
+<a id="chap:sdes"></a>
+
+<p>
+The situation we have arrived at is that we know Ito integrals exist but, as yet, we are unable to calculate them or do much calculation with them. We will address this issue in Section <a
+href="Stochastic-differential-equations.html#sec:ito">12.1</a> but first, in order to make our calculations run smoothly, we need to introduce some new notation.
+</p>
+
+<p>
+We now understand how to make sense of equations of the form
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{12.}{0}\)</span>
+
+<!--
+
+                                                             Z    t             Z   t
+                                                 Xt = X0 +            Fu du +           Gu dBt                                       (12.1)                                  --><a id="eq:example_sde"></a><!--
+                                                              0                 0
+
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:example_sde} X_t=X_0+\int _0^t F_u\,du+\int _0^t G_u\,dB_t
+\end{equation}
+
+
+</p>
+
+<p>
+where \(B_t\) is Brownian motion. Note that we allow cases in which the stochastic processes \(F_u,G_u\) depend on \(X_u\) (for example, we could have \(F_u=X_t^2\)), but that \(X_t\) is an unknown
+stochastic process. Equations of this type are known as <i>stochastic differential equations</i>, or SDEs for short – an unfortunate name because they have no differentiation involved! They are also sometimes
+known as stochastic integral equations, but for historical reasons the term SDE has become the most commonly used.
+</p>
+
+<p>
+‘Solving’ the equation <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> essentially means finding \(X_t\) in terms of \(B_t\). If \(F_t\) and
+\(G_t\) depend only on \(t\) and \(B_t\), then <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> is just an explicit formula, which
+automatically that tells us that there is a solution to <span class="textup" >(<a href="Ito-processes.html#eq:ito_proc">11.13</a>)</span>. However, if \(F_t\) and/or \(G_t\) depend on \(X_t\)
+(e.g.&nbsp;\(F_t=2X_t\)) then <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> is not an explicit formula and there is no guarantee that a
+solution for \(X_t\) exists.
+</p>
+<div class="theorembodyremark" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-51"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Remark 12.0.1</span> <a id="autoid-52" ></a >(\(\star \)) The theory of existence and uniqueness of solutions to SDEs relies on analysis in more delicate ways than
+we have time to discuss in this course. We use the term ‘solution’ for what is usually referred to in the theory of SDEs as a ‘strong solution’.
+</p>
+
+<p>
+In general SDEs, like their classical counterparts ODEs, often do not have explicit solutions, and frequently have no solutions. Happily, though, in all the cases we need to consider, we will be able to write down
+explicit solutions.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+Writing \(\int \)s everywhere is cumbersome, so it is common to ‘drop the \(\int \)s’ and write <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> as
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{1}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                   dXt = Ft dt + Gt dBt                      (12.2)                    --><a id="eq:example_stoch_diff"></a><!--
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align}
+dX_t&amp;=F_t\,dt+G_t\,dB_t\label {eq:example_stoch_diff}
+\end{align}
+This equation has exactly the same meaning as <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span>, it is just written in different notation (to
+be clear: we are not differentiating anything). The notation \(dX_t, dB_t\) used in <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:example_stoch_diff">12.2</a>)</span> is known as the notation of <i>stochastic differentials</i>, and we’ll use it from now on.
+</p>
+
+<p>
+When we convert from stochastic differential form <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_stoch_diff">12.2</a>)</span> to integral form <span
+class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> we can choose which limits to put onto the integrals. In <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> we choose \([0,t]\), but if \(v\leq t\) then we can also choose \([v,t]\), giving
+</p>
+
+<p>
+\[X_t=X_v+\int _v^t F_u\,du+\int _v^t G_u\,dB_u.\]
+</p>
+
+<p>
+(Rigorously, we can do this because <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> implies <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:example_stoch_diff">12.2</a>)</span> with \(v\) in place of \(t\), which we can then subtract from <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:example_stoch_diff">12.2</a>)</span> to obtain limits \([v,t]\).)
+</p>
+
+<p>
+We can rewrite our definition of an Ito process in our new notation.
+</p>
+<div class="theorembodydefn" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-53"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Definition 12.0.2</span> <a id="autoid-54" ></a ><a id="defn:ito_proc_2"></a> A stochastic process \(X_t\) is an Ito process if it satisfies
+</p>
+
+<p>
+\[dX_t=F_t\,dt+G_t\,dB_t\]
+</p>
+
+<p>
+for some \(G\in \mc {H}^2\) and a continuous adapted stochastic process \(F\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+We need one more piece of notation. Given an Ito process \(X_t\), as in Definition <a href="Stochastic-differential-equations.html#defn:ito_proc_2">12.0.2</a>, and a stochastic process \(H_t\), we will
+often write
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{12.}{2}\)</span>
+
+<!--
+
+
+
+                                                          dZt = Ht dXt                                                         (12.3)                   --><a id="eq:example_stoch_diff_2"></a><!--
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:example_stoch_diff_2} dZ_t=H_t\,dX_t
+\end{equation}
+
+
+</p>
+
+<p>
+which (as a definition) we interpret to mean that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{3}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                        dZt = Ht (Ft dt + Gt dBt )
+
+                                                                                            = Ht Ft dt + Ht Gt dBt .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+dZ_t&amp;=H_t(F_t\,dt+G_t\,dB_t)\\ &amp;=H_tF_t\,dt+H_tG_t\,dB_t.
+\end{align*}
+In integral form this represents
+</p>
+
+<p>
+\[Z_t=Z_0+\int _0^tH_uF_u\,du+\int _0^t H_uG_u\,dB_u.\]
+</p>
+
+<p>
+Of course, it is much neater to write <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_stoch_diff_2">12.3</a>)</span>.
+</p>
+<div class="theorembodyremark" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-55"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Remark 12.0.3</span> <a id="autoid-56" ></a >(\(\star \)) There is a limiting procedure that can extend the Ito integral, for a suitable class of stochastic processes
+\(Z\), to define \(\int _0^t H_u\,dZ_u\) directly: in similar style to <span class="textup" >(<a href="Existence-Ito-integrals.html#eq:ito_simple_limit">11.12</a>)</span> but with increments of
+\(Z_t\) in place of increments of \(B_t\). This approach relies on some difficult analysis, and we won’t discuss it in this course.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<h4 id="autosec-76"><span class="sectionnumber" >12.1&#x2003;</span>Ito’s formula</h4>
+<a id="notes_2-autopage-76"></a>
+
+
+
+<a id="sec:ito"></a>
+
+<p>
+We have commented that, whilst we do know that Ito integrals exist, we are not yet able to do any serious calculations with them. In fact, the situation is similar to that of conditional expectation: direct calculation
+is usually difficult and, instead, we prefer to work with Ito integrals via a set of useful properties. If you think about it, this is also the situation in classical calculus – you rely on the chain and product rules,
+integration by parts, etc.
+</p>
+
+<p>
+From <a href="Ito-integrals.html#eq:intBt">11.8</a>, we already know that there are differences between Ito calculus and classical calculus. In fact, there is bad news: <i>none</i> of the usual
+rules<sup>1</sup> used of classical calculus hold in Ito calculus.
+</p>
+
+<p>
+There is also good news: Ito calculus does have its own version of the chain rule, which is known as <i>Ito’s formula</i>. Perhaps surprisingly, this alone turns out to be enough for most purposes<sup>2</sup>.
+</p>
+
+<p>
+As in Definition <a href="Ito-processes.html#def:ito_proc">11.4.1</a>, let \(X\) be an Ito process satisfying
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{12.}{3}\)</span>
+
+<!--
+
+
+
+                                                            dXt = Ft dt + Gt dBt                                                              (12.4)                            --><a id="eq:ito_differential"></a><!--
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:ito_differential} dX_t=F_t\,dt+G_t\,dB_t
+\end{equation}
+
+
+</p>
+
+<p>
+where \(G\in \mc {H}^2\) and \(F\) is a continuous adapted process.
+</p>
+<div class="theorembodylemma" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-57"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Lemma 12.1.1 (Ito’s formula)</span> <a id="autoid-58" ></a >Suppose that, for \(t\in \R \) and \(x\in \R \), \(f(t,x)\) is a deterministic function that is
+differentiable in \(t\) and twice differentiable in \(x\). Then \(Z_t=f(t,X_t)\) is an Ito process and
+</p>
+
+<p>
+\[dZ_t=\l \{\frac {\p f}{\p t}(t,X_t) + F_t\frac {\p f}{\p x}(t,X_t) + \frac {1}{2}G_t^2\frac {\p ^2 f}{\p x^2}(t,X_t)\r \}\,dt+ G_t\frac {\p f}{\p x}(t,X_t)\,dB_t.\]
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+As in classical calculus, it is common to suppress the arguments \((t,X_t)\) of \(f\) and its derivatives. This results in simply
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{12.}{4}\)</span>
+
+<!--
+
+
+                                                                      1 ∂2f
+                                                      (                        )
+                                                          ∂f      ∂f                         ∂f
+                                              dZt =          + Ft    + G2t 2       dt + Gt      dBt .                                        (12.5)           --><a id="eq:ito_formula"></a><!--
+                                                          ∂t      ∂x 2 ∂x                    ∂x
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:ito_formula} dZ_t=\l \{\frac {\p f}{\p t} + F_t\frac {\p f}{\p x} + \frac {1}{2}G_t^2\frac {\p ^2 f}{\p x^2}\r \}\,dt+ G_t\frac {\p f}{\p x}\,dB_t.
+\end{equation}
+
+
+</p>
+
+<p>
+which is the notation we’ll usually use. It is sometimes helpful to simplify the expression even further, using <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:example_stoch_diff_2">12.3</a>)</span> and <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:ito_differential">12.4</a>)</span>, to \(dZ_t=\{\frac {\p f}{\p t} + \frac {1}{2}G_t^2\frac {\p ^2 f}{\p x^2}\}\,dt+ \frac {\p f}{\p
+x}\,dX_t.\)
+</p>
+
+<p>
+Before we say a few words about the proof, let us practice using Ito’s formula. We will need it repeatedly throughout the whole of remainder of the course.
+</p>
+<div class="theorembodyexample" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-59"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Example 12.1.2</span> <a id="autoid-60" ></a ><a id="ex:intBtBt"></a> Let us apply Ito’s formula to calculate \(dZ_t\) where \(Z_t=B_t^2\). We have
+\(Z_t=f(t,B_t)\) where \(f(t,x)=x^2\), which gives \(\frac {\p f}{\p t}=0\), \(\frac {\p f}{\p x}=2x\) and \(\frac {\p ^2f}{\p x^2}=2\). We’ll also use that \(B_t\) is an Ito process satisfying
+\(dB_t=0\,dt+1\,dB_t\). From Ito’s formula,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{5}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                     1
+                                                                                                              
+                                                                                dZt = 0 + (0)(2Bt ) + (12 )(2)     dt + (1)(2Bt ) dBt
+                                                                                                     2
+                                                                                    = 1 dt + 2Bt dBt .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+dZ_t &amp;=\l (0+(0)(2B_t)+\frac 12(1^2)(2)\r )\,dt+(1)(2B_t)\,dB_t\\ &amp;=1\,dt + 2B_t\,dB_t.
+\end{align*}
+In integral form this reads
+</p>
+
+<p>
+\[Z_t=Z_0+\int _0^t 1\,du+\int _0^t 2B_u\,dB_u.\]
+</p>
+
+<p>
+Rearranging, we obtain that
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{12.}{5}\)</span>
+
+<!--
+
+
+                                                      t              Bt2  t
+                                                Z
+                                                          Bu dBu =       − .                                             (12.6)                                      --><a id="eq:intBtBt"></a><!--
+                                                  0                  2    2
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:intBtBt} \int _0^t B_u\,dB_u=\frac {B_t^2}{2}-\frac {t}{2}.
+\end{equation}
+
+
+</p>
+
+<p>
+This shows that Ito calculus behaves very differently to classical calculus (of course, \(\int _0^t u\,du=\frac {u^2}{2}\)).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyexample" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-61"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Example 12.1.3</span> <a id="autoid-62" ></a >Suppose that \(X\) satisfies \(dX_t=\mu \,dt+\sigma \,dB_t\), where \(\mu \in \R \) and \(\sigma &gt;0\) are
+deterministic constants. Let \(Z_t=X_te^t\). We want to find \(dZ_t\).
+</p>
+
+<p>
+We have \(Z_t=f(t,X_t)\) where \(f(t,x)=xe^t\), and \(F_t=\mu \), \(G_t=\sigma \) so by Ito’s formula,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{6}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                   1
+                                                                                                             
+                                                                           dZt = Xt et + (µ)(et ) + (σ 2 )(0)     dt + (σ)(et ) dBt
+                                                                                                   2
+                                                                               = (Xt + µ) et dt + σet dBt .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+dZ_t&amp;=\l (X_te^t + (\mu )(e^t) + \frac 12(\sigma ^2)(0)\r )\,dt+(\sigma ) (e^t)\,dB_t\\ &amp;=\l (X_t+\mu \r )e^t\,dt+\sigma e^t\,dB_t.
+\end{align*}
+
+
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyexample" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-63"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Example 12.1.4</span> <a id="autoid-64" ></a >Suppose that we want to calculate \(\E [B_t^4]\).
+</p>
+
+<p>
+We define \(Z_t=B_t^4\) and use Ito’s formula to find \(dZ_t\). We have \(Z_t=f(t,B_t)\) where \(f(t,x)=x^4\). Note that Brownian motion \(B_t\) is an Ito process, with \(dB_t=0\,dt+1\,dB_t\). So,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{6}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                            1
+                                                                                                                           
+                                                                          dZt = 0 +   (0)(4Bt3 )           + (12 )(12Bt2 )       dt + (1)(4Bt3 ) dBt
+                                                                                                            2
+                                                                              = 6Bt2 dt + 4Bt3 dBt .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+dZ_t&amp;=\l (0+(0)(4B_t^3)+\frac 12(1^2)(12B_t^2)\r )\,dt+(1)(4B_t^3)\,dB_t\\ &amp;=6B_t^2\,dt+4B_t^3\,dB_t.
+\end{align*}
+Hence, in integral form,
+</p>
+
+<p>
+\[Z_t=Z_0+\int _0^t 6B_u^2\,du+\int _0^t 4B_u^3\,dB_u.\]
+</p>
+
+<p>
+Taking expectations, and noting that \(Z_0=B_0^4=0\),
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{6}\)</span>
+
+
+
+<!--
+
+
+                                                                                               Z      t                   Z   t                
+                                                                                 E[Zt ] = E                6Bu2   du] + E            4Bu3   dBu
+                                                                                                   0                         0
+                                                                                           Z   t       h       i
+                                                                                       =           E 6Bu2 du + 0
+                                                                                           0
+                                                                                           Z   t
+                                                                                       =           6u du
+                                                                                           0
+                                                                                           6t2
+                                                                                       =
+                                                                                            2
+                                                                                       = 3t2 .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\E [Z_t] &amp;=\E \l [\int _0^t 6B_u^2\,du]\r ]+\E \l [\int _0^t 4B_u^3\,dB_u\r ]\\ &amp;=\int _0^t \E \l [6B_u^2\r ]\,du +0\\ &amp;=\int _0^t 6 u\,du\\ &amp;=\frac {6t^2}{2}\\
+&amp;=3t^2.
+\end{align*}
+Here, we used Lemma <a href="Ito-processes.html#lem:baby_fubini">11.4.2</a> to swap \(\int \) and \(\E \) for the \(\,du\) integral, and to deduce the second line we recall from Theorem <a
+href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a> that Ito integrals \(\int _0^t\ldots \,dB_t\) are martingales with mean zero.
+</p>
+
+<p>
+The result we have obtained matches that from exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a>, but with much less work!
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<div class="footnotes" >
+
+<p>
+<sup>1</sup>&nbsp;Meaning: the chain rule, product rule, quotient rule, integration by parts, inverse function rule, substitution rule, implicit differentiation rule, \(\dots \)
+</p>
+<p>
+<sup>2</sup>&nbsp;Actually, Ito calculus has a product rule too, but we won’t need it.
+</p>
+
+</div>
+<h5 id="autosec-82">Sketch proof of Ito’s formula \((\star )\)</h5>
+<a id="notes_2-autopage-82"></a>
+
+
+
+<p>
+The proof of Ito’s formula is very technical, and even some advanced textbooks on stochastic calculus omit a full proof. We are now getting used to the principle that (in continuous time) proofs of most important
+results about stochastic processes make heavy use of analysis; in this case, Taylor’s theorem. We’ll attempt to give just an indication of where <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:ito_formula">12.5</a>)</span> comes from.
+</p>
+
+<p>
+Fix an interval \([0,t]\) and take \(t_k\) such that
+</p>
+
+<p>
+\[0=t_0&lt;t_1&lt;t_2&lt;\ldots &lt;t_n=t.\]
+</p>
+
+<p>
+We plan eventually to take a limit as \(n\to \infty \), where the minimal distance between two neighbouring \(t_k\) goes to zero. Note that this in similar style to the limit used in the construction of Ito
+integrals. We’ll use the notation (just in this section)
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{6}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                             ∆t = tk+1 − tk
+
+                                                                                                            ∆B = Btk+1 − Btk
+
+                                                                                                            ∆X = Xtk+1 − Xtk .
+
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\Delta t&amp;=t_{k+1}-t_k\\ \Delta B&amp;=B_{t_{k+1}}-B_{t_k}\\ \Delta X&amp;=X_{t_{k+1}}-X_{t_k}.\\
+\end{align*}
+
+
+</p>
+
+<p>
+We begin by writing
+</p>
+
+<p>
+\[f(t,X_t)-f(0,X_0)=\sum \limits _{k=0}^{n-1} f(t_{k+1},X_{t_{k+1}})-f(t_{k},X_{t_{k}}).\]
+</p>
+
+<p>
+Then, we apply the two dimensional version of Taylor’s Theorem to \(f\) on the time interval \([t_k,t_{k+1}]\) to give us
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{6}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                        ∂f      ∂f      1 ∂2f         ∂2f        1 ∂2f
+                                                                  f (tk+1 , Xtk+1 ) − f (tk , Xtk ) =      ∆t +    ∆X +       (∆X)2
+                                                                                                                                    +     ∆X∆t +       (∆t)2
+                                                                                                        ∂t      ∂x      2 ∂x2         ∂x2        2 ∂x2
+                                                                                       (12.7)               + [higher order terms]                                              --><a id="eq:ito_taylor"></a><!--
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align}
+f(t_{k+1},X_{t_{k+1}})-f(t_{k},X_{t_{k}}) &amp;=\frac {\p f}{\p t}\Delta t+\frac {\p f}{\p x}\Delta X + \frac 12\frac {\p ^2 f}{\p x^2}(\Delta X)^2 + \frac {\p ^2 f}{\p
+x^2}\Delta X\Delta t + \frac 12\frac {\p ^2 f}{\p x^2}(\Delta t)^2 \notag \\ &amp;\hspace {3pc} + \text {[higher order terms]} \label {eq:ito_taylor}
+\end{align}
+We suppress the argument \((t_k,X_{t_k})\) of all partial derivatives of \(f\). In the ‘higher order terms’ we have terms containing \((\Delta X)^3, \Delta t(\Delta X)^2\) and so on. Using the SDE <span
+class="textup" >(<a href="Stochastic-differential-equations.html#eq:ito_differential">12.4</a>)</span> we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{12.}{7}\)</span>
+
+
+
+<!--
+
+
+                                                                                                                   Z   tk+1             Z   tk+1
+                                                                                         ∆X = Xtk+1 − Xtk =                   Fu du +              Gu dBu
+                                                                                                                    tk                  tk
+
+                                                                                                                ≈ Ftk ∆t + Gtk ∆B.
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\Delta X=X_{t_{k+1}}-X_{t_k}&amp;=\int _{t_k}^{t_{k+1}} F_u\,du+ \int _{t_k}^{t_{k+1}} G_u\,dB_u\\ &amp;\approx F_{t_k}\Delta t + G_{t_k}\Delta B.
+\end{align*}
+Summing <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:ito_taylor">12.7</a>)</span> over \(\sum _k:=\sum _{k=0}^{n-1}\) and using this approximation, we have
+</p>
+
+<p>
+\[f(t,X_t)-f(0,X_0)=I_1+I_2+I_3+J_1+J_2+J_3+\text {[higher order terms]}\]
+</p>
+
+<p>
+where
+</p>
+
+<p>
+\[ \begin {alignedat}{2} I_1&amp;=\sum \limits _k \frac {\p f}{\p t}\Delta t &amp;&amp; \to \int _0^t \frac {\p f}{\p x}\,du\\ I_2&amp;=\sum \limits _k \frac {\p f}{\p
+x}F_{t_k}\Delta t &amp;&amp; \to \int _0^t \frac {\p f}{\p x} F_u\,du\\ I_3&amp;=\sum \limits _k \frac {\p f}{\p x}G_{t_k}\Delta B &amp;&amp; \to \int _0^t \frac {\p f}{\p x}
+G_u\,dB_u\\ J_1&amp;=\frac 12 \sum \limits _k \frac {\p ^2 f}{\p x^2}G_{t_k}^2(\Delta B)^2 \hspace {5pc} &amp;&amp; \to \frac 12 \int _0^t \frac {\p ^2 f}{\p x^2}G_{u}^2\,du\\
+J_2&amp;=\sum \limits _k \frac {\p ^2 f}{\p x^2}F_{t_k}G_{t_k}(\Delta B)(\Delta t) &amp;&amp; \to 0 \\ J_3&amp;=\sum \limits _k \frac {\p ^2 f}{\p x^2}F_{t_k}^2(\Delta t)^2
+&amp;&amp; \to 0 \end {alignedat} \]
+</p>
+
+<p>
+As we let \(n\to \infty \), and the \(t_k\) become closer together, \(\Delta t \to 0\) and the convergence shown takes place. In the case of \(I_1\) and \(I_2\) this is essentially by definition of the
+(classical) integral. For \(I_3\), it is by the definition of the Ito integral, as in <span class="textup" >(<a href="Stochastic-integration.html#eq:stoch_int_approx">11.3</a>)</span>. For \(J_1\),
+\(J_2\) and \(J_3\) the picture is more complicated; convergence in this case follows by an extension of exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:second_order_ito"><b>10.7</b></a>.
+Essentially, exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:second_order_ito"><b>10.7</b></a> tells us that terms of order \(\Delta t\) matter and that \((\Delta B)^2\approx \Delta
+t\), resulting in
+</p>
+
+<p>
+\[J_1\approx \frac 12 \sum \limits _k \frac {\p ^2 f}{\p x^2}G_{t_k}^2\Delta t \hspace {3pc}\to \frac 12 \int _0^t \frac {\p ^2 f}{\p x^2}G_{u}^2\,du.\]
+</p>
+
+<p>
+However, \((\Delta t)^2\) and \((\Delta t)(\Delta B)\approx (\Delta t)^{3/2}\) are both much smaller than \(\Delta t\), with the result that the terms \(J_2\) and \(J_3\) vanish as \(\Delta t\to
+0\). The higher order terms in <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:ito_taylor">12.7</a>)</span> also vanish. Providing rigorous arguments to take all these
+limits is the bulk of the work involved in a full proof of Ito’s formula.
+</p>
+
+<p>
+After the limit has been taken, Ito’s formula is obtained by collecting the non-zero terms \(I_1,I_2,I_3,J_1\) together and writing the result in the notation of stochastic differentials.
+</p>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

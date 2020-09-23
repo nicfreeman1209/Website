@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MASx52 — The Greeks</title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes_2-autopage-154"></a>
+<nav class="topnavigation" ><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 23, 2020
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+(part two)</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes_2.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="The-transition-continuous-time.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >9</span>&#x2003;The transition to continuous time</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-11" class="tocchapter" >
+<span class="sectionnumber" >10</span>&#x2003;Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-12" class="tocsection" >
+<span class="sectionnumber" >10.1</span>&#x2003;The limit of random walks</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
+</p>
+
+
+
+<p>
+<a href="Properties-Brownian-motion.html#autosec-32" class="tocsection" >
+<span class="sectionnumber" >10.4</span>&#x2003;Properties of Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#autosec-41" class="tocsection" >
+<span class="sectionnumber" >10.5</span>&#x2003;Exercises on Chapter <a href="Brownian-motion.html#chap:bm">10</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-45" class="tocchapter" >
+<span class="sectionnumber" >11</span>&#x2003;Stochastic integration</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-46" class="tocsection" >
+<span class="sectionnumber" >11.1</span>&#x2003;Introduction to Ito calculus</a>
+</p>
+
+
+
+<p>
+<a href="Ito-integrals.html#autosec-51" class="tocsection" >
+<span class="sectionnumber" >11.2</span>&#x2003;Ito integrals</a>
+</p>
+
+
+
+<p>
+<a href="Existence-Ito-integrals.html#autosec-55" class="tocsection" >
+<span class="sectionnumber" >11.3</span>&#x2003;Existence of Ito integrals \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Ito-processes.html#autosec-60" class="tocsection" >
+<span class="sectionnumber" >11.4</span>&#x2003;Ito processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#autosec-68" class="tocsection" >
+<span class="sectionnumber" >11.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-integration.html#chap:ito">11</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-72" class="tocchapter" >
+<span class="sectionnumber" >12</span>&#x2003;Stochastic differential equations</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-76" class="tocsection" >
+<span class="sectionnumber" >12.1</span>&#x2003;Ito’s formula</a>
+</p>
+
+
+
+<p>
+<a href="Geometric-Brownian-motion.html#autosec-84" class="tocsection" >
+<span class="sectionnumber" >12.2</span>&#x2003;Geometric Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-exponentials-martingale-representation.html#autosec-87" class="tocsection" >
+<span class="sectionnumber" >12.3</span>&#x2003;Stochastic exponentials and martingale representation</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#autosec-93" class="tocsection" >
+<span class="sectionnumber" >12.4</span>&#x2003;Exercises on Chapter <a href="Stochastic-differential-equations.html#chap:sdes">12</a></a>
+</p>
+
+
+
+<p>
+<a href="Connections-between-SDEs-PDEs.html#autosec-98" class="tocchapter" >
+<span class="sectionnumber" >13</span>&#x2003;Connections between SDEs and PDEs</a>
+</p>
+
+
+
+<p>
+<a href="Connections-between-SDEs-PDEs.html#autosec-99" class="tocsection" >
+<span class="sectionnumber" >13.1</span>&#x2003;The Feynman-Kac formula</a>
+</p>
+
+
+
+<p>
+<a href="The-Markov-property.html#autosec-107" class="tocsection" >
+<span class="sectionnumber" >13.2</span>&#x2003;The Markov property</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#autosec-110" class="tocsection" >
+<span class="sectionnumber" >13.3</span>&#x2003;Exercises on Chapter <a href="Connections-between-SDEs-PDEs.html#chap:fk">13</a></a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-114" class="tocchapter" >
+<span class="sectionnumber" >14</span>&#x2003;The Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-115" class="tocsection" >
+<span class="sectionnumber" >14.1</span>&#x2003;The Black-Scholes market</a>
+</p>
+
+
+
+<p>
+<a href="Completeness.html#autosec-123" class="tocsection" >
+<span class="sectionnumber" >14.2</span>&#x2003;Completeness</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-equation.html#autosec-130" class="tocsection" >
+<span class="sectionnumber" >14.3</span>&#x2003;The Black-Scholes equation</a>
+</p>
+
+
+
+<p>
+<a href="Martingales-risk-neutral-world.html#autosec-137" class="tocsection" >
+<span class="sectionnumber" >14.4</span>&#x2003;Martingales and ‘the risk-neutral world’</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-formula.html#autosec-141" class="tocsection" >
+<span class="sectionnumber" >14.5</span>&#x2003;The Black-Scholes formula</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#autosec-144" class="tocsection" >
+<span class="sectionnumber" >14.6</span>&#x2003;Exercises on Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-150" class="tocchapter" >
+<span class="sectionnumber" >15</span>&#x2003;Application and extension of the Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-151" class="tocsection" >
+<span class="sectionnumber" >15.1</span>&#x2003;Transaction costs and parity relations</a>
+</p>
+
+
+
+<p>
+<a href="The-Greeks.html#autosec-155" class="tocsection" >
+<span class="sectionnumber" >15.2</span>&#x2003;The Greeks</a>
+</p>
+
+
+
+<p>
+<a href="Delta-Gamma-Hedging.html#autosec-158" class="tocsection" >
+<span class="sectionnumber" >15.3</span>&#x2003;Delta and Gamma Hedging</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#autosec-165" class="tocsection" >
+<span class="sectionnumber" >15.4</span>&#x2003;Exercises on Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></a>
+</p>
+
+
+
+<p>
+<a href="Further-extensions.html#autosec-172" class="tocsection" >
+<span class="sectionnumber" >15.5</span>&#x2003;Further extensions \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-financial-crisis-2007-08.html#autosec-188" class="tocchapter" >
+<span class="sectionnumber" >16</span>&#x2003;The financial crisis of 2007/08 \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-199" class="tocchapter" >
+<span class="sectionnumber" >17</span>&#x2003;Financial networks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-200" class="tocsection" >
+<span class="sectionnumber" >17.1</span>&#x2003;Graphs and random graphs \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-Gai-Kapadia-model-debt-contagion.html#autosec-206" class="tocsection" >
+<span class="sectionnumber" >17.2</span>&#x2003;The Gai-Kapadia model of debt contagion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Approximating-contagion-Galton-Watson-process.html#autosec-213" class="tocsection" >
+<span class="sectionnumber" >17.3</span>&#x2003;Approximating contagion by a Galton-Watson process \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#autosec-218" class="tocsection" >
+<span class="sectionnumber" >17.5</span>&#x2003;Exercises on Chapter <a href="Financial-networks.html#chap:fin_net">17</a></a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-226" class="tocchapter" >
+<span class="sectionnumber" >C</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-239" class="tocchapter" >
+<span class="sectionnumber" >D</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Formula-sheet-part-two.html#autosec-243" class="tocchapter" >
+<span class="sectionnumber" >E</span>&#x2003;Formula sheet (part two)</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Stochastic Processes and Financial Mathematics<br />
+(part two)</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\DeclareMathOperator {\indeg }{deg_{in}}\)
+
+\(\DeclareMathOperator {\outdeg }{deg_{out}}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \ra {\Rightarrow }\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \wt {\widetilde }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \p {\partial }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \|{\,|\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \F {\mc {F}}\)
+
+\(\def \G {\mc {G}}\)
+
+\(\def \H {\mc {H}}\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+\(\def \Vega {\mc {V}}\)
+
+</div>
+
+<p>
+<h4 id="autosec-155"><span class="sectionnumber" >15.2&#x2003;</span>The Greeks</h4>
+<a id="notes_2-autopage-155"></a>
+<a id="notes_2-autofile-26"></a> <a id="sec:greeks"></a>
+
+<p>
+As usual, let \(F(t,s)\) be a differentiable function such that \(F(t,S_t)\) denote the value, at time \(t\), of a portfolio that replicates the contingent claim \(\Phi (S_T)\). We adopt one key idea from the
+previous section: we allow this portfolio strategy to include options as well as cash and stock.
+</p>
+
+<p>
+In this section we explore the sensitivity of replicating portfolios to changes in:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. The price of the underlying stock \(S_t\).
+</p>
+
+
+</li>
+<li>
+<p>
+2. The model parameters \(r,\mu \) and \(\sigma \).
+</p>
+</li>
+</ul>
+
+<p>
+In the first case, we are interested to know, at a given time, how exposed our current portfolio is to changes in the asset price. That is, if the stock price were to quickly fall/rise, how much value are we likely to
+gain/lose?
+</p>
+
+<p>
+In the second case, our concern is that the model parameters we’re using may not be a good match for reality (or that reality may change so as new parameters are needed). This is a serious issue, since in practice
+the values used for \(r,\mu ,\sigma \) are obtained by statistical inference, and it is not easy process to obtain them.
+</p>
+
+<p>
+Various derivatives of \(F\) are used to assess the sensitivity of the associated portfolio, and they are known collectively as <b>the Greeks</b>. They are
+</p>
+
+<p>
+\[ \begin {alignedat}{2} \Delta &amp;=\frac {\p F}{\p s} \hspace {5pc} &amp;&amp;(Delta)\\ \Gamma &amp;=\frac {\p ^2 F}{\p s^2} &amp;&amp;(Gamma)\\ \Theta &amp;=\frac {\p F}{\p t}
+&amp;&amp;(Theta)\\ \rho &amp;=\frac {\p F}{\p r} &amp;&amp;(rho)\\ \Vega &amp;=\frac {\p F}{\p \sigma } &amp;&amp;(Vega) \end {alignedat} \]
+</p>
+
+<p>
+all of which are evaluated at \((t,S_t)\). Note that, for \(\rho \) and \(\Vega \), we regard \(r\) and \(\sigma \) as variables (instead of constants) and differentiate with respect to them. There is no point in
+having a derivative with respect to \(\mu \) because, as we have seen in Theorem <a href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a>, \(\mu \) does not affect the risk-neutral world and
+consequently its value has no effect on arbitrage free prices: \(\frac {\p F}{\p \mu }=0\).
+</p>
+
+<p>
+If we have an explicit formula for \(F\), such as the Black-Scholes formula <span class="textup" >(<a href="The-Black-Scholes-formula.html#eq:bs_formula">14.23</a>)</span> for European call options,
+then we can differentiate to find explicit formulae for the Greeks. This can involve some quite messy calculations, so we don’t focus on this aspect of the Greeks in this course (but, see exercise <a
+href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:greeks_call"><b>15.9</b></a> if you like doing messy calculations). In general, they can be estimated numerically.
+</p>
+
+<p>
+For us, \(\Delta \) and \(\Gamma \) are most important. In the next section we study hedging strategies based on \(\Delta \) and \(\Gamma \).
+</p>
+<div class="theorembodyremark" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-127"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Remark 15.2.1</span> <a id="autoid-128" ></a >In fact, \(\Vega \) is not a letter of the Greek alphabet, it is a calligraphic Latin \(V\), but the terminology ‘the
+Greeks’ is used anyway.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

@@ -1,0 +1,4234 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MASx52 — Solutions to exercises</title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes_2-autopage-225"></a>
+<nav class="topnavigation" ><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 23, 2020
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+(part two)</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes_2.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="The-transition-continuous-time.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >9</span>&#x2003;The transition to continuous time</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-11" class="tocchapter" >
+<span class="sectionnumber" >10</span>&#x2003;Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-12" class="tocsection" >
+<span class="sectionnumber" >10.1</span>&#x2003;The limit of random walks</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
+</p>
+
+
+
+<p>
+<a href="Properties-Brownian-motion.html#autosec-32" class="tocsection" >
+<span class="sectionnumber" >10.4</span>&#x2003;Properties of Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#autosec-41" class="tocsection" >
+<span class="sectionnumber" >10.5</span>&#x2003;Exercises on Chapter <a href="Brownian-motion.html#chap:bm">10</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-45" class="tocchapter" >
+<span class="sectionnumber" >11</span>&#x2003;Stochastic integration</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-46" class="tocsection" >
+<span class="sectionnumber" >11.1</span>&#x2003;Introduction to Ito calculus</a>
+</p>
+
+
+
+<p>
+<a href="Ito-integrals.html#autosec-51" class="tocsection" >
+<span class="sectionnumber" >11.2</span>&#x2003;Ito integrals</a>
+</p>
+
+
+
+<p>
+<a href="Existence-Ito-integrals.html#autosec-55" class="tocsection" >
+<span class="sectionnumber" >11.3</span>&#x2003;Existence of Ito integrals \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Ito-processes.html#autosec-60" class="tocsection" >
+<span class="sectionnumber" >11.4</span>&#x2003;Ito processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#autosec-68" class="tocsection" >
+<span class="sectionnumber" >11.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-integration.html#chap:ito">11</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-72" class="tocchapter" >
+<span class="sectionnumber" >12</span>&#x2003;Stochastic differential equations</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-76" class="tocsection" >
+<span class="sectionnumber" >12.1</span>&#x2003;Ito’s formula</a>
+</p>
+
+
+
+<p>
+<a href="Geometric-Brownian-motion.html#autosec-84" class="tocsection" >
+<span class="sectionnumber" >12.2</span>&#x2003;Geometric Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-exponentials-martingale-representation.html#autosec-87" class="tocsection" >
+<span class="sectionnumber" >12.3</span>&#x2003;Stochastic exponentials and martingale representation</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#autosec-93" class="tocsection" >
+<span class="sectionnumber" >12.4</span>&#x2003;Exercises on Chapter <a href="Stochastic-differential-equations.html#chap:sdes">12</a></a>
+</p>
+
+
+
+<p>
+<a href="Connections-between-SDEs-PDEs.html#autosec-98" class="tocchapter" >
+<span class="sectionnumber" >13</span>&#x2003;Connections between SDEs and PDEs</a>
+</p>
+
+
+
+<p>
+<a href="Connections-between-SDEs-PDEs.html#autosec-99" class="tocsection" >
+<span class="sectionnumber" >13.1</span>&#x2003;The Feynman-Kac formula</a>
+</p>
+
+
+
+<p>
+<a href="The-Markov-property.html#autosec-107" class="tocsection" >
+<span class="sectionnumber" >13.2</span>&#x2003;The Markov property</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#autosec-110" class="tocsection" >
+<span class="sectionnumber" >13.3</span>&#x2003;Exercises on Chapter <a href="Connections-between-SDEs-PDEs.html#chap:fk">13</a></a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-114" class="tocchapter" >
+<span class="sectionnumber" >14</span>&#x2003;The Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-115" class="tocsection" >
+<span class="sectionnumber" >14.1</span>&#x2003;The Black-Scholes market</a>
+</p>
+
+
+
+<p>
+<a href="Completeness.html#autosec-123" class="tocsection" >
+<span class="sectionnumber" >14.2</span>&#x2003;Completeness</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-equation.html#autosec-130" class="tocsection" >
+<span class="sectionnumber" >14.3</span>&#x2003;The Black-Scholes equation</a>
+</p>
+
+
+
+<p>
+<a href="Martingales-risk-neutral-world.html#autosec-137" class="tocsection" >
+<span class="sectionnumber" >14.4</span>&#x2003;Martingales and ‘the risk-neutral world’</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-formula.html#autosec-141" class="tocsection" >
+<span class="sectionnumber" >14.5</span>&#x2003;The Black-Scholes formula</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#autosec-144" class="tocsection" >
+<span class="sectionnumber" >14.6</span>&#x2003;Exercises on Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-150" class="tocchapter" >
+<span class="sectionnumber" >15</span>&#x2003;Application and extension of the Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-151" class="tocsection" >
+<span class="sectionnumber" >15.1</span>&#x2003;Transaction costs and parity relations</a>
+</p>
+
+
+
+<p>
+<a href="The-Greeks.html#autosec-155" class="tocsection" >
+<span class="sectionnumber" >15.2</span>&#x2003;The Greeks</a>
+</p>
+
+
+
+<p>
+<a href="Delta-Gamma-Hedging.html#autosec-158" class="tocsection" >
+<span class="sectionnumber" >15.3</span>&#x2003;Delta and Gamma Hedging</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#autosec-165" class="tocsection" >
+<span class="sectionnumber" >15.4</span>&#x2003;Exercises on Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></a>
+</p>
+
+
+
+<p>
+<a href="Further-extensions.html#autosec-172" class="tocsection" >
+<span class="sectionnumber" >15.5</span>&#x2003;Further extensions \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-financial-crisis-2007-08.html#autosec-188" class="tocchapter" >
+<span class="sectionnumber" >16</span>&#x2003;The financial crisis of 2007/08 \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-199" class="tocchapter" >
+<span class="sectionnumber" >17</span>&#x2003;Financial networks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-200" class="tocsection" >
+<span class="sectionnumber" >17.1</span>&#x2003;Graphs and random graphs \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-Gai-Kapadia-model-debt-contagion.html#autosec-206" class="tocsection" >
+<span class="sectionnumber" >17.2</span>&#x2003;The Gai-Kapadia model of debt contagion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Approximating-contagion-Galton-Watson-process.html#autosec-213" class="tocsection" >
+<span class="sectionnumber" >17.3</span>&#x2003;Approximating contagion by a Galton-Watson process \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#autosec-218" class="tocsection" >
+<span class="sectionnumber" >17.5</span>&#x2003;Exercises on Chapter <a href="Financial-networks.html#chap:fin_net">17</a></a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-226" class="tocchapter" >
+<span class="sectionnumber" >C</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-239" class="tocchapter" >
+<span class="sectionnumber" >D</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Formula-sheet-part-two.html#autosec-243" class="tocchapter" >
+<span class="sectionnumber" >E</span>&#x2003;Formula sheet (part two)</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Stochastic Processes and Financial Mathematics<br />
+(part two)</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\DeclareMathOperator {\indeg }{deg_{in}}\)
+
+\(\DeclareMathOperator {\outdeg }{deg_{out}}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \ra {\Rightarrow }\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \wt {\widetilde }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \p {\partial }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \|{\,|\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \F {\mc {F}}\)
+
+\(\def \G {\mc {G}}\)
+
+\(\def \H {\mc {H}}\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+\(\def \Vega {\mc {V}}\)
+
+</div>
+
+<p>
+<h3 id="autosec-226">Chapter&nbsp;<span class="sectionnumber" >C&#x2003;</span>Solutions to exercises</h3>
+<a id="notes_2-autopage-226"></a>
+<a id="notes_2-autofile-36"></a>
+<h5 id="autosec-227">Chapter <a href="Brownian-motion.html#chap:bm">10</a></h5>
+<a id="notes_2-autopage-227"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#q:lin_bm"><b>10.1</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have \(C_t=\mu t+\sigma B_t\). Hence,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+
+                                                                              E[Ct ] = E[µt + σBt ] = µt + σE[Bt ] = µt
+
+                                                                            E[Ct2 ] = E[µ2 tt + 2tµσBt + σ 2 Bt2 ] = µ2 t2 + 2tµσ(0) + σ 2 t = µ2 t2 + σ 2 t
+
+                                                                          var(Ct ) = E[Ct2 ] − E[Ct ]2 = σ 2 t.
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [C_t]&amp;=\E [\mu t + \sigma B_t]=\mu t+\sigma \E [B_t]=\mu t\\ \E [C_t^2]&amp;=\E [\mu ^2t^t+2t\mu \sigma B_t+\sigma ^2 B_t^2]=\mu ^2t^2+2t\mu \sigma (0)+\sigma ^2t=\mu
+^2t^2+\sigma ^2t\\ \var (C_t)&amp;=\E [C_t^2]-\E [C_t]^2=\sigma ^2 t.
+\end{align*}
+where we use that \(\E [B_t]=0\) and \(\E [B_t^2]=t\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> We have
+</p>
+<p>
+\[C_t-C_u=\mu t+ \sigma B_t-\mu u-\sigma B_u=\mu (t-u)+\sigma (B_t-B_u)\sim \mu (t-u)+\sigma N(0,t-u)\]
+</p>
+<p>
+where, in the final step, we use the definition of Brownian motion. Then, by the scaling properties normal random variables we have \(C_t-C_u\sim N(\mu (t-u), \sigma ^2(t-u))\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Yes. By definition, Brownian motion \(B_t\) is a continuous stochastic process, meaning that the
+probability that \(B_t\) is a continuous function is one. Since \(t\mapsto \mu t\) is a continuous function, we have that \(\mu t+\sigma B_t\) is a continuous function with probability one; that is, \(B_t\) is a
+continuous stochastic process.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(d)</span></span></span> We have \(\E [C_t]=\mu t\), but Brownian motion has expectation zero, so \(C_t\) is not a Brownian
+motion.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_covar"><b>10.2</b></a> We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+
+                                                                                                     cov(Bu , Bt ) = E[Bt Bu ] − E[Bt ]E[Bu ]
+
+                                                                                                                       = E[Bt Bu ]
+
+                                                                                                                       = E[(Bt − Bu )Bu ] + E[Bu2 ]
+
+                                                                                                                       = E[Bt − Bu ]E[Bu ] + E[Bu2 ]
+
+                                                                                                                       =0×0+u
+
+                                                                                                                       =u
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\cov (B_u,B_t)&amp;=\E [B_tB_u]-\E [B_t]\E [B_u]\\ &amp;=\E [B_tB_u]\\ &amp;=\E [(B_t-B_u)B_u]+\E [B_u^2]\\ &amp;=\E [B_t-B_u]\E [B_u]+\E [B_u^2]\\ &amp;=0\times 0 +u\\ &amp;=u
+\end{align*}
+Here, to deduce the fourth line, we use the second property in Theorem <a href="Brownian-motion-definition.html#thm:bm_exist">10.2.1</a>, which tells us that \(B_t-B_u\) and \(B_u\) are independent.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_cond_exp"><b>10.3</b></a> When \(u\leq t\) the martingale property of Brownian motion (Lemma <a
+href="Properties-Brownian-motion.html#lem:bm_mart">10.4.3</a>) implies that \(\E [B_t\|\mc {F}_u]=B_u\). When \(t\leq u\) we have \(B_t\in \mc {F}_u\) so by taking out what is known we have
+\(\E [B_t\|\mc {F}_u]=B_t\). Combing the two cases, for all \(u\geq 0\) and \(t\geq 0\) we have \(\E [B_t\|\mc {F}_u]=B_{\min (u,t)}\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Integrating by parts (using that \(\frac {d}{dz}e^{-\frac {z^2}{2t}}=\frac {-z}{t}e^{-\frac
+{z^2}{2t}}\)) we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+                                                                                           1     ∞   Z
+                                                                                                           z2
+                                                                            E[Btn ]     =√          z n e− 2t dz
+                                                                                           2πt −∞
+                                                                                           1
+                                                                                               Z ∞               −z z2 
+                                                                                        =√            −tz  n−1
+                                                                                                                       e− 2t dz
+                                                                                           2πt −∞                    t
+                                                                                              1                             1
+                                                                                                              ∞              Z ∞
+                                                                                                            z2                                       z2
+                                                                                        = −√     tz n−1 e− 2t          +√          t(n − 1)z n−2 te− 2t dz
+                                                                                             2πt                z=−∞        2πt −∞
+                                                                                        = 0 + t(n − 1)E[Btn−2 ].
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [B_t^n] &amp;=\frac {1}{\sqrt {2\pi t}}\int _{-\infty }^\infty z^n e^{-\frac {z^2}{2t}}\,dz\\ &amp;=\frac {1}{\sqrt {2\pi t}}\int _{-\infty }^\infty \l (-t z^{n-1}\r )\l
+(\frac {-z}{t} e^{-\frac {z^2}{2t}}\r )\,dz\\ &amp;=\l [-\frac {1}{\sqrt {2\pi t}}tz^{n-1}e^{-\frac {z^2}{2t}}\r ]_{z=-\infty }^\infty +\frac {1}{\sqrt {2\pi t}}\int _{-\infty
+}^\infty t(n-1)z^{n-2}t e^{-\frac {z^2}{2t}}\,dz\\ &amp;=0+t(n-1)\E [B_t^{n-2}].
+\end{align*}
+
+
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Now, we use the formula we deduced in part (a). Since \(\E [B_t^0]=\E [1]=1\), we have \(\E
+[B_t^2]=t(2-1)(1)=t\). Hence \(\E [B_t^4]=t(4-1)\E [B_t^2]=t(4-1)t=3t^2\) and therefore \(\var (B_t^2)=\E [B_t^4]-\E [B_t^2]^2=2t^2\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Again, we use the formula we deduced in part (a). Since \(\E [B_t]=0\) it follows (by a trivial induction)
+that \(\E [B_t^n]=0\) for all odd \(n\in \N \). For even \(n\in \N \) we have \(\E [B_t^2]=t\) and (by induction) we obtain
+</p>
+<p>
+\[\E [B_t^n]=t^{n/2} (n-1)(n-3)\ldots (1).\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(d)</span></span></span> We have \(\var (B_t^n)=\E [B_t^{2n}]-\E [B_t^n]^2\) which is finite by part (c). Hence \(B_t^n\in
+L^2\), which implies that \(B_t^n\in L^1\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#q:lognormal_mean"><b>10.5</b></a> Using the scaling properties of normal random variables, we write \(Z=\mu +Y\) where \(Y\sim N(0,\sigma ^2)\).
+Then, \(e^Z=e^\mu e^Y\) and
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+                                                                                                          1    ∞        y2
+                                                                                                                   Z
+                                                                                            E[eY ] = √           ey e− 2σ2 dy
+                                                                                                         2πσ −∞
+                                                                                                          1                 1  2
+                                                                                                             Z ∞                                                      2πσ −∞               2σ 2
+                                                                                                          σ2
+                                                                                                    =e2 .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [e^Y] &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty e^y e^{-\frac {y^2}{2\sigma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
+\{-\frac {1}{2\sigma ^2}\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
+^4\r )\r \}\,dy\\ &amp;=e^{\frac {\sigma ^2}{2}}\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {(y-\sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
+{\sigma ^2}{2}}.
+\end{align*}
+Here, to deduce the third line we complete the square, and to deduce the final line we use that the p.d.f.&nbsp;of a \(N(\sigma ^2,\sigma )\) random variable integrates to \(1\). Therefore,
+</p>
+<p>
+\[\E [e^Z]=e^\mu \E [e^Y]=e^{\mu +\frac {\sigma ^2}{2}}.\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#q:mart_bm"><b>10.6</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Since \(B_t\) is adapted, \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is also adapted. By <span
+class="textup" >(<a href="Brownian-motion-definition.html#eq:lognormal_mean">10.2</a>)</span> we have that \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is in \(L^1\). It remains only to check that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+                                                                                 1                                                               1
+                                                                                                                                                                                                         
+                                                                      E exp σBt − σ 2 t                        | Fu = E exp σ(Bt − Bu ) + σBu − σ 2 t | Fu
+                                                                                 2                                                               2
+                                                                                                                               1
+                                                                                                                                    
+                                                                                                                    = exp σBu − σ 2 t E [exp (σ(Bt − Bu )) | Fu ]
+                                                                                                                               2
+                                                                                                                               1
+                                                                                                                                    
+                                                                                                                    = exp σBu − σ 2 t E [exp (σ(Bt − Bu ))]
+                                                                                                                               2
+                                                                                                                               1            1 2
+                                                                                                                                                    
+                                                                                                                    = exp σBu − σ 2 t exp     σ (t − u)
+                                                                                                                               2            2
+                                                                                                                               1 2
+                                                                                                                                    
+                                                                                                                    = exp σBu − σ u .
+                                                                                                                               2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [\exp \l (\sigma B_t-\frac 12\sigma ^2 t\r )\|\mc {F}_u\r ] &amp;=\E \l [\exp \l (\sigma (B_t-B_u)+\sigma B_u-\frac 12\sigma ^2 t\r )\|\mc {F}_u\r ]\\ &amp;=\exp \l (\sigma
+B_u-\frac 12\sigma ^2 t\r )\E \l [\exp \l (\sigma (B_t-B_u)\r )\|\mc {F}_u\r ]\\ &amp;=\exp \l (\sigma B_u-\frac 12\sigma ^2 t\r )\E \l [\exp \l (\sigma (B_t-B_u)\r )\r ]\\
+&amp;=\exp \l (\sigma B_u-\frac 12\sigma ^2 t\r )\exp \l (\frac 12\sigma ^2(t-u)\r )\\ &amp;=\exp \l (\sigma B_u-\frac 12\sigma ^2u\r ).
+\end{align*}
+Here, the second line follows by taking out what is known, since \(B_u\) is \(\mc {F}_u\) measurable. The third line then follows by the definition of Brownian motion, in particular that \(B_t-B_u\) is
+independent of \(\mc {F}_u\). The fourth line follows by <span class="textup" >(<a href="Brownian-motion-definition.html#eq:lognormal_mean">10.2</a>)</span>, since \(B_t-B_u\sim N(0,t-u)\)
+and hence \(\sigma (B_t-B_u)\sim N(0,\sigma ^2(t-u))\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Since \(B_t\) is adapted, \(B_t^3-3tB_t\) is also adapted. From <a
+href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a> we have \(B_t^3,B_t\in L^1\), so also \(B_t^3-tB_t\in L^1\). Using that \(B_u\) is \(\mc {F}_u\) measurable, we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+                                                                                h                          i                                        h                                                       i
+                                                                              E Bt3 − 3tBt | Fu = Bu3 − 3uBu + E Bt3 − Bu3 − 3tBt + 3uBu | Fu
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [B_t^3-3tB_t\|\mc {F}_u\r ] &amp;=B_u^3-3uB_u+\E \l [B_t^3-B_u^3-3tB_t+3uB_u\|\mc {F}_u\r ]
+\end{align*}
+so we need only check that the second term on the right hand side is zero. To see this,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+                                                          h                                         i          h                                                                                        i
+                                                        E Bt3 − Bu3 − 3tBt + 3uBu | Fu = E Bt3 − Bu3 − 3tBu + 3uBu − 3t(Bt − Bu ) | Fu
+                                                                                                               h                                                             i
+                                                                                                        = E Bt3 − Bu3 − 3tBu + 3uBu | Fu + 0
+                                                                                                               h                            i
+                                                                                                        = E Bt3 − Bu3 | Fu − 3Bu (t − u)
+                                                                                                               h                                                                        i
+                                                                                                        = E (Bt − Bu )3 + 3Bt2 Bu − 3Bu2 Bt | Fu − 3Bu (t − u)
+                                                                                                               h                                i                    h              i
+                                                                                                        = E (Bt − Bu )3 | Fu + 3Bu E Bt2 | Fu − 3Bu2 E[Bt | Fu ] − 3Bu (t − u)
+                                                                                                               h                       i                    h                          i       
+                                                                                                        = E (Bt − Bu )3 + 3Bu E Bt2 − t | Fu + t − 3Bu3 − 3Bu (t − u)
+                                                                                                                                                      
+                                                                                                        = 0 + 3Bu Bu2 − u + t − 3Bu3 − 3Bu (t − u)
+
+                                                                                                        = 0.
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [B_t^3-B_u^3-3tB_t+3uB_u\|\mc {F}_u\r ] &amp;=\E \l [B_t^3-B_u^3-3tB_u+3uB_u-3t(B_t-B_u)\|\mc {F}_u\r ]\\ &amp;=\E \l [B_t^3-B_u^3-3tB_u+3uB_u\|\mc {F}_u\r ]+0\\ &amp;=\E
+\l [B_t^3-B_u^3\|\mc {F}_u\r ]-3B_u(t-u)\\ &amp;=\E \l [(B_t-B_u)^3+3B_t^2B_u-3B_u^2B_t\|\mc {F}_u\r ]-3B_u(t-u)\\ &amp;=\E \l [(B_t-B_u)^3\|\mc {F}_u\r ]+3B_u\E \l [B_t^2\|\mc
+{F}_u\r ]-3B_u^2\E [B_t\|\mc {F}_u]-3B_u(t-u)\\ &amp;=\E \l [(B_t-B_u)^3\r ]+3B_u\l (\E \l [B_t^2-t\|\mc {F}_u\r ]+t\r )-3B_u^3-3B_u(t-u)\\ &amp;=0+3B_u\l (B_u^2-u+t\r
+)-3B_u^3-3B_u(t-u)\\ &amp;=0.
+\end{align*}
+Here we use several applications of the fact that \(B_t-B_u\) is independent of \(\mc {F}_u\), whilst \(B_u\) is \(\mc {F}_u\) measurable. We use also that \(\E [Z^3]=0\) where \(Z\sim N(0,\sigma ^2)\),
+which comes from part (c) of <a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a> (or use that the normal distribution is symmetric about \(0\)), as well as that both \(B_t\)
+and \(B_t^2-t\) are martingales (from Lemmas <a href="Properties-Brownian-motion.html#lem:bm_mart">10.4.3</a> and <a href="Properties-Brownian-motion.html#lem:bm2_mart">10.4.4</a>).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#q:second_order_ito"><b>10.7</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+                                                                          n−1
+                                                                                (tk+1 − tk ) = (tn − tn−1 ) + (tn−1 − tn−2 ) + . . . + (t2 − t1 ) + (t1 − t0 )
+                                                                          X
+
+                                                                          k=0
+
+                                                                                                   = tn − t0
+
+                                                                                                   =t−0
+
+                                                                                                   = t.
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\sum _{k=0}^{n-1}(t_{k+1}-t_k) &amp;=(t_n-t_{n-1})+(t_{n-1}-t_{n-2})+\ldots +(t_2-t_1)+(t_1-t_0)\\ &amp;=t_n-t_0\\ &amp;=t-0\\ &amp;=t.
+\end{align*}
+This is known as a ‘telescoping sum’. The same method shows that \(\sum _{k=0}^{n-1}(B_{t_{k+1}}-B_{t_k})=B_t-B_0=0\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> We need a bit more care for this one. We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+                                                                                             n−1                           n−1                                                                     
+                                                                                     0≤            (tk+1 − tk )2 ≤                 (tk+1 − tk )                    max
+                                                                                             X                             X
+                                                                                                                                                                                 |tj+1 − tj |
+                                                                                                                                                               j=0,...,n−1
+                                                                                             k=0                           k=0
+                                                                                                                                                                         n−1
+                                                                                                                       =           max                                             (tk+1 − tk )
+                                                                                                                                                                           X
+                                                                                                                                                    |tj+1 − tj |
+                                                                                                                               j=0,...,n−1
+                                                                                                                                                                             k=0
+                                                                                                                                                                        
+                                                                                                                       =           max              |tj+1 − tj | t.
+                                                                                                                               j=0,...,n−1
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+0\leq \sum _{k=0}^{n-1}(t_{k+1}-t_k)^2 &amp;\leq \sum _{k=0}^{n-1}(t_{k+1}-t_k)\l (\max _{j=0,\ldots ,n-1}|t_{j+1}-t_j|\r )\\ &amp;= \l (\max _{j=0,\ldots ,n-1}|t_{j+1}-t_j|\r )
+\sum _{k=0}^{n-1}(t_{k+1}-t_k)\\ &amp;= \l (\max _{j=0,\ldots ,n-1}|t_{j+1}-t_j|\r )t.
+\end{align*}
+Here, the last line is deduced using part (a). Letting \(n\to 0\) we have \(\max _{j=0,\ldots ,n-1}|t_{j+1}-t_j|\to 0\), so the right hand side of the above tends to zero as \(n\to \infty \). Hence, using
+the sandwich rule, we have that \(\sum _{k=0}^{n-1}(t_{k+1}-t_k)^2\to 0\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Using the properties of Brownian motion, \(B_{t_k+1}-B_{t_k}\sim N(0,t_{k+1}-t_k)\) so from
+exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a> we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+                                                                                                  "n−1                              #           n−1        h                                i
+                                                                                                          (Btk +1 − Btk )2 =                            E (Btk +1 − Btk )2
+                                                                                                   X                                            X
+                                                                                              E
+                                                                                                    k=0                                         k=0
+                                                                                                                                                n−1
+                                                                                                                                            =           (tk+1 − tk )
+                                                                                                                                                X
+
+                                                                                                                                                k=0
+
+                                                                                                                                            = t.
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [\sum \limits _{k=0}^{n-1}(B_{t_k+1}-B_{t_k})^2\r ] &amp;=\sum \limits _{k=0}^{n-1}\E \l [(B_{t_k+1}-B_{t_k})^2\r ]\\ &amp;=\sum \limits _{k=0}^{n-1}(t_{k+1}-t_k)\\
+&amp;=t.
+\end{align*}
+Here, the last line follows by part (a).
+</p>
+<p>
+For the last part, the properties of Brownian motion give us that each increment \(B_{t_{k+1}}-B_{t_k}\) is independent of \(\mc {F}_{t_k}\). In particular, the increments \(B_{t_{k+1}}-B_{t_k}\) are
+independent of each other. So, using exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a>,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+                                                                                                   n−1                                          n−1
+                                                                                                                                    !
+                                                                                                                                                                                               
+                                                                                            var           (Btk +1 − Btk )                   =           var (Btk +1 − Btk )2
+                                                                                                   X                                            X
+                                                                                                                                2
+
+                                                                                                    k=0                                         k=0
+                                                                                                                                                n−1
+                                                                                                                                            =           2(tk+1 − tk )2
+                                                                                                                                                X
+
+                                                                                                                                                k=0
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\var \l (\sum \limits _{k=0}^{n-1}(B_{t_k+1}-B_{t_k})^2\r ) &amp;=\sum \limits _{k=0}^{n-1}\var \l ((B_{t_k+1}-B_{t_k})^2\r )\\ &amp;=\sum \limits _{k=0}^{n-1}2(t_{k+1}-t_k)^2
+\end{align*}
+which tends to zero as \(n\to \infty \), by the same calculation as in part (b).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_tail"><b>10.8</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Let \(y\geq 1\). Then
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+                                                                                                                                            ∞     1 − z2
+                                                                                                                                    Z
+                                                                                                           P [Bt ≥ y] =                         √     e 2t dz
+                                                                                                                                       y         2πt
+                                                                                                                                            ∞     1
+                                                                                                                                    Z
+                                                                                                                                                          z2
+                                                                                                                               ≤                √     ye− 2t dz
+                                                                                                                                        y         2πt
+                                                                                                                                            ∞     1
+                                                                                                                                    Z
+                                                                                                                                                          z2
+                                                                                                                               ≤                √     ze− 2t dz
+                                                                                                                                        y         2πt
+                                                                                                                                   1
+                                                                                                                                                                  ∞
+                                                                                                                                             z2
+                                                                                                                               =√       −te− 2t
+                                                                                                                                   2πt                               z=y
+                                                                                                                                 r
+                                                                                                                                    t − y2
+                                                                                                                               =      e 2t .
+                                                                                                                                   2π
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\P \l [B_t\geq y\r ] &amp;=\int _y^\infty \frac {1}{\sqrt {2\pi t}}e^{-\frac {z^2}{2t}}\,dz\\ &amp;\leq \int _y^\infty \frac {1}{\sqrt {2\pi t}}y e^{-\frac {z^2}{2t}}\,dz\\
+&amp;\leq \int _y^\infty \frac {1}{\sqrt {2\pi t}}z e^{-\frac {z^2}{2t}}\,dz\\ &amp;=\frac {1}{\sqrt {2\pi t}}\l [-t e^{-\frac {z^2}{2t}}\r ]_{z=y}^\infty \\ &amp;=\sqrt {\frac
+{t}{2\pi }}e^{-\frac {y^2}{2t}}.
+\end{align*}
+Putting \(y=t^\alpha \) where \(\alpha &gt;\frac 12\) we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+<!--
+
+                                                                      r
+                                                                           t − 1 t2α−1
+                                                       P[Bt ≥ t ] ≤
+                                                                α
+                                                                             e 2       .                                                                                                                (C.1)       --><a id="eq:bm_asymp_1"></a><!--
+                                                                          2π
+
+
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:bm_asymp_1} \P [B_t\geq t^\alpha ]\leq \sqrt {\frac {t}{2\pi }}e^{-\frac 12t^{2\alpha -1}}.
+\end{equation}
+
+
+</p>
+<p>
+Since \(2\alpha -1\geq 0\), the exponential term dominates the square root, and right hand side tends to zero as \(t\to \infty \).
+</p>
+<p>
+If \(\alpha =\frac 12\) then we can use an easier method. Since \(B_t\sim N(0,t)\), we have \(t^{-1/2}B_t\sim N(0,1)\) and hence
+</p>
+<p>
+\[\P [B_t\geq t^{1/2}]=\P [N(0,1)\geq 1]\in (0,1),\]
+</p>
+<p>
+which is independent of \(t\) and hence does not tend to zero as \(t\to \infty \). Note that we can’t deduce this fact using the same method as for \(\alpha &gt;\frac 12\), because <span class="textup"
+>(<a href="Solutions-exercises.html#eq:bm_asymp_1">C.1</a>)</span> only gives us an upper bound on \(\P [B_t\geq t^{\alpha }]\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> For this we need a different technique. For \(y\geq 0\) we integrate by parts to note that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+
+                                                                                        ∞     1 − −z2        1   ∞ 1
+                                                                                 Z                                                 Z
+                                                                                                                        −y 2
+                                                                                            √    e 2t dz = √         ze− 2t dz
+                                                                                    y        2πt            2πt y z
+                                                                                                             1
+                                                                                                                                             !
+                                                                                                                   t − z2 ∞
+                                                                                                                                 Z ∞
+                                                                                                                                      t − z2
+                                                                                                                        
+                                                                                                         =√       − e 2t       −        e 2t dz
+                                                                                                            2πt    z       z=y    y  z2
+                                                                                                                      1
+                                                                                                                                                           ∞ !
+                                                                                                                               t z2
+                                                                                                                                        
+                                                                                                                   ≤√       − e− 2t
+                                                                                                                      2πt      z                               z=y
+                                                                                                                      1 t −y   2
+                                                                                                                   =√      e 2t
+                                                                                                                     2πt y
+                                                                                                                     t 1 − y2
+                                                                                                                   =√     e 2t
+                                                                                                                     2π y
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\int _y^\infty \frac {1}{\sqrt {2\pi t}}e^{-\frac {-z^2}{2t}}\,dz &amp;=\frac {1}{\sqrt {2\pi t}}\int _y^\infty \frac {1}{z} z e^{-\frac {-y^2}{2t}}\,dz\\ &amp;=\frac {1}{\sqrt
+{2\pi t}}\l (\l [-\frac {t}{z}e^{-\frac {z^2}{2t}}\r ]_{z=y}^\infty -\int _y^\infty \frac {t}{z^2}e^{-\frac {z^2}{2t}}\r )\,dz\\ &amp;\leq \frac {1}{\sqrt {2\pi t}}\l (\l [-\frac
+{t}{z}e^{-\frac {z^2}{2t}}\r ]_{z=y}^\infty \r )\\ &amp;= \frac {1}{\sqrt {2\pi t}} \frac {t}{y}e^{-\frac {y^2}{2t}}\\ &amp;= \frac {t}{\sqrt {2\pi }} \frac {1}{y}e^{-\frac
+{y^2}{2t}}
+\end{align*}
+Using the symmetry of normal random variables about \(0\), along with this inequality, we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+
+
+                                                                                                        P[|Bt | ≥ a] = P[Bt ≥ a] + P[Bt ≤ −a]
+
+                                                                                                                           = 2P[Bt ≥ a]
+                                                                                                                               t 1 − a2
+                                                                                                                           ≤ 2√      e 2t .
+                                                                                                                                2π a
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\P [|B_t|\geq a] &amp;=\P [B_t\geq a]+\P [B_t\leq -a]\\ &amp;=2\P [B_t\geq a]\\ &amp;\leq 2 \frac {t}{\sqrt {2\pi }} \frac {1}{a}e^{-\frac {a^2}{2t}}.
+\end{align*}
+As \(t\searrow 0\), the exponential term tends to \(0\), which dominates the \(\sqrt {t}\), meaning that \(\P [|B_t|\geq a]\to 0\) as \(t\searrow 0\). That is, \(B_t\to 0\) in probability as
+\(t\searrow 0\).
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="autosec-228">Chapter <a href="Stochastic-integration.html#chap:ito">11</a></h5>
+<a id="notes_2-autopage-228"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:int_Bu"><b>11.1</b></a> From <span class="textup" >(<a href="Ito-integrals.html#eq:intBt">11.8</a>)</span> we have both \(\int _0^t
+1\,dB_u=B_t\) and \(\int _0^s\,dB_u=B_s\), and using <span class="textup" >(<a href="Ito-integrals.html#eq:intabc">11.6</a>)</span> we obtain
+</p>
+<p>
+\[\int _u^t1\,dB_u=\int _0^t1\,dB_u-\int _0^v1\,dB_u=B_t-B_v.\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:expBt_L2"><b>11.2</b></a> Since \(B_t\) is adapted to \(\mc {F}_t\), we have that \(e^{B_t}\) is adapted to \(\mc {F}_t\). Since \(B_t\) is a
+continuous stochastic process and \(\exp (\cdot )\) is a continuous function, \(e^{B_t}\) is also continuous. From <span class="textup" >(<a
+href="Brownian-motion-definition.html#eq:lognormal_mean">10.2</a>)</span> we have that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+                                                                                                                        Z       t                    2                            Z   t           h             i
+                                                                                                                                    E        e    Bu
+                                                                                                                                                                      du =                    E e2Bu du
+                                                                                                                            0                                                         0
+                                                                                                                                                                                      Z   t       1       2 )u
+                                                                                                                                                                               =              e 2 (2               du
+                                                                                                                                                                                      0
+                                                                                                                                                                                      Z   t
+                                                                                                                                                                               =              e2u du < ∞.
+                                                                                                                                                                                      0
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\int _0^t\E \l [\l (e^{B_u}\r )^2\r ]\,du &amp;=\int _0^t\E \l [e^{2B_u}\r ]\,du\\ &amp;=\int _0^t e^{\frac 12(2^2)u}\,du\\ &amp;= \int _0^te^{2u}\,du&lt;\infty .
+\end{align*}
+Therefore, \(e^{B_t}\in \mc {H}^2\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:not_L2"><b>11.3</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have
+</p>
+<p>
+\[\E \l [e^{\frac {Z^2}{2}}\r ]=\frac {1}{\sqrt {2\pi }}\int _{-\infty }^\infty e^{\frac {z^2}{2}}e^{\frac {-z^2}{2}}\,dz=\frac {1}{\sqrt {2\pi }}\int _{-\infty }^\infty 1\,dz
+=\infty .\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Using the scaling properties of normal distributions, \(t^{-1/2}B_t\) has a \(N(0,1)\) distribution for
+all \(t\). Hence, if we set \(F_t=t^{-1/2}B_t\) then by part (a) we have
+</p>
+<p>
+\[\int _0^t\E \l [e^{\frac {1}{2}F_t^2}\r ]\,du=\int _0^t\infty \,du\]
+</p>
+<p>
+which is not finite. Note also that \(F_t\) is adapted to \(\mc {F}_t\). Since \(e^t\), \(t^2\), \(t^{-1/2}\) and \(B_t\) are all continuous, so is \(e^{\frac {1}{2}F_t^2}\). Hence \(e^{\frac
+{1}{2}F_t^2}\) is an example of a continuous, adapted stochastic process that is not in \(\mc {H}^2\).
+</p>
+<p>
+<i>Note that we can’t simply use the stochastic process \(F_t=Z\), because we have nothing to tell us that \(Z\) is \(\mc {F}_t\) measurable.</i>
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:ito_mean_var"><b>11.4</b></a> We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+                                                                                                                                                      Z          t                                              Z        t                 
+                                                                                                          E[Xt ] = E[2] + E                                           t + Bu2 du + E                                            Bu2 dBu
+                                                                                                                                                              0                                                         0
+                                                                                                                                        Z     t
+                                                                                                                    =2+                           t+          E[Bu2 ] du              +0
+                                                                                                                                          0
+                                                                                                                                                      Z       t
+                                                                                                                    = 2 + t2 +                                    u du
+                                                                                                                                                          0
+                                                                                                                                                          2
+                                                                                                                                                      t
+                                                                                                                    = 2 + t2 +
+                                                                                                                                                      2
+                                                                                                                                        3t2
+                                                                                                                    =2+                     .
+                                                                                                                                         2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [X_t] &amp;=\E [2]+\E \l [\int _0^t t+B_u^2\,du\r ]+\E \l [\int _0^t B_u^2\,d B_u\r ]\\ &amp;=2+\int _0^tt+\E [B_u^2]\,du+0\\ &amp;=2+t^2+\int _0^t u\,du\\ &amp;=2+t^2+\frac
+{t^2}{2}\\ &amp;=2+\frac {3t^2}{2}.
+\end{align*}
+
+
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:ito_proc_test"><b>11.5</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> \(X_t=0+\int _0^t0\,du+\int _0^t0\,dB_u\) so \(X_t\) is an Ito process.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> \(Y_t=0+\int _0^t2u\,du+\int _0^t1\,dB_u\) by <span class="textup" >(<a
+href="Ito-integrals.html#eq:intBt">11.8</a>)</span>, so \(Y_t\) is an Ito process.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> A symmetric random walk is a process in discrete time, and is therefore not an Ito process.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:os_proc"><b>11.6</b></a> We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+                                                                                                                                                                                                  Z          t                  
+                                                                                                                   E[Vt ] = E[e−kt v] + σe−kt E                                                                   eks dBs
+                                                                                                                                                                                                          0
+
+                                                                                                                                    = e−kt v.
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [V_t] &amp;=\E [e^{-kt}v]+\sigma e^{-kt}\E \l [\int _0^t e^{ks}\,dB_s\r ]\\ &amp;=e^{-kt}v.
+\end{align*}
+Here we use Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a> to show that the expectation of the \(dB_u\) integral is zero. In order to calculate \(\var (V_t)\) we first calculate
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+
+                                                                                    h        i                                                                Z          t                                                         "Z
+                                                                                                                                                                                                                                                  t               2 #
+                                                                                  E Vt2 = E[e−2kt v 2 ] + 2σe−kt E                                                            eks dBs + σ 2 e−2kt E                                                   eks dBs
+                                                                                                                                                                      0                                                                       0
+                                                                                                                                                              Z       t        h                  i
+                                                                                                     =e       v +0+σ e
+                                                                                                          −2kt 2                         2 −2kt
+                                                                                                                                                                          E (eks )2 du
+                                                                                                                                                                  0
+                                                                                                                                                  Z    t
+                                                                                                     = e−2kt v 2 + σ 2 e−2kt                                  e2ku du
+                                                                                                                                                   0
+                                                                                                                                                   1  2kt 
+                                                                                                     = e−2kt v 2 + σ 2 e−2kt                          e −1
+                                                                                                                                                  2k
+                                                                                                                             σ2            
+                                                                                                     = e−2kt v 2 +                1 − e−2kt
+                                                                                                                             2k
+                                                                                                     =
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [V_t^2\r ] &amp;=\E [e^{-2kt}v^2]+2\sigma e^{-kt}\E \l [\int _0^t e^{ks}\,dB_s\r ]+\sigma ^2 e^{-2kt}\E \l [\l (\int _0^t e^{ks}\,dB_s\r )^2\r ]\\
+&amp;=e^{-2kt}v^2+0+\sigma ^2 e^{-2kt}\int _0^t \E \l [(e^{ks})^2\r ]\,du\\ &amp;=e^{-2kt}v^2+\sigma ^2 e^{-2kt}\int _0^t e^{2ku}\,du\\ &amp;=e^{-2kt}v^2+\sigma ^2 e^{-2kt}\frac
+{1}{2k}\l (e^{2kt}-1\r )\\ &amp;=e^{-2kt}v^2+\frac {\sigma ^2}{2k}\l (1-e^{-2kt}\r )\\ &amp;=
+\end{align*}
+Again, we use Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a> to calculate the final term on the first line. We obtain that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+
+
+                                                                                                                                        var(Vt ) = E[Vt2 ] − E[Vt ]2
+                                                                                                                                                                      σ2           
+                                                                                                                                                              =            1 − e−2kt .
+                                                                                                                                                                      2k
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\var (V_t)&amp;= \E [V_t^2]-\E [V_t]^2\\ &amp;=\frac {\sigma ^2}{2k}\l (1-e^{-2kt}\r ).
+\end{align*}
+
+
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:submart"><b>11.7</b></a> We have
+</p>
+<p>
+\[X_t=\mu t+\int _0^t \sigma _u\,dB_u.\]
+</p>
+<p>
+Since \(M_t=\int _0^t \sigma _u\,dB_u\) is a martingale (by Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a>), we have that \(M_t\) is adapted and in \(L^1\), and hence also
+\(X_t\) is adapted and in \(L^1\). For \(v\leq t\) we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+
+
+                                                                                                                                    E [Xt | Fv ] = µt + E [Mt | Fv ]
+
+                                                                                                                                                                  = µt + Mv
+                                                                                                                                                                                      Z       v
+                                                                                                                                                                  = µt +                          σu dBu
+                                                                                                                                                                                          0
+                                                                                                                                                                                          Z   v
+                                                                                                                                                                  ≥ µv +                          σu dBu
+                                                                                                                                                                                          0
+
+                                                                                                                                                                  = Xv .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [X_t\|\mc {F}_v\r ]&amp;=\mu t+\E \l [M_t\|\mc {F}_v\r ]\\ &amp;=\mu t+M_v\\ &amp;=\mu t+\int _0^v\sigma _u\,dB_u\\ &amp;\geq \mu v+\int _0^v\sigma _u\,dB_u\\ &amp;=X_v.
+\end{align*}
+Hence, \(X_t\) is a submartingale.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:fubini_ito"><b>11.8</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Taking \(F_t=0\), we have \(\E [F_t]=\) and \(\int _0^tF_s\,ds=0\), hence \(\int _0^t \E
+[F_s]\,ds=\E [\int _0^t F_s\,dB_s]=0\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Taking \(F_t=1\), we have \(\E [F_t]=1\) and \(\int _0^tF_s\,ds=t\), hence \(\int _0^t \E
+[F_s]\,ds=t\) and \(\E [\int _0^t F_s\,dB_s]=\E [B_t]=0\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:L2_vec_space"><b>11.9</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have \((|X|-|Y|)^2\geq 0\), so \(2|XY|\leq X^2+Y^2\), which by monotonicity of \(\E \) means
+that \(2\E [|XY|]\leq \E [X^2]+\E [Y^2]\). Using the relationship between \(\E \) and \(|\cdot |\) we have
+</p>
+<p>
+\[2|\E [XY]|\leq 2\E [|XY|]\leq \E [X^2]+\E [Y^2].\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Let \(X_t,Y_t\in \mc {H}^2\) and let \(\alpha ,\beta \in \R \) be deterministic constants. We
+need to show that \(Z_t\alpha X_t+\beta Y_t\in \mc {H}^2\). Since both \(X_t\) and \(Y_t\) are continuous and adapted, \(Z_t\) is also both continuous and adapted. It remains to show that <span
+class="textup" >(<a href="Ito-integrals.html#eq:locally_sqr_int">11.5</a>)</span> holds for \(Z_t\). With this in mind we note that
+</p>
+<p>
+\[Z_t^2=\alpha ^2X_t^2+2\alpha \beta X_tY_t+\beta ^2Y_t^2\]
+</p>
+<p>
+and hence that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+
+
+                                                                                                         |E[Zt2 ]| = α2 E[Xt2 ] + 2αβE[Xt Yt ] + β 2 E[Yt2 ]
+
+                                                                                                                    ≤ α2 E[Xt2 ] + 2|αβ| |E[Xt Yt ]| + β 2 E[Yt2 ]
+
+                                                                                                                    ≤ α2 E[Xt2 ] + |αβ|(E[Xt2 ] + E[Yt2 ]) + β 2 E[Yt2 ]
+
+                                                                                                                    = (α2 + |αβ|)E[Xt2 ] + (β 2 + |αβ|)|E[Yt2 ].
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+|\E [Z_t^2]|&amp;=\l |\alpha ^2\E [X_t^2]+2\alpha \beta \E [X_tY_t]+\beta ^2\E [Y_t^2]\r |\\ &amp;\leq \alpha ^2\E [X_t^2]+2|\alpha \beta |\,\l |\E [X_tY_t]\r |+\beta ^2\E
+[Y_t^2]\\ &amp;\leq \alpha ^2\E [X_t^2]+|\alpha \beta |(\E [X_t^2]+\E [Y_t^2])+\beta ^2\E [Y_t^2]\\ &amp;=(\alpha ^2+|\alpha \beta |)\E [X_t^2]+(\beta ^2+|\alpha \beta |)|\E
+[Y_t^2].
+\end{align*}
+where we use part (a) to deduce the third line from the second. Hence,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+
+                                                                                   Z    t                       Z       t
+                                                                                            E[Zu2 ] du ≤                    (α2 + |αβ|)E[Xu2 ] + (β 2 + |αβ|)|E[Yu2 ] du
+                                                                                    0                               0
+                                                                                                                                                  Z       t                                                                      Z    t
+                                                                                                             = (α2 + |αβ|)                                    E[Xu2 ] du + (β 2 + |αβ|)                                                   E[Yu2 ] du < ∞
+                                                                                                                                                      0                                                                           0
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\int _0^t\E [Z_u^2]\,du &amp;\leq \int _0^t (\alpha ^2+|\alpha \beta |)\E [X_u^2]+(\beta ^2+|\alpha \beta |)|\E [Y_u^2]\,du\\ &amp;=(\alpha ^2+|\alpha \beta |)\int _0^t \E
+[X_u^2]\,du+(\beta ^2+|\alpha \beta |)\int _0^t \E [Y_u^2]\,du&lt;\infty
+\end{align*}
+as required. The final line is \(&lt;\infty \) because \(X_t,Y_t\in \mc {H}^2\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#q:ito_isom"><b>11.10</b></a> We have \(I_F(t)=\sum \limits _{i=1}^n F_{t_{i-1}}[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}].\) We are looking
+to show that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
+<!--
+
+                                                        Z   t
+                                         E[IF (t) ] =
+                                                2
+                                                                E[Fu2 ] du.                                                                                                     (C.2)                                                                                                       --><a id="eq:ii1"></a><!--
+                                                        0
+
+
+
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:ii1} \E [I_F(t)^2]=\int _0^t \E [F_u^2]\,du.
+\end{equation}
+
+
+</p>
+<p>
+On the right hand side we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+
+                                                                                                              Z     t                                     m Z                 ti ∧t
+                                                                                                                        E[Fu2 ] du =                                                  E[Fu2 ] du
+                                                                                                                                                          X
+                                                                                                                0                                          i=1            ti−1∧t
+                                                                                                                                                          m
+                                                                                                                                                  =                   (ti ∧ t − ti−1 ∧ t)E[Ft2i−1 ]                                                         (C.3)
+                                                                                                                                                          X
+                                                                                                                                                                                                                                                                                            --><a id="eq:ii2"></a><!--
+                                                                                                                                                           i=1
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align}
+\int _0^t \E [F_u^2]\,du &amp;=\sum \limits _{i=1}^{m}\int _{t_{i-1\wedge t}}^{t_i\wedge t}\E [F_u^2]\,du\notag \\ &amp;=\sum \limits _{i=1}^m (t_i\wedge t-t_{i-1}\wedge t)\E
+[F_{t_{i-1}}^2]\label {eq:ii2}
+\end{align}
+because \(F_t\) is constant during each time interval \([t_{i-1}\wedge t,t_i\wedge t)\). On the left hand side of <span class="textup" >(<a href="Solutions-exercises.html#eq:ii1">C.2</a>)</span>
+we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                                                                                     !2 
+                                                                                            m
+                                                                    E[IF (t)2 ] = E                  Fti−1 [Bti ∧t − Bti−1 ∧t ]
+                                                                                            X
+                                                                                                                                                              
+                                                                                            i=1
+                                                                                                                                                                              
+                                                                                    m                                  i−1
+                                                                                                                     m X
+                                                                              = E  Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 + 2       Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ]
+                                                                                   X                                 X
+
+                                                                                        i=1                                                                       i=1 j=1
+                                                                                  m          h                                                    i                     i−1
+                                                                                                                                                                      m X
+                                                                              =         E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 + 2                                                            E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ]
+                                                                                  X                                                                                   X                                                                                                          
+
+                                                                                  i=1                                                                                 i=1 j=1
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [I_F(t)^2] &amp;=\E \l [\l (\sum \limits _{i=1}^m F_{t_{i-1}}[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}]\r )^2\r ]\\ &amp;=\E \l [\sum \limits _{i=1}^m F_{t_{i-1}}^2[B_{t_i\wedge
+t}-B_{t_{i-1}\wedge t}]^2+2\sum \limits _{i=1}^m\sum \limits _{j=1}^{i-1}F_{t_{i-1}}F_{t_{j-1}}[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}][B_{t_j\wedge t}-B_{t_{j-1}\wedge t}]\r ]\\
+&amp;=\sum \limits _{i=1}^m \E \l [F_{t_{i-1}}^2[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}]^2\r ]+2\sum \limits _{i=1}^m\sum \limits _{j=1}^{i-1}\E \l
+[F_{t_{i-1}}F_{t_{j-1}}[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}][B_{t_j\wedge t}-B_{t_{j-1}\wedge t}]\r ]
+\end{align*}
+In the first sum, using the tower rule, taking out what is known, independence, and then the fact that \(\E [B_t^2]=t\), we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                 h                                                    i                   h h                                                                                ii
+                                                                                            E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 = E E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 | Fti−1
+                                                                                                                                                                          h                   h                                                              ii
+                                                                                                                                                           = E Ft2i−1 E [Bti ∧t − Bti−1 ∧t ]2 | Fti−1
+                                                                                                                                                                          h                   h                                               ii
+                                                                                                                                                           = E Ft2i−1 E [Bti ∧t − Bti−1 ∧t ]2
+                                                                                                                                                                          h                                                               i
+                                                                                                                                                           = E Ft2i−1 (ti ∧ t − ti−1 ∧ t)
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [F_{t_{i-1}}^2[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}]^2\r ] &amp;=\E \l [\E \l [F_{t_{i-1}}^2[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}]^2\|\mc {F}_{t_{i-1}}\r ]\r ]\\ &amp;=\E \l
+[F_{t_{i-1}}^2\E \l [[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}]^2\|\mc {F}_{t_{i-1}}\r ]\r ]\\ &amp;=\E \l [F_{t_{i-1}}^2\E \l [[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}]^2\r ]\r ]\\
+&amp;=\E \l [F_{t_{i-1}}^2(t_{i}\wedge t-t_{i-1}\wedge t)\r ]
+\end{align*}
+In the second sum, since \(j&lt;i\) we have \(t_{j-1}\leq t_i\), so using the tower rule, taking out what is known, and then the martingale property of Brownian motion, we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+
+                                                            E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ] = E E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ] | Fti−1
+                                                                                                                                                                                                                                                                                  
+
+
+                                                                                                                                                          = E Ftj−1 [Btj ∧t − Btj−1 ∧t ]Fti−1 E Bti ∧t | Fti−1 − Bti−1 ∧t
+                                                                                                                                                                                                                                                                                    
+
+
+                                                                                                                                                          = E Ftj−1 [Btj ∧t − Btj−1 ∧t ]Fti−1 Bti−1 ∧t − Bti−1 ∧t
+                                                                                                                                                                                                                                                                            
+
+
+                                                                                                                                                          = 0.
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [F_{t_{i-1}}F_{t_{j-1}}[B_{t_i\wedge t}-B_{t_{i-1}\wedge t}][B_{t_j\wedge t}-B_{t_{j-1}\wedge t}]\r ] &amp;=\E \l [\E \l [F_{t_{i-1}}F_{t_{j-1}}[B_{t_i\wedge
+t}-B_{t_{i-1}\wedge t}][B_{t_j\wedge t}-B_{t_{j-1}\wedge t}]\|\mc {F}_{t_{i-1}}\r ]\r ]\\ &amp;=\E \l [F_{t_{j-1}}[B_{t_j\wedge t}-B_{t_{j-1}\wedge t}]F_{t_{i-1}}\l (\E \l
+[B_{t_i\wedge t}\|\mc {F}_{t_{i-1}}\r ]-B_{t_{i-1}\wedge t}\r )\r ]\\ &amp;=\E \l [F_{t_{j-1}}[B_{t_j\wedge t}-B_{t_{j-1}\wedge t}]F_{t_{i-1}}\l (B_{t_{i-1}\wedge
+t}-B_{t_{i-1}\wedge t}\r )\r ]\\ &amp;=0.
+\end{align*}
+Therefore,
+</p>
+<p>
+\[\E [I_F(t)^2]=\sum \limits _{i=1}^m\E \l [F_{t_{i-1}}^2(t_{i}\wedge t-t_{i-1}\wedge t)\r ]\]
+</p>
+<p>
+which matches <span class="textup" >(<a href="Solutions-exercises.html#eq:ii2">C.3</a>)</span> and completes the proof.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<h5 id="autosec-229">Chapter <a href="Stochastic-differential-equations.html#chap:sdes">12</a></h5>
+<a id="notes_2-autopage-229"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:int_form"><b>12.1</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> \(X_t=X_0+\int _0^t2u\,du+\int _0^tB_u\,dB_u\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> \(Y_T=Y_t+\int _t^T u\,du\).
+</p>
+</li>
+</ul>
+<p>
+\(Y\) satisfies the differential equation \(\frac {d Y_t}{dt}=t\). Using equation <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:intBtBt">12.6</a>)</span> from
+Example <a href="Stochastic-differential-equations.html#ex:intBtBt">12.1.2</a>, we have that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                                                               Bt2   t
+                                                                                                                       Xt = X0 + t2 +                              −
+                                                                                                                                                               2     2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+X_t=X_0+t^2+\frac {B_t^2}{2}-\frac {t}{2}
+\end{align*}
+which is not differentiable because \(B_t\) is not differentiable.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:ito_basic"><b>12.2</b></a> We have \(Z_t=f(t,X_t)\) where \(f(t,x)=t^3x\) and \(dX_t=\alpha \,dt+\beta \,dB_t\). By Ito’s formula,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                       1
+                                                                                                                                                                                                                              −1            1        2                                                  −1
+                                                                                                B_t^{n-1}\,dB_t\\ &amp;=\frac {n(n-1)B_t^{n-2}}{2}\,dt+nB_t^{n-1}\,dB_t.
+\end{align*}
+Written out in integral form this gives
+</p>
+<p>
+\[B^t_n=\int _0^t\frac {n(n-1)B_u^{n-2}}{2}\,du+\int _0^t nB_u^{n-1}\,dB_u.\]
+</p>
+<p>
+Taking expectations, swapping \(\int \,du\) with \(\E \), and recalling from Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a> that integrals with respect to \(dB_t\) have zero
+mean, we obtain
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                            n(n − 1)E[Bun−2 ]
+                                                                                                                                   t
+                                                                                                                            Z
+                                                                                                             E[Btn ] =                         du + 0
+                                                                                                                          0         2
+                                                                                                                         n(n − 1) t
+                                                                                                                                 Z
+                                                                                                                       =              E[Bun−2 ] du.
+                                                                                                                            2      0
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [B_t^n] &amp;=\int _0^t\frac {n(n-1)\E [B_u^{n-2}]}{2}\,du+0\\ &amp;=\frac {n(n-1)}{2}\int _0^t\E [B_u^{n-2}]\,du.
+\end{align*}
+
+
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:ito_mart"><b>12.5</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> By Ito’s formula, with \(f(t,x)=e^{t/2}\cos x\), we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                           1 t/2                             1
+                                                                                                                                                                                                                
+                                                             dXt =           e cos(Bt ) + (0) −et/2 sin(Bt ) + (12 )(−et/2 cos(Bt ))                                                        dt + (1) −et/2 sin(Bt ) dBt
+                                                                           2                                  2
+                                                                     = −et/2 sin(Bt ) dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dX_t &amp;=\l (\frac 12e^{t/2}\cos (B_t)+(0)\l (-e^{t/2}\sin (B_t)\r )+\frac 12(1^2)(-e^{t/2}\cos (B_t))\r )\,dt+(1)\l (-e^{t/2}\sin (B_t)\r )\,dB_t\\ &amp;=-e^{t/2}\sin
+(B_t)\,dB_t.
+\end{align*}
+Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a>.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> By Ito’s formula, with \(f(t,x)=(x+t)e^{-x-t/2}\) we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                               1
+                                                                                      ��Bt −t/2 + (0) e−Bt −t/2 − (Bt + t)e−Bt −t/2
+                                                                                               2
+                                                                                               1                                                
+                                                                                              + (12 ) −e−Bt −t/2 − e−Bt −t/2 + (Bt + t)e−Bt −t/2    dt
+                                                                                               2
+                                                                                                                                                                                                      
+                                                                                                                                   + (12 ) e−Bt −t/2 − (Bt + t)e−Bt −t/2 dBt
+
+                                                                                    = (1 − t − Bt )e−Bt −t/2 dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dY_t &amp;=\bigg \{e^{-B_t-t/2}-\frac {1}{2}(B_t+t)e^{-B_t-t/2}+(0)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\\ &amp;\hspace {5pc} + \frac 12(1^2)\l
+(-e^{-B_t-t/2}-e^{-B_t-t/2}+(B_t+t)e^{-B_t-t/2}\r )\bigg \}\,dt \\ &amp;\hspace {10pc} + (1^2)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\,dB_t\\ &amp;=(1-t-B_t)e^{-B_t-t/2}\,dB_t.
+\end{align*}
+Hence \(Y_t=Y_0+\int _0^t(1-u-B_u)e^{-B_u-u/2}\,dB_u\), which is martingale by Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a>.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:inttBt"><b>12.6</b></a> We apply Ito’s formula with \(f(t,x)=tx\) to \(Z_t=f(t,B_t)=tB_t\) and obtain
+</p>
+<p>
+\[dZ_t=\l (B_t+(0)(t)+\frac 12(1^2)(0)\r )\,dt+(1)(t)\,dB_t\]
+</p>
+<p>
+so we obtain
+</p>
+<p>
+\[tB_t=0B_0+\int _0^tB_u\,du+\int _0^t u\,dB_u,\]
+</p>
+<p>
+as required.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:sde_Evar_ode"><b>12.7</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have \(X_t=X_0+\int _0^t 2+2s\,ds+\int _0^t B_s\,dB_s\). Taking expectations, and recalling
+that Ito integrals have zero mean, we obtain that
+</p>
+<p>
+\[\E [X_t]=X_0+\int _0^t 2+2s\,ds+0=1+\l [2s+s^2\r ]_{s=0}^t=1+2t+t^2=(1+t)^2.\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> From Ito’s formula,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                                                                           
+                                                                                          dYt = 0 + (2 + 2t)(2Xt ) + 12 (Bt )2 (2) dt + Bt (2Xt ) dBt
+                                                                                                                                               
+                                                                                                = 4(1 + t)Xt + (Bt )2 dt + 2Xt Bt dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dY_t&amp;=\l (0+(2+2t)(2X_t)+\tfrac 12(B_t)^2(2)\r )\,dt+B_t (2X_t)\,dB_t\\ &amp;=\l (4(1+t)X_t+(B_t)^2\r )\,dt+ 2X_t B_t\,dB_t.
+\end{align*}
+Writing in integral form, taking expectations, and using that Ito integrals have zero mean, we obtain
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                                                                   Z      t                                            
+                                                                                                    E[Yt ] = Y0 + E                            4(1 + s)Xt + (Bs ) ds + 0          2
+                                                                                                                                       0
+                                                                                                                       Z       t
+                                                                                                             =1+                   4(1 + s)E[Xs ] + E[Bs2 ] ds
+                                                                                                                           0
+                                                                                                                       Z       t
+                                                                                                             =1+                   4(1 + s)3 + s ds
+                                                                                                                           0
+                                                                                                                       h                                   it
+                                                                                                                                                        s2
+                                                                                                             = 1 + (1 + s)4 +                           2 s=0
+
+                                                                                                                                           t2
+                                                                                                             = (1 + t)4 +                  2
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [Y_t]&amp;=Y_0+\E \l [\int _0^t 4(1+s)X_t+(B_s)^2\,ds\r ]+0\\ &amp;=1+\int _0^t4(1+s)\E [X_s]+\E [B_s^2]\,ds\\ &amp;=1+\int _0^t4(1+s)^3+s\,ds\\ &amp;=1+\l [(1+s)^4+\tfrac
+{s^2}{2}\r ]_{s=0}^t\\ &amp;=(1+t)^4+\tfrac {t^2}{2}
+\end{align*}
+Hence, using that \(\E [X_t^2]=\E [Y_t]\),
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+
+                                                                                                                 var(X) = E[Xt2 ] − E[Xt ]2
+                                                                                                                                                               t2
+                                                                                                                               = (1 + t)4 +                    2    − (1 + t)4
+                                                                                                                                       t2
+                                                                                                                               =       2.
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\var (X)&amp;=\E [X_t^2]-\E [X_t]^2\\ &amp;=(1+t)^4+\tfrac {t^2}{2}-(1+t)^4\\ &amp;=\tfrac {t^2}{2}.
+\end{align*}
+
+
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> If we change the \(dB_t\) coefficient then we won’t change the mean, because we can see from (a) that
+\(\E [X_t]\) depends only on the \(dB_t\) coefficient. However, as we can see from part (b), the variance depends on both the \(dt\) and \(dB_t\) terms, so will change if we alter the \(dB_t\) coefficient.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:sde_E_ode"><b>12.8</b></a> In integral form, we have
+</p>
+<p>
+\[X_t=X_0+\int _0^t\alpha X_u\,du+\int _0^t \sigma _u\,dB_u.\]
+</p>
+<p>
+Taking expectations, swapping \(\int \,du\) with \(\E \), and recalling from Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a> that Ito integrals are zero mean martingales, we
+obtain
+</p>
+<p>
+\[\E [X_t]=\E [X_0]+\int _0^t \alpha \E [X_u]\,du.\]
+</p>
+<p>
+Applying the fundamental theorem of calculus, if we set \(x_t=\E [X_t]\), we obtain
+</p>
+<p>
+\[\frac {d x_t}{dt}=\alpha x_t\]
+</p>
+<p>
+which has solution \(x_t=Ce^{\alpha t}\). Putting in \(t=0\) shows that \(C=\E [X_0]=1\), hence
+</p>
+<p>
+\[\E [X_t]=e^{\alpha t}.\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:sde_Evar_ode_2"><b>12.9</b></a> We have \(X_t=X_0+\int _0^t X_s\,dB_s\). Since Ito integrals are zero mean martingales, this means that \(\E
+[X_t]=\E [X_0]=1\). Writing \(Y_t=X_t^2\) and using Ito’s formula,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                                                                   
+                                                                                           dYt = 0 + (0)(2Xt ) + 21 (Xt )2 (2) dt + (Xt )(2Xt ) dBt
+
+                                                                                                    = (Xt2 ) dt + 2Xt2 dBt .
+
+                                                                                                    = Yt dt + 2Yt dBt
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dY_t &amp;=\l (0+(0)(2X_t)+\tfrac 12(X_t)^2(2)\r )\,dt+(X_t)(2X_t)\,dB_t\\ &amp;=(X_t^2)\,dt+2X_t^2\,dB_t.\\ &amp;=Y_t\,dt+2Y_t\,dB_t
+\end{align*}
+Writing in integral form and taking expectations, we obtain
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                                                                                    Z   t
+                                                                                                                   E[Yt ] = 1 +                             E[Ys ] ds + 0.
+                                                                                                                                                    0
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [Y_t] &amp;=1+\int _0^t \E [Y_s]\,ds+0.
+\end{align*}
+Hence, by the fundamental theorem of calculus, \(f(t)=\E [Y_t]\) satisfies the differential equation \(f’(t)=f(t)\). The solution of this differential equation is \(f(t)=Ae^t\). Since \(\E [Y_0]=1\) we have
+\(A=1\) and thus \(\E [Y_t]=e^t\). Hence,
+</p>
+<p>
+\[\var (X_t)=\E [X_t^2]-\E [X_t]^2=\E [Y_t]-1=e^t-1.\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:stoch_eq_ex"><b>12.10</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Applying Ito’s formula to \(Z_t=B_t^3\), with \(f(t,x)=x^3\), we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                                        1
+                                                                                                                                                                       
+                                                                                           dZt = 0 +              (0)(3Bt2 )           + (12 )(6Bt )                        dt + (1)(3Bt2 ) dBt
+                                                                                                                                        2
+                                                                                                    = 3Bt dt + 3Bt2 dt
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dZ_t&amp;=\l (0+(0)(3B_t^2)+\frac 12(1^2)(6B_t)\r )\,dt+(1)(3B_t^2)\,dB_t\\ &amp;=3B_t\,dt+3B_t^2\,dt
+\end{align*}
+and substituting in for \(Z\) we obtain
+</p>
+<p>
+\[dZ_t=3Z_t^{1/3}\,dt+3Z_t^{2/3}\,dB_t\]
+</p>
+<p>
+as required.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Another solution is the (constant, deterministic) solution \(X_t=0\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:gbm_check"><b>12.11</b></a> Equation <span class="textup" >(<a href="Geometric-Brownian-motion.html#eq:gbm_soln">12.9</a>)</span>
+says that
+</p>
+<p>
+\[X_t=X_0\exp \l ((\alpha -\tfrac 12\sigma ^2)t+\sigma B_t\r ).\]
+</p>
+<p>
+Using Ito’s formula, with \(f(t,x)=X_0\exp \l ((\alpha -\tfrac 12\sigma ^2)t+\sigma x\r )\) we obtain
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                   1
+                                                                                                                                                                                
+                                                                                dXt = (α − 12 σ 2 )Xt + (0)(σXt ) + (12 )(σ 2 Xt )                                                    dt + (1)(σXt )dBt
+                                                                                                                   2
+                                                                                       = αXt dt + σXt dBt
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dX_t&amp;=\l ((\alpha -\tfrac 12\sigma ^2)X_t+(0)(\sigma X_t)+\frac 12(1^2)(\sigma ^2 X_t)\r )\,dt+\,(1)(\sigma X_t)dB_t\\ &amp;=\alpha X_t \,dt+\sigma X_t\,dB_t
+\end{align*}
+and thus \(X_t\) solves <span class="textup" >(<a href="Geometric-Brownian-motion.html#eq:gbm">12.8</a>)</span>.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:stoch_exp_check"><b>12.12</b></a> Equation <span class="textup" >(<a
+href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp_pre">12.12</a>)</span> says that
+</p>
+<p>
+\[X_t=X_0\exp \l (\int _0^t\sigma _u\,dB_u -\frac {1}{2}\int _0^t\sigma _u^2\,du\r )\]
+</p>
+<p>
+We need to arrange this into a form where we can apply Ito’s formula. We write
+</p>
+<p>
+\[X_t=X_0\exp \l (Y_t -\frac {1}{2}\int _0^t\sigma _u^2\,du\r )\]
+</p>
+<p>
+where \(dY_t=\sigma _t\,dB_t\) with \(Y_0=0\). We now have \(X_t=f(t,Y_t)\) where \(f(t,y)=X_0\exp \l (y-\frac 12\int _0^t\sigma _u\,du\r )\), so from Ito’s formula (and the fundamental
+theorem of calculus) we obtain
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                             1                   1
+                                                                                                                                                                           
+                                                                                      dXt = − σt2 Xt + (0)(Xt ) + (σt2 )(Xt )                                                   dt + (σt )(Xt ) dBt
+                                                                                             2                   2
+                                                                                               = σt Xt dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dX_t&amp;=\l (-\frac 12\sigma _t^2X_t+(0)(X_t)+\frac 12(\sigma _t^2)(X_t)\r )\,dt+(\sigma _t)(X_t)\,dB_t\\ &amp;=\sigma _t X_t\,dB_t.
+\end{align*}
+Hence, \(X_t\) solves <span class="textup" >(<a href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp">12.11</a>)</span>.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:mrt_explicit"><b>12.13</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> This is essentially Example <a href="Martingales.html#ex:m2">3.3.9</a> but in continuous time. By
+definition of conditional expectation (i.e.&nbsp;Theorem <a href="Conditional-expectation-martingales.html#thm:cond_exp">3.1.1</a>) we have that \(M_t\in L^1\) and that \(M_t\in \mc {F}_t\). It
+remains only to use the tower property to note that for \(0\leq u\leq t\) we have
+</p>
+<p>
+\[\E [M_t|\mc {F}_u]=\E [\E [Y\|\mc {F}_t]\mc {F}_u]=\E [Y\|\mc {F}_u]=M_u.\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(i)</span></span></span> Note that \(M_0=\E [B_T^2\|\mc {F}_0]=\E [B_T^2]=T\). We showed in Lemma <a
+href="Properties-Brownian-motion.html#lem:bm2_mart">10.4.4</a> that \(B_t^2-t\) was a martingale, hence
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+
+                                                                                                                 E[BT2 | Ft ] = E[BT2 − T + T | Ft ]
+
+                                                                                                                                        = Bt2 − t + T
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [B_T^2\|\mc {F}_t] &amp;=\E [B_T^2-T+T\|\mc {F}_t]\\ &amp;=B_t^2-t+T\\
+\end{align*}
+Using <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:intBtBt">12.6</a>)</span>, this gives us that
+</p>
+<p>
+\[\E [B_T^2\|\mc {F}_t]=2\int _0^tB_u\,dB_u+t-t+T\]
+</p>
+<p>
+so we obtain
+</p>
+<p>
+\[M_t=T+\int _0^t 2B_u\,dB_u\]
+</p>
+<p>
+and we can take \(h_t=2B_t\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(ii)</span></span></span> Note that \(M_0=\E [B_T^3\|\mc {F}_0]=\E [B_T^3]=0\). We showed in <a
+href="Exercises-on-Chapter-ref-chap-bm.html#q:mart_bm"><b>10.6</b></a> that \(B_t^3-3tB-t\) was a martingale. Hence,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+
+                                                                                                 E[BT3 | Ft ] = E[BT3 − 3T BT + 3T BT | Ft ]
+
+                                                                                                             = Bt3 − 3tBt + 3T Bt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [B_T^3\|\mc {F}_t]&amp;=\E [B_T^3-3TB_T+3TB_T\|\mc {F}_t]\\ &amp;=B_t^3-3tB_t+3TB_t.
+\end{align*}
+Using Ito’s formula on \(Z_t=B_t^3\), we obtain \(dZ_t=\l \{0+(0)(3B_t^2)+\frac 12(1^2)(6B_t)\r \}\,dt+(1)(3B_t^2)\,dB_t\) so as
+</p>
+<p>
+\[B_t^3=0+\int _0^t3B_u\,du+\int _0^t3B_u^2\,dB_u.\]
+</p>
+<p>
+Also, from <a href="Exercises-on-Chapter-ref-chap-sdes.html#q:inttBt"><b>12.6</b></a> we have
+</p>
+<p>
+\[tB_t=\int _0^tB_u\,du+\int _0^t u\,dB_u,\]
+</p>
+<p>
+so as
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                    Z        t               Z    t                             Z          t                     Z   t       
+                                                               E[BT3   | Ft ] = 3                Bu du + 3            Bu2      dBu − 3                          Bu du +                   u dBu + 3T Bt
+                                                                                        0                     0                                         0                         0
+                                                                                    Z        t                   Z        t                         Z       t
+                                                                            =3                   Bu2 dBu − 3                  u dBu + 3T                        1 dBu
+                                                                                         0                            0                                 0
+                                                                                Z       t
+                                                                            =            3Bu2 − 3u + 3T dBu .
+                                                                                    0
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [B_T^3\|\mc {F}_t] &amp;=3\int _0^tB_u\,du+3\int _0^tB_u^2\,dB_u-3\l (\int _0^tB_u\,du+\int _0^t u\,dB_u\r )+3TB_t\\ &amp;=3\int _0^tB_u^2\,dB_u-3\int _0^t u\,dB_u+3T\int
+_0^t1\,dB_u\\ &amp;=\int _0^t3B_u^2-3u+3T\,dB_u.
+\end{align*}
+We can take \(h_t=3B_t^2-3t+3T\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(iii)</span></span></span> Note that \(M_0=\E [e^{\sigma B_T}\|\mc {F}_0]=\E [e^{\sigma B_T}]=e^{\frac 12\sigma
+^2T}\) by <span class="textup" >(<a href="Brownian-motion-definition.html#eq:lognormal_mean">10.2</a>)</span> and the scaling properties of normal random variables. We showed in <a
+href="Exercises-on-Chapter-ref-chap-bm.html#q:mart_bm"><b>10.6</b></a> that \(e^{\sigma B_t-\frac 12\sigma ^2t}\) was a martingale. Hence,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                                           1        2           1   2T
+                                                                                                  E[eσBT | Ft ] = E[eσBT − 2 σ T e 2 σ                                   | Ft ]
+                                                                                                                               σBt − 12 σ 2 t       1 2
+                                                                                                                      =e                        e   2
+                                                                                                                                                      σ T
+
+                                                                                                                                       1   2 (T −t)
+                                                                                                                      = eσBt − 2 σ                          .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [e^{\sigma B_T}\|\mc {F}_t] &amp;=\E [e^{\sigma B_T-\frac 12\sigma ^2T}e^{\frac 12\sigma ^2T}\|\mc {F}_t]\\ &amp;=e^{\sigma B_t-\frac 12\sigma ^2t}e^{\frac 12\sigma ^2T}\\
+&amp;=e^{\sigma B_t-\frac 12\sigma ^2(T-t)}.
+\end{align*}
+Applying Ito’s formula to \(Z_t=e^{\sigma B_t-\frac 12\sigma ^2(T-t)}\) gives that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                              1                    1
+                                                                                                                                                                   
+                                                                       dZt = − σ 2 Zt + (0)(σZt ) + (12 )(σ 2 Zt )                                                      dt + (1)(σZt ) dBt
+                                                                              2                    2
+                                                                            = σZt dBt
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dZ_t&amp;=\l (-\frac 12\sigma ^2Z_t+(0)(\sigma Z_t)+\frac 12(1^2)(\sigma ^2 Z_t)\r )\,dt+(1)(\sigma Z_t)\,dB_t\\ &amp;=\sigma Z_t dB_t
+\end{align*}
+so we obtain that
+</p>
+<p>
+\[Z_t=Z_0+\int _0^t\sigma Z_u\,dB_u.\]
+</p>
+<p>
+Substituting in for \(Z_t\) we obtain
+</p>
+<p>
+\[\E [e^{\sigma B_T}\|\mc {F}_t]=e^{\frac 12\sigma ^2T}+\int _0^t\sigma Z_u\,dB_u\]
+</p>
+<p>
+so we can take \(h_t=\sigma Z_t=\sigma e^{\sigma B_t-\frac 12\sigma ^2(T-t)}\).
+</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="autosec-231">Chapter <a href="Connections-between-SDEs-PDEs.html#chap:fk">13</a></h5>
+<a id="notes_2-autopage-231"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#q:fk_1"><b>13.1</b></a> We have \(\alpha (t,x)=-2t\), \(\beta =0\) and \(\Phi (x)=e^x\). By Lemma <a
+href="Connections-between-SDEs-PDEs.html#lem:fk_1">13.1.2</a> the solution is given by
+</p>
+<p>
+\[F(t,x)=\E _{t,x}[e^{X_T}]\]
+</p>
+<p>
+where \(dX_u=-2u\,du+0\,dB_u=\,du\). This gives
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                                                  Z      T
+                                                                                                 XT = Xt −                   2u du
+                                                                                                                     t
+
+                                                                                                     = Xt − T 2 + t2 .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+X_T&amp;=X_t-\int _t^T2u\,du\\ &amp;=X_t-T^2+t^2.
+\end{align*}
+Hence,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                                      h                    2
+                                                                                                                                               i
+                                                                                                 F (t, x) = Et,x eXt −t
+                                                                                                                 h               2 +t2
+                                                                                                                                               i
+                                                                                                         = E ex−T
+                                                                                                                             2 +t2
+                                                                                                         = ex e−T                      .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+F(t,x)&amp;=\E _{t,x}\l [e^{X_t-t^2}\r ]\\ &amp;=\E \l [e^{x-T^2+t^2}\r ]\\ &amp;=e^{x}e^{-T^2+t^2}.
+\end{align*}
+Here we use that \(X_t=x\) under \(\E _{t,x}\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#q:fk_2"><b>13.2</b></a> We have \(\alpha =\beta =1\) and \(\Phi (x)=x^2\). By Lemma <a
+href="Connections-between-SDEs-PDEs.html#lem:fk_1">13.1.2</a> the solution is given by
+</p>
+<p>
+\[F(t,x)=\E _{t,x}\l [X_T^2\r ]\]
+</p>
+<p>
+where \(dX_u=du+dB_u\). This gives
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                                        Z    T               Z     T
+                                                                                           XT = Xt +             du +                      dBu
+                                                                                                         t                     t
+
+                                                                                               = Xt + (T − t) + (BT − Bt ).
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+X_T&amp;=X_t+\int _t^T\,du+\int _t^T\,dB_u\\ &amp;=X_t+(T-t)+(B_T-B_t).
+\end{align*}
+Hence,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+
+                                                            F (t, x) = Et,x [(Xt + (T − t) + (BT − Bt ))2 ]
+                                                                        h                                                                                                        i
+                                                                    = E x2 + (T − t)2 + (BT − Bt )2 + 2x(T − t) + 2x(BT − Bt ) + 2(T − t)(BT − Bt )
+
+                                                                    = x2 + (T − t)2 + (T − t) + 2x(T − t).
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+F(t,x)&amp;=E_{t,x}[\l (X_t+(T-t)+(B_T-B_t)\r )^2]\\ &amp;=\E \l [x^2+(T-t)^2+(B_T-B_t)^2+2x(T-t)+2x(B_T-B_t)+2(T-t)(B_T-B_t)\r ]\\ &amp;=x^2+(T-t)^2+(T-t)+2x(T-t).
+\end{align*}
+Here we use that \(X_t=x\) under \(\E _{t,x}\) and that \(B_T-B_t\sim B_{T-t}\sim N(0,T-t).\)
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#q:fk_gamma"><b>13.3</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have \(Z_t=F(t,X_t)+\gamma (t)\), where \(dX_t=\alpha (t,x)\,dt+\beta (t,x)\,dB_t\), so
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                          1
+                                                                                                                                                   !
+                                                                              ∂F     ∂γ               ∂F           ∂2F                                                ∂F
+                                                                      dZt =       +     (t) + α(t, x)    + β(t, x)2 2                                  dt + β(t, x)      dBt
+                                                                              ∂t     ∂t               ∂x  2        ∂x                                                 ∂x
+                                                                                    ∂F
+                                                                          = β(t, x)    dBt
+                                                                                    ∂x
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dZ_t&amp;=\l (\frac {\p F}{\p t}+\frac {\p \gamma }{\p t}(t)+\alpha (t,x)\frac {\p F}{\p x}+\frac 12\beta (t,x)^2\frac {\p ^2 F}{\p x^2}\r )\,dt+\beta (t,x)\frac {\p F}{\p
+x}\,dB_t\\ &amp;=\beta (t,x)\frac {\p F}{\p x}\,dB_t
+\end{align*}
+where as usual we have suppressed the \((t,X_t)\) arguments of \(F\) and its partial derivatives. Note that the term in front of the \(dt\) is zero because \(F\) satisfies <span class="textup" >(<a
+href="Exercises-on-Chapter-ref-chap-fk.html#eq:fk_gamma_1">13.8</a>)</span>.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> We use the same strategy as in the proof of Lemma <a
+href="Connections-between-SDEs-PDEs.html#lem:fk_1">13.1.2</a>. Writing out \(dZ_t\) in integral form over time interval \([t,T]\) we obtain
+</p>
+<p>
+\[Z_T=Z_t+\int _t^T\beta (u,x)\frac {\p F}{\p x}\,dB_u.\]
+</p>
+<p>
+Taking expectations \(\E _{t,x}\) gives us
+</p>
+<p>
+\[\E _{x,t}\l [F(T,X_T)+\gamma (T)\r ]=\E _{t,x}[F(t,X_t)+\gamma (t)]\]
+</p>
+<p>
+and noting that \(X_t=x\) under \(\E _{t,x}\), we have
+</p>
+<p>
+\[\E _{x,t}\l [F(T,X_T)\r ]+\gamma (T)=F(t,x)+\gamma (t).\]
+</p>
+<p>
+Using <span class="textup" >(<a href="Exercises-on-Chapter-ref-chap-fk.html#eq:fk_gamma_2">13.9</a>)</span> we have \(F(T,X_T)=\Phi (X_T)\) and we obtain
+</p>
+<p>
+\[\E _{x,T}[\Phi (X_T)]+\gamma (T)-\gamma (t)=F(t,x)\]
+</p>
+<p>
+as required.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#q:non_markov"><b>13.4</b></a> Consider (for example) the stochastic process
+</p>
+<p>
+\[M_t= \begin {cases} B_t &amp; \text { for } t\leq 1,\\ B_t-B_{t-2} &amp; \text { for }t&gt; 1.                                               \end {cases} \]
+</p>
+<p>
+We now consider \(M_t\) at time \(3\). The intuition is that \(\E [M_{3}\|\mc {F}_2]\) can see the value of \(B_1\), but that \(\sigma (M_2)=\sigma (B_2)\) and \(\E [M_{3}\|\sigma (M_2)]\) cannot see
+the value of \(B_1\).
+</p>
+<p>
+Formally: we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+
+                                                                                             E[M3 | F2 ] = E[B3 − B1 | F2 ]
+
+                                                                                                         = B2 − B1                                                       (C.4)       --><a id="eq:non_markov_1"></a><!--
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align}
+\E [M_{3}\|\mc {F}_2] &amp;=\E [B_{3}-B_{1}\|\mc {F}_2]\notag \\ &amp;=B_2-B_1\label {eq:non_markov_1}
+\end{align}
+Here, we use that \(B_t\) is a martingale. However,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{4}\)</span>
+
+
+<!--
+
+
+
+                                                                            E2,M2 [M3 ] = E[B3 − B1 | σ(M2 )]
+
+                                                                                      = E[B3 − B1 | σ(B2 − B0 )]
+
+                                                                                      = E[B3 − B1 | σ(B2 )]
+
+                                                                                      = E[B3 − B2 | σ(B2 )] + E[B2 | σ(B2 )] − E[B1 | σ(B2 )]
+
+                                                                                      = E[B3 − B2 ] + B2 − E[B1 | σ(B2 )]
+
+                                                                                      = 0 + B2 − E[B1 | σ(B2 )]
+
+                                                                                                       2 )]
+                                                                                      = B2 − E[B1 | σ(B(C.5)                                                                         --><a id="eq:non_markov_2"></a><!--
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align}
+\E _{2,M_2}[M_{3}] &amp;=\E [B_{3}-B_{1}\|\sigma (M_2)]\notag \\ &amp;=\E [B_{3}-B_{1}\|\sigma (B_2-B_{0})]\notag \\ &amp;=\E [B_{3}-B_{1}\|\sigma (B_2)]\notag \\ &amp;=\E
+[B_{3}-B_2\|\sigma (B_2)]+\E [B_2\|\sigma (B_2)]-\E [B_{1}\|\sigma (B_2)]\notag \\ &amp;=\E [B_{3}-B_2]+B_2-\E [B_{1}\|\sigma (B_2)]\notag \\ &amp;=0+B_2-\E [B_{1}\|\sigma
+(B_2)]\notag \\ &amp;=B_2-\E [B_{1}\|\sigma (B_2)]\label {eq:non_markov_2}
+\end{align}
+If we can show that <span class="textup" >(<a href="Solutions-exercises.html#eq:non_markov_1">C.4</a>)</span> and <span class="textup" >(<a
+href="Solutions-exercises.html#eq:non_markov_2">C.5</a>)</span> are not equal, then we have that \(M_t\) is not Markov. Their difference is \(D=\eqref {eq:non_markov_1}-\eqref
+{eq:non_markov_2}=\E [B_1\|\sigma (B_2)]-B_1\).
+</p>
+<p>
+We can write \(B_2=(B_2-B_1)+(B_1-B_0)\). By the properties of Brownian motion, \(B_2-B_1\) and \(B_1-B_0\) are independent and identically distributed. Hence, by symmetry, \(\E [B_2-B_1\|\sigma
+(B_2)]=\E [B_1-B_0\|\sigma (B_2)]\) and since
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+
+                                                                            B2 = E[B2 | σ(B2 )] = E[B2 − B1 | σ(B2 )] + E[B1 − B0 | σ(B2 )]
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+B_2&amp;=\E [B_2\|\sigma (B_2)] =\E [B_2-B_1\|\sigma (B_2)]+\E [B_1-B_0\|\sigma (B_2)]
+\end{align*}
+we have that \(\E [B_2-B_1\|\sigma (B_2)]=\frac {B_2}{2}\). Hence
+</p>
+<p>
+\[D=\frac {B_2}{2}-B_1\]
+</p>
+<p>
+which is non-zero.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<h5 id="autosec-232">Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></h5>
+<a id="notes_2-autopage-232"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#q:bs_explicit"><b>14.1</b></a> We have
+</p>
+<p>
+\[\frac {\p f}{\p t}=0,\quad \frac {\p f}{\p s}=c,\quad \frac {\p ^2 f}{\p x^2}=0\]
+</p>
+<p>
+which, put into <span class="textup" >(<a href="The-Black-Scholes-equation.html#eq:bs_eq">14.10</a>)</span>, gives \((0)+rs(c)+\frac 12s^2\sigma ^2(0)-r(cs)=0\). Similarly,
+</p>
+<p>
+\[\frac {\p g}{\p t}=rce^{rt},\quad \frac {\p g}{\p s}=0,\quad \frac {\p ^2 g}{\p x^2}=0\]
+</p>
+<p>
+which, put into <span class="textup" >(<a href="The-Black-Scholes-equation.html#eq:bs_eq">14.10</a>)</span>, gives \((rce^{rt})+rs(0)+\frac 12s^2\sigma ^2(0)-r(ce^{rt})=0\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#q:pricing_simplest"><b>14.2</b></a> We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+
+                                                                                                 e−r(T −t) EQ [Φ(ST ) | Ft ] = e−r(T −t) EQ [K]
+
+                                                                                                                                                = Ke−r(T −t)
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+e^{-r(T-t)}\E ^\Q \l [\Phi (S_T)\|\mc {F}_t\r ] &amp;=e^{-r(T-t)}\E ^\Q \l [K\r ]\\ &amp;=Ke^{-r(T-t)}\\
+\end{align*}
+because \(K\) is deterministic. By Theorem <a href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a> this is the price of the contingent claim \(\Phi (S_T)\) at time \(t\).
+</p>
+<p>
+<i>We can hedge the contingent claim \(K\) simply by holding \(Ke^{-rT}\) cash at time \(0\), and then waiting until time \(T\). While we wait, the cash increases in value according to <span class="textup"
+>(<a href="The-Black-Scholes-model.html#eq:cash_price">14.2</a>)</span> i.e.&nbsp;at continuous rate \(r\). So, this answer is not surprising.</i>
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#q:pricing_log"><b>14.3</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> By Theorem <a href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a> the price of the
+contingent claim \(\Phi (S_T)=\log (S_T)\) at time \(t\) is
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+
+                                                                                          e−r(T −t) EQ [Φ(ST ) | Ft ] = e−r(T −t) EQ [log(ST ) | Ft ] .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+e^{-r(T-t)}\E ^\Q \l [\Phi (S_T)\|\mc {F}_t\r ] &amp;=e^{-r(T-t)}\E ^\Q \l [\log (S_T)\|\mc {F}_t\r ].
+\end{align*}
+Recall that, under \(\Q \), \(S_t\) is a geometric Brownian motion, with \(S_0=0\), drift \(r\) and volatility \(\sigma \). So from <span class="textup" >(<a
+href="The-Black-Scholes-formula.html#eq:gbm_tT">14.20</a>)</span> we have \(S_T=S_te^{(r-\frac 12\sigma ^2)t+\sigma B_t}\). Hence,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+                                                                                                                          h                                                                             i
+                                                                    e−r(T −t) EQ [log(ST ) | Ft ] = e−r(T −t) EQ log(St ) + (r − 21 σ 2 )(T − t) + σ(BT − Bt ) | Ft
+                                                                                                                                                                                                          
+                                                                                                 = e−r(T −t) log(St ) + (r − 12 σ 2 )(T − t) + σ EQ [BT | Ft ] − Bt
+                                                                                                                                                                              
+                                                                                                 = e−r(T −t) log(St ) + (r − 12 σ 2 )(T − t) .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+e^{-r(T-t)}\E ^\Q \l [\log (S_T)\|\mc {F}_t\r ] &amp;=e^{-r(T-t)}\E ^\Q \l [\log (S_t)+(r-\tfrac 12\sigma ^2)(T-t)+\sigma (B_T-B_t)\|\mc {F}_t\r ]\\ &amp;=e^{-r(T-t)}\l (\log
+(S_t)+(r-\tfrac 12\sigma ^2)(T-t)+\sigma \l (\E ^\Q [B_T\|\mc {F}_t]-B_t\r )\r )\\ &amp;=e^{-r(T-t)}\l (\log (S_t)+(r-\tfrac 12\sigma ^2)(T-t)\r ).
+\end{align*}
+Here, we use that \(S_t,B_t\) are \(\mc {F}_t\) measurable, and that \((B_t)\) is a martingale.
+</p>
+<p>
+Putting in \(t=0\) we obtain
+</p>
+<p>
+\[e^{-rT}\l (\log (S_0)+(r-\tfrac 12\sigma ^2)T\r ),\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> The strategy could be summarised as ‘write down \(\Phi (S_T)\), replace \(T\) with \(t=0\) and hope’.
+The problem is that if we buy \(\log s\) units of stock at time \(0\), then from <span class="textup" >(<a href="The-Black-Scholes-formula.html#eq:gbm_tT">14.20</a>)</span> (with \(t=0\)) its value
+at time \(T\) will be \((\log s)\exp ((r-\frac 12\sigma ^2)T+\sigma B_T)\), which is not equal to \(\log S_T=\log s+(r-\frac 12\sigma ^2)T+\sigma B_T\).
+</p>
+<p>
+<i>(In more formal terminology, the problem is that our excitable mathematician has assumed, incorrectly, that the \(\log \) function and the ‘find the price’ function commute with each other.)</i>
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#q:pricing_gbm_beta"><b>14.4</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have (in the risk neutral-world \(\Q \)) that \(dS_t=rS_t\,dt+\sigma S_t\,dB_t\). Hence, by Ito’s
+formula,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+                                                                                                                   1
+                                                                                                                                                                      
+                                                                            dYt = (0) +      rSt (βStβ−1 )        + σ 2 St2 (β(β − 1)Stβ−2 )                               dt + σSt (βStβ−1 )dBt
+                                                                                                                   2
+                                                                                                                
+                                                                                 = rβ + 12 σ 2 β(β − 1) Yt dt + (σβ)Yt dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dY_t&amp;=\l ((0)+rS_t(\beta S_t^{\beta -1})+\frac 12\sigma ^2S_t^2(\beta (\beta -1)S_t^{\beta -2})\r )\,dt+\sigma S_t (\beta S_t^{\beta -1})dB_t\\ &amp;=\l (r\beta +\tfrac
+12\sigma ^2\beta (\beta -1)\r )Y_t\,dt+(\sigma \beta )Y_t\,dB_t.
+\end{align*}
+So \(Y_t\) is a geometric Brownian motion with drift \(r\beta +\frac 12\sigma ^2\beta (\beta -1)\) and volatility \(\sigma \beta \).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Applying <span class="textup" >(<a
+href="The-Black-Scholes-formula.html#eq:gbm_tT">14.20</a>)</span> and replacing the drift and volatility with those from part (a), we have that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+                                                                                                                                                                                            
+                                                                               YT = Yt exp         rβ + 12 σ 2 β(β − 1) − 12 σ 2 β 2 (T − t) + σβ(BT − Bt )
+                                                                                                                                                                        
+                                                                                   = Yt exp        rβ − 21 σ 2 β (T − t) + σβ(BT − Bt ) .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+Y_T &amp;=Y_t\exp \l (\l (r\beta +\tfrac 12\sigma ^2\beta (\beta -1)-\tfrac 12\sigma ^2\beta ^2\r )(T-t)+\sigma \beta (B_T-B_t)\r )\\ &amp;=Y_t\exp \l (\l (r\beta -\tfrac
+12\sigma ^2\beta \r )(T-t)+\sigma \beta (B_T-B_t)\r ).
+\end{align*}
+By Theorem <a href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a>, the arbitrage free price of the contingent claim \(Y_t=\Phi (S_T)\) at time \(t\) is
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+                                                                                                                     h                                                                                  i
+                                                                     e−r(T −t) EQ [YT | Ft ] = e−r(T −t) EQ Stβ exp                            rβ − 12 σ 2 β (T − t) + σβ(BT − Bt ) | Ft
+                                                                                                                              1       2 β)(T −t)
+                                                                                                                                                          h                        i
+                                                                                             = e−r(T −t) Stβ e(rβ− 2 σ                             EQ eσβ(BT −Bt ) | Ft
+                                                                                                                              1       2 β)(T −t)
+                                                                                                                                                          h                    i
+                                                                                             = e−r(T −t) Stβ e(rβ− 2 σ                             EQ eσβ(BT −Bt )
+                                                                                                                              1       2 β)(T −t)      1   2 β 2 (T −t)
+                                                                                             = e−r(T −t) Stβ e(rβ− 2 σ                             e2σ
+                                                                                                                                  1       2 β(T −t)(1−β)
+                                                                                             = Stβ e−r(T −t)(1−β)− 2 σ                                        .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+e^{-r(T-t)}\E ^\Q \l [Y_T\|\mc {F}_t\r ] &amp;=e^{-r(T-t)}\E ^\Q \l [S_t^\beta \exp \l (\l (r\beta -\tfrac 12\sigma ^2\beta \r )(T-t)+\sigma \beta (B_T-B_t)\r )\|\mc {F}_t\r ]\\
+&amp;=e^{-r(T-t)}S_t^\beta e^{(r\beta -\frac 12\sigma ^2\beta )(T-t)}\E ^\Q \l [e^{\sigma \beta (B_T-B_t)}\|\mc {F}_t\r ]\\ &amp;=e^{-r(T-t)}S_t^\beta e^{(r\beta -\frac 12\sigma
+^2\beta )(T-t)}\E ^\Q \l [e^{\sigma \beta (B_T-B_t)}\r ]\\ &amp;=e^{-r(T-t)}S_t^\beta e^{(r\beta -\frac 12\sigma ^2\beta )(T-t)}e^{\frac 12\sigma ^2\beta ^2(T-t)}\\
+&amp;=S_t^\beta e^{-r(T-t)(1-\beta )-\frac 12\sigma ^2\beta (T-t)(1-\beta )}.
+\end{align*}
+Here, we use that \(S_t\) is \(\mc {F}_t\) measurable. We then use <span class="textup" >(<a href="Brownian-motion-definition.html#eq:lognormal_mean">10.2</a>)</span> along with the properties
+of Brownian motion to tell us that \(\sigma \beta (B_T-B_t)\) is independent of \(\mc {F}_t\) with distribution \(N(0,\sigma ^2\beta ^2(T-t))\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#q:pricing_binary"><b>14.5</b></a> From Theorem <a href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a> the price at time \(t\) of
+the binary option is
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+
+                                                                                                                                                                      1{ST ∈[α,β]} | Ft
+                                                                                                                                                                  h                       i
+                                                                                        e−r(T −t) EQ [Φ(ST ) | Ft ] = Ke−r(T −t) EQ
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+e^{-r(T-t)}\E ^\Q \l [\Phi (S_T)\|\mc {F}_t\r ] &amp;=Ke^{-r(T-t)}\E ^\Q \l [\1_{\{S_T\in [\alpha ,\beta ]\}}\|\mc {F}_t\r ]\\
+\end{align*}
+We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+                                                                                                                                      1    2 )(T −t)+σ(B −B )
+                                                                                                        ST = St e(r− 2 σ                                T  t
+
+
+                                                                                                                                      1    2 )(T −t)+σ
+                                                                                                                                                          √
+                                                                                                                 = St e(r− 2 σ                             T −tZ
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+S_T&amp;=S_te^{(r-\frac 12\sigma ^2)(T-t)+\sigma (B_T-B_t)}\\ &amp;=S_t e^{(r-\frac 12\sigma ^2)(T-t)+\sigma \sqrt {T-t} Z}
+\end{align*}
+where \(Z\sim N(0,1)\) is independent of \(\mc {F}_t\). Here we use that \(B_T-B_t\sim N(0,T-t)\sim \sqrt {T-t}N(0,1)\) is independent of \(\mc {F}_t\). Therefore,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+                                                                                                                                                                 
+
+                                                                    1{ST ∈[α,β]} | Ft = EQ 1n
+                                                                h                  i
+                                                           EQ                                              1 2 )(T −t)+σ √T −tZ
+                                                                                                                                                      o F
+                                                                                                                                                         t
+                                                                                                   St e(r− 2 σ                               ∈[α,β]
+                                                                                                                                                                                                   
+                                                                                                log α − r + 1 σ 2 (T − t)     log                                                            r + 12 σ 2 t 
+                                                                                                                                                                                                                   
+                                                                                                                                   β
+                                                                                                                                    St −
+                                                                                       = EQ 1
+                                                                                                     St      2
+                                                                                                         √                 ≤Z≤         √                                                                         Ft 
+                                                                                                       σ T −t                        σ T                                                     −t           
+                                                                                                                                                                                                   
+                                                                                                log α − r + 1 σ 2 (T − t)     log  β
+                                                                                                                                                                                              r + 12 σ 2 t 
+                                                                                                                  
+                                                                                                                                    St −
+                                                                                       =E 1
+                                                                                                     St      2
+                                                                                          Q
+                                                                                                         √                 ≤Z≤         √                                                                     
+                                                                                                       σ T −t                        σ T                                                     −t           
+
+                                                                                       = N (e1 ) − N (e2 )
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E ^\Q \l [\1_{\{S_T\in [\alpha ,\beta ]\}}\|\mc {F}_t\r ] &amp;=\E ^\Q \l [\1_{\l \{S_t e^{(r-\frac 12\sigma ^2)(T-t)+\sigma \sqrt {T-t} Z}\in [\alpha ,\beta ]\r \}}\,\Big
+|\,\mc {F}_t\r ]\\ &amp;=\E ^\Q \l [\1\l \{\frac {\log \l (\frac {\alpha }{S_t}\r )-\l (r+\frac 12\sigma ^2\r )(T-t)}{\sigma \sqrt {T-t}}\leq Z\leq \frac {\log \l (\frac {\beta
+}{S_t}\r )-\l (r+\frac 12\sigma ^2\r )t}{\sigma \sqrt {T-t}}\r \}\,\Bigg |\,\mc {F}_t\r ]\\ &amp;=\E ^\Q \l [\1\l \{\frac {\log \l (\frac {\alpha }{S_t}\r )-\l (r+\frac 12\sigma
+^2\r )(T-t)}{\sigma \sqrt {T-t}}\leq Z\leq \frac {\log \l (\frac {\beta }{S_t}\r )-\l (r+\frac 12\sigma ^2\r )t}{\sigma \sqrt {T-t}}\r \}\r ]\\ &amp;=\mc {N}(e_1)-\mc {N}(e_2)
+\end{align*}
+where
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+                                                                                                                             
+                                                                                                             log         α
+                                                                                                                                  − r + 12 σ 2 (T − t)
+                                                                                                                                                          
+                                                                                                                         St
+                                                                                                     e1 =                           √
+                                                                                                                                   σ T −t
+                                                                                                                             
+                                                                                                             log         β
+                                                                                                                                  − r + 12 σ 2 (T − t)
+                                                                                                                                                          
+                                                                                                                         St
+                                                                                                     e2 =                           √                  .
+                                                                                                                                   σ T −t
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+e_1&amp;=\frac {\log \l (\frac {\alpha }{S_t}\r )-\l (r+\frac 12\sigma ^2\r )(T-t)}{\sigma \sqrt {T-t}}\\ e_2&amp;=\frac {\log \l (\frac {\beta }{S_t}\r )-\l (r+\frac 12\sigma
+^2\r )(T-t)}{\sigma \sqrt {T-t}}.
+\end{align*}
+Hence the price at time \(t\) is given by \(Ke^{r(T-t)}\l [\mc {N}(e_1)-\mc {N}(e_2)\r ].\)
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#q:P_mart_bs"><b>14.6</b></a> If we take \(F_t=e^{\mu t}\) then (in world \(\P \)) we have
+</p>
+<p>
+\[\frac {S_t}{F_t}=\frac {\exp \l (\l (\mu -\tfrac 12\sigma ^2\r )t+\sigma B_t\r )}{\exp \l (\mu t\r )}=\exp \l (\sigma B_t-\frac 12\sigma ^2 t\r ),\]
+</p>
+<p>
+which we showed was a martingale in <a href="Exercises-on-Chapter-ref-chap-bm.html#q:mart_bm"><b>10.6</b></a>.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#q:pricing_linear"><b>14.7</b></a> We have the risk neutral pricing formula \(\Pi _t(\Phi )=e^{-r(T-t)}\E ^\Q _{t,S_t}[\Phi (S_T)]\) for any
+contingent claim \(\Phi \). Hence, using linearity of \(\E ^\Q \),
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+
+                                                                                                             t,St [αΦ1 (ST ) + βΦ2 (ST )]
+                                                                                Πt (αΦ1 + βΦ2 ) = e−r(T −t) EQ
+
+                                                                                                                  t,St [Φ1 (ST )] + βe
+                                                                                                    = αe−r(T −t) EQ                            Et,St [Φ2 (ST )]
+                                                                                                                                       −r(T −t) Q
+
+
+                                                                                                    = αΠt (Φ1 ) + βΠt (Φ2 )
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\Pi _t(\alpha \Phi _1+\beta \Phi _2) &amp;=e^{-r(T-t)}\E ^\Q _{t,S_t}\l [\alpha \Phi _1(S_T)+\beta \Phi _2(S_T)\r ]\\ &amp;=\alpha e^{-r(T-t)}\E ^\Q _{t,S_t}\l [\Phi _1(S_T)\r
+]+\beta e^{-r(T-t)}\E ^\Q _{t,S_t}\l [\Phi _2(S_T)\r ]\\ &amp;=\alpha \Pi _t(\Phi _1)+\beta \Pi _t(\Phi _2)
+\end{align*}
+as required.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#q:excitable"><b>14.8</b></a> In the ‘new’ model we could indeed buy a unit of \(Y_t=S_t^\beta \) and hold onto it for as long as we liked. But in the
+‘old’ model we can only buy (linear multiples of) the stock \(S_t\); we can’t buy a commodity whose price at time \(t\) is \(S_t^\beta \). This means that the hedging strategy suggested within the ‘new’ model
+doesn’t work within the ‘old’ model. Consequently, there is no reason to expect that prices in the two models will be equal. In general they will not be.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<h5 id="autosec-233">Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></h5>
+<a id="notes_2-autopage-233"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:put-call"><b>15.1</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> The functions \(\Phi ^{cash}(S_T)=1\), \(\Phi ^{stock}(S_T)=S_T\), \(\Phi ^{call}(S_T)=\max
+(S_T-K,0)\) and \(\Phi ^{put}(S_T)=\max (K-S_T,0)\) look like:
+</p>
+<div class="center" >
+<p>
+
+
+<a href="put_call_parity_terms.jpg" target="_blank" ><img
+      src="put_call_parity_terms.jpg"
+      style="
+      width:173pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> In terms of functions, the put-call parity relation states that
+</p>
+<p>
+\[\max (K-S_T,0)=\max (S_T-K)+K-S_T.\]
+</p>
+<p>
+To check that this holds we consider two cases.
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+• If \(K\leq S_T\) then put-call parity states that \(0=S_T-K+K-S_T\), which is true.
+</p>
+
+
+</li>
+<li>
+<p>
+• If \(K\geq S_T\) then put-call parity states that \(K-S_T=0+K-S_T\), which is true.
+</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:put_price"><b>15.2</b></a> The put-call parity relation <span class="textup" >(<a
+href="Application-extension-Black-Scholes-model.html#eq:put-call">15.1</a>)</span> says that
+</p>
+<p>
+\[\Phi ^{put}(S_T)=\Phi ^{call}(S_T)+K\Phi ^{cash}(S_T) -\Phi ^{stock}(S_T).\]
+</p>
+<p>
+Hence,
+</p>
+<p>
+\[\Pi ^{put}_t=\Pi ^{call}_t+K\Pi ^{cash}_t-\Pi ^{stock}_t.\]
+</p>
+<p>
+From here, using that \(\Pi ^{cash}_t=e^{-r(T-t)}\) (corresponding to \(\Phi (S_T)=1\)) and \(\Pi ^{stock}_t=S_t\) (corresponding to \(\Phi (S_T)=S_T\)), as well as the Black-Scholes formula <span
+class="textup" >(<a href="The-Black-Scholes-formula.html#eq:bs_formula">14.23</a>)</span>, we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+
+
+<!--
+
+
+
+                                                                                 Πput
+                                                                                  t   = St N [d1 ] − Ke−r(T −t) N [d2 ] + Ke−r(T −t) − St
+
+                                                                                      = St (N [d1 ] − 1) − Ke−r(T −t) (N [d2 ] − 1)
+
+                                                                                      = −St N [−d1 ] + Ke−r(T −t) N [−d2 ].
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\Pi ^{put}_t &amp;=S_t\mc {N}[d_1]-Ke^{-r(T-t)}\mc {N}[d_2]+Ke^{-r(T-t)}-S_t\\ &amp;=S_t(\mc {N}[d_1]-1)-Ke^{-r(T-t)}(\mc {N}[d_2]-1)\\ &amp;=-S_t\mc {N}[-d_1]+Ke^{-r(T-t)}\mc
+{N}[-d_2].
+\end{align*}
+In the last line we use that \(\mc {N}[x]+\mc {N}[-x]=1\), which follows from the fact that the \(N(0,1)\) distribution is symmetric about \(0\) (i.e.&nbsp;\(\P [X\leq x]+\P [X\leq -x]=\P [X\leq x]+\P
+[-X\geq x]=\P [X\leq x]+\P [X\geq x]=1\)). The formula stated in the question follows from setting \(t=0\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:parity_0"><b>15.3</b></a> Write \(\Phi ^{call,K}(S_T)=\max (S_T-K,0)\) for the contingent claim of a European call option, and
+\(\Phi ^{put,K}(S_T)\) for the contingent claim of a European put options, both with strike price \(K\) and exercise date \(T\). Then
+</p>
+<p>
+\[\Phi (S_T)=\Phi ^{call,1}(S_T)+\Phi ^{put,-1}(S_T)\]
+</p>
+<p>
+so we can hedge \(\Phi (S_T)\) by holding a single call option with strike price \(1\) and a single put option with strike price \(-1\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:parity_1"><b>15.4</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> A sketch of \(\Phi (S_T)\) for general \(A\) looks like
+</p>
+<div class="center" >
+<p>
+
+
+<a href="put_AK.jpg" target="_blank" ><img
+      src="put_AK.jpg"
+      style="
+      width:173pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+<p>
+Let \(\Phi ^{put,K}(S_T)=\max (K-S_T,0)\) denote the contingent claim corresponding to a European put option with strike price \(K\) and exercise date \(T\). Then, we claim that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{5}\)</span>
+<!--
+
+
+                                         Φ(ST ) = Φput,K+A (ST ) − Φput,A (ST ).                                      (C.6)                                                   --><a id="eq:put-bull"></a><!--
+
+
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:put-bull} \Phi (S_T)=\Phi ^{put,K+A}(S_T)-\Phi ^{put,A}(S_T).
+\end{equation}
+
+
+</p>
+<p>
+The right-hand side of this equation corresponds to a portfolio of one put option with strike price \(K+A\) and minus one put option with strike price \(A\). We can see that the relation <span class="textup"
+>(<a href="Solutions-exercises.html#eq:put-bull">C.6</a>)</span> holds by using a diagram
+</p>
+<div class="center" >
+<p>
+
+
+<a href="put_AK_2.jpg" target="_blank" ><img
+      src="put_AK_2.jpg"
+      style="
+      width:173pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+<p>
+in which the purple line \(\Phi ^{put,A}(S_T)\) is subtracted from the red line \(\Phi ^{put,K+A}(S_T)\) to obtain the green line \(\Phi (S_T)\). Alternatively, we can check it by considering three cases:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+• If \(S_T\leq A\) then we have \(K=(K+A-S_T)-(A-S_T)\) which is true.
+</p>
+
+
+</li>
+<li>
+<p>
+• If \(A\leq S_T\leq K+A\) then we have \(K+A-S_T=(K+A-S_T)-(0)\) which is true.
+</p>
+
+
+</li>
+<li>
+<p>
+• If \(S_T\geq K+A\) then we have \(0=(0)-(0)\) which is true.
+</p>
+</li>
+</ul>
+<p>
+Therefore, the portfolio of one put option with strike price \(K+A\) and minus one put option with strike price \(A\) is a replicating portfolio for \(\Phi (S_T)\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> We use put-call parity to replicate our portfolio of put options with a portfolio of cash, stock and call
+options. This tells us that \(\Phi ^{put,K}(S_T)=\Phi ^{call,K}(S_T)+K\Phi ^{cash}(S_T)+\Phi ^{stock}(S_T)\). Therefore, replacing each of our put options with the equivalent amounts of cash and
+stock, we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{6}\)</span>
+
+
+<!--
+
+
+
+                                                         Φput,K+A (ST ) − Φput,A (ST ) = Φcall,K+A (ST ) − Φcall,A (ST ) + (K + A − A)Φcash (ST ) − (1 − 1)Φstock (ST )
+
+                                                                                      = Φcall,K+A (ST ) − Φcall,A (ST ) + KΦcash (ST ).
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\Phi ^{put,K+A}(S_T)-\Phi ^{put,A}(S_T) &amp;=\Phi ^{call,K+A}(S_T)-\Phi ^{call,A}(S_T)+(K+A-A)\Phi ^{cash}(S_T)-(1-1)\Phi ^{stock}(S_T)\\ &amp;=\Phi ^{call,K+A}(S_T)-\Phi
+^{call,A}(S_T)+K\Phi ^{cash}(S_T).
+\end{align*}
+Hence, \(\Phi (S_T)\) can be replicated with a portfolio containing one call option with strike price \(K+A\), minus one call option with strike price \(K\), and \(K\) units of cash.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Corollary <a href="The-Black-Scholes-equation.html#cor:repl_uniq">14.3.3</a> refers to
+portfolios consisting only of stocks and cash. It does not apply to portfolios that are also allowed to contain derivatives.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:parity_2"><b>15.5</b></a> We can write
+</p>
+<p>
+\[\Phi ^{bull}(S_T)=A+\max (S_T-A,0)-\max (S_T-B,0).\]
+</p>
+<p>
+It may help to draw a picture, in the style of <a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:parity_1"><b>15.4</b></a>. If we write \(\Phi ^{call,K}(S_T)=\max (S_T-K,0)\) and
+recall that \(\Phi ^{cash}(S_T)=1\) then we have
+</p>
+<p>
+\[\Phi ^{bull}(S_T)=A\Phi ^{cash}(S_T)+\Phi ^{call,A}(S_T)-\Phi ^{call,B}(S_T).\]
+</p>
+<p>
+So, in our (constant) hedging portfolio at time \(0\) we will need \(Ae^{-rT}\) in cash, one call option with strike price \(A\), and minus one call option with strike price \(B\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:greeks"><b>15.6</b></a> The price computed for the contingent claim \(\Phi (S_T)=S_t^\beta \) in <a
+href="Exercises-on-Chapter-ref-chap-bs.html#q:pricing_gbm_beta"><b>14.4</b></a> is
+</p>
+<p>
+\[F(t,S_t)=S_t^\beta \exp \l (-r(T-t)(1-\beta )-\frac 12\sigma ^2\beta (T-t)(1-\beta )\r ).\]
+</p>
+<p>
+(Recall that Theorem <a href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a> also tells us that there is a hedging strategy \(h_t=(x_t,y_t)\) for the contingent claim with value \(F(t,S_t)\).)
+</p>
+<p>
+We have \(F(t,s)=s^\beta \exp \l (-r(T-t)(1-\beta )-\frac 12\sigma ^2\beta (T-t)(1-\beta )\r )\) and we calculate
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{6}\)</span>
+
+
+<!--
+
+
+                                                                        ∂F                                                  1
+                                                                                                                                           
+                                                                 ∆F =      (t, St ) = βStβ−1 exp −r(T − t)(1 − β) − σ 2 β(T − t)(1 − β)
+                                                                        ∂s                                                  2
+                                                                         2
+                                                                        ∂ F                                                        1 2
+                                                                                                                                                     
+                                                                                                   β−2
+                                                                 ΓF =       (t, S t ) = β(β  − 1)S     exp     −r(T  − t)(1 − β) −   σ β(T − t)(1 − β)
+                                                                        ∂s2                       t
+                                                                                                                                   2
+                                                                        ∂F                                                               1
+                                                                                                                                                         
+                                                                 ΘF =      (t, St ) = Stβ (1 − β)(r + 12 βσ 2 ) exp −r(T − t)(1 − β) − σ 2 β(T − t)(1 − β)
+                                                                        ∂t                                                               2
+                                                                        ∂F                                                             1
+                                                                                                                                                       
+                                                                 ρF =      (t, St ) = −Stβ (T − t)(1 − β) exp −r(T − t)(1 − β) − σ 2 β(T − t)(1 − β)
+                                                                        ∂r                                                             2
+                                                                        ∂F                                                                1 2
+                                                                                                                                                          
+                                                                                           β
+                                                                 VF =      (t, St ) = −St σβ(T − t)(1 − β) exp −r(T − t)(1 − β) − σ β(T − t)(1 − β) .
+                                                                        ∂σ                                                                2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\Delta _F&amp;=\frac {\p F}{\p s}(t,S_t)=\beta S_t^{\beta -1}\exp \l (-r(T-t)(1-\beta )-\frac 12\sigma ^2\beta (T-t)(1-\beta )\r )\\ \Gamma _F&amp;=\frac {\p ^2 F}{\p
+s^2}(t,S_t)=\beta (\beta -1) S_t^{\beta -2}\exp \l (-r(T-t)(1-\beta )-\frac 12\sigma ^2\beta (T-t)(1-\beta )\r )\\ \Theta _F&amp;=\frac {\p F}{\p t}(t,S_t)=S_t^\beta (1-\beta
+)(r+\tfrac 12\beta \sigma ^2)\exp \l (-r(T-t)(1-\beta )-\frac 12\sigma ^2\beta (T-t)(1-\beta )\r )\\ \rho _F&amp;=\frac {\p F}{\p r}(t,S_t)=-S_t^\beta (T-t)(1-\beta )\exp \l
+(-r(T-t)(1-\beta )-\frac 12\sigma ^2\beta (T-t)(1-\beta )\r )\\ \mc {V}_F&amp;=\frac {\p F}{\p \sigma }(t,S_t)=-S_t^\beta \sigma \beta (T-t)(1-\beta )\exp \l (-r(T-t)(1-\beta
+)-\frac 12\sigma ^2\beta (T-t)(1-\beta )\r ).
+\end{align*}
+
+
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:delta_gamma_hedge"><b>15.7</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> The underlying stock \(S_t\) has \(\Delta _S=1\) and \(\Gamma _S=0\). If we add \(-2\) stock into
+our original portfolio with value \(F\), then its new value is \(V(t,S_t)=F(t,S_t)-2S_t\), which satisfies \(\Delta _V=\Delta _F-2=0\).
+</p>
+<p>
+The cost of adding \(-2\) units of stock into the portfolio is \(-2S_t\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> After including an amount \(w_t\) of stock and an amount \(d_t\) of \(D\), we have
+</p>
+<p>
+\[V(t,S_t)=F(t,S_t)+w_tS_t+d_tD(t,S_t).\]
+</p>
+<p>
+Hence, we require that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{6}\)</span>
+
+
+<!--
+
+
+
+                                                                                            0 = ∆F + wt + dt ∆D = 2 + wt + dt ,
+
+                                                                                            0 = ΓF + dt ΓD = 3 + 2dt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+0&amp;=\Delta _F+w_t+d_t\Delta _D=2+w_t+d_t,\\ 0&amp;=\Gamma _F+d_t\Gamma _D=3+2d_t.
+\end{align*}
+The solution is \(d_t=\frac {-3}{2}\) and \(w_t=\frac {-1}{2}\).
+</p>
+<p>
+The cost of the extra stock and units of \(D\) that we have had to include is \(-\frac 32D(t,S_t)-\frac 12S_t\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:gamma_stock"><b>15.8</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> It doesn’t work because adding in an amount \(z_t\) of \(Z\) in the second step will (typically
+i.e.&nbsp;if \(\Delta _Z\neq 0\)) destroy the delta neutrality that we gained from the first step.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Since \(Z(t,S_t)=S_t\) we have
+</p>
+<p>
+\[V(t,S_t)=F(t,S_t)+w_tW(t,S_t)+z_tS_t,\]
+</p>
+<p>
+so we require that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{6}\)</span>
+
+
+<!--
+
+
+                                                                                                    ∂V
+                                                                                                 0=     = ∆F + wt ∆W + zt
+                                                                                                    ∂s
+                                                                                                    ∂2V
+                                                                                                 0=      = ΓF + wt ΓW .
+                                                                                                    ∂s2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+0&amp;=\frac {\p V}{\p s}=\Delta _F+w_t\Delta _{W}+z_t\\ 0&amp;=\frac {\p ^2 V}{\p s^2}=\Gamma _F+w_t\Gamma _{W}.
+\end{align*}
+The solution is easily seen to be
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{6}\)</span>
+
+
+<!--
+
+
+                                                                                                            ΓF
+                                                                                                      wt = −
+                                                                                                            ΓW
+                                                                                                           ∆W ΓF
+                                                                                                      zt =       − ∆F
+                                                                                                            ΓW
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+w_t&amp;=-\frac {\Gamma _{F}}{\Gamma _{W}}\\ z_t&amp;=\frac {\Delta _{W}\Gamma _F}{\Gamma _{W}}-\Delta _F
+\end{align*}
+
+
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> This idea works. As we can see from part (b), if we use stock as our financial derivative
+\(Z(t,S_t)=S_t\), then \(\Gamma _Z=0\). Hence, adding in a suitable amount of stock in the second step can achieve delta neutrality without destroying the gamma neutrality obtained in the first step.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#q:greeks_call"><b>15.9</b></a> Omitted (good luck).
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<h5 id="autosec-237">Chapter <a href="Financial-networks.html#chap:fin_net">17</a></h5>
+<a id="notes_2-autopage-237"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#q:DG"><b>17.1</b></a> The degrees of the nodes, in alphabetical order, are \((1,1), (0,2), (2,2), (2,0), (1,1), (1,2), (1,0).\) This gives a
+degree distribution
+</p>
+<p>
+\[ \P [D_G=(a,b)]= \begin {cases} \frac 17 &amp; \text { for }(a,b)\in \{(0,2), (2,2), (2,0), (1,2), (1,0)\},\\ \frac 27 &amp; \text { for }(a,b)=(1,1).                                     \end {cases} \]
+</p>
+<p>
+Sampling a uniformly random and moving along it means that the chance of ending up at a node \(A\) is proportional to \(\indeg (A)\). Since the graph has \(8\) edges, we obtain
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{6}\)</span>
+
+
+<!--
+
+                                                                                                   
+                                                                                                     8 +               for n = 0 (nodes D and G)
+                                                                                                   
+                                                                                                    1     2
+                                                                                                   
+                                                                                                   
+                                                                                                          8
+                                                                                                   
+                                                                                   P[O = n] =
+                                                                                                     8 + 8             for n = 1 (nodes A and E)
+                                                                                                     1   1
+                                                                                                   
+                                                                                                   
+                                                                                                   
+                                                                                                   
+                                                                                                    0+   2
+                                                                                                               +   1
+                                                                                                                       for n = 2 (nodes B,C and F)
+                                                                                                   
+                                                                                                   
+                                                                                                           8       8
+                                                                                                   
+                                                                                                   3
+                                                                                                   
+                                                                                                   
+                                                                                                    8     for n = 0
+                                                                                                   
+                                                                                                   
+                                                                                               =     1
+                                                                                                           for n = 1
+                                                                                                   
+                                                                                                    4
+                                                                                                   
+                                                                                                   
+                                                                                                   3      for n = 2
+                                                                                                   
+                                                                                                     8
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\P [O=n] &amp;= \begin{cases} \frac 18+\frac 28 &amp; \text { for }n=0\text { (nodes D and G)}\\ \frac 18+\frac 18 &amp; \text { for }n=1\text { (nodes A and E)}\\ 0+\frac
+28+\frac 18 &amp; \text { for }n=2\text { (nodes B,C and F)} \end {cases}\\ &amp;= \begin{cases} \frac 38 &amp; \text { for }n=0\\ \frac 14 &amp; \text { for }n=1\\ \frac 38
+&amp; \text { for }n=2 \end {cases}
+\end{align*}
+
+
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#q:contagion_tree"><b>17.2</b></a> Node \(Y\) can fail only if the cascade of defaults includes \(X\to D \to Y\). Given that \(X\) fails, the
+probability that \(X\) fails is \(\eta _3=\frac 13\), because \(D\) has \(3\) in-edges. Similarly, given that \(D\) fails, the probability that \(Y\) also fails is \(\frac 12\). Hence, the probability that \(Y\) fails,
+given that \(X\) fails, is \(\frac 16\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#q:contagion_circle"><b>17.3</b></a> Node \(Y\) can fail if the cascade of defaults includes \(X\to B\to D \to Y\) or \(X\to B \to C\to D\to
+Y\). Given that \(X\) fails, node \(B\) is certain to fail as well, since \(B\) has only one in-edge. Given that \(B\) fails, \(C\) is certain to fail for the same reason. Therefore, the edges \((B,D)\) and \((C,D)\) are
+both certain to default. For each of these edges, independently, there is a chance \(\frac 13\) that their own default causes \(D\) to fail. The probability that \(D\) fails is therefore
+</p>
+<p>
+\[\frac 13+\l (1-\frac 13\r )\times \frac 13=\frac 59.\]
+</p>
+<p>
+Here, we condition first on if the link \(BD\) causes \(D\) to fail (which it does with probability \(\frac 13\)) and then, if it doesn’t (which has probability \(1-\frac 13\)) we ask if the link \(BC\), which fails
+automatically and causes failure of \(CD\), causes \(D\) to fail.
+</p>
+<p>
+Given that \(D\) fails, \(Y\) is certain to fail. Hence, the probability that \(Y\) fails, given that \(X\) fails, is \(\frac 59\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#q:contagion_binary_tree"><b>17.4</b></a> For any node of the graph (except for the root node), if its single incoming loan defaults, then its own
+probability of default if \(\alpha \), independently of all else. Hence, each newly defaulted loan leads to two further defaulted loans with probability \(\alpha \), and leads to no further defaulted loans with
+probability \(1-\alpha \). Hence, the defaulted loans form a Galton-Watson process \((Z_n)\) with off-spring distribution \(G\), given by \(\P [G=2]=\alpha \) and \(\P [G=0]=1-\alpha \), with initial state
+\(Z_0=2\) (representing the two loans which initially default when \(V_0\) defaults).
+</p>
+<p>
+The total number of defaulted edges is given by
+</p>
+<p>
+\[S=\sum \limits _{n=0}^\infty Z_n.\]
+</p>
+<p>
+Combining Lemmas <a href="Long-term-behaviour-stochastic-processes.html#lem:gw_subcrit">7.4.7</a>, <a href="Long-term-behaviour-stochastic-processes.html#lem:gw_crit">7.4.6</a> and
+<a href="Long-term-behaviour-stochastic-processes.html#lem:gw_supercrit">7.4.8</a>, we know that either:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+• If \(\E [G]&gt;1\) then there is positive probability that \(Z_n\to \infty \) as \(n\to \infty \); in this case for all large enough \(n\) we have \(Z_n\geq 1\), and hence \(S=\infty \).
+</p>
+
+
+</li>
+<li>
+<p>
+• If \(\E [G]\leq 1\) then, almost surely, for all large enough \(n\) we have \(Z_n=0\), which means that \(S&lt;\infty \).
+</p>
+</li>
+</ul>
+<p>
+We have \(\E [G]=2\alpha \). It is clear that the number of defaulted banks is infinite if and only if the number of defaulted loans in infinite, which has positive probability if \(\E [G]&gt;1\). So, we conclude
+that there is positive probability of a catastrophic default if and only if \(\alpha &gt;\frac 12\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#q:contagion_tangled"><b>17.5</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> The probability that both \(B\) and \(C\) fail is \(\frac 12\frac 12=\frac 14\). Given this event, the
+probability that both \(D\) and \(E\) fail is \(\frac 12(1-\frac 34\frac 34\frac 34)=\frac {37}{128}\); here the first term \(\frac 12\) is the probability of \(D\) failing (via its link to \(B\)) and the
+second term is one minus the probability of \(E\) not failing despite all its inbound loans defaulting. Given that \(D\) and \(E\) both fail, the probability that \(F\) fails is \(1-\frac 13\frac 13=\frac 89\).
+</p>
+<p>
+Hence, the probability that every node fails is
+</p>
+<p>
+\[\frac 14\frac {37}{128}\frac 89=\frac {37}{576}.\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Our strategy comes in three stages: first work out the probabilities of all the possible outcomes relating to
+\(B\) and \(C\); secondly, do the same for \(D\) and \(E\); finally, do the same for \(F\). Each stage relies on the information obtained in the previous stage.
+</p>
+<p>
+Stage 1: The probability that \(B\) fails and \(C\) does not is \(\frac 12\frac 12=\frac 14\). This is also the probability that \(C\) fails and \(B\) does not. The probability that both \(B\) and \(C\) fail is
+also \(\frac 14\).
+</p>
+<p>
+Stage 2: Hence, the probability that \(E\) fails and \(D\) does not is
+</p>
+<p>
+\[\frac 14\l (\frac 14\frac 12\r )+\frac 14\l (\frac 14\r )+\frac 14\l (\frac 12\r )\l (\frac 14+\frac 34\frac 14\r )=\frac {19}{128}\]
+</p>
+<p>
+The three terms in the above correspond respectively to the three cases considered in the first paragraph. Similarly, the probability that \(D\) fails and \(E\) does not is
+</p>
+<p>
+\[\frac 14\l (\frac 12\frac 34\r )+\frac 14\l (0\r )+\frac 14\l (\frac 12\r )\l (\frac 34\frac 34\frac 34\r )=\frac {75}{512}\]
+</p>
+<p>
+and the probability that both \(D\) and \(E\) fail is
+</p>
+<p>
+\[\frac 14\l (\frac 14+\frac 34\frac 12\frac 14\r )+\frac 14\l (0\r )+\frac 14\l (\frac 12\r )\l (1-\frac 34\frac 34\frac 34\r )=\frac {81}{512}\]
+</p>
+<p>
+.
+</p>
+<p>
+Stage 3: Finally, considering these three cases in turn, the probability that \(F\) fails is
+</p>
+<p>
+\[\frac {19}{128}\l (\frac 13\r )+\frac {75}{512}\l (\frac 13\r )+\frac {81}{512}\l (1-\frac 13\frac 13\r )=\frac {367}{1536}.\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

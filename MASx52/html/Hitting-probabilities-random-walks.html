@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MASx52 — Hitting probabilities of random walks </title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes_1-autopage-254"></a>
+<nav class="topnavigation" ><a href="notes_1.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 23, 2020
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+(part one)</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes_1.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Expectation-Arbitrage.html#autosec-13" class="tocchapter" >
+<span class="sectionnumber" >1</span>&#x2003;Expectation and Arbitrage</a>
+</p>
+
+
+
+<p>
+<a href="Expectation-Arbitrage.html#autosec-14" class="tocsection" >
+<span class="sectionnumber" >1.1</span>&#x2003;Betting on coin tosses</a>
+</p>
+
+
+
+<p>
+<a href="The-one-period-market.html#autosec-17" class="tocsection" >
+<span class="sectionnumber" >1.2</span>&#x2003;The one-period market</a>
+</p>
+
+
+
+<p>
+<a href="Arbitrage.html#autosec-22" class="tocsection" >
+<span class="sectionnumber" >1.3</span>&#x2003;Arbitrage</a>
+</p>
+
+
+
+<p>
+<a href="Modelling-discussion.html#autosec-32" class="tocsection" >
+<span class="sectionnumber" >1.4</span>&#x2003;Modelling discussion</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-34" class="tocsection" >
+<span class="sectionnumber" >1.5</span>&#x2003;Exercises on Chapter&nbsp;<a href="Expectation-Arbitrage.html#chap:pricing">1</a></a>
+</p>
+
+
+
+<p>
+<a href="Probability-spaces-random-variables.html#autosec-38" class="tocchapter" >
+<span class="sectionnumber" >2</span>&#x2003;Probability spaces and random variables</a>
+</p>
+
+
+
+<p>
+<a href="Probability-spaces-random-variables.html#autosec-39" class="tocsection" >
+<span class="sectionnumber" >2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
+</p>
+
+
+
+<p>
+<a href="Random-variables.html#autosec-49" class="tocsection" >
+<span class="sectionnumber" >2.2</span>&#x2003;Random variables</a>
+</p>
+
+
+
+<p>
+<a href="Infinite.html#autosec-63" class="tocsection" >
+<span class="sectionnumber" >2.3</span>&#x2003;Infinite \(\Omega \)</a>
+</p>
+
+
+
+<p>
+<a href="Expectation.html#autosec-69" class="tocsection" >
+<span class="sectionnumber" >2.4</span>&#x2003;Expectation</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-prob_meas.html#autosec-77" class="tocsection" >
+<span class="sectionnumber" >2.5</span>&#x2003;Exercises on Chapter <a href="Probability-spaces-random-variables.html#chap:prob_meas">2</a></a>
+</p>
+
+
+
+<p>
+<a href="Conditional-expectation-martingales.html#autosec-82" class="tocchapter" >
+<span class="sectionnumber" >3</span>&#x2003;Conditional expectation and martingales</a>
+</p>
+
+
+
+<p>
+<a href="Conditional-expectation-martingales.html#autosec-83" class="tocsection" >
+<span class="sectionnumber" >3.1</span>&#x2003;Conditional expectation</a>
+</p>
+
+
+
+<p>
+<a href="Properties-conditional-expectation.html#autosec-89" class="tocsection" >
+<span class="sectionnumber" >3.2</span>&#x2003;Properties of conditional expectation</a>
+</p>
+
+
+
+<p>
+<a href="Martingales.html#autosec-95" class="tocsection" >
+<span class="sectionnumber" >3.3</span>&#x2003;Martingales</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-cond_exp.html#autosec-106" class="tocsection" >
+<span class="sectionnumber" >3.4</span>&#x2003;Exercises on Chapter <a href="Conditional-expectation-martingales.html#chap:cond_exp">3</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes.html#autosec-110" class="tocchapter" >
+<span class="sectionnumber" >4</span>&#x2003;Stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes.html#autosec-112" class="tocsection" >
+<span class="sectionnumber" >4.1</span>&#x2003;Random walks</a>
+</p>
+
+
+
+<p>
+<a href="Urn-processes.html#autosec-118" class="tocsection" >
+<span class="sectionnumber" >4.2</span>&#x2003;Urn processes</a>
+</p>
+
+
+
+<p>
+<a href="A-branching-process.html#autosec-123" class="tocsection" >
+<span class="sectionnumber" >4.3</span>&#x2003;A branching process</a>
+</p>
+
+
+
+<p>
+<a href="Other-stochastic-processes.html#autosec-127" class="tocsection" >
+<span class="sectionnumber" >4.4</span>&#x2003;Other stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs.html#autosec-130" class="tocsection" >
+<span class="sectionnumber" >4.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes.html#chap:stoch_procs">4</a></a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model.html#autosec-134" class="tocchapter" >
+<span class="sectionnumber" >5</span>&#x2003;The binomial model</a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model.html#autosec-135" class="tocsection" >
+<span class="sectionnumber" >5.1</span>&#x2003;Arbitrage in the one-period model</a>
+</p>
+
+
+
+<p>
+<a href="Hedging-in-one-period-model.html#autosec-143" class="tocsection" >
+<span class="sectionnumber" >5.2</span>&#x2003;Hedging in the one-period model</a>
+</p>
+
+
+
+<p>
+<a href="Types-financial-derivative.html#autosec-154" class="tocsection" >
+<span class="sectionnumber" >5.3</span>&#x2003;Types of financial derivative</a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model-definition.html#autosec-156" class="tocsection" >
+<span class="sectionnumber" >5.4</span>&#x2003;The binomial model (definition)</a>
+</p>
+
+
+
+<p>
+<a href="Portfolios-arbitrage-martingales.html#autosec-160" class="tocsection" >
+<span class="sectionnumber" >5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
+</p>
+
+
+
+<p>
+<a href="Hedging.html#autosec-169" class="tocsection" >
+<span class="sectionnumber" >5.6</span>&#x2003;Hedging</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bin_model.html#autosec-178" class="tocsection" >
+<span class="sectionnumber" >5.7</span>&#x2003;Exercises on Chapter <a href="The-binomial-model.html#chap:bin_model">5</a></a>
+</p>
+
+
+
+<p>
+<a href="Convergence-random-variables.html#autosec-183" class="tocchapter" >
+<span class="sectionnumber" >6</span>&#x2003;Convergence of random variables</a>
+</p>
+
+
+
+<p>
+<a href="Convergence-random-variables.html#autosec-184" class="tocsection" >
+<span class="sectionnumber" >6.1</span>&#x2003;Modes of convergence</a>
+</p>
+
+
+
+<p>
+<a href="The-monotone-convergence-theorem.html#autosec-190" class="tocsection" >
+<span class="sectionnumber" >6.2</span>&#x2003;The monotone convergence theorem</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-195" class="tocsection" >
+<span class="sectionnumber" >6.3</span>&#x2003;Exercises on Chapter <a href="Convergence-random-variables.html#chap:rv_conv">6</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes-martingale-theory.html#autosec-200" class="tocchapter" >
+<span class="sectionnumber" >7</span>&#x2003;Stochastic processes and martingale theory</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes-martingale-theory.html#autosec-201" class="tocsection" >
+<span class="sectionnumber" >7.1</span>&#x2003;The martingale transform</a>
+</p>
+
+
+
+<p>
+<a href="Roulette.html#autosec-204" class="tocsection" >
+<span class="sectionnumber" >7.2</span>&#x2003;Roulette</a>
+</p>
+
+
+
+<p>
+<a href="The-martingale-convergence-theorem.html#autosec-210" class="tocsection" >
+<span class="sectionnumber" >7.3</span>&#x2003;The martingale convergence theorem</a>
+</p>
+
+
+
+<p>
+<a href="Long-term-behaviour-stochastic-processes.html#autosec-218" class="tocsection" >
+<span class="sectionnumber" >7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-237" class="tocsection" >
+<span class="sectionnumber" >7.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></a>
+</p>
+
+
+
+<p>
+<a href="Further-theory-stochastic-processes.html#autosec-242" class="tocchapter" >
+<span class="sectionnumber" >8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Further-theory-stochastic-processes.html#autosec-243" class="tocsection" >
+<span class="sectionnumber" >8.1</span>&#x2003;The dominated convergence theorem (\(\Delta \))</a>
+</p>
+
+
+
+<p>
+<a href="The-optional-stopping-theorem.html#autosec-248" class="tocsection" >
+<span class="sectionnumber" >8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Hitting-probabilities-random-walks.html#autosec-255" class="tocsection" >
+<span class="sectionnumber" >8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-262" class="tocsection" >
+<span class="sectionnumber" >8.4</span>&#x2003;Exercises on Chapter <a href="Further-theory-stochastic-processes.html#chap:stoch_procs_2">8</a> \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-266" class="tocchapter" >
+<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+<p>
+<a href="Formula-Sheet-part-one.html#autosec-283" class="tocchapter" >
+<span class="sectionnumber" >B</span>&#x2003;Formula Sheet (part one)</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Stochastic Processes and Financial Mathematics<br />
+(part one)</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \ra {\Rightarrow }\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \wt {\widetilde }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \p {\partial }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \|{\,|\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \F {\mc {F}}\)
+
+\(\def \G {\mc {G}}\)
+
+\(\def \H {\mc {H}}\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+</div>
+
+<p>
+<h4 id="autosec-255"><span class="sectionnumber" >8.3&#x2003;</span>Hitting probabilities of random walks \((\Delta )\)</h4>
+<a id="notes_1-autopage-255"></a>
+<a id="notes_1-autofile-38"></a> <a id="sec:rw_hit"></a>
+
+<p>
+We can now use the optional stopping theorem to tell us about hitting probabilities and expected hitting times of various stochastic processes. In this section we focus on random walks. Some further examples with
+urn processes can be found in the exercises.
+</p>
+<h5 id="autosec-256">Asymmetric random walk \((\Delta )\)</h5>
+<a id="notes_1-autopage-256"></a>
+
+
+
+<a id="sec:asrw_hit"></a>
+
+<p>
+We recall the asymmetric random walk from Section <a href="Stochastic-processes.html#sec:asrw">4.1</a>. Let \((X_i)_{i=1}^\infty \) be a sequence of i.i.d.&nbsp;random variables. Let \(p+q=1\) with
+\(p,q\in [0,1]\), \(p\neq q\) and suppose that
+</p>
+
+<p>
+\[\P [X_i=1]=p,\hspace {1pc}\P [X_i=-1]=q.\]
+</p>
+
+<p>
+The asymmetric random walk is the stochastic process
+</p>
+
+<p>
+\[S_n=\sum \limits _{i=1}^n X_i.\]
+</p>
+
+<p>
+Set \(\mc {F}_n=\sigma (X_1,\ldots ,X_n)\) and note that \((\mc {F}_n)\) is the natural filtration of \(S_n\). Recall that we showed in Section <a href="Stochastic-processes.html#sec:asrw">4.1</a>
+that the stochastic process \(S_n-n(p-q)\) was a martingale.
+</p>
+
+<p>
+There is another martingale associated to the asymmetric random walk. Define
+</p>
+
+<p>
+\[M_n = (q/p)^{S_n}.\]
+</p>
+
+<p>
+We will now show that \(M_n\) is a martingale.
+</p>
+
+<p>
+Since \(X_i\in m\mc {F}_n\) for all \(i\leq n\), by Proposition <a href="Random-variables.html#itsallmeas">2.2.6</a> we have both \(S_N\in m\mc {F}_n\) and \(M_n\in m\mc {F}_n\). We have
+\(|X_i|\leq 1\) so \(|S_n|\leq n\) and \(|M_n|\leq \max \{(q/p)^n, (q/p)^{-n}\}\), which implies that \(S_n\in L^1\) for all \(n\). Moreover,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{8.}{1}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                       E[Mn+1 |Fn ] = (q/p)Sn E[(q/p)Xn+1 |Fn ]
+
+                                                                                                    = (q/p)Sn E[(q/p)Xn+1 ]
+
+                                                                                                    = (q/p)Sn = Mn .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\E [M_{n+1}|\mc {F}_n]&amp;=(q/p)^{S_n}\E [(q/p)^{X_{n+1}}|\mc {F}_n]\\ &amp;=(q/p)^{S_n}\E [(q/p)^{X_{n+1}}]\\ &amp;=(q/p)^{S_n}=M_n.
+\end{align*}
+Here we use the taking out what is known rule, followed by the fact that \(X_{n+1}\) is independent of \(\mc {F}_{n}\) and the relationship between conditional expectation and independence. To deduce the final
+step we use that \(\E [(q/p)^{X_{n+1}}]=p(q/p)^1+q(q/p)^{-1}=p+q=1\).
+</p>
+
+<p>
+Our next plan is to use the optional stopping theorem, applied to the martingale \(M_n\), to obtain information about the hitting times of the asymmetric random walk. Let \(T_a=\inf \{n:   S_n=a\}\) and
+\(T=T_a \wedge T_b\) for integer \(a&lt;0&lt;b\). We aim to calculate \(\P [T=T_a]\) and \(\P [T=T_b]\). We can show that \(T_a\) is a stopping time by noting that
+</p>
+
+<p>
+\[\{T_a\leq n\}=\bigcup _{i=0}^n \{S_i\leq a\}.\]
+</p>
+
+<p>
+Similarly, \(T_b\) is a stopping time and it follows from Lemma <a href="The-optional-stopping-theorem.html#minstoptimes">8.2.3</a> that \(T\) is also a stopping time.
+</p>
+
+<p>
+We now look to apply the optional stopping theorem, using the (b) conditions. For this, we’ll need the following lemma.
+</p>
+<div class="theorembodylemma" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-188"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Lemma 8.3.1</span> <a id="autoid-189" ></a ><a id="lem:E_T_biased"></a> It holds that \(\E [T]&lt;\infty \).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(m=b-a\). Divide up the random variables \((X_n)\) into sets \(A_1,A_2,\ldots \)
+as follows:
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{8.}{1}\)</span>
+
+<!--
+
+
+                                                                          A1                          A2                            A3                      ...
+                                                                z         }|          { z             }|            { z             }|             { z      }|    {
+                                                                X1 , X2 , X3 , . . . , Xm , Xm+1 , Xm+2 , . . . , X2m , X2m+1 , X2m+2 , . . . , X3m , X3m+1 , . . . .                                    (8.2)
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\overbrace {X_1,X_2,X_3,\ldots ,X_m}^{A_1},\,\overbrace {X_{m+1},X_{m+2},\ldots ,X_{2m}}^{A_2},\,\overbrace {X_{2m+1},X_{2m+2},\ldots ,X_{3m}}^{A_3},\,\overbrace {X_{3m+1},\ldots
+}^{\ldots }.
+\end{equation}
+
+
+</p>
+
+<p>
+So as each \(A_k\) contains precisely \(m\) of the \(X_i\)s.
+</p>
+
+<p>
+Let \(E_k=\{\text {for all }X\in A_k,\,X=1\}\) be the event that all random variables in \(A_k\) are equal to one. Note that if the event \(E_k\) occurs then our random walk moves up by \(m\) steps, during
+time \((k-1)m,\ldots ,km\).
+</p>
+
+<p>
+If \(T\) has not happened before time \((k-1)m\) then \(a&lt;S_{(k-1)m}&lt;b\). Then, if the event \(E_k\) then occurs, we will have \(S_{km}\geq a\) and hence \(T\leq km\). This is best illustrated with a
+picture:
+</p>
+<div class="center" >
+
+<p>
+
+
+<a href="step_up.jpg" target="_blank" ><img
+      src="step_up.jpg"
+      style="
+      width:217pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+
+<p>
+We can think of the sequence of events \(E_1,E_2,\ldots \) as one chance after another that our random walker has to exit \([a,b]\).
+</p>
+
+<p>
+By independence, \(\P [E_k]=p^m\). Hence, the random variable
+</p>
+
+<p>
+\[K=\inf \{k\in \N \-E_k\text { occurs}\}\]
+</p>
+
+<p>
+is a geometric random variable with success parameter \(p^m\). This means that \(K&lt;\infty \) almost surely and that \(\E [K]=p^{-m}&lt;\infty \). By definition of \(K\), the event \(E_K\) occurs so
+\(T\leq Km\) and by monotonicity of \(\E \) we have \(\E [T]\leq m\E [K]&lt;\infty \). &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+From above, we have that \(M\) is a martingale. Hence by Lemma <a href="The-optional-stopping-theorem.html#stoppedmart">8.2.4</a>, \(M^T\) is also a martingale. By definition of \(T\),
+</p>
+
+<p>
+\[(q/p)^a\leq M^T_n\leq (q/p)^b\]
+</p>
+
+<p>
+for all \(n\), hence \(M^T\) is a bounded martingale. Lemma <a href="Hitting-probabilities-random-walks.html#lem:E_T_biased">8.3.1</a> implies that \(\P [T&lt;\infty ]=1\), so we have that
+condition (b) of the optional stopping theorem holds for the martingale \(M^T\) and the stopping time \(T\). Therefore,
+</p>
+
+<p>
+\[\E [M^T_T]=\E [M^T_0]\]
+</p>
+
+<p>
+but \(M^T_T=M_{T\wedge T}=M_T\) and \(M^T_0=M_{0\wedge T}=M_0=1\). So we have
+</p>
+
+<p>
+\[\E [M_T]=1.\]
+</p>
+
+<p>
+Our next aim is to calculate the probabilities \(\P [T=T_a]\) and \(\P [T=T_b]\). That is, we want to know which of the two boundaries \(a\) and \(b\) we actually hit at time \(T\) (for example,
+\(\{T=T_a\}=\{S_T=a\}\) is the event that we hit \(a\) at time \(T\)).
+</p>
+
+<p>
+Since \(\P [T&lt;\infty ]=1\), we must hit one or other boundary, so we have that
+</p>
+
+<p>
+\[\P [T=T_a]+\P [T=T_b]=1.\]
+</p>
+
+<p>
+By partitioning the expectation \(\E [M_T]\) on whether or not \(\{T=T_a\}\), we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{8.}{2}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                 1 = E[MT ]
+
+                                                                                   = E[MT 1{T = Ta }] + E[MT 1{T = Tb }]
+                                                                                         a                    "                       #
+                                                                                                                      b
+                                                                                          q                           q
+                                                                                                          
+                                                                                   =E           1{T = Ta } + E                1{T = Tb }
+                                                                                          p                           p
+                                                                                                 a                   b
+                                                                                                q                         q
+                                                                                   = P[T = Ta ]        + P[T = Tb ]            .
+                                                                                                p                         p
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+1&amp;=\E [M_T]\\ &amp;= \E [M_T\1\{T=T_a\}]+\E [M_T\1\{T=T_b\}]\\ &amp;= \E \l [\l (\frac {q}{p}\r )^a\1\{T=T_a\}\r ]+\E \l [\l (\frac {q}{p}\r )^b\1\{T=T_b\}\r ]\\ &amp;= \P
+[T=T_a] \l (\frac {q}{p}\r )^a + \P [T=T_b] \l (\frac {q}{p}\r )^b.
+\end{align*}
+Solving these two linear equations (recall that \(p\neq q\)) gives that
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{8.}{2}\)</span>
+
+<!--
+
+
+                                                            (q/p)b − 1
+                                           P[T = Ta ] =                   .                                       (8.3)                                             --><a id="eq:asym_rw_stopped"></a><!--
+                                                          (q/p)b − (q/p)a
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:asym_rw_stopped} \P [T=T_a]=\frac {(q/p)^b-1}{(q/p)^b-(q/p)^a}.
+\end{equation}
+
+
+</p>
+
+<p>
+and therefore also
+</p>
+
+<p>
+\[\P [T_b=T]=1-\P [T=T_a]=\frac {1-(q/p)^a}{(q/p)^b-(q/p)^a}.\]
+</p>
+<h5 id="autosec-259">Symmetric random walk \((\Delta )\)</h5>
+<a id="notes_1-autopage-259"></a>
+
+
+
+<a id="sec:ssrw_hit"></a>
+
+<p>
+We now recall the symmetric random walk from Section <a href="Stochastic-processes.html#sec:ssrw">4.1</a>. Our plan is much the same; we aim to use martingales and optional stopping to investigate the
+hitting times of the symmetric random walk. This case is harder than the asymmetric one.
+</p>
+
+<p>
+Let \((X_i)_{i=1}^\infty \) be a sequence of i.i.d.&nbsp;random variables where
+</p>
+
+<p>
+\[\P [X_i=1]=\P [X_i=-1]=\frac {1}{2}.\]
+</p>
+
+<p>
+The symmetric random walk is the stochastic process
+</p>
+
+<p>
+\[S_n=\sum \limits _{i=1}^n X_i.\]
+</p>
+
+<p>
+Set \(\mc {F}_n=\sigma (X_1,\ldots ,X_n)\) and note that \((\mc {F}_n)\) is a filtration. We have already seen that \(S_n\) is a martingale.
+</p>
+
+<p>
+Like the asymmetric case, there is another martingale associated to \(S_n\). In fact, there is a whole family of them. Let \(\theta \in \R \) and define
+</p>
+
+<p>
+\[ M^{(\theta )}_n = \frac {e^{\theta S_n}}{(\cosh \theta )^n}.\]
+</p>
+
+<p>
+Note that \(M^{(\theta )}_n = \prod _{i=1}^n (e^{\theta X_i}/\cosh \theta )\). Since \(X_i\in m\mc {F}_n\) for all \(i\leq n\), \(S_n\in m\mc {F}_n\) for all \(n\) by Proposition <a
+href="Random-variables.html#itsallmeas">2.2.6</a>. Since \(|S_n|\leq n\) we have \(|M_n|\leq \frac {e^{\theta n}}{(\cosh \theta )^n}&lt;\infty \), hence \(M_n\in L^1\). We have also that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{8.}{3}\)</span>
+
+
+
+<!--
+
+
+                                                                                                     n
+                                                                                                                    !       "         #
+                                                                                                     Y eθXi               eθXn+1
+                                                                                    E[Mn+1 |Fn ] =                      E        Fn
+                                                                                                     i=1
+                                                                                                           cosh θ         cosh θ
+                                                                                                           "            #
+                                                                                                       eθXn+1
+                                                                                                = Mn E
+                                                                                                       cosh θ
+
+                                                                                                = Mn .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\E [M_{n+1}|\mc {F}_n]&amp;=\l (\prod _{i=1}^n \frac {e^{\theta X_i}}{\cosh \theta }\r )\E \l [\frac {e^{\theta X_{n+1}}}{\cosh \theta }\Big {|}\mc {F}_n\r ]\\ &amp;=M_n\E \l
+[\frac {e^{\theta X_{n+1}}}{\cosh \theta }\r ]\\ &amp;=M_n.
+\end{align*}
+Here we use the taking out what is known rule, the fact that \(X_{n+1}\) is independent of \(\mc {F}_n\) and the relationship between conditional expectation and independence. To deduce the final line we note
+that \(\E [e^{\theta X_i}/\cosh \theta ] = \frac 1 2 (e^{\theta }+e^{-\theta })/\cosh \theta = 1\).
+</p>
+
+<p>
+Let
+</p>
+
+<p>
+\[T=\inf \{n\-S_n=1\},\]
+</p>
+
+<p>
+which we have seen is a stopping time in Example <a href="The-optional-stopping-theorem.html#walkhitting">8.2.2</a>. It is not obvious whether \(\P [T=\infty ]\) is equal to or greater than zero, but
+with the help of \(M_n\) and the optional stopping theorem we can show:
+</p>
+<div class="theorembodylemma" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-190"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Lemma 8.3.2</span> <a id="autoid-191" ></a ><a id="ssrwwillhit"></a> It holds that \(\P [T&lt;\infty ]=1\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let us consider \(\theta &gt;0\). By Lemma <a
+href="The-optional-stopping-theorem.html#minstoptimes">8.2.3</a>, \(T\wedge n\) is a stopping time, and since \(T\wedge n \leq n\) it is a bounded stopping time. We therefore have condition (a) of
+the optional stopping theorem and can apply it to deduce that
+</p>
+
+<p>
+\[ \E [M_0] = 1 = \E \l [M^{(\theta )}_{T\wedge n}\r ].           \]
+</p>
+
+<p>
+We now apply the dominated convergence theorem to let \(n\to \infty \) in the rightmost term. To do so we make two observations: (1) \(M_{T\wedge n}=e^{\theta S_{T\wedge n}}/(\cosh \theta )^n\) is
+bounded above by \(e^\theta \) since \(\cosh \theta \geq 1\) and \(S_{T\wedge n}\in (-\infty ,1]\); (2) as \(n\to \infty \), \(M^{(\theta )}_{T\wedge n} \to M^{(\theta )}_T\), where the latter
+is defined to be 0 if \(T=\infty \). Note that (2) uses that \(\theta &gt;0\). So the dominated convergence theorem gives us
+</p>
+
+<p>
+\[ 1 = \E \l [M^{(\theta )}_{T}\r ].        \]
+</p>
+
+<p>
+Noting that \(M_T^{(\theta )}=e^{\theta S_T}/(\cosh \theta )^T\) and \(S_T=1\) when \(T&lt;\infty \), we thus have
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{8.}{3}\)</span>
+
+<!--
+
+                                                        "              #
+                                                            eθ
+                                                      E                    =1                                                    (8.4)                                          --><a id="coshthetaT"></a><!--
+                                                        (cosh θ)−T
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {coshthetaT} \E \l [\frac {e^\theta }{(\cosh \theta )^{-T}}\r ] = 1
+\end{equation}
+
+
+</p>
+
+<p>
+for \(\theta &gt;0\) (where we allow \(\frac {e^\theta }{\infty }=0\) for the case \(T=\infty \)).
+</p>
+
+<p>
+If \(T=\infty \), then \((\cosh \theta )^{-T}=0\) for all \(\theta \neq 0\). If \(T&lt;\infty \), then \((\cosh \theta )^{-T} \to 1\) as \(\theta \to 0\). Noting that \(0\leq (\cosh \theta
+)^{-T} \leq 1\), we can apply the dominated convergence theorem and let \(\theta \to 0\), with the result that
+</p>
+
+<p>
+\[ \E [\1\{T&lt;\infty \}] = 1.       \]
+</p>
+
+<p>
+Hence \(\P [T&lt;\infty ]=1\). &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+Even though we now know that \(\P [T&lt;\infty ]=1\), we are not able to apply optional stopping to \((S_n)\) and \(T\); because \((S_n)\) is unbounded and we do not know if \(\E [T]&lt;\infty \). In
+fact, in this case \(\E [T]=\infty \) and the optional stopping theorem does not apply. Instead, we can use the optional stopping theorem to <i>deduce</i> that \(\E [T]=\infty \), as follows.
+</p>
+
+<p>
+Suppose, for a contradiction, that \(\E [T]&lt;\infty \). Then we could apply the optional stopping theorem to \((S_n)\) and \(T\) using the condition (c). Hence \(\E [S_0]=0=\E [S_T]\). But, \(\P
+[T&lt;\infty ]=1\) which means, by definition of \(T\), that \(S_T=1\) almost surely. This is a contradiction so we must have \(\E [T]=\infty \).
+</p>
+
+<p>
+More generally, we have to be very careful about using the optional stopping theorem. The conditions (a)-(c) fail in many situations, and there are many examples of stopping times \(T\) and martingales \(M\) for
+which \(\E [M_T]\neq \E [M_0]\).
+</p>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes_1.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

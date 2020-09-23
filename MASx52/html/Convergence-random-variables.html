@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MASx52 — Convergence of random variables</title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes_1-autopage-182"></a>
+<nav class="topnavigation" ><a href="notes_1.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 23, 2020
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+(part one)</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes_1.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Expectation-Arbitrage.html#autosec-13" class="tocchapter" >
+<span class="sectionnumber" >1</span>&#x2003;Expectation and Arbitrage</a>
+</p>
+
+
+
+<p>
+<a href="Expectation-Arbitrage.html#autosec-14" class="tocsection" >
+<span class="sectionnumber" >1.1</span>&#x2003;Betting on coin tosses</a>
+</p>
+
+
+
+<p>
+<a href="The-one-period-market.html#autosec-17" class="tocsection" >
+<span class="sectionnumber" >1.2</span>&#x2003;The one-period market</a>
+</p>
+
+
+
+<p>
+<a href="Arbitrage.html#autosec-22" class="tocsection" >
+<span class="sectionnumber" >1.3</span>&#x2003;Arbitrage</a>
+</p>
+
+
+
+<p>
+<a href="Modelling-discussion.html#autosec-32" class="tocsection" >
+<span class="sectionnumber" >1.4</span>&#x2003;Modelling discussion</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-34" class="tocsection" >
+<span class="sectionnumber" >1.5</span>&#x2003;Exercises on Chapter&nbsp;<a href="Expectation-Arbitrage.html#chap:pricing">1</a></a>
+</p>
+
+
+
+<p>
+<a href="Probability-spaces-random-variables.html#autosec-38" class="tocchapter" >
+<span class="sectionnumber" >2</span>&#x2003;Probability spaces and random variables</a>
+</p>
+
+
+
+<p>
+<a href="Probability-spaces-random-variables.html#autosec-39" class="tocsection" >
+<span class="sectionnumber" >2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
+</p>
+
+
+
+<p>
+<a href="Random-variables.html#autosec-49" class="tocsection" >
+<span class="sectionnumber" >2.2</span>&#x2003;Random variables</a>
+</p>
+
+
+
+<p>
+<a href="Infinite.html#autosec-63" class="tocsection" >
+<span class="sectionnumber" >2.3</span>&#x2003;Infinite \(\Omega \)</a>
+</p>
+
+
+
+<p>
+<a href="Expectation.html#autosec-69" class="tocsection" >
+<span class="sectionnumber" >2.4</span>&#x2003;Expectation</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-prob_meas.html#autosec-77" class="tocsection" >
+<span class="sectionnumber" >2.5</span>&#x2003;Exercises on Chapter <a href="Probability-spaces-random-variables.html#chap:prob_meas">2</a></a>
+</p>
+
+
+
+<p>
+<a href="Conditional-expectation-martingales.html#autosec-82" class="tocchapter" >
+<span class="sectionnumber" >3</span>&#x2003;Conditional expectation and martingales</a>
+</p>
+
+
+
+<p>
+<a href="Conditional-expectation-martingales.html#autosec-83" class="tocsection" >
+<span class="sectionnumber" >3.1</span>&#x2003;Conditional expectation</a>
+</p>
+
+
+
+<p>
+<a href="Properties-conditional-expectation.html#autosec-89" class="tocsection" >
+<span class="sectionnumber" >3.2</span>&#x2003;Properties of conditional expectation</a>
+</p>
+
+
+
+<p>
+<a href="Martingales.html#autosec-95" class="tocsection" >
+<span class="sectionnumber" >3.3</span>&#x2003;Martingales</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-cond_exp.html#autosec-106" class="tocsection" >
+<span class="sectionnumber" >3.4</span>&#x2003;Exercises on Chapter <a href="Conditional-expectation-martingales.html#chap:cond_exp">3</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes.html#autosec-110" class="tocchapter" >
+<span class="sectionnumber" >4</span>&#x2003;Stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes.html#autosec-112" class="tocsection" >
+<span class="sectionnumber" >4.1</span>&#x2003;Random walks</a>
+</p>
+
+
+
+<p>
+<a href="Urn-processes.html#autosec-118" class="tocsection" >
+<span class="sectionnumber" >4.2</span>&#x2003;Urn processes</a>
+</p>
+
+
+
+<p>
+<a href="A-branching-process.html#autosec-123" class="tocsection" >
+<span class="sectionnumber" >4.3</span>&#x2003;A branching process</a>
+</p>
+
+
+
+<p>
+<a href="Other-stochastic-processes.html#autosec-127" class="tocsection" >
+<span class="sectionnumber" >4.4</span>&#x2003;Other stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs.html#autosec-130" class="tocsection" >
+<span class="sectionnumber" >4.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes.html#chap:stoch_procs">4</a></a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model.html#autosec-134" class="tocchapter" >
+<span class="sectionnumber" >5</span>&#x2003;The binomial model</a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model.html#autosec-135" class="tocsection" >
+<span class="sectionnumber" >5.1</span>&#x2003;Arbitrage in the one-period model</a>
+</p>
+
+
+
+<p>
+<a href="Hedging-in-one-period-model.html#autosec-143" class="tocsection" >
+<span class="sectionnumber" >5.2</span>&#x2003;Hedging in the one-period model</a>
+</p>
+
+
+
+<p>
+<a href="Types-financial-derivative.html#autosec-154" class="tocsection" >
+<span class="sectionnumber" >5.3</span>&#x2003;Types of financial derivative</a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model-definition.html#autosec-156" class="tocsection" >
+<span class="sectionnumber" >5.4</span>&#x2003;The binomial model (definition)</a>
+</p>
+
+
+
+<p>
+<a href="Portfolios-arbitrage-martingales.html#autosec-160" class="tocsection" >
+<span class="sectionnumber" >5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
+</p>
+
+
+
+<p>
+<a href="Hedging.html#autosec-169" class="tocsection" >
+<span class="sectionnumber" >5.6</span>&#x2003;Hedging</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bin_model.html#autosec-178" class="tocsection" >
+<span class="sectionnumber" >5.7</span>&#x2003;Exercises on Chapter <a href="The-binomial-model.html#chap:bin_model">5</a></a>
+</p>
+
+
+
+<p>
+<a href="Convergence-random-variables.html#autosec-183" class="tocchapter" >
+<span class="sectionnumber" >6</span>&#x2003;Convergence of random variables</a>
+</p>
+
+
+
+<p>
+<a href="Convergence-random-variables.html#autosec-184" class="tocsection" >
+<span class="sectionnumber" >6.1</span>&#x2003;Modes of convergence</a>
+</p>
+
+
+
+<p>
+<a href="The-monotone-convergence-theorem.html#autosec-190" class="tocsection" >
+<span class="sectionnumber" >6.2</span>&#x2003;The monotone convergence theorem</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-195" class="tocsection" >
+<span class="sectionnumber" >6.3</span>&#x2003;Exercises on Chapter <a href="Convergence-random-variables.html#chap:rv_conv">6</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes-martingale-theory.html#autosec-200" class="tocchapter" >
+<span class="sectionnumber" >7</span>&#x2003;Stochastic processes and martingale theory</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes-martingale-theory.html#autosec-201" class="tocsection" >
+<span class="sectionnumber" >7.1</span>&#x2003;The martingale transform</a>
+</p>
+
+
+
+<p>
+<a href="Roulette.html#autosec-204" class="tocsection" >
+<span class="sectionnumber" >7.2</span>&#x2003;Roulette</a>
+</p>
+
+
+
+<p>
+<a href="The-martingale-convergence-theorem.html#autosec-210" class="tocsection" >
+<span class="sectionnumber" >7.3</span>&#x2003;The martingale convergence theorem</a>
+</p>
+
+
+
+<p>
+<a href="Long-term-behaviour-stochastic-processes.html#autosec-218" class="tocsection" >
+<span class="sectionnumber" >7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-237" class="tocsection" >
+<span class="sectionnumber" >7.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></a>
+</p>
+
+
+
+<p>
+<a href="Further-theory-stochastic-processes.html#autosec-242" class="tocchapter" >
+<span class="sectionnumber" >8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Further-theory-stochastic-processes.html#autosec-243" class="tocsection" >
+<span class="sectionnumber" >8.1</span>&#x2003;The dominated convergence theorem (\(\Delta \))</a>
+</p>
+
+
+
+<p>
+<a href="The-optional-stopping-theorem.html#autosec-248" class="tocsection" >
+<span class="sectionnumber" >8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Hitting-probabilities-random-walks.html#autosec-255" class="tocsection" >
+<span class="sectionnumber" >8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-262" class="tocsection" >
+<span class="sectionnumber" >8.4</span>&#x2003;Exercises on Chapter <a href="Further-theory-stochastic-processes.html#chap:stoch_procs_2">8</a> \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-266" class="tocchapter" >
+<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+<p>
+<a href="Formula-Sheet-part-one.html#autosec-283" class="tocchapter" >
+<span class="sectionnumber" >B</span>&#x2003;Formula Sheet (part one)</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Stochastic Processes and Financial Mathematics<br />
+(part one)</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \ra {\Rightarrow }\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \wt {\widetilde }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \p {\partial }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \|{\,|\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \F {\mc {F}}\)
+
+\(\def \G {\mc {G}}\)
+
+\(\def \H {\mc {H}}\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+</div>
+
+<p>
+<h3 id="autosec-183">Chapter&nbsp;<span class="sectionnumber" >6&#x2003;</span>Convergence of random variables</h3>
+<a id="notes_1-autopage-183"></a>
+<a id="notes_1-autofile-28"></a>
+
+<a id="chap:rv_conv"></a>
+
+<p>
+A real number is a simple object; it takes a single value. As such, if \(a_n\) is a sequence of real numbers, \(\lim _{n\to \infty }a_n=a\), means that the value of \(a_n\) converges to the value of \(a\).
+</p>
+
+<p>
+Random variables are more complicated objects. They take many different values, with different probabilities. Consequently, if \(X_1,X_2,\ldots \) and \(X\) are random variables, there are many different ways
+in which we can try to make sense of the idea that \(X_n\to X\). They are called <i>modes</i> of convergence, and are the focus of this chapter.
+</p>
+
+<p>
+Convergence of random variables sits at the heart of all sophisticated stochastic modelling. Crucially, it provides a way to approximate one random variable with another (since if \(X_n\to X\) then we may hope
+that \(X_n\approx X\) for large \(n\)), which is particularly helpful if it is possible to approximate a complex model \(X_n\) with a relatively simple random variable \(X\). We will explore this theme further in
+later chapters.
+</p>
+<h4 id="autosec-184"><span class="sectionnumber" >6.1&#x2003;</span>Modes of convergence</h4>
+<a id="notes_1-autopage-184"></a>
+
+
+
+<p>
+We say:
+</p>
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+• \(X_n\stackrel {d}{\to } X\), known as convergence <b>in distribution</b>, if for every \(x\in \R \) at which \(\P [X=x]=0\),
+</p>
+<p>
+\[\lim _{n\to \infty }\P [X_n\leq x]=\P [X\leq x].\]
+</p>
+</li>
+<li>
+<p>
+• \(X_n\stackrel {\P }{\to } X\), known as convergence <b>in probability</b>, if given any \(a&gt;0\),
+</p>
+<p>
+\[\lim _{n\to \infty }\P [|X_n-X|&gt;a]=0.\]
+</p>
+</li>
+<li>
+<p>
+• \(X_n\stackrel {a.s.}{\to } X\), known as <b>almost sure</b> convergence, if
+</p>
+<p>
+\[\P \l [X_n\to X\text { as }n\to \infty \r ]=1.\]
+</p>
+</li>
+<li>
+<p>
+• \(X_n\stackrel {L^p}{\to } X\), known as <b>convergence in \(L^p\)</b>, if
+</p>
+<p>
+\[\E \l [|X_n-X|^p\r ]\to 0\text { as }n\to \infty .\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+
+<p>
+Here, \(p\geq 1\) is a real number. We will be interested in the cases \(p=1\) and \(p=2\). The case \(p=2\) is sometimes known as convergence in mean square. Note that these four definitions also appear on the
+formula sheet, in Appendix <a href="Formula-Sheet-part-one.html#sec:formula_sheet_1">B</a>.
+</p>
+
+<p>
+It is common for random variables to converge in some modes but not others, as the following example shows.
+</p>
+<div class="theorembodyexample" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-130"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Example 6.1.1</span> <a id="autoid-131" ></a ><a id="ex:rv_conv"></a> Let \(U\) be a uniform random variable on \([0,1]\) and set
+</p>
+
+<p>
+\[X_n=n^2\1\{U&lt;1/n\}= \begin {cases} n^2 &amp; \text { if }U&lt;1/n,\\ 0 &amp; \text { otherwise.}\\ \end {cases} \]
+</p>
+
+<p>
+Our candidate limit is \(X=0\), the random variable that takes the deterministic value \(0\). We’ll check each of the types of convergence in turn.
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+• For convergence in distribution, we note that \(\P [X\leq x]=\big \{\begin {smallmatrix}0&amp;\text { if }x&lt;0\\1&amp;\text { if }x\geq 0\end {smallmatrix}\). We consider these two cases:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. Firstly, if \(x&lt;0\) then \(\P [X_n\leq x]=0\) so \(\P [X_n\leq x]\to 0\).
+</p>
+
+
+</li>
+<li>
+<p>
+2. Secondly, consider \(x\geq 0\). By definition \(\P [X_n=0]=1-\frac {1}{n}\), so we have that \(1-\frac {1}{n}=\P [X_n=0]\leq \P [X\leq x]\leq 1\), and the sandwich rule tells us that \(\P
+[X_n\leq x]\to 1\).
+</p>
+</li>
+</ul>
+<p>
+Hence, \(\P [X_n\leq x]\to \P [X\leq x]\) in both cases, which means that \(X_n\stackrel {d}{\to } X\).
+</p>
+
+
+</li>
+<li>
+<p>
+• For any \(0&lt;a\leq n^2\) we have \(\P [|X_n-0|&gt;a]=\P [X_n&gt;a]\leq \P [X_n=n^2]=\frac {1}{n}\), so as \(n\to \infty \) we have \(\P [|X_n-0|&gt;a]\to 0\), which means that we do have
+\(X_n\stackrel {\P }{\to } 0\).
+</p>
+
+
+</li>
+<li>
+<p>
+• If \(X_m=0\) for some \(m\in \N \) then \(X_n=0\) for all \(n\geq m\), which implies that \(X_n\to 0\) as \(n\to \infty \). So, we have
+</p>
+<p>
+\[\P \l [\lim _{n\to \infty }X_n=0\r ]\geq \P [X_m=0]=1-\frac {1}{m}.\]
+</p>
+<p>
+Since this is true for any \(m\in \N \), we have \(\P [\lim _{n\to \infty }X_n=0]=1\), that is \(X_n\stackrel {a.s.}{\to } 0\).
+</p>
+
+
+</li>
+<li>
+<p>
+• Lastly, \(\E [|X_n-0|]=\E [X_n]=n^2\frac {1}{n}=n\), which does not tend to \(0\) as \(n\to \infty \). So \(X_n\) does not converge to \(0\) in \(L^1\).
+</p>
+</li>
+</ul>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+As we might hope, there are relationships between the different modes of convergence, which are useful to remember.
+</p>
+<div class="theorembodylemma" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-132"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Lemma 6.1.2</span> <a id="autoid-133" ></a ><a id="lem:conv_modes"></a> Let \(X_n,X\) be random variables.
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. If \(X_n\stackrel {\P }{\to } X\) then \(X_n\stackrel {d}{\to } X\).
+</p>
+
+
+</li>
+<li>
+<p>
+2. If \(X_n\stackrel {a.s.}{\to } X\) then \(X_n\stackrel {\P }{\to } X\).
+</p>
+
+
+</li>
+<li>
+<p>
+3. If \(X_n\stackrel {L^p}{\to } X\) then \(X_n\stackrel {\P }{\to } X\).
+</p>
+
+
+</li>
+<li>
+<p>
+4. Let \(1\leq p&lt; q\). If \(X_n\stackrel {L^q}{\to } X\) then \(X_n\stackrel {L^p}{\to } X\).
+</p>
+</li>
+</ul>
+
+<p>
+In all other cases (i.e.&nbsp;that are not automatically implied by the above), convergence in one mode does not imply convergence in another.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+The proofs are not part of our course (they are part of MAS350/451/6352). We can summarise Lemma <a href="Convergence-random-variables.html#lem:conv_modes">6.1.2</a> with a diagram:
+</p>
+<div class="center" >
+
+<p>
+
+
+<a href="conv.jpg" target="_blank" ><img
+      src="conv.jpg"
+      style="
+      width:217pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+<div class="theorembodyremark" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-134"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Remark 6.1.3</span> <a id="autoid-135" ></a >For convergence of real numbers, it was shown in MAS221 that if \(a_n\to a\) and \(a_n\to b\) then \(a=b\), which
+is known as uniqueness of limits. For random variables, the situation is a little more complicated: if \(X_n\stackrel {\P }{\to } X\) and \(X_n\stackrel {\P }{\to } Y\) then \(X=Y\) almost surely. By
+Lemma <a href="Convergence-random-variables.html#lem:conv_modes">6.1.2</a>, this result also applies to \(\stackrel {L^p}{\to }\) and \(\stackrel {a.s.}{\to }\). However, if we have only
+\(X_n\stackrel {d}{\to } X\) and \(X_n\stackrel {d}{\to } Y\) then we can only conclude that \(X\) and \(Y\) have the same distribution function. Proving these facts is one of the challenge exercises, <a
+href="Exercises-on-Chapter-ref-chap-rv_conv.html#ps:unique_limit"><b>6.9</b></a>.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes_1.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

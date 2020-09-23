@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MAS350 — Measurable Functions</title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes-autopage-53"></a>
+<nav class="topnavigation" ><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+MAS350 Probability with Measure
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Probability with Measure</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Preliminaries.html#autosec-13" class="tocsection" >
+<span class="sectionnumber" >0.2</span>&#x2003;Preliminaries</a>
+</p>
+
+
+
+<p>
+<a href="Measure-Spaces-Measure.html#autosec-16" class="tocchapter" >
+<span class="sectionnumber" >1</span>&#x2003;Measure Spaces and Measure</a>
+</p>
+
+
+
+<p>
+<a href="Measure-Spaces-Measure.html#autosec-17" class="tocsection" >
+<span class="sectionnumber" >1.1</span>&#x2003;What is Measure?</a>
+</p>
+
+
+
+<p>
+<a href="Sigma-Fields.html#autosec-20" class="tocsection" >
+<span class="sectionnumber" >1.2</span>&#x2003;Sigma Fields</a>
+</p>
+
+
+
+<p>
+<a href="Measure.html#autosec-27" class="tocsection" >
+<span class="sectionnumber" >1.3</span>&#x2003;Measure</a>
+</p>
+
+
+
+<p>
+<a href="The-Borel-field-Lebesgue-Measure.html#autosec-34" class="tocsection" >
+<span class="sectionnumber" >1.4</span>&#x2003;The Borel \(\sigma \)-field and Lebesgue Measure</a>
+</p>
+
+
+
+<p>
+<a href="An-example-non-measurable-set.html#autosec-38" class="tocsection" >
+<span class="sectionnumber" >1.5</span>&#x2003;An example of a non-measurable set \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Two-Useful-Theorems-About-Measure.html#autosec-42" class="tocsection" >
+<span class="sectionnumber" >1.6</span>&#x2003;Two Useful Theorems About Measure</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures.html#autosec-46" class="tocsection" >
+<span class="sectionnumber" >1.7</span>&#x2003;Product Measures</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-1.html#autosec-51" class="tocsection" >
+<span class="sectionnumber" >1.8</span>&#x2003;Exercises 1</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions.html#autosec-54" class="tocchapter" >
+<span class="sectionnumber" >2</span>&#x2003;Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions.html#autosec-55" class="tocsection" >
+<span class="sectionnumber" >2.1</span>&#x2003;Liminf and Limsup</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions-Basic-Concepts.html#autosec-58" class="tocsection" >
+<span class="sectionnumber" >2.2</span>&#x2003;Measurable Functions - Basic Concepts</a>
+</p>
+
+
+
+<p>
+<a href="Examples-Measurable-Functions.html#autosec-64" class="tocsection" >
+<span class="sectionnumber" >2.3</span>&#x2003;Examples of Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Algebra-Measurable-Functions.html#autosec-69" class="tocsection" >
+<span class="sectionnumber" >2.4</span>&#x2003;Algebra of Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Simple-Functions.html#autosec-82" class="tocsection" >
+<span class="sectionnumber" >2.5</span>&#x2003;Simple Functions</a>
+</p>
+
+
+
+<p>
+<a href="Extended-Real-Functions.html#autosec-85" class="tocsection" >
+<span class="sectionnumber" >2.6</span>&#x2003;Extended Real Functions</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-2.html#autosec-87" class="tocsection" >
+<span class="sectionnumber" >2.7</span>&#x2003;Exercises 2</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integration.html#autosec-90" class="tocchapter" >
+<span class="sectionnumber" >3</span>&#x2003;Lebesgue Integration</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integration.html#autosec-91" class="tocsection" >
+<span class="sectionnumber" >3.1</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="The-Lebesgue-Integral-Simple-Functions.html#autosec-94" class="tocsection" >
+<span class="sectionnumber" >3.2</span>&#x2003;The Lebesgue Integral for Simple Functions</a>
+</p>
+
+
+
+<p>
+<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#autosec-97" class="tocsection" >
+<span class="sectionnumber" >3.3</span>&#x2003;The Lebesgue Integral for Non-negative Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="The-Monotone-Convergence-Theorem.html#autosec-108" class="tocsection" >
+<span class="sectionnumber" >3.4</span>&#x2003;The Monotone Convergence Theorem</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integrability-Dominated-Convergence.html#autosec-114" class="tocsection" >
+<span class="sectionnumber" >3.5</span>&#x2003;Lebesgue Integrability and Dominated Convergence</a>
+</p>
+
+
+
+<p>
+<a href="Fubini-Theorem-Function-Spaces.html#autosec-126" class="tocsection" >
+<span class="sectionnumber" >3.6</span>&#x2003;Fubini’s Theorem and Function Spaces \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Riemann-Integration.html#autosec-133" class="tocsection" >
+<span class="sectionnumber" >3.7</span>&#x2003;Riemann Integration \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-3.html#autosec-144" class="tocsection" >
+<span class="sectionnumber" >3.8</span>&#x2003;Exercises 3</a>
+</p>
+
+
+
+<p>
+<a href="Probability-Measure.html#autosec-148" class="tocchapter" >
+<span class="sectionnumber" >4</span>&#x2003;Probability and Measure</a>
+</p>
+
+
+
+<p>
+<a href="Probability-Measure.html#autosec-149" class="tocsection" >
+<span class="sectionnumber" >4.1</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Basic-Concepts-Probability-Theory.html#autosec-151" class="tocsection" >
+<span class="sectionnumber" >4.2</span>&#x2003;Basic Concepts of Probability Theory</a>
+</p>
+
+
+
+<p>
+<a href="The-Borel-Cantelli-lemmas.html#autosec-162" class="tocsection" >
+<span class="sectionnumber" >4.3</span>&#x2003;The Borel-Cantelli lemmas</a>
+</p>
+
+
+
+<p>
+<a href="Kolmogorov-0-1-law.html#autosec-166" class="tocsection" >
+<span class="sectionnumber" >4.4</span>&#x2003;Kolmogorov’s 0-1 law</a>
+</p>
+
+
+
+<p>
+<a href="Convergence-Random-Variables.html#autosec-169" class="tocsection" >
+<span class="sectionnumber" >4.5</span>&#x2003;Convergence of Random Variables</a>
+</p>
+
+
+
+<p>
+<a href="Laws-Large-Numbers.html#autosec-174" class="tocsection" >
+<span class="sectionnumber" >4.6</span>&#x2003;Laws of Large Numbers</a>
+</p>
+
+
+
+<p>
+<a href="Characteristic-Functions-Weak-Convergence.html#autosec-179" class="tocsection" >
+<span class="sectionnumber" >4.7</span>&#x2003;Characteristic Functions and Weak Convergence</a>
+</p>
+
+
+
+<p>
+<a href="The-Central-Limit-Theorem.html#autosec-187" class="tocsection" >
+<span class="sectionnumber" >4.8</span>&#x2003;The Central Limit Theorem</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-4.html#autosec-191" class="tocsection" >
+<span class="sectionnumber" >4.9</span>&#x2003;Exercises 4</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-194" class="tocchapter" >
+<span class="sectionnumber" >5</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-195" class="tocsection" >
+<span class="sectionnumber" >5.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measure.html#autosec-200" class="tocsection" >
+<span class="sectionnumber" >5.2</span>&#x2003;Product Measure \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Fubini-Theorem.html#autosec-204" class="tocsection" >
+<span class="sectionnumber" >5.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-5.html#autosec-208" class="tocsection" >
+<span class="sectionnumber" >5.4</span>&#x2003;Exercises 5</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-210" class="tocchapter" >
+<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Probability with Measure</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+</div>
+
+<p>
+<h3 id="autosec-54">Chapter&nbsp;<span class="sectionnumber" >2&#x2003;</span>Measurable Functions</h3>
+<a id="notes-autopage-54"></a>
+<a id="notes-autofile-11"></a>
+
+<a id="chap:measurable_funcs"></a>
+
+<p>
+We now restrict ourselves to studying a particular kind of function, known as a <i>measurable</i> function. For measure theory, this is an important step, because it allows us to exclude some very strangely
+behaved examples (in the style of Section <a href="An-example-non-measurable-set.html#sec:non_meas_set">1.5</a>) that would disrupt our theory.
+</p>
+
+<p>
+We will see in Chapter <a href="Probability-Measure.html#chap:prob_with_meas">4</a> that measurable functions also play a huge role in probability theory, where they provide a mechanism for identifying
+which random variables depend on which information.
+</p>
+<h4 id="autosec-55"><span class="sectionnumber" >2.1&#x2003;</span>Liminf and Limsup</h4>
+<a id="notes-autopage-55"></a>
+
+
+
+<p>
+This section introduces some important tools from analysis which there wasn’t time to cover in MAS221. Let \((a_{n})\) be a sequence of real numbers. It may or may not converge. For example the sequence
+whose \(n\)th term is \((-1)^{n}\) fails to converge but it does have two convergent subsequences corresponding to \(a_{2n-1} = -1\) and \(a_{2n} = 1\). This is a very special case of a general phenomenon
+that we’ll now describe.
+</p>
+
+<p>
+Assume that the sequence \((a_{n})\) is bounded, i.e. there exists \(K &gt; 0\) so that \(|a_{n}| \leq K\) for all \(\nN \). Define a new sequence \((b_{n})\) by \(b_{n} = \inf _{k \geq n}a_{k}\). Then
+you can check that \((b_{n})\) is monotonic increasing and bounded above (by \(K\)). Hence it converges to a limit.
+</p>
+
+<p>
+In fact, we are fine if \((a_n)\) is not bounded. In this case \(b_n\) is still monotone increasing, but we now have the extra possibilities that \(b_n\to \infty \) or \(b_n\to -\infty \). In fact, we might even
+have \(b_n=\pm \infty \) for some or all finite \(n\).
+</p>
+
+<p>
+We define \(\li a_{n} = \lim _{n \rightarrow \infty }b_{n}\), where \(b_n=\inf _{k\geq n}a_k\). We call this the limit inferior or liminf of the sequence \((a_{n})\). So we have
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{2.}{0}\)</span>
+
+<!--
+
+
+
+                           lim inf an = lim inf ak = sup inf ak .                      (2.1)                                                                                              --><a id="li"></a><!--
+                           n→∞         n→∞ k≥n        n∈N k≥n
+
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {li} \li a_{n} = \lim _{n \rightarrow \infty } \inf _{k \geq n}a_{k} = \sup _{\nN }\inf _{k \geq n}a_{k}.
+\end{equation}
+
+
+</p>
+
+<p>
+Similarly the sequence \((c_{n})\) where \(c_{n} = \sup _{k \geq n}a_{k}\) is monotonic decreasing and bounded below. So it also converges to a limit which we call the limit superior or limsup for short. We
+denote \(\ls a_{n} = \lim _{n \rightarrow \infty }c_{n}\). Then we have
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{2.}{1}\)</span>
+
+<!--
+
+
+
+                     lim sup an = lim sup ak = inf sup ak .                    (2.2)                                                                                                --><a id="prop:ls"></a><!--
+                      n→∞           n→∞ k≥n        n∈N k≥n
+
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {prop:ls} \ls a_{n} = \lim _{n \rightarrow \infty } \sup _{k \geq n}a_{k} = \inf _{\nN }\sup _{k \geq n}a_{k}.
+\end{equation}
+
+
+</p>
+
+<p>
+Clearly we have \(\li a_{n} \leq \ls a_{n}\). In Problem <a href="Exercises-2.html#ps:lils"><b>2.2</b></a>, you can investigate some other properties of \(\limsup \) and \(\liminf \). It can be
+shown that the smallest limit of any convergent subsequence of \((a_{n})\) is \(\li a_{n}\), and the largest limit is \(\ls a_{n}\). The next theorem is very useful:
+</p>
+<div class="theorembodytheorem" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-31"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Theorem 2.1.1</span> <a id="autoid-32" ></a ><a id="thm:lils"></a> A bounded sequence of real numbers \((a_{n})\) converges to a limit if and only if \(\li
+a_{n} = \ls a_{n}\). In this case we have
+</p>
+
+<p>
+\[ \lim _{n \rightarrow \infty } a_{n} = \li a_{n} = \ls a_{n}.\]
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> If \((a_{n})\) converges to a limit, then all of its subsequences also converge to the same
+limit and it follows that \(\lim _{n \rightarrow \infty } a_{n} = \li a_{n} = \ls a_{n}\). Conversely suppose that we don’t know that \((a_{n})\) converges but we do know that \(\li a_{n} = \ls
+a_{n}\). Then for all \(\nN \),
+</p>
+
+<p>
+\[ 0 \leq a_{n} - \inf _{k \geq n}a_{k} \leq \sup _{k \geq n}a_{k} - \inf _{k \geq n}a_{k}.\]
+</p>
+
+<p>
+But
+</p>
+
+<p>
+\[\lim _{n \rightarrow \infty }\left (\sup _{k \geq n}a_{k} - \inf _{k \geq n}a_{k}\right ) = \ls a_{n} - \li a_{n} = 0\]
+</p>
+
+<p>
+and so
+</p>
+
+<p>
+\[\lim _{n \rightarrow \infty } \left (a_{n} - \inf _{k \geq n}a_{k}\right ) = 0\]
+</p>
+
+<p>
+by the sandwich rule. But since
+</p>
+
+<p>
+\[ a_{n} = \left (a_{n} - \inf _{k \geq n}a_{k}\right ) + \inf _{k \geq n}a_{k},\]
+</p>
+
+<p>
+and \(\lim _{n \rightarrow \infty } \inf _{k \geq n}a_{k} = \li a_{n}\), we can use the algebra of limits to deduce that \((a_{n})\) converges to the common value of \(\li a_{n}\) and \(\ls
+a_{n}\). &#x2003;&#x2003;&#x220E;
+</p>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 22, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

@@ -1,0 +1,2611 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MAS350 — Solutions to exercises</title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes-autopage-209"></a>
+<nav class="topnavigation" ><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+MAS350 Probability with Measure
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Probability with Measure</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Preliminaries.html#autosec-13" class="tocsection" >
+<span class="sectionnumber" >0.2</span>&#x2003;Preliminaries</a>
+</p>
+
+
+
+<p>
+<a href="Measure-Spaces-Measure.html#autosec-16" class="tocchapter" >
+<span class="sectionnumber" >1</span>&#x2003;Measure Spaces and Measure</a>
+</p>
+
+
+
+<p>
+<a href="Measure-Spaces-Measure.html#autosec-17" class="tocsection" >
+<span class="sectionnumber" >1.1</span>&#x2003;What is Measure?</a>
+</p>
+
+
+
+<p>
+<a href="Sigma-Fields.html#autosec-20" class="tocsection" >
+<span class="sectionnumber" >1.2</span>&#x2003;Sigma Fields</a>
+</p>
+
+
+
+<p>
+<a href="Measure.html#autosec-27" class="tocsection" >
+<span class="sectionnumber" >1.3</span>&#x2003;Measure</a>
+</p>
+
+
+
+<p>
+<a href="The-Borel-field-Lebesgue-Measure.html#autosec-34" class="tocsection" >
+<span class="sectionnumber" >1.4</span>&#x2003;The Borel \(\sigma \)-field and Lebesgue Measure</a>
+</p>
+
+
+
+<p>
+<a href="An-example-non-measurable-set.html#autosec-38" class="tocsection" >
+<span class="sectionnumber" >1.5</span>&#x2003;An example of a non-measurable set \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Two-Useful-Theorems-About-Measure.html#autosec-42" class="tocsection" >
+<span class="sectionnumber" >1.6</span>&#x2003;Two Useful Theorems About Measure</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures.html#autosec-46" class="tocsection" >
+<span class="sectionnumber" >1.7</span>&#x2003;Product Measures</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-1.html#autosec-51" class="tocsection" >
+<span class="sectionnumber" >1.8</span>&#x2003;Exercises 1</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions.html#autosec-54" class="tocchapter" >
+<span class="sectionnumber" >2</span>&#x2003;Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions.html#autosec-55" class="tocsection" >
+<span class="sectionnumber" >2.1</span>&#x2003;Liminf and Limsup</a>
+</p>
+
+
+
+<p>
+<a href="Measurable-Functions-Basic-Concepts.html#autosec-58" class="tocsection" >
+<span class="sectionnumber" >2.2</span>&#x2003;Measurable Functions - Basic Concepts</a>
+</p>
+
+
+
+<p>
+<a href="Examples-Measurable-Functions.html#autosec-64" class="tocsection" >
+<span class="sectionnumber" >2.3</span>&#x2003;Examples of Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Algebra-Measurable-Functions.html#autosec-69" class="tocsection" >
+<span class="sectionnumber" >2.4</span>&#x2003;Algebra of Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="Simple-Functions.html#autosec-82" class="tocsection" >
+<span class="sectionnumber" >2.5</span>&#x2003;Simple Functions</a>
+</p>
+
+
+
+<p>
+<a href="Extended-Real-Functions.html#autosec-85" class="tocsection" >
+<span class="sectionnumber" >2.6</span>&#x2003;Extended Real Functions</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-2.html#autosec-87" class="tocsection" >
+<span class="sectionnumber" >2.7</span>&#x2003;Exercises 2</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integration.html#autosec-90" class="tocchapter" >
+<span class="sectionnumber" >3</span>&#x2003;Lebesgue Integration</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integration.html#autosec-91" class="tocsection" >
+<span class="sectionnumber" >3.1</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="The-Lebesgue-Integral-Simple-Functions.html#autosec-94" class="tocsection" >
+<span class="sectionnumber" >3.2</span>&#x2003;The Lebesgue Integral for Simple Functions</a>
+</p>
+
+
+
+<p>
+<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#autosec-97" class="tocsection" >
+<span class="sectionnumber" >3.3</span>&#x2003;The Lebesgue Integral for Non-negative Measurable Functions</a>
+</p>
+
+
+
+<p>
+<a href="The-Monotone-Convergence-Theorem.html#autosec-108" class="tocsection" >
+<span class="sectionnumber" >3.4</span>&#x2003;The Monotone Convergence Theorem</a>
+</p>
+
+
+
+<p>
+<a href="Lebesgue-Integrability-Dominated-Convergence.html#autosec-114" class="tocsection" >
+<span class="sectionnumber" >3.5</span>&#x2003;Lebesgue Integrability and Dominated Convergence</a>
+</p>
+
+
+
+<p>
+<a href="Fubini-Theorem-Function-Spaces.html#autosec-126" class="tocsection" >
+<span class="sectionnumber" >3.6</span>&#x2003;Fubini’s Theorem and Function Spaces \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Riemann-Integration.html#autosec-133" class="tocsection" >
+<span class="sectionnumber" >3.7</span>&#x2003;Riemann Integration \((\star )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-3.html#autosec-144" class="tocsection" >
+<span class="sectionnumber" >3.8</span>&#x2003;Exercises 3</a>
+</p>
+
+
+
+<p>
+<a href="Probability-Measure.html#autosec-148" class="tocchapter" >
+<span class="sectionnumber" >4</span>&#x2003;Probability and Measure</a>
+</p>
+
+
+
+<p>
+<a href="Probability-Measure.html#autosec-149" class="tocsection" >
+<span class="sectionnumber" >4.1</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Basic-Concepts-Probability-Theory.html#autosec-151" class="tocsection" >
+<span class="sectionnumber" >4.2</span>&#x2003;Basic Concepts of Probability Theory</a>
+</p>
+
+
+
+<p>
+<a href="The-Borel-Cantelli-lemmas.html#autosec-162" class="tocsection" >
+<span class="sectionnumber" >4.3</span>&#x2003;The Borel-Cantelli lemmas</a>
+</p>
+
+
+
+<p>
+<a href="Kolmogorov-0-1-law.html#autosec-166" class="tocsection" >
+<span class="sectionnumber" >4.4</span>&#x2003;Kolmogorov’s 0-1 law</a>
+</p>
+
+
+
+<p>
+<a href="Convergence-Random-Variables.html#autosec-169" class="tocsection" >
+<span class="sectionnumber" >4.5</span>&#x2003;Convergence of Random Variables</a>
+</p>
+
+
+
+<p>
+<a href="Laws-Large-Numbers.html#autosec-174" class="tocsection" >
+<span class="sectionnumber" >4.6</span>&#x2003;Laws of Large Numbers</a>
+</p>
+
+
+
+<p>
+<a href="Characteristic-Functions-Weak-Convergence.html#autosec-179" class="tocsection" >
+<span class="sectionnumber" >4.7</span>&#x2003;Characteristic Functions and Weak Convergence</a>
+</p>
+
+
+
+<p>
+<a href="The-Central-Limit-Theorem.html#autosec-187" class="tocsection" >
+<span class="sectionnumber" >4.8</span>&#x2003;The Central Limit Theorem</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-4.html#autosec-191" class="tocsection" >
+<span class="sectionnumber" >4.9</span>&#x2003;Exercises 4</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-194" class="tocchapter" >
+<span class="sectionnumber" >5</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-195" class="tocsection" >
+<span class="sectionnumber" >5.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Product-Measure.html#autosec-200" class="tocsection" >
+<span class="sectionnumber" >5.2</span>&#x2003;Product Measure \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Fubini-Theorem.html#autosec-204" class="tocsection" >
+<span class="sectionnumber" >5.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-5.html#autosec-208" class="tocsection" >
+<span class="sectionnumber" >5.4</span>&#x2003;Exercises 5</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-210" class="tocchapter" >
+<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Probability with Measure</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+</div>
+
+<p>
+<h3 id="autosec-210">Chapter&nbsp;<span class="sectionnumber" >A&#x2003;</span>Solutions to exercises</h3>
+<a id="notes-autopage-210"></a>
+<a id="notes-autofile-39"></a>
+
+<p>
+We include solutions to most exercises, but some are left entirely for you.
+</p>
+<h5 id="autosec-211">Chapter <a href="Measure-Spaces-Measure.html#chap:measure_spaces">1</a></h5>
+<a id="notes-autopage-211"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-1.html#ps:boolean_union"><b>1.1</b></a> The case \(n=2\) is B(ii). Now use induction: suppose the result holds for some \(n\). Then
+</p>
+<p>
+\[\begin {aligned} A_{1} \cup A_{2} \cup \cdots \cup A_{n} \cup A_{n+1} &amp; = (A_{1} \cup A_{2} \cup \cdots \cup A_{n}) \cup A_{n+1} \\ &amp; = B_{n} \cup A_{n+1}.\end
+{aligned}\]
+</p>
+<p>
+Now \(B_{n} = A_{1} \cup A_{2} \cup \cdots \cup A_{n} \in {\bf B}\) by the inductive hypothesis and \(A_{n+1} \in {\bf B}\) by assumption. Hence \(B_{n} \cup A_{n+1} \in {\bf B}\) by B(ii)
+and the result follows.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:size_Pn"><b>1.2</b></a> There are \(n \choose r\) subsets of size \(r\) for \(0 \leq r \leq n\) and so the total number of subsets is \(\sum _{r=0}^{n}{n \choose r} =
+(1 + 1)^{2} = 2^{n}\). Here we used the binomial theorem \((x + y)^{n} = \sum _{r=0}^{n}{n \choose r}x^{r}y^{n-r}\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:sigma_union"><b>1.3</b></a> To show \(\Sigma _{1} \cap \Sigma _{2}\) is a \(\sigma \)-field we must verify S(i) to S(iii).
+</p>
+<p>
+S(i) Since \(S \in \Sigma _{1}\) and \(S \in \Sigma _{2}\), \(S \in \Sigma _{1} \cap \Sigma _{2}\).
+</p>
+<p>
+S(ii) Suppose \((A_{n})\) is a sequence of sets in \(\Sigma _{1} \cap \Sigma _{2}\). Then \(A_{n} \in \Sigma _{1}\) for all \(\nN \) and so \(\bigcup _{n=1}^{\infty }A_{n} \in \Sigma _{1}\). But
+also \(A_{n} \in \Sigma _{2}\) for all \(\nN \) and so \(\bigcup _{n=1}^{\infty }A_{n} \in \Sigma _{2}\). Hence \(\bigcup _{n=1}^{\infty }A_{n} \in \Sigma _{1} \cap \Sigma _{2}\).
+</p>
+<p>
+S(iii) If \(A \in \Sigma _{1} \cap \Sigma _{2}, A^{c} \in \Sigma _{1}\) and \(A^{c} \in \Sigma _{2}\). Hence \(A^{c} \in \Sigma _{1} \cap \Sigma _{2}\).
+</p>
+<p>
+Note that the same argument can be used to show that if \(\{\Sigma _{n}, \nN )\) are all \(\sigma \)-fields of subsets of \(S\) then so is \(\bigcap _{n=1}^{\infty }\Sigma _{n}\).
+</p>
+<p>
+\(\Sigma _{1} \cup \Sigma _{2}\) is not in general a \(\sigma \)-field for if \(A \in \Sigma _{1}\) and \(B \in \Sigma _{2}\) there is no good reason why \(A \cup B \in \Sigma _{1} \cup \Sigma
+_{2}\). For example let \(S = \{1,2,3\}, \Sigma _{1} = \{\emptyset , \{1\}, \{2,3\}, S\}, \Sigma _{2} = \{\emptyset , \{2\}, \{1,3\}, S\}, A = \{1\}, B = \{2\}\). Then \(A \cup B =
+\{1,2\}\) is neither in \(\Sigma _{1}\) nor \(\Sigma _{2}\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:measure_basic"><b>1.4</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> \(A \cup B = [A - (A \cap B)] \cup [B - (A \cap B)] \cup (A \cap B)\) is a disjoint union,
+hence using finite additivity and (1.3.2)
+</p>
+<p>
+\[ m(A \cup B) = m(A- A \cap B) + m(B- A \cap B) + m(A \cap B).\]
+</p>
+<p>
+Then
+</p>
+<p>
+\[\begin {aligned} m(A \cup B) + m(A \cap B) &amp; = m(A- A \cap B) + m(B- A \cap B) + 2m(A \cap B)\\ &amp; = [m(A - A \cap B) + m(A \cap B)]\\ &amp; + &amp; [m(B-A \cap B) + m(A
+\cap B)]\\ &amp; = m(A) + m(B), \end {aligned}\]
+</p>
+<p>
+where we use the fact that \(A\) is the disjoint union of \(A - A \cap B\) and \(A \cap B\), and the analogous result for \(B\). Note that the possibility that \(m(A \cap B) = \infty \) is allowed for within
+this proof.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> \(m(A \cup B) \leq m(A \cup B) + m(A \cap B) = m(A) + m(B)\) follows immediately from (a) as
+\(m(A \cap B) \geq 0\). The general case is proved by induction. We’ve just established \(n=2\). Now suppose the result holds for some \(n\). Then
+</p>
+<p>
+\[\begin {aligned} m\left (\bigcup _{i=1}^{n+1}A_{i}\right ) &amp; = m\left (\bigcup _{i=1}^{n}A_{i} \cup A_{n+1}\right )\\ &amp; \leq &amp; m\left (\bigcup _{i=1}^{n}A_{i}\right
+) + m(A_{n+1})\\ &amp; \leq &amp; \sum _{i=1}^{n}m(A_{i}) +m(A_{n+1}) = \sum _{i=1}^{n+1}m(A_{i}).                                        \end {aligned}\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:uniform_measure"><b>1.5</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have that \((km)(\emptyset )=km(\emptyset )=0\) because \(m(\emptyset )=0\).
+</p>
+<p>
+If \((A_n)_{n\in \N }\) is a sequence of disjoint measurable sets then
+</p>
+<p>
+\[\sum \limits _{n=1}^\infty (km)(A_n)=k\sum \limits _{n=1}^\infty m(A_n)=k m\l (\bigcup _{n=1}^\infty A_n\r )=(km)\l (\bigcup _{n=1}^\infty A_n\r ).\]
+</p>
+<p>
+For the second inequality we use that \(m\) is \(\sigma \)-additive. Thus \(km\) is \(\sigma \)-additive.
+</p>
+<p>
+Thus \(km\) is a measure.
+</p>
+<p>
+If \(m\) is a finite measure, then by taking \(k=m(S)\) it follows immediately that \(\P (\cdot )=\frac {m(\cdot )}{m(S)}\) is a measure. Noting that \(\P (S)=\frac {m(S)}{m(S)}=1\), \(\P \) is a
+probability measure.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> The uniform distribution \(m\) on \(([a,b],\mc {B}([a,b]))\) is given by
+</p>
+<p>
+\[m(A)=\frac {\lambda (A)}{b-a}\]
+</p>
+<p>
+where \(\lambda \) denotes Lebesgue measure.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> We have that \((m+n)(\emptyset )=m(\emptyset )+n(\emptyset )=0+0=0\).
+</p>
+<p>
+If \((A_j)_{j\in \N }\) is a sequence of disjoint measurable sets then
+</p>
+<span class="hidden" > \(\seteqnumber{0}{A.}{0}\)</span>
+
+
+<!--
+
+                                                                                         ∞
+                                                                                         X                            J
+                                                                                                                      X
+                                                                                               (m + n)(Aj ) = lim           m(Aj ) + n(Aj )
+                                                                                                               J→∞
+                                                                                         j=1                          j=1
+                                                                                                                      J
+                                                                                                                      X                    J
+                                                                                                                                           X
+                                                                                                           = lim            m(Aj ) +             n(Aj )
+                                                                                                               J→∞
+                                                                                                                      j=1                  j=1
+                                                                                                               ∞
+                                                                                                               X                    ∞
+                                                                                                                                    X
+                                                                                                           =         m(Aj ) +             n(Aj )
+                                                                                                               j=1                  j=1
+                                                                                                                                                   
+                                                                                                                      ∞
+                                                                                                                      [                       ∞
+                                                                                                                                              [
+                                                                                                           = m            Aj  + n                Aj 
+                                                                                                                     j=1                      j=1
+                                                                                                                                         
+                                                                                                                                ∞
+                                                                                                                                [
+                                                                                                           = (m + n)                 Aj  .
+                                                                                                                                j=1
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\sum \limits _{j=1}^\infty (m+n)(A_j) &amp;=\lim \limits _{J\to \infty } \sum \limits _{j=1}^J m(A_j)+n(A_j) \\ &amp;=\lim \limits _{J\to \infty } \sum \limits _{j=1}^J m(A_j)+
+\sum \limits _{j=1}^J n(A_j) \\ &amp;=\sum \limits _{j=1}^\infty m(A_j)+\sum \limits _{j=1}^\infty n(A_j) \\ &amp;=m\l (\bigcup _{j=1}^\infty A_j\r )+n\l (\bigcup _{j=1}^\infty
+A_j\r ) \\ &amp;=(m+n)\l (\bigcup _{j=1}^\infty A_j\r ).
+\end{align*}
+Here, the second follows because the sums are finite, and the third line follows because both series are increasing (and hence their limits both exist). The fourth line follows by \(\sigma \)-additivity of \(m\) and
+\(n\).
+</p>
+<p>
+Thus \(m+n\) is a measure.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:conditional_measure"><b>1.6</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have \(m_B(\emptyset )=m(\emptyset \cap B)=m(\emptyset )=0\).
+</p>
+<p>
+If \((A_n)_{n\in \N }\) is a sequence of disjoint measurable sets then \((A_n\cap B)_{n\in \N }\) are also disjoint and measurable, hence
+</p>
+<p>
+\[\sum \limits _{n=1}^\infty m_B(A_n)=\sum \limits _{n=1}^\infty m(A_n\cap B)=m\l (\bigcup _{n=1}^\infty A_n\cap B\r )=m\l (\l (\bigcup _{n=1}^\infty A_n\r )\cap B\r )=m_B(\bigcup
+_{n=1}^\infty A_n).\]
+</p>
+<p>
+Here to deduce the second equality we use the \(\sigma \)-additivity of \(m\).
+</p>
+<p>
+Thus \(m_B\) is a measure.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Applying <a href="Exercises-1.html#ps:uniform_measure"><b>1.5</b></a> part (a) to \(m_B\), it
+is immediate that \(\P _B\) is a probability measure.
+</p>
+<p>
+If \(m\) itself is a probability measure, say we write \(m=\P \), then \(\P _B\) is the conditional distribution of \(\P \) given that the event \(B\) occurs.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:prob_measure"><b>1.7</b></a> The easiest way to see that \(m\) is a measure is to first use <a href="Exercises-1.html#ps:uniform_measure"><b>1.5</b></a> (a) and (b)
+and induction to show that if \(m_{1},m_{2} \ldots , m_{n}\) are measures and \(c_{1}, c_{2}, \ldots , c_{n}\) are non-negative numbers then \(c_{1}m_{1} + c_{2}m_{2} + \cdots + c_{n}m_{n}\) is
+a measure. Now apply this with \(m_{j} = \delta _{x_{j}} (1 \leq j \leq n)\). To get a probability measure we need \(\sum _{j=1}^{n}c_{j} = 1\) for then, as \(\delta _{x_{j}}\) is a probability
+measure for all \(1 \leq j \leq n\), we have
+</p>
+<p>
+\[ m(S) = \sum _{j=1}^{n}c_{j}\delta _{x_{j}}(S) = \sum _{j=1}^{n}c_{j} = 1.\]
+</p>
+<p>
+<i>It’s also possible to check the definition directly, but it is a little more work that way.</i>
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:borel_closed"><b>1.8</b></a> By definition \((a,b) \in {\cal B}(\R )\). We’ve shown in the notes that \(\{a\}, \{b\} \in {\cal B}(\R )\) and so by S(ii), \([a,b] =
+\{a\} \cup (a,b) \cup \{b\} \in {\cal B}(\R )\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:meas_decreasing"><b>1.9</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(i)</span></span></span> We have that \(A\cap A^c=\emptyset \) and \(A\cup A^c=S\), so \(m(A)+m(A^c)=m(S)=M\). Because
+\(m(S)&lt;\infty \) we have also that \(m(A)&lt;\infty \), hence we may subtract \(m(A)\) and obtain \(m(A^c)=M-m(A)\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(ii)</span></span></span> Let \((A_n)\) be a decreasing sequence of sets. Then \(B_n=S\sc A_n\) defines an increasing sequence of
+sets, so by the first part of Theorem <a href="Two-Useful-Theorems-About-Measure.html#thm:monotone_meas">1.6.1</a> we have \(m(B_n)\to m(B)\) where \(B=\cup _j B_j\).
+</p>
+<p>
+By part (a) we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{A.}{0}\)</span>
+
+
+<!--
+
+
+
+                                                                                  m(Bn ) = m(S \ An ) = m(S) − m(An )
+
+                                                                                   m(B) = m(∪j S \ An ) = m(S \ ∩j Aj ) = m(S) − m(∩j Aj )
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+m(B_n)&amp;=m(S\sc A_n)=m(S)-m(A_n)\\ m(B)&amp;=m(\cup _j S\sc A_n)=m(S\sc \cap _j A_j)=m(S)-m(\cap _j A_j)
+\end{align*}
+Thus \(m(S)-m(A_n)\to m(S)-m(\cap _j A_j)\). Since \(m(S)&lt;\infty \) we may subtract it, and after multiplying by \(-1\) we obtain that \(m(A_n)\to m(\cap _j A_j)\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Let \(S=\R \), \(\Sigma =\mc {B}(\R )\) and \(m=\lambda \) be Lebesgue measure on \(\R \). Set
+\(A_n=(-\infty ,-n]\). Note that \(\cap _n A_n=\emptyset \) so \(\lambda (\cap _n A_n)=0\). However, \(m(A_n)=\infty \) for all \(n\), so \(m(A_n)\nrightarrow m(\cap _n A_n)\) in this case.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-1.html#ps:atomic_sigma_field"><b>1.10</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Note that each element of \(\Pi \) is a subset of \(S\). Hence \(\Pi \) itself is a subset of the power set
+\(\mc {P}(S)\) of \(S\). Since \(S\) is a finite set, \(\mc {P}(S)\) is also a finite set, hence \(\Pi \) is also finite.
+</p>
+<p>
+<i>Part (b) requires you to keep a very clear head. To solve a question like this you have to explore what you have deduce from what else, with lots of thinking ‘if I knew this then I would also know that’ and then
+trying to fit a bigger picture together, connecting your start point to your desired end point. Analysis can often be like this. </i>
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(i)</span></span></span> Suppose \(\Pi _i\cap \Pi _j \neq \emptyset \). Note that \(\Pi _i \cap \Pi _j\) is a subset of
+both \(\Pi _i\) and \(\Pi _j\).
+</p>
+<p>
+By definition of \(\Pi \), any subset of \(\Pi _i\) is either equal to \(\Pi _i\) or is equal to \(\emptyset \). Since we assume that \(\Pi _i\cap \Pi _j \neq \emptyset \), we therefore have \(\Pi _i=\Pi
+_i\cap \Pi _j\). Similarly, \(\Pi _j=\Pi _i\cap \Pi _j\).
+</p>
+<p>
+Hence \(\Pi _i=\Pi _j\), but this contradicts the fact that the \(\Pi _i\) are distinct from each other. Thus we have a contradiction and in fact we must have \(\Pi _i\cap \Pi _j = \emptyset \).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(ii)</span></span></span> By definition of \(\Pi \) we have \(\cup _{i=1}^k \Pi _i \sw S\). Suppose \(\cup _{i=1}^k \Pi _i
+\neq S\). Then \(C=S\sc \cup _{i=1}^k \Pi _i\) is a non-empty set in \(\Sigma \).
+</p>
+<p>
+Since \(C\) is disjoint from all the \(\Pi _i\), we must have \(C\notin \Pi \). Noting that \(C\in \Sigma \), by definition of \(\Pi \) this implies that there is some<sup>1</sup> \(B_1\subset C\) such that
+\(B_1\neq \emptyset \).
+</p>
+<p>
+We have that \(B_1\) is disjoint from all the \(\Pi _i\), so we must have \(B_1\notin \Pi \). Thus by the same reasoning (as we gave for \(C\)) there exists \(B_2\subset B_1\) such that \(B_2\neq \emptyset
+\). Iterating, we construct an infinite decreasing sequence of sets \(C\supset B_1\supset B_2 \supset B_3\ldots \) each strictly smaller than the previous one, none of which are empty. However, this is
+impossible because \(C\sw S\) is a finite set.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(iii)</span></span></span> Let \(i\in I\). So \(\Pi _i\cap A\neq \emptyset \). Noting that \(\Pi _i\cap A\sw \Pi _i\), by
+definition of \(\Pi \) we must have \(\Pi _i\cap A=\Pi _i\). That is, \(\Pi _i\sw A\). Since we have this for all \(i\in I\), we have \(\cup _{i\in I} \Pi _i\sw A\).
+</p>
+<p>
+Now suppose that \(A\sc \cup _{i\in I} \Pi _i\neq \emptyset \). Since by (ii) we have \(S=\cup _{i=1}^k \Pi _i\), and the union is disjoint by (i), this means that there is some \(\Pi _j\) with
+\(j\notin I\) such that \(A\cap \Pi _j\neq \emptyset \). However \(A\cap \Pi _j\sw \Pi _j\) so by definition of \(\Pi \) we must have \(\Pi _j\cap A=\Pi _j\). That is \(\Pi _j\sw A\), but then we
+would have \(j \in I\), which is a contraction.
+</p>
+<p>
+Thus \(A\sc \cup _{i\in I} \Pi _i\) must be empty, and we conclude that \(A=\cup _{i\in I} \Pi _i\).
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="footnotes" >
+
+<p>
+<sup>1</sup>&nbsp;\(X\subset Y\) means that \(X\sw Y\) and \(X\neq Y\) i.e.&nbsp;\(X\) is <i>strictly</i> smaller than the set \(Y\)
+</p>
+
+</div>
+<h5 id="autosec-213">Chapter <a href="Measurable-Functions.html#chap:measurable_funcs">2</a></h5>
+<a id="notes-autopage-213"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-2.html#ps:indicator_funcs"><b>2.1</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> If \(x \in A\) and \(x \in B\), lhs \(=1\) and rhs\(=1 + 1 -1 = 1\),
+</p>
+<p>
+If \(x \in A\) and \(x \notin B\), lhs \(=1\) and rhs\(=1 + 0 -0 = 1\),
+</p>
+<p>
+If \(x \notin A\) and \(x \in B\), lhs \(=1\) and rhs\(=0 + 1 -0 = 1\),
+</p>
+<p>
+If \(x \notin A\) and \(x \notin B\), lhs \(=0\) and rhs\(=0 + 0 - 0 = 0\), and so we have equality of lhs and rhs in all possible cases.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> If \(x \in A, x \notin A^{c}\) so lhs \(=1\) and rhs \(=1-0 = 1\),
+</p>
+<p>
+if \(x \notin A, x \in A^{c}\) so lhs \(=0\) and rhs \(=1-1 = 0\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Since \(A = B \cup (A-B)\) and \(B \cap (A-B) = \emptyset \), we can apply (a) to find that
+\({\1}_{A} = {\1}_{B} + {\1}_{A-B}\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(d)</span></span></span> The lhs and rhs are both non-zero only in the case where \(x \in A\) and \(x \in B\) when both lhs
+and rhs are \(1\).
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<p>
+For the last part, if \(x \notin A\) then \(x \notin A_{n}\) for all \(\nN \) and so lhs \(=\) rhs \(= 0\). If \(x \in A\) then \(x \in A_{n}\) for one and only one \(\nN \) and so lhs \(=\) rhs \(= 1\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:lils"><b>2.2</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Since for all \(\nN , \sup _{k \geq n}a_{k} = -\inf _{k \geq n}(-a_{k})\), we have
+</p>
+<p>
+\[ \limsup _{n \rightarrow \infty } a_{n} = \lim _{n \rightarrow \infty }\sup _{k \geq n}a_{k} = \lim _{n \rightarrow \infty }\left (-\inf _{k \geq n}(-a_{k})\right ) = -\liminf
+_{n \rightarrow \infty }(-a_{n}).\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Since for all \(\nN , \sup _{k \geq n}(a_{k} + b_{k}) \leq \sup _{k \geq n}a_{k} + \sup _{k
+\geq n}b_{k}\), the result is obtained similarly to (a) by taking limits on both sides.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Argue as in (b) noting that the inequality is reversed for \(\inf \), or use (a) and (b) to argue that
+</p>
+<p>
+\[\begin {aligned} \li (a_{n} + b_{n}) &amp; = -\ls (-a_{n} - b_{n})\\ &amp; \geq &amp; -\ls (- a_{n}) - \ls (-b_{n})\\ &amp; = \li a_{n} + \li b_{n}.                            \end {aligned}\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(d)</span></span></span> Use the fact that for all \(\nN , \sup _{k \geq n}(a_{k}b_{k}) \leq \left (\sup _{k \geq
+n}a_{k}\right )\left (\sup _{k \geq n}b_{k}\right )\) and argue as in (b).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(e)</span></span></span> Use the fact that for all \(\nN , \inf _{k \geq n}(a_{k}b_{k}) \geq \left (\inf _{k \geq
+n}a_{k}\right )\left (\inf _{k \geq n}b_{k}\right )\) and argue as in (d).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(f)</span></span></span> Since \(0 \leq \li |a_{n}| \leq \ls |a_{n}| = 0\), we must have \(\li |a_{n}| = 0\) and so \(0
+= \li |a_{n}| = \ls |a_{n}|\) from which it follows that \(\lim _{n \rightarrow \infty } |a_{n}| = 0\) and hence \(\lim _{n \rightarrow \infty } a_{n} = 0\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:constants_meas"><b>2.3</b></a> If \(a &lt; c, f^{-1}((a, \infty )) = S \in \Sigma \) and if \(a \geq c, f^{-1}((a, \infty )) = \emptyset \in \Sigma \).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:open_int_meas"><b>2.4</b></a> If \(f\) is measurable then, writing \((a,b)=\R \sc ([a,\infty )\cup [-\infty ,b])\) and using the properties of pre-images,
+</p>
+<p>
+\[f^{-1}((a,b))=f^{-1}(\R )\sc \l (f^{-1}([a,\infty ))\cup f^{-1}((\infty ,b])\r ),\]
+</p>
+<p>
+which by Theorem <a href="Measurable-Functions-Basic-Concepts.html#thm:meas_halfints">2.2.1</a> shows that \(f^{-1}((a,b))\in \Sigma \). Note that if either \(a\) or \(b\) are infinite, the
+corresponding half interval above will be the empty set (which has empty pre-image).
+</p>
+<p>
+Conversely, suppose that we have \(f^{-1}((a,b))\in \Sigma \) for all \(-\infty \leq a&lt;b\le \infty \). Taking \(b=\infty \), we have that \(f^{-1}((a,\infty ))\in \Sigma \), which shows that
+\(f\) is measurable.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:add_mult_const_meas_func"><b>2.5</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> For any \(a&gt;0\), we have \((f+c)^{-1}((a,\infty ))=\{x\in \R \-f(x)+c&gt;a\}=\{x\in \R
+\-f(x)&gt;a-c\}=f^{-1}((a-c,\infty ))\in \Sigma \) by measurability of \(f\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> First note that if \(k=0\) then \((kf)(x)= 0\) for all \(x\), so in this case \(f\) is measurable by <a
+href="Exercises-2.html#ps:constants_meas"><b>2.3</b></a>.
+</p>
+<p>
+Consider when \(k&gt;0\). For any \(a&gt;0\), we have \((kf)^{-1}((a,\infty ))=\{x\in \R \-kf(x)&gt;a\}=\{x\in \R \-f(x)&gt;a/k\}=f^{-1}((a/k,\infty ))\in \Sigma \) by measurability of
+\(f\).
+</p>
+<p>
+For \(k&lt;0\), we can write \(kf=-(-kf)\). The function \(-kf\) is measurable by the above, because \(-k&gt;0\). Multiplying by \(-1\) to obtain \(-(-kf)\) preserves measurability by Theorem <a
+href="Algebra-Measurable-Functions.html#thm:meas_mult">2.4.6</a> , where we use that the constant function \(g\equiv -1\) is measurable.
+</p>
+<p>
+<i>Follow-up exercise: Prove the \(k&lt;0\) case without using Theorem <a href="Algebra-Measurable-Functions.html#thm:meas_mult">2.4.6</a>.</i>
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:compose_meas"><b>2.6</b></a> \((g \circ f)^{-1}((a, \infty )) = f^{-1}(g^{-1}(a, \infty )\). Now \(g\) is Borel measurable and so \(g^{-1}((a, \infty )) = A
+\in {\cal B}(\R )\). Hence by Theorem 2.2.3, \(f^{-1}(A) \in \Sigma \). So we conclude that \((g \circ f)^{-1}((a, \infty )) \in \Sigma \) and so \(g \circ f\) is measurable.
+</p>
+<p>
+If \(X:\Omega \rightarrow \R \) is a random variable then it is a measurable function from \((\Omega , {\cal F})\) to \((\R , {\cal B}(\R ))\). If \(g:            \R \rightarrow \R \) is Borel measurable then
+\(g(X) = g \circ X\) is again a random variable by what we have just shown. If \(g\) is not Borel measurable then we must be wary of interpreting \(g(X)\) as a random variable, unless we can directly prove
+that it is measurable using some other technique.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:translate_meas"><b>2.7</b></a> For any \(a&gt;0\), we have
+</p>
+<p>
+\[h^{-1}((a,\infty ))=\{x\in \R \- f(x+y)&gt;(a,\infty )\}=\{z-y\in \R \-f(z)&gt;a\}=(f^{-1}((a,\infty )))_{-y}.\]
+</p>
+<p>
+Here we use the notation \(A_y=\{a+y\-a\in A\}\) from Section <a href="The-Borel-field-Lebesgue-Measure.html#sec:borel_field_leb_meas">1.4</a>. Using that \(A_y\in \mc {B}(\R )\) whenever
+\(A\in \mc {B}(\R )\), we have that \(h^{-1}((a,\infty ))\in \mc {B}(\R )\), and hence \(h\) is measurable.
+</p>
+<p>
+<i>Alternative:</i> Write \(h = f \circ \tau _{y}\) where \(\tau _{y}(x) = x + y\). The mapping \(\tau _{y}\) is continuous and hence measurable and so \(h\) is measurable by Theorem <a
+href="Algebra-Measurable-Functions.html#thm:meas_comp_cts">2.4.5</a>.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:abs_meas"><b>2.8</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> If \(f(x)&gt;0\) then \(f_+(x)=f(x)\) and \(f_-(x)=0\). If \(f(x)&lt;0\) then \(f_+(x)=0\) and
+\(f_-(x)=-f(x)\). If \(f(x)=0\) then \(f_+(x)=f_-(x)=0\). In all cases we have \(f(x)=f_+(x)-f_-(x)\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Using the same cases as in (a), in all cases we have \(|f(x)|=f_+(x)+f_-(x)\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> By Corollary <a href="Algebra-Measurable-Functions.html#cor:meas_+-">2.4.2</a>, \(f_+\) and
+\(f_-\) are measurable whenever \(f\) is. By Theorem <a href="Algebra-Measurable-Functions.html#thm:meas_add">2.4.4</a>, the sum of measurable function is measurable, hence \(|f|=f_++f_-\) is
+measurable.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:diff_meas"><b>2.9</b></a> If \(f\) is differentiable then it is continuous and so measurable by Corollary 2.3.1. For each \(x \in \R , f^{\prime }(x) = \lim _{h
+\rightarrow 0}\frac {f(x + h) - f(x)}{h}\). Now \(x \rightarrow f(x+h)\) is measurable by Problem <a href="Exercises-2.html#ps:translate_meas"><b>2.7</b></a>, and \(x \rightarrow \frac
+{f(x + h) - f(x)}{h}\) is measurable by Theorem 2.3.1 and Problem <a href="Exercises-2.html#ps:compose_meas"><b>2.6</b></a>(b). Finally \(f^{\prime }\) is measurable by Theorem 2.3.5.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:mono_meas"><b>2.10</b></a> There are \(4\) possibilities to consider for a given \(c \in \R \): (i) If \(f(x) = c\) then by monotonicity \(f^{-1}((-\infty , c]) = (-
+\infty , x] \in {\cal B}(\R )\). (ii) If \(f(x) &lt; c\) for all \(x\) then \(f^{-1}((-\infty , c]) = \R \in {\cal B}(\R )\). (iii) If \(f\) has a discontinuity so that \(c\) is not in its range, let
+\(\alpha = \sup \{x \in \R ; f(x) \leq c\}\) then \(f^{-1}((-\infty , c]) = (-\infty , \alpha ) \in {\cal B}(\R )\). (iv) If \(f(x) &gt; c\) for all \(x\) then \(f^{-1}((-\infty , c]) =
+\emptyset \in {\cal B}(\R )\)
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:lims_meas"><b>2.11</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Let \(A\) be the set of measure zero on which \(f_{n}\) fails to converge to \(f\). Then \(\lim _{n
+\rightarrow } f_{n}(x) = f(x)\) for all \(x \in S-A\). But then by algebra of limits \(\lim _{n \rightarrow } f_{n}(x)^{2} = f(x)^{2}\) for all \(x \in S-A\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> \(A\) be the set of measure zero on which \(f_{n}\) fails to converge to \(f\) and \(B\) be the set of
+measure zero on which \(g_{n}\) fails to converge to \(g\). Now \(m(A \cup B) \leq m(A) + m(B) = 0\) and by algebra of limits \(\lim _{n \rightarrow } (f_{n}(x) + g_{n})(x) = f(x) + g(x)\) for all
+\(x \in S-(A \cup B)\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> This follows by writing \(f_{n}g_{n} = \frac {1}{4}[(f_{n} + g_{n})^{2} - (f_{n} -
+g_{n})^{2}]\) and using the results of (a) and (b).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-2.html#ps:upper_sc"><b>2.12</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Its sufficient to consider the case where \(x = a\). Then for any \(\epsilon &gt; 0\) and arbitrary
+\(\delta , f(a - \delta ) = 0 &lt; f(a) + \epsilon = 1 + \epsilon \) and \(f(a + \delta ) = f(a) &lt; f(a) + \epsilon = 1 + \epsilon \).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Its sufficient to consider the case \(x = n\) for some integer \(n\). Again for any \(\epsilon &gt; 0\)
+and arbitrary \(\delta , f(n-\delta ) = n-1 &lt; f(n) + \epsilon = n + \epsilon \) and \(f(n+\delta ) = n &lt; f(n) + \epsilon = n + \epsilon \).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Let \(U = f^{-1}((-\infty , a))\). We will show that \(U\) is open. Then it is a Borel set and \(f\)
+is measurable. Fix \(x \in U\) and let \(\epsilon = a - f(x)\). Then there exists \(\delta &gt; 0\) so that \(|x - y| &lt; \delta \Rightarrow f(y) &lt; f(x) + \epsilon = a\) and so \(y \in U\).
+We have shown that for each \(x \in U\) there exists an open interval (of radius \(\delta \)) so that if \(y\) is in this interval then \(y \in U\). Hence \(U\) is open.
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="autosec-214">Chapter <a href="Lebesgue-Integration.html#chap:lebesbgue_integration">3</a></h5>
+<a id="notes-autopage-214"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-3.html#ps:sf_int"><b>3.1</b></a> \(f = {\1}_{[-2,-1)} + 2{\1}_{[0,1)} + {\1}_{[1,2)}\).
+</p>
+<p>
+\(\int _{\R }f(x)dx = 1 + 2 + 1 = 4\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:sf_int_finite"><b>3.2</b></a> If \(f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}\), then
+</p>
+<p>
+\[f{\1}_{A} = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}{\1}_{A} = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}\cap A}=\sum _{i=1}^{n}c_{i}{\1}_{A_{i}\cap A}+0\1_{S\sc A},\]
+</p>
+<p>
+by Problem <a href="Exercises-2.html#ps:indicator_funcs"><b>2.1</b></a>(d). Note that \(\{A\cap A_1,\ldots ,A\cap A_n,S\sc A\}\) are disjoint sets, with union \(S\).
+</p>
+<p>
+If \(f \geq 0, c_{i} \geq 0 (1 \leq i \leq n)\) and so \(f{\1}_{A} \geq 0\).
+</p>
+<p>
+If we assume that \(m(A) &lt; \infty \), then \(I_{A}f = \sum _{i=1}^{n}c_{i}{\1}m(A_{i}\cap A)&lt; \infty \), because in this case \(m(A_{i}\cap A) &lt; m(A) &lt; \infty \) for all \(1 \leq i
+\leq n\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:T331"><b>3.3</b></a> We have already proved part (1) of Theorem <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a>.
+It remains to prove parts (2)-(4).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+(2) Let \(\alpha &gt;0\). We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{A.}{0}\)</span>
+
+
+<!--
+
+                                                                                      Z                                                                
+                                                                                           αf dm = sup             s dm ; s is simple, 0 ≤ s ≤ αf
+                                                                                       S
+                                                                                                             ompose \(f\) with the continuous function
+\(x\mapsto |x|^p\)). Thus \(|f|^p=0\) a.e.&nbsp;which implies that \(f=0\) a.e.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:f+f-"><b>3.6</b></a> We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{A.}{0}\)</span>
+
+
+<!--
+
+
+
+                                                                                          f+ = 1[−1,0) + 31[1,2) ,
+
+                                                                                          f− = 1[−2,−1) + 21[0,1) ,
+                                                                                Z               Z                      Z
+                                                                                    f (x)dx =        f+ (x)dx −             f− (x)dx = (1 + 3) − (1 + 2) = 1.
+                                                                                R                R                      R
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{+} &amp;= {\1}_{[-1,0)} + 3{\1}_{[1,2)}, \\ f_{-} &amp;= {\1}_{[-2,-1)} + 2{\1}_{[0,1)}, \\ \int _{\R }f(x)dx &amp;= \int _{\R }f_{+}(x)dx - \int _{\R }f_{-}(x)dx = (1+3) -
+(1+2) = 1.
+\end{align*}
+
+
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:T351"><b>3.7</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+(1) Using Theorem 3.3.1 (2), if \(c \geq 0\),
+</p>
+<p>
+\[\int _{S}cf dm = \int _{S}cf_{+}dm - \int _{S}cf_{-}dm = c\int _{S}f_{+}dm - c\int _{S}f_{-}dm = c\int _{S}f dm.\]
+</p>
+<p>
+If \(c = -1, (-f)_{+} = f_{-}\) and \((-f)_{-} = f_{+}\) and so
+</p>
+<p>
+\[ \int _{S}(-f)dm = \int _{S}f_{-}dm - \int _{S}f_{+}dm = -\left (\int _{S}f_{+}dm - \int _{S}f_{-}dm\right ) = -\int _{S}fdm.\]
+</p>
+<p>
+Finally if \(c &lt; 0 (c \neq -1)\) write \(c = -d\) where \(d &gt; 0\) and use the two cases we’ve just proved.
+</p>
+</li>
+<li>
+<p>
+(3) If \(f \leq g\) then \(g - f \geq 0\) so by Theorem 3.3.1 (1), \(\int _{S}(g-f)dm \geq 0\). But by (1) and (2) this is equivalent to \(\int _{S}gdm - \int _{S}fdm \geq 0\), i.e. \(\int _{S}gdm
+\geq \int _{S}fdm\), as required.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:abs_int"><b>3.8</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Noting \(f_+\) and \(f_-\) are both non-negative, with non-negative integrals, we have
+</p>
+<p>
+\[\l |\int _S f\,dm\r | = \l |\int _S f_+\,dm - \int _S f_-\,dm\r | \leq \int _S f_+\,dm + \int _S f_-\,dm = \int _S |f|\,dm.\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> By the triangle inequality we have \(|f(x)+g(x)|\leq |f(x)|+|g(x)|\). Thus by monotonicity and
+linearity (from Theorem <a href="Lebesgue-Integrability-Dominated-Convergence.html#thm:basicsli">3.5.1</a>) we obtain
+</p>
+<p>
+\[\int _S |f+g|\,dm\leq \int _S |f|+|g|\,dm = \int _S |f|\,dm + \int _S |g|\,dm.\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:ae_equiv"><b>3.9</b></a> Reflexivity is obvious as \(f(x) = f(x)\) for all \(x \in S\). So is symmetry, because \(f(x) = g(x)\) almost everywhere if and only if \(g(x) =
+f(x)\) almost everywhere. For transitivity, let \(A = \{x \in S; f(x) \neq g(x)\}, B = \{x \in S; g(x) \neq h(x)\}\) and \(C = \{x \in S; f(x) \neq h(x)\}\). Then \(C \subseteq A \cup B\)
+and so \(m(C) \leq m(A) + m(B) = 0\). Thus if \(f=g\) a.e.&nbsp;and \(g=h\) a.e.&nbsp;we have \(f=h\) a.e.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:int_nonconv_1"><b>3.10</b></a> Let \(x \in \R \) be arbitrary. Then we can find \(n_{0} \in \mathbb {N}\) so that \(\frac {1}{n_{0}} &lt; |x|\) and then for all \(n
+\geq n_{0}, f_{n}(x) = n{\1}_{(0, 1/n)}(x) = 0\). So we have proved that \(\lim _{n \rightarrow }f_{n}(x) = 0\). But for all \(\nN \)
+</p>
+<p>
+\[ \int _{\R }|f_{n}(x) - 0|dx = n\int _{\R }{\1}_{(0, 1/n)}(x)dx = n.\frac {1}{n} = 1,\]
+</p>
+<p>
+and so we cannot find any function in the sequence that gets arbitrarily close to \(0\) in the \({\cal L}_{1}\) sense.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:int_on_incr_set"><b>3.11</b></a> First suppose that \(f{\1}_{A}\) is integrable. Then for all \(\nN , |f|{\1}_{A_{n}} \leq |f|{\1}_{A}\) and so \(f{\1}_{A_{n}}\) is
+integrable by monotonicity. It follows that
+</p>
+<p>
+\[ \sum _{r=1}^{n}\int _{S}|f|{\1}_{A_{r}}dm = \int _{S}|f|{\1}_{\bigcup _{r=1}^{n}A_{r}}dm &lt; \infty .\]
+</p>
+<p>
+Now \(|f|{\1}_{\bigcup _{r=1}^{n}A_{r}}\) increases to \(|f|{\1}_{A}\) as \(n \rightarrow \infty \) and so by the monotone convergence theorem,
+</p>
+<p>
+\[ \sum _{r=1}^{\infty }\int _{S}|f|{\1}_{A_{r}}dm = \lim _{n \rightarrow \infty }\int _{S}|f|{\1}_{\bigcup _{r=1}^{n}A_{r}}dm = \int _{S}|f|{\1}_{A}dm &lt; \infty .\]
+</p>
+<p>
+Conversely if \(f{\1}_{A_{n}}\) is integrable for each \(\nN \) and \(\sum _{n=1}^{\infty }\int _{A_{n}}|f|dm &lt; \infty \), we have by Theorem 3.3.2 that
+</p>
+<p>
+\[\begin {aligned} \int _{S}|f|{\1}_{A}dm &amp; = \int _{S}|f|{\1}_{\bigcup _{n=1}^{\infty }A_{n}}dm\\ &amp; = \sum _{n=1}^{\infty }\int _{A_{n}}|f|dm &lt; \infty .                       \end
+{aligned}\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:rev_fatou"><b>3.12</b></a> \(f - f_{n} \geq 0\) for all \(\nN \) so by Fatou’s lemma:
+</p>
+<p>
+\[ \li \int _{S} (f - f_{n})dm \geq \int _{S} \li (f - f_{n})dm.\]
+</p>
+<p>
+\[\mbox {i.e.}~\int _{S}f dm + \li \int _{S}(-f_{n}) dm \geq \int _{S}f dm + \int _{S}\li (- f_{n})dm,\]
+</p>
+<p>
+\[\mbox {and so}~ \li -\left (\int _{S}f_{n}dm\right ) \geq \int _{S}\li (- f_{n})dm.\]
+</p>
+<p>
+Multiplying both sides by \(-1\) reverses the inequality to yield
+</p>
+<p>
+\[ -\li -\left (\int _{S}f_{n}dm\right ) \leq \int _{S}\left (-\li (- f_{n})\right )dm.\]
+</p>
+<p>
+But then by definition of \(\ls \) we have
+</p>
+<p>
+\[ \ls \int _{S}f_{n}dm \leq \int _{S}\ls f_{n} dm.\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:cos_int"><b>3.13</b></a> Integrability follows easily from the facts that \(|\cos (\alpha x)| \leq 1\) and \(|\sin (\beta x)| \leq 1\) for all \(x \in \R \). As
+\(|\cos (x/n)f(x)| \leq |f(x)|\) for all \(x \in \R \) and \(f\) is integrable, we may use the dominated convergence theorem to deduce that
+</p>
+<p>
+\[ \lim _{n \rightarrow \infty }\int _{\R }\cos (x/n)f(x)dx = \int _{\R } \lim _{n \rightarrow \infty }\cos (x/n)f(x)dx = \int _{\R }f(x)dx,\]
+</p>
+<p>
+since \(\lim _{n \rightarrow \infty }\cos (x/n) = \cos (0) = 1\) for all \(x \in \R \).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:ints_cts"><b>3.14</b></a> Define \(f_{n}(x) = f(t_{n}, x)\) for each \(\nN , x \in S\). Then \(|f_{n}(x)| \leq g(x)\) for all \(x \in S\). Since \(g\) is integrable,
+by dominated convergence
+</p>
+<p>
+\[\begin {aligned} \lim _{n \rightarrow \infty }\int _{S}f(t_{n}, x)dm(x) &amp; = \int _{S}\lim _{n \rightarrow \infty }f_{n}(x)dm(x)\\ &amp; = &amp;\int _{S}\lim _{n \rightarrow
+\infty }f(t_{n}, x) dm(x)\\ &amp; = \int _{S}f(t, x)dm(x), \end {aligned}\]
+</p>
+<p>
+where we used the continuity assumption (ii) in the last step.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:diff_under_int"><b>3.15</b></a> Let \((h_n)\) be an arbitrary sequence such that \(h_n\to 0\) and define \(a_{n,t}(x)=\frac {f(t_n+h,x)-f(t,x)}{h_n}\).
+</p>
+<p>
+Since \(\frac {\p f}{\p t}\) exists we have \(a_{n,t}(x)\to \frac {\p f}{\p t}(x,t)\) as \(n\to \infty \) for all \(x\). By the mean value theorem there exists \(\theta _n\in [0,1]\) such that
+\(a_{n,t}(x)=\frac {\p f}{\p t}(t+\theta _n h,x)\), hence \(|f_n(x)|\leq h(x)\). Thus by dominated convergence \(\int _S a_{n,t}(x)\,dm(x)\to \int _S \frac {\p f}{\p t}(t,x)\,dm(x)\).
+</p>
+<p>
+By linearity of the integral we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{A.}{0}\)</span>
+
+
+<!--
+
+
+                                                                       ∂                            1
+                                                                            Z                                      Z                                Z                
+                                                                              f (t, x) dm(x) = lim                          f (t + hn , x) dm(x) −       f (t, x) dm(x)
+                                                                       ∂t   S                 n→∞  hn                  S                             S
+                                                                                                             Z
+                                                                                                    = lim         an,t (x) dm(x)
+                                                                                                     n→∞ S
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\frac {\p }{\p t}\int _S f(t,x)\,dm(x) &amp;=\lim _{n\to \infty }\frac {1}{h_n}\l (\int _S f(t+h_n,x)\,dm(x)-\int _Sf(t,x)\,dm(x)\r )\\ &amp;=\lim _{n\to \infty }\int _S
+a_{n,t}(x)\,dm(x)
+\end{align*}
+and the result follows.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:nonconv_int"><b>3.16</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> For each \(x \in \R , \nN \), the expression for \(f_{n}(x)\) is a telescopic sum. If you begin to write
+it out, you see that terms cancel in pairs and you obtain
+</p>
+<p>
+\[ f_{n}(x) = -2xe^{-x^{2}} + 2(n+1)^{2}xe^{-(n+1)^{2}x^{2}}.\]
+</p>
+<p>
+Using the fact that \(\lim _{N \rightarrow \infty }N^{2}e^{-yN^{2}} = 0\), for all \(y \in \R \) we find that
+</p>
+<p>
+\[ \lim _{n \rightarrow \infty }f_{n}(x) = f(x) = -2xe^{-x^{2}}.\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> The functions \(f\) and \(f_{n}\) are continuous and so Riemann integrable over the closed interval
+\([0,a]\). We can calculate (which is left for you) that \(\int _{0}^{a}f(x)dx = -2\int _{0}^{a}xe^{-x^{2}}dx = e^{-a^{2}} - 1\). But on the other hand
+</p>
+<p>
+\[\begin {aligned} \int _{0}^{a}f_{n}(x)dx &amp; = \sum _{r=1}^{n}\int _{0}^{a}[-2r^{2}xe^{-r^{2}x^{2}} + 2(r+1)^{2}xe^{-(r+1)^{2}x^{2}}]dx\\ &amp; = \sum _{r=1}^{n}(e^{-r^{2}a} -
+e^{-(r+1)^{2}a})\\ &amp; = e^{-a^{2}} - e^{-(n+1)^{2}a} \rightarrow e^{-a^{2}}~\mbox {as}~n \rightarrow \infty .                                                 \end {aligned}\]
+</p>
+<p>
+So we conclude that \(\int _{0}^{a}f(x)dx \neq \lim _{n \rightarrow \infty }\int _{0}^{a}f_{n}(x)dx\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:fourier_linear"><b>3.17</b></a> Using the fact that \(|e^{-ixy}| \leq 1\), we get by Theorem 3.5.1,
+</p>
+<p>
+\[ |\widehat {f}(y)| \leq \int _{\R }|e^{-ixy}|.|f(x)|dx \leq \int _{\R }|f(x)|dx &lt; \infty .\]
+</p>
+<p>
+For the linearity, we have
+</p>
+<p>
+\[\begin {aligned} \widehat {af + bg}(y) &amp; = \int _{\R }e^{-ixy}(a f(x) + b g(x)) dx \\ &amp; = a\int _{\R }e^{-ixy}f(x)dx + b\int _{\R }e^{-ixy}g(x) dx \\ &amp; = a \widehat
+{f}(y) + b \widehat {g}(y).          \end {aligned}\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:fourier_jump"><b>3.18</b></a> \(x \rightarrow {\1}_{\mathbb {Q}}(x)\cos (nx)\) is integrable as \(|{\1}_{\mathbb {Q}}(x)\cos (nx)| \leq |\cos (nx)|\) for all
+\(x \in \R \) and \(x \rightarrow \cos (nx)\) is integrable. Similarly \(x \rightarrow {\1}_{\mathbb {Q}}(x)\sin (nx)\) is integrable. So the Fourier coefficients \(a_{n}\) and \(b_{n}\) are
+well-defined as Lebesgue integrals. As \(|\cos (nx)| \leq 1\), we have \(a_{n} = 0\) for all \(n \in \mathbb {Z}_{+}\) since,
+</p>
+<p>
+\[\begin {aligned} |a_{n}| &amp; \leq &amp; \frac {1}{\pi }\int _{-\pi }^{\pi }{\1}_{\mathbb {Q}}(x)|\cos (nx)|dx \\ &amp; \leq &amp; \frac {1}{\pi }\int _{-\pi }^{\pi
+}{\1}_{\mathbb {Q}}(x)dx = 0.          \end {aligned}\]
+</p>
+<p>
+By a similar argument, \(b_{n} = 0\) for all \(\nN \). So it is possible to associate a Fourier series to \({\1}_{\mathbb {Q}}\), but this Fourier series will converges to zero!
+</p>
+<p>
+<i>This illustrates that pointwise convergence is not the right tool for examining convergence of Fourier series!</i>
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:fourier_translate"><b>3.19</b></a> First observe that \(f_{a}\) is measurable, by Problem <a href="Exercises-2.html#ps:translate_meas"><b>2.7</b></a> (take \(y
+= -a\) there). For integrability, we use
+</p>
+<p>
+\[ \int _{\R }|f_{a}(x)|dx = \int _{\R }|f(x - a)|dx = \int _{\R }|f(x)|dx &lt; \infty .\]
+</p>
+<p>
+Then
+</p>
+<p>
+\[ \widehat {f_{a}}(y) = \int _{\R }e^{-ixy}f(x-a) dx,\]
+</p>
+<p>
+and the result follows on making a change of variable \(u = x-a\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:fourier_cts"><b>3.20</b></a> Let \(y \in \R \) and \((y_{n})\) be an arbitrary sequence converging to \(y\) as \(n \rightarrow \infty \). We need to show that the
+sequence \((f(y_{n}))\) converges to \(f(y)\). We have
+</p>
+<p>
+\[\begin {aligned} |\widehat {f}(y_{n}) - \widehat {f}(y)| &amp; = \left |\int _{\R }e^{-ixy_{n}}f(x)dx - \int _{\R }e^{-ixy}f(x)dx\right |\\ &amp; \leq &amp; \int _{\R
+}|e^{-ixy_{n}}- e^{-ixy}|.|f(x)|dx.           \end {aligned}\]
+</p>
+<p>
+Now \(|e^{-ixy_{n}}- e^{-ixy}| \leq |e^{-ixy_{n}}| + |e^{-ixy}| = 2\) and the function \(x \rightarrow 2f(x)\) is integrable. Also the mapping \(y \rightarrow e^{-ixy}\) is continuous, and so
+\(\lim _{n \rightarrow \infty }|e^{-ixy_{n}}- e^{-ixy}| = 0\). The result follows from these two facts, and the use of Lebesgue’s dominated convergence theorem.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-3.html#ps:fourier_xfx"><b>3.21</b></a> To prove that \(y \rightarrow \widehat {f}(y)\) is differentiable, we need to show that
+</p>
+<p>
+\(\lim _{h \rightarrow 0}(\widehat {f}(y + h) - \widehat {f}(y))/h\) exists for each \(y \in \R \). We have
+</p>
+<p>
+\[\begin {aligned} \frac {\widehat {f}(y + h) - \widehat {f}(y)}{h} &amp; = \frac {1}{h}\int _{\R }(e^{-ix(y + h)} - e^{-ixy})f(x)dx \\ &amp; = \int _{\R }e^{-ixy}\left (\frac
+{e^{-ihx} - 1}{h}\right )f(x)dx.           \end {aligned}\]
+</p>
+<p>
+Since \(|e^{-ixy}| \leq 1\), and using the hint with \(b = hx\), we get
+</p>
+<p>
+\[\begin {aligned} \left |\frac {\widehat {f}(y + h) - \widehat {f}(y)}{h}\right | &amp; \leq &amp; \int _{\R }\left |\frac {e^{-ihx} - 1}{h}\right |.|f(x)|dx \\ &amp; \leq &amp;
+\int _{\R }|x||f(x)|dx &lt; \infty .           \end {aligned}\]
+</p>
+<p>
+Then we can use Lebesgue’s dominated convergence theorem to get
+</p>
+<p>
+\[\begin {aligned} \lim _{h \rightarrow 0}\frac {\widehat {f}(y + h) - \widehat {f}(y)}{h} &amp; = \int _{\R }e^{-ixy}\lim _{h \rightarrow 0}\left (\frac {e^{-ihx} - 1}{h}\right
+)f(x)dx \\ &amp; = -i\int _{\R }e^{-ixy}xf(x)dx = -i\widehat {g}(y), \end {aligned}\]
+</p>
+<p>
+and the result is proved. In the last step we used
+</p>
+<p>
+\[ \lim _{h \rightarrow 0}\frac {e^{-ihx} - 1}{h} = \left .\frac {d}{dy}e^{-ixy}\right |_{y=0} = -ix.\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<h5 id="autosec-215">Chapter <a href="Probability-Measure.html#chap:prob_with_meas">4</a></h5>
+<a id="notes-autopage-215"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-4.html#ps:prob_conv_thms"><b>4.1</b></a> Monotone Convergence Theorem. Let \((X_{n})\) be an increasing sequence of non-negative random variables which converges pointwise to a
+random variable \(X\), i.e. \(\lim _{n \rightarrow \infty }X_{n}(\omega ) = X(\omega )\) for all \(\omega \in \Omega \) (*). Then
+</p>
+<p>
+\[ \lim _{n \rightarrow \infty }\E (X_{n}) = \E (X).\]
+</p>
+<p>
+Fatou’s Lemma. Let \((X_{n})\) be a sequence of non-negative random variables, then
+</p>
+<p>
+\[ \li \E (X_{n}) \geq \E \left (\li X_{n}\right ).\]
+</p>
+<p>
+Dominated Convergence Theorem. Let \((X_{n})\) be a sequence of random variables which converges pointwise (*) to a random variable \(X\). Suppose that there exists an integrable, non-negative random
+variable \(Y\) so that \(|X_{n}(\omega )| \leq Y(\omega )\) for all \(\nN \) and all \(\omega \in \Omega \). Then \(X\) is integrable and
+</p>
+<p>
+\[ \lim _{n \rightarrow \infty }\E (X_{n}) = \E (X).\]
+</p>
+<p>
+(*) We can in fact replace pointwise convergence by convergence almost everywhere, i.e. \(\lim _{n \rightarrow \infty }X_{n}(\omega ) = X(\omega )\) for all \(\omega \in \Omega - A\), where \(A \in
+{\cal F}\) and \(\P (A) = 0\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:indep_comp"><b>4.2</b></a> We have \(\P [A\cap B]=\P [A]\cap \P [B]\). Noting that \(A^c\cap B^c=(A\cup B)^c\), we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{A.}{0}\)</span>
+
+
+<!--
+
+
+
+                                                                                 P[Ac ∩ B c ] = P[(A ∪ B)c ] = 1 − P[A ∪ B]
+
+                                                                                                           = 1 − P[A] − P[B] + P[A ∩ B]
+
+                                                                                                           = 1 − P[A] − P[B] − P[A]P[B]
+
+                                                                                                           = (1 − P[A])(1 − P[B])
+
+                                                                                                           = P[Ac ]P[B c ].
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\P [A^c\cap B^c]=\P [(A\cup B)^c] &amp;=1-\P [A\cup B]\\ &amp;=1-\P [A]-\P [B]+\P [A\cap B]\\ &amp;=1-\P [A]-\P [B]-\P [A]\P [B]\\ &amp;=(1-\P [A])(1-\P [B])\\ &amp;=\P [A^c]\P
+[B^c].
+\end{align*}
+Hence \(A^c\) and \(B^c\) are independent.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:indep_inf"><b>4.3</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Define \(B_n=\cap _{i=1}^n A_i\). Then \((B_n)\) is a decreasing sequence of sets and, since \(\P \)
+is a finite measure, by Theorem <a href="Two-Useful-Theorems-About-Measure.html#thm:monotone_meas">1.6.1</a> we have \(\P [B_n]\to \P [\cap _{i=1}^\infty B_i]\) as \(n\to \infty \). Since
+\(\cap _{i=1}^\infty A_i=\cap _{i=1}^\infty B_i\) we thus have \(\P [\cap _{i=1}^\infty A_i]=\lim _{n\to \infty }\P [\cap _{i=1}^n A_i]\). Using independence on the right hand side, we
+obtain
+</p>
+<p>
+\[\P [\cap _{i=1}^\infty A_i]=\lim _{n\to \infty }\P [A_1]\P [A_2]\ldots \P [A_n]=\prod _{i=1}^\infty \P [A_i]\]
+</p>
+<p>
+as required. Note that the limit on the right hand side exists because \(\P [A_1]\P [A_2]\ldots \P [A_n]\) is decreasing as \(n\) increases.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> If \(\P (A_{n}) &lt; 1-\kappa \) for infinitely many \(n\), where \(\kappa &gt;0\) does not depend
+on \(n\), then \(\prod _{n=1}^{\infty }\P (A_{n}) = 0\) so \(\P \left (\bigcap _{n=1}^{\infty }A_{n}\right ) = \prod _{n=1}^{\infty }\P (A_{n})\) would hold in, for example, the case where
+all the \((A_n)\) were disjoint. Disjoints events are always <i>dependent</i> (because if one occurs then all the others do not!), so clearly this ‘alternative’ definition is not what want.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:cdf_thm_bit"><b>4.4</b></a> Let \((a_{n})\) be a sequence diverging to \(\infty \). We may without loss of generality assume that it is monotonic increasing. Define
+\(A_{n} = \{\omega \in \Omega ; X(\omega ) \leq a_{n}\}\). Then \((A_{n})\) increases to \(\Omega \) and by Theorem <a
+href="Basic-Concepts-Probability-Theory.html#thm:monotone_events_P">4.2.1</a>,
+</p>
+<p>
+\[\lim _{x \rightarrow \infty }F(x) = \lim _{n \rightarrow \infty }\P (A_{n}) = \P (\Omega ) = 1.\]
+</p>
+<p>
+Next let \(B_{n} = \{\omega \in \Omega ; X(\omega ) \leq - a_{n}\}\). Then \((B_{n})\) decreases to \(\emptyset \) and by Theorem <a
+href="Basic-Concepts-Probability-Theory.html#thm:monotone_events_P">4.2.1</a>,
+</p>
+<p>
+\[\lim _{x \rightarrow -\infty }F(x) = \lim _{n \rightarrow \infty }\P (B_{n}) = \P (\emptyset ) = 0.\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:indep_fg"><b>4.5</b></a> If \(A,B \in {\cal B}(\R )\) and \(f,g\) are Borel measurable, then \(f^{-1}(A), g^{-1}(B) \in {\cal B}(\R )\) and so
+</p>
+<p>
+\[\begin {aligned} \P (f(X) \in A, g(Y) \in B) &amp; = \P (X \in f^{-1}(A), Y \in g^{-1}(B))\\ &amp; = \P (X \in f^{-1}(A))\P (Y \in g^{-1}(B))\\ &amp; = \P (f(X) \in A)\P (g(Y)
+\in B). \end {aligned}\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:EmaxXa"><b>4.6</b></a> Using the usual notation, \(a \vee b = \max \{a,b\},\)
+</p>
+<p>
+\[\E (\max \{X,a\}) = \int _{\R } (x \vee a) dp_{X}(x).\]
+</p>
+<p>
+Since \(x \vee a \geq x\) and \(x \vee a \geq a\), by monotonicity
+</p>
+<p>
+\(\int _{\R } (x \vee a) dp_{X}(x) \geq \int _{\R } x dp_{X}(x) = \E (X)\) and \(\int _{\R } (x \vee a) dp_{X}(x) \geq \int _{\R } a dp_{X}(x) = a\), and so
+</p>
+<p>
+\[ \E (\max \{X,a\}) \geq \max \{\E (X), a\}.\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:E_P_tail_bound"><b>4.7</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Let \(A_{k} = \{\omega \in \Omega ; X(\omega ) = k\}\). If \(\omega \in A_{k}, X(\omega ) =
+k\) and
+</p>
+<p>
+\[\sum _{i=1}^{\infty }{\1}_{\{X \geq i\}}(\omega ) = {\1}_{\{X \geq 1\}}(\omega ) + {\1}_{\{X \geq 2\}}(\omega ) + \cdots + {\1}_{\{X \geq k\}}(\omega ) = k.\]
+</p>
+<p>
+The result follows since we have the disjoint union \(\Omega = \bigcup _{k=1}^{\infty }A_{k}\).
+</p>
+<p>
+By monotone convergence
+</p>
+<p>
+\[ \E (X) = \E \left (\sum _{i=1}^{\infty }{\1}_{\{X \geq i\}}\right ) = \sum _{i=1}^{\infty }\E ({\1}_{\{X \geq i\}}) = \sum _{i=1}^{\infty }\P (X \geq i).\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Let \(\omega \in A_{i}\) then \(i -1 \leq X(\omega ) &lt; i\) and so
+</p>
+<p>
+\[ \sum _{i=1}^{\infty }(i-1){\1}_{A_{i}}(\omega ) \leq X(\omega ) &lt; \sum _{i=1}^{\infty }i{\1}_{A_{i}}(\omega ),\]
+</p>
+<p>
+from which the first result follows. For the second result, first observe that
+</p>
+<p>
+\[\sum _{i=1}^{\infty }i{\1}_{A_{i}}(\omega ) = \sum _{i=1}^{\infty }(i-1){\1}_{A_{i}}(\omega ) + \sum _{i=1}^{\infty }{\1}_{A_{i}}(\omega ) = \sum _{i=1}^{\infty
+}(i-1){\1}_{A_{i}}(\omega ) + 1,\]
+</p>
+<p>
+since \(\sum _{i=1}^{\infty }{\1}_{A_{i}} = {\1}_{\bigcup _{i=1}^{\infty }A_{i}} = {\1}_{\Omega } = 1\). Thus
+</p>
+<p>
+\[ \sum _{k=1}^{\infty }(k-1)\P (A_{k}) \leq \E (X) &lt; 1 + \sum _{k=1}^{\infty }(k-1)\P (A_{k}).\]
+</p>
+<p>
+But \(\P (A_{k}) = \P (k -1 \leq X &lt; k)\) for each \(k \in \mathbb {N}\) and
+</p>
+<p>
+\[\begin {aligned} \sum _{k=1}^{N}(k-1)\P (k -1 \leq X &lt; k) &amp; = \P (1 \leq X &lt; 2) + 2\P (2 \leq X &lt; 3)\\ &amp; + &amp; 3\P (3 \leq X &lt; 4) + \cdots + (N-1)\P (N - 1
+\leq X &lt; N)\\ &amp; = \P (1 \leq X &lt; N) + \P (2 \leq X &lt; N)\\ &amp; + &amp; \P (3 \leq X &lt; N) + \cdots + \P (N-1 \leq X &lt; N)\\ &amp; = \sum _{k=1}^{N-1}\P (k \leq
+X &lt; N) + \P (N-1 \leq X &lt; N)\\ &amp; \rightarrow &amp; \sum _{k=1}^{\infty }\P (X \geq k)~\mbox {as}~N \rightarrow \infty .                               \end {aligned}\]
+</p>
+<p>
+In the last step we used the fact that as \(N \rightarrow \infty \),
+</p>
+<p>
+\[ \P (N-1 \leq X &lt; N) = \P (X &lt; N) - \P (X &lt; N-1) \rightarrow 1 - 1 = 0.\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:indep_coin_runs"><b>4.8</b></a> Let \(E_{m}\) be the event that starting at the \(m\)th toss, \(k\) consecutive heads appear. Then \(\P [E_{m}] = 1/2^{k}\). Set
+\(A_n=E_{m+kn}\) and then the \((A_n)\) are independent. Moreover, \(\sum _{r=1}^{\infty }\P [A_n] = \infty \), so by the second Borel-Cantelli lemma \(\P [A_n\text { i.o.}]=1\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:ev_io"><b>4.9</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> You might reasonably think that this is obvious - if \((A_n)\) occurs eventually then it occurs for all
+\(n\) after some \(N\), and of course there are infinitely many such \(n\) so then \((A_n)\) occurs infinitely often. Let’s give a proof anyway.
+</p>
+<p>
+Suppose \(\omega \in \{A_n\text { e.v.}\}=\bigcup _m\bigcap _{n\geq m} A_n\). Then, for at least one value of \(m\), we have \(\omega \in A_n\) for all \(n\geq m\). Hence, \(\omega \in \bigcup
+_{n\geq k}A_n\) for all \(k\), which implies \(\omega \in \bigcap _k\bigcup _{n\geq k} A_n=\{A_n\text { i.o.}\}\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> By De Morgan’s laws we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{A.}{0}\)</span>
+
+
+<!--
+
+                                                                                                        
+                                                                                     \ [       [       [         [ \
+                                                                Ω \ {An i.o.} = Ω \     An  = Ω \    An  =     Ω \ An = {Ω \ An e.v.}.
+                                                                                     m n≥m          m         n≥m             m n≥m
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\Omega \sc \{A_n\text { i.o.}\} =\Omega \sc \l (\bigcap _m\bigcup _{n\geq m}A_n\r ) =\bigcup _m\l (\Omega \sc \l (\bigcup _{n\geq m}A_n\r )\r ) =\bigcup _m\bigcap _{n\geq
+m}\Omega \sc A_n =\{\Omega \sc A_n\text { e.v.}\}.
+\end{align*}
+It follows immediately that \(1-\P [A_n\text { i.o.}]=\P [A_n^c\text { e.v.}].\)
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Define \(B_m=\cap _{n\geq m} A_n\) and note that \(B_m\) is increasing and that \(\P [B_m]\leq \P
+[A_m]\) because \(B_m\sw A_m\). Thus by Theorem <a href="Basic-Concepts-Probability-Theory.html#thm:monotone_events_P">4.2.1</a> we have
+</p>
+<p>
+\[\P [A_n\text { e.v.}]=\P [\cup _m B_m]=\lim _{m\to \infty }\P [B_m]=\liminf _{m\to \infty }\P [B_m]\leq \liminf _{m\to \infty }\P [A_m].\]
+</p>
+<p>
+Note that we must switch from \(\lim \) to \(\liminf \) before using \(\P [B_m]\leq \P [A_m]\), because we cannot be sure if \(\lim _n\P [A_n]\) exists (and in general it will not).
+</p>
+<p>
+Using (b), we then have
+</p>
+<p>
+\[\P [A_n\text { i.o.}]=1-\P [A_n^c\text { e.v.}]\geq 1-\liminf _{m\to \infty }\P [A^c_m]=1-\liminf _{m\to \infty }(1-\P [A_m])=-\liminf _{m\to \infty }-\P [A_m]=\limsup _{m\to
+\infty }\P [A_m].\]
+</p>
+<p>
+Putting our two equations together gets the result.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:E_int"><b>4.10</b></a> If \(f\) is an indicator function: \(f = {\1}_{A}\) for some \(A \in {\cal B}(\R )\):
+</p>
+<p>
+\[ \int _{\Omega }{\1}_{A}(X(\omega ))d\P (\omega ) = \P (X \in A) = p_{X}(A) = \int _{\R }{\1}_{A}(x)p_{X}(dx),\]
+</p>
+<p>
+and so the result holds in this case. It extends to simple functions by linearity. If \(f\) is non-negative and bounded
+</p>
+<p>
+\[\begin {aligned} \int _{\Omega }f(X(\omega ))d\P (\omega ) &amp; = \sup \left \{\int _{\Omega }g(\omega )d\P (\omega ); g~\mbox {simple on}~\Omega , 0 \leq g \leq f \circ
+X\right \}\\ &amp; = \sup \left \{\int _{\Omega }h(X(\omega ))d\P (\omega ); h~\mbox {simple on}~\R , 0 \leq h \circ X \leq f \circ X\right \}\\ &amp; = \sup \left \{\int _{\R
+}h(x)p_{X}(dx); h~\mbox {simple},~0 \leq h \leq f\right \}\\ &amp; = \int _{\R }f(x)dp_{X}(x).\end {aligned}\]
+</p>
+<p>
+In the general case write \(f = f_{+} - f_{-}\). If \(f\) is non-negative but not necessarily bounded, the result still holds but both integrals may be (simultaneously) infinite.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:chebychev_2"><b>4.11</b></a> This follows immediately from the result of Problem <a href="Exercises-3.html#ps:chebychev"><b>3.4</b></a>, when you replace \(f\) by
+\(X - \mu \).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:cauchy_schwarz"><b>4.12</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> By linearity, the quadratic function \(g(t) = \E (X^{2}) + 2t\E (XY) + t^{2}\E (Y^{2}) \geq 0\)
+for all \(t \in \R \). A non-negative quadratic function has at most one real root, and hence has a non-positive discriminant (i.e.&nbsp;\(b^2-4ac\leq 0\)). Hence \(4\E (XY)^{2} - 4\E (X^{2})\E
+(Y^{2})\leq 0\) and the result follows.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Put \(Y=1\) in the Cauchy-Schwarz inequality from (a) to get \(\E (|X|) \leq \E (X^{2})^{\frac
+{1}{2}} &lt; \infty \). So \(X\) is integrable. By Problem <a href="Exercises-3.html#ps:abs_int"><b>3.8</b></a> part (a) \(|\E (X)| \leq \E (|X|)\). Combining our two inequalities gives \(|\E
+(X)|^{2} \leq \E (X^{2})\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> If \(\E [X^2]&lt;\infty \) then by part (b) \(X\) is also integrable, so by linearity we have
+</p>
+<p>
+\[ \var (X) = \E [(X - \mu )^{2}] = \E [X^{2}] - 2\mu \E [X] + \mu ^{2} = \E [X^{2}] - \mu ^{2}.\]
+</p>
+<p>
+Hence \(\var (X)&lt;\infty \).
+</p>
+<p>
+Conversely, suppose that \(\var (X)&lt;\infty \), and note that by assumption we also have \(\E [X]&lt;\infty \). We can write \(X^2=(X-\E [X])^2+2X\E [X]-\E [X]^2\) and note that all terms here are
+integrable by our assumptions, thus
+</p>
+<p>
+\[\E [X^2]=\var (X)+2\E [X]\E [X]-\E [X]^2=\var (X)-\E [X]^2.\]
+</p>
+<p>
+Hence \(\E [X^2]\) is finite.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:Lmn"><b>4.13</b></a> Write \(|X| = |X|{\1}_{\{|X| \leq 1\}} + |X|{\1}_{\{|X| &gt; 1\}}\) and then we get \(|X|^{m} = |X|^{m}{\1}_{\{|X| \leq 1\}} +
+|X|^{m}{\1}_{\{|X| &gt; 1\}}.\) Using the facts that \(|x|^{m} \leq 1\) whenever \(|x| \leq 1\) and \(|x|^{m} \leq |x|^{n}\) whenever \(|x| \geq 1\), we find by linearity and monotonicity that
+</p>
+<p>
+\[\begin {aligned} \E (|X|^{m}) &amp; = \E (|X|^{m}{\1}_{\{|X| \leq 1\}}) + \E (|X|^{m}{\1}_{\{|X| &gt; 1\}}) \\ &amp; \leq &amp; 1 + \E (|X|^{n}{\1}_{\{X &gt; 1\}})\\ &amp; \leq
+&amp; 1 + \E (|X|^{n}) &lt; \infty .           \end {aligned}\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:cT441"><b>4.14</b></a> \((X_{n})\) converges to \(X\) in probability since given any \(\epsilon &gt; 0\) and \(c &gt; 0\) we can find \(n_{0} \in \mathbb {N}\), which
+we write \(n_{0} = 2^{m} + r\) for some natural number \(m\) where \(r = 0, 1, 2, \ldots , 2^{m}-1\), so that \(\frac {1}{2^{m}c} &lt; \epsilon \). Then for all \(n &gt; n_{0}\), by Markov’s
+inequality
+</p>
+<p>
+\[ \P (|X_{n} - X| &gt; c) = \P ({\1}_{A_{n}} &gt; c) \leq \frac {\E ({\1}_{A_{n}})}{c} &lt; \frac {1}{2^{m}c} &lt; \epsilon .\]
+</p>
+<p>
+On the other hand \((X_{n})\) cannot converge to \(X\) almost surely since given any \(\nN \) no matter how large, we can find \(m &gt; n\) so that \(A_{m}\) and \(A_{n}\) are disjoint (with \(\P (A_{n})
+&gt; 0\)) and so \({\1}_{A_{n}}(\omega ) - {\1}_{A_{m}}(\omega ) = 1-0 = 1\) for all \(\omega \in A_{n}\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:C_int_abs"><b>4.15</b></a> Suppose \(f = f_{1} + if_{2}\) is integrable. Then both \(f_{1}\) and \(f_{2}\) are integrable. The integrability of \(|f| = \sqrt
+{f_{1}^{2} + f_{2}^{2}}\) follows immediately from the inequality \(\sqrt {f_{1}^{2} + f_{2}^{2}} \leq |f_{1}| + |f_{2}|\). For the converse use \(|f_{1}| \leq \sqrt {f_{1}^{2} + f_{2}^{2}}\)
+and \(|f_{2}| \leq \sqrt {f_{1}^{2} + f_{2}^{2}}\).
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:N_char_func"><b>4.16</b></a> First suppose that we have established the case for \(Y\), i.e. we know that \(\Phi _{Y}(u) = e^{-\frac {1}{2}u^{2}}\) for all \(u \in \R
+\). Then since \(X = \mu + \sigma Y\), we have
+</p>
+<p>
+\[\begin {aligned} \Phi _{X}(u) &amp; = \E (e^{iu (\mu + \sigma Y)})\\ &amp; = e^{iu\mu }\E (e^{i(u\sigma )Y}) = e^{i\mu u - \frac {1}{2}\sigma ^{2}u^{2}},\end {aligned}\]
+</p>
+<p>
+as was required. To establish the result for \(Y\) we write
+</p>
+<p>
+\[\begin {aligned} \Phi _{Y}(u) &amp; = \frac {1}{\sqrt {2 \pi }}\int _{\R }e^{iuy}e^{-\frac {1}{2}y^{2}}dy \\ &amp; = \frac {1}{\sqrt {2 \pi }}\int _{\R }\cos (uy)e^{-\frac
+{1}{2}y^{2}}dy + i \frac {1}{\sqrt {2 \pi }}\int _{\R }\sin (uy)e^{-\frac {1}{2}y^{2}}dy.                      \end {aligned}\]
+</p>
+<p>
+As \(|\cos (uy)ye^{-\frac {1}{2}u^{2}}| \leq |y|e^{-\frac {1}{2}y^{2}}\) and \(|\sin (uy)ye^{-\frac {1}{2}u^{2}}| \leq |y|e^{-\frac {1}{2}y^{2}}\) and \(y \rightarrow |y|e^{-\frac
+{1}{2}y^{2}}\) is integrable on \(\R \), we may apply Problem <a href="Exercises-3.html#ps:diff_under_int"><b>3.15</b></a> to deduce that \(u \rightarrow \Phi _{Y}(u)\) is differentiable and its
+derivative at \(u \in \R \) is
+</p>
+<p>
+\[ \Phi _{Y}^{\prime }(u) = \frac {i}{\sqrt {2 \pi }}\int _{\R }e^{iuy}ye^{-\frac {1}{2}y^{2}}dy.\]
+</p>
+<p>
+Now integrate by parts to find that
+</p>
+<p>
+\[\begin {aligned} \Phi _{Y}^{\prime }(u) &amp; = \frac {i}{\sqrt {2 \pi }}\left [-e^{iuy}e^{-\frac {1}{2}y^{2}}\right ]_{-\infty }^{\infty } - \frac {1}{\sqrt {2 \pi }}\int
+_{-\infty }^{\infty }ue^{iuy}e^{-\frac {1}{2}y^{2}}dy\\ &amp; = -u \Phi _{Y}(u).                    \end {aligned}\]
+</p>
+<p>
+So we have the initial value problem \(\ds \frac {d \Phi _{Y}(u)}{du} = -u \Phi _{Y}(u)\) with initial condition, \(\Phi _{Y}(0) = 1\) and the result follows by using the standard separation of variables
+technique.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:gen_moments"><b>4.17</b></a> First note that by Problem <a href="Exercises-4.html#ps:cauchy_schwarz"><b>4.12</b></a>, for all \(1 \leq m \leq n, \E
+(|X|^{m})\) is finite and so the mapping \(y \rightarrow y^{m}\) is \(p_{X}\) integrable. We also have that for all \(u,y \in \R , |i^{m}y^{m}e^{iuy}| \leq |y|^{m}\) Hence we can apply Problem <a
+href="Exercises-3.html#ps:diff_under_int"><b>3.15</b></a> to differentiate up to and including \(n\) times under the integral sign to obtain
+</p>
+<p>
+\[ \frac {d^{n}}{du^{n}}\Phi _{X}(u) = \int _{\R }i^{n}y^{n}e^{iuy}dp_{X}(y).\]
+</p>
+<p>
+Now let \(u=0\) to find that
+</p>
+<p>
+\[ \left .\frac {d^{n}}{du^{n}}\Phi _{X}(u)\right |_{u=0} = i^{n}\int _{\R }y^{n}dp_{X}(y) = i^{n}\E (X^{n}).\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:exp_moments"><b>4.18</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Since \(e^{-ax} \leq 1\) for all \(x \geq 0\) we have
+</p>
+<p>
+\[ \E (e^{-aX}) = \int _{0}^{\infty }e^{-ax}dp_{X}(x) \leq \int _{0}^{\infty }dp_{X}(x) = 1.\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span>
+</p>
+<p>
+\[\begin {aligned} \E (e^{a|X|} &amp; = \frac {1}{\sqrt {2 \pi }}\int _{\R }e^{u|y|}e^{-\frac {1}{2}y^{2}}dy \\ &amp; = \frac {1}{\sqrt {2 \pi }}\int _{-\infty
+}^{0}e^{-uy}e^{-\frac {1}{2}y^{2}}dy + \frac {1}{\sqrt {2 \pi }}\int _{0}^{\infty }e^{uy}e^{-\frac {1}{2}y^{2}}dy \\ &amp; = 2.\frac {1}{\sqrt {2 \pi }}\int _{0}^{\infty
+}e^{uy}e^{-\frac {1}{2}y^{2}}dy \\ &amp; = 2e^{\frac {1}{2}a^{2}}\frac {1}{\sqrt {2 \pi }}\int _{0}^{\infty }e^{-\frac {1}{2}(y-a)^{2}}dy \\ &amp; = 2e^{\frac {1}{2}a^{2}}\frac
+{1}{\sqrt {2 \pi }}\int _{-a}^{\infty }e^{-\frac {1}{2}y^{2}}dy \\ &amp; = 2e^{\frac {1}{2}a^{2}}\P (X &gt; -a) &lt; \infty .                              \end {aligned}\]
+</p>
+<p>
+[Note that the same argument can be used to establish that \(X\) has the moment generating function \(E(e^{aX}) = e^{\frac {1}{2}a^{2}}\).
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Using the fact that \(e^{a|x|} = \sum _{n=0}^{\infty }\frac {a^{n}|x|^{n}}{n!}\) for all \(x \in
+\R \) we see that for each \(\nN , |x|^{n} \leq \frac {n!}{a^{n}}e^{a|x|}\) and so by monotonicity:
+</p>
+<p>
+\[ \E (|X|^{n}) \leq \frac {n!}{a^{n}}\E (e^{a|X|}) &lt; \infty .\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:wlln_uncor"><b>4.19</b></a> Its sufficient to assume that \(\E (X_{n}) = 0\) for all \(\nN \). Indeed if this is not the case, just replace \(X_{n}\) with \(X_{n} - \mu \).
+The proof proceeds in exactly the same way as when the random variables are independent once we have made the following calculation:
+</p>
+<p>
+\[\begin {aligned} \mbox {Var}(\overline {X}) &amp; = \frac {1}{n^{2}}\E \left (\left (\sum _{i=1}^{n}X_{i}\right )^{2}\right )\\ &amp; = \frac {1}{n^{2}}\sum _{i=1}^{n}\sum
+_{j=1}^{n}\E (X_{i}X_{j})\\ &amp; = \frac {1}{n^{2}}\sum _{i=1}^{n}\E (X_{i}^{2})\\ &amp; = \frac {\sigma ^{2}}{n}.                            \end {aligned}\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-4.html#ps:clt_bernoulli"><b>4.20</b></a> In this case \(\mu = p\) and \(\sigma = \sqrt {p(1-p)}\) and so we can write
+</p>
+<p>
+\[ \lim _{n \rightarrow \infty }\P \left (\frac {S_{n} - np}{\sqrt {np(1-p)}} \leq a \right ) = \frac {1}{\sqrt {2\pi }}\int _{-\infty }^{a}e^{-\frac {1}{2}y^{2}}dy.\]
+</p>
+<p>
+The random variable \(S_{n}\) is the sum of \(n\) i.i.d. Bernoulli random variables and so is binomial with mean \(np\) and variance \(np(1-p)\) and so for large \(n\) it is approximately normal in the precise
+sense given above.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<h5 id="autosec-216">Chapter <a href="Product-Measures-Fubini-Theorem.html#chap:product_meas">5</a></h5>
+<a id="notes-autopage-216"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<a href="Exercises-5.html#ps:Ex"><b>5.1</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span>
+</p>
+<p>
+\[\begin {aligned} (E \cap F)_{x} &amp; = \{y \in S_{2}; (x, y) \in E \cap F\}\\ &amp; = \{y \in S_{2}; (x,y) \in E\} \cap \{y \in S_{2}; (x,y) \in F\}\\ &amp; = E_{x} \cap F_{x}.
+\end {aligned}\]
+</p>
+<p>
+\[\begin {aligned} (E^{c})_{x} &amp; = \{y \in S_{2}; (x, y) \in E^{c}\}\\ &amp; = \{y \in S_{2}; (x, y) \notin E\}\\ &amp; = (E_{x})^{c}.                            \end {aligned}\]
+</p>
+<p>
+\[\begin {aligned} \left (\bigcup _{n=1}^{\infty }E_{n}\right )_{x} &amp; = \left \{y \in S_{2}; (x, y) \in \bigcup _{n=1}^{\infty }E_{n}\right \}\\ &amp; = \bigcup _{n=1}^{\infty
+}\{y \in S_{2}; (x, y) \in E_{n}\}\\ &amp; = \bigcup _{n=1}^{\infty }(E_{n})_{x}.                     \end {aligned}\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:prod_sigma_finite_meas"><b>5.2</b></a> We can write \(S_{1} = \bigcup _{n=1}^{\infty }A_{n}\) where \(m_{1}(A_{n}) &lt; \infty \) for all \(\nN \) and \(S_{2}
+= \bigcup _{r=1}^{\infty }B_{r}\) where \(m_{2}(B_{r}) &lt; \infty \) for all \(r \in \mathbb {N}\). We then have
+</p>
+<p>
+\[S_{1} \times S_{2} = \bigcup _{n=1}^{\infty }\bigcup _{r=1}^{\infty }A_{n} \times B_{r},\]
+</p>
+<p>
+and for all \(r,n \in \mathbb {N}\),
+</p>
+<p>
+\[(m_{1} \times m_{2})(A_{n} \times B_{r}) = m_{1}(A_{n})m_{2}(B_{r}) &lt; \infty .\]
+</p>
+<p>
+(You can, of course, write \(S_{1} \times S_{2}\) as just a single union, by using the countability of \(\N \times \N \).)
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:prod_meas"><b>5.3</b></a> Let \(E = A \times B\). Then if \(x \in S_{1}\),
+</p>
+<p>
+\[ E_{x} = \left \{\begin {array}{cc} B &amp; \mbox {if}~ x \in A\\ \emptyset &amp; \mbox {if}~ x \notin A \end {array} \right .                          \]
+</p>
+<p>
+So \(\phi _{E}(x) = m_{2}(B){\1}_{A}(x)\), and hence
+</p>
+<p>
+\[\begin {aligned} (m_{1} \times m_{2})(A \times B) &amp; = \int _{S_{1}}\phi _{E}(x)dm_{1}(x) \\ &amp; = m_{2}(B) \int _{S_{1}}{\1}_{A}(x)dm_{1}(x)\\ &amp; = m_{1}(A)m_{2}(B).
+\end {aligned}\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:prod_meas_2"><b>5.4</b></a> Suppose that \(\mu \) is a measure that takes the same value as \(m_{1} \times m_{2}\) on finite product sets. Define
+</p>
+<p>
+\[ {\cal E} = \{E \in \Sigma _{1} \otimes \Sigma _{2}; \mu (E) = (m_{1} \times m_{2})(E)\}.\]
+</p>
+<p>
+By definition of \(\mu \), the collection \(\cal P\) of all finite product sets is in \(\cal E\). Since
+</p>
+<p>
+\[ (A_{1} \times A_{2}) \cap (B_{1} \times B_{2}) = (A_{1} \cap B_{1}) \times (A_{2} \cap B_{2}),\]
+</p>
+<p>
+it follows that \(\cal P\) is a \(\pi \)-system. Using basic properties of measures, it is not hard to show that \(\cal E\) is a \(\lambda \)-system (use the solution to Problem <a
+href="Exercises-5.html#ps:Ex"><b>5.1</b></a> to establish (L1)). By \(\sigma \)-finiteness, it follows that \(\sigma ({\cal P}) = \Sigma _{1} \otimes \Sigma _{2}\) and by Dynkin’s \(\pi -\lambda
+\) lemma, \(\sigma ({\cal P}) \subseteq {\cal E}\). The result follows.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:prod_fgh"><b>5.5</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Method 1.&nbsp;First let \(f = {\1}_{A}\) and let \(g = {\1}_{B}\) . Since \(h = {\1}_{A}{\1}_{B}
+= {\1}_{A \times B}\), it is clear that \(h\) is measurable in this case. Next use linearity, to extend to the case where \(f\) and \(g\) are non-negative simple functions. Next let \(f\) and \(g\) be arbitrary
+non-negative measurable functions. Then by Theorem 2.4.1, there is a sequence of non-negative simple functions \((s_{n})\) converging pointwise to \(f\), and a corresponding sequence \((t_{m})\) converging
+pointwise to \(g\). Taking limits as \(m\) and \(n\) go to infinity, proves that \(f\) and \(g\) are measurable in this case. Finally let \(f\) and \(g\) be arbitrary measurable functions. Write \(f = f_{+} -
+f_{-}\) and \(g = g_{+} - g_{-}\). Then
+</p>
+<p>
+\[ fg = (f_{+}g_{+} + f_{-}g_{-}) - (f_{-}g_{+} + f_{+}g_{-}),\]
+</p>
+<p>
+is measurable as it is a sum of products of measurable functions.
+</p>
+<p>
+Method 2.&nbsp; For \(B \in \Sigma _{2}\), define \(\tilde {f}_{B}(x, y) = f(x){\1}_{B}(y)\) for all \(x \in S_{1}, y \in S_{2}\). The mapping \(\tilde {f}:                    S_{1} \times S_{2} \rightarrow
+\R \) is measurable since for all \(a \in \R \), \(\tilde {f}^{-1}((a, \infty )) = f^{-1}((a, \infty )) \times B \in \Sigma _{1} \times \Sigma _{2}\). In particular, \(\tilde {f}_{S_{2}}\) is
+measurable; however \(\tilde {f}_{S_{2}}(x, y) = f(x)\) for all \(x \in S_{1}, y \in S_{2}\); so \(h = \tilde {f}_{S_{2}}\tilde {g}_{S_{1}}\) is the product of measurable functions, hence is
+measurable.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Follows easily from Fubini’s theorem (2).
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:pve_sum_swap"><b>5.6</b></a> Let \(m\) be counting measure on \((\N , {\cal P}(\N ))\). Then \(a(i, j) = a_{ij}\) defines a non-negative measurable function from
+\((\N ^{2}, {\cal P}(\N ^{2}))\) to \((\R , {\cal B}(\R ))\), where we note that \({\cal P}(\N ^{2}) = {\cal P}(\N ) \otimes {\cal P}(\N )\). We have
+</p>
+<p>
+\[ \int _{\N ^{2}}a~d(m \times m) = \sum _{(i, j ) \in \N ^{2}}a_{i,j},\]
+</p>
+<p>
+\[ \int _{\N } \left (\int _{\N }a(i,j)dm(i)\right )dm(j) = \sum _{j=1}^{\infty }\sum _{i=1}^{\infty }a_{ij},\]
+</p>
+<p>
+\[ \int _{\N } \left (\int _{\N }a(i,j)dm(j)\right )dm(i) = \sum _{i=1}^{\infty }\sum _{j=1}^{\infty }a_{ij},\]
+</p>
+<p>
+and the result follows by Fubini’s theorem 1.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:Leb_marginal"><b>5.7</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span>
+</p>
+<p>
+\[\begin {aligned} A_{f}^{c} &amp; =\{(x,t) \in S \times \R ; 0 \leq f(x) &lt; t\}\\ &amp; = \bigcup _{q \in \mathbb {Q}}\{(x,t) \in S \times \R ; 0 \leq f(x) &lt; q, t \geq q\}\\
+&amp; = \bigcup _{q \in \mathbb {Q}}f^{-1}([0, q)) \times [q, \infty ),\end {aligned}\]
+</p>
+<p>
+which is a countable union of measurable sets, and so is measurable. Hence \(A_{f} = (A_{f}^{c})^{c}\) is measurable.
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> We use the definition (as a Lebesgue integral) of product measure. Fix \(x \in S\). Then the \(x\)-slice
+\((A_{f})_{x}\) is just the interval \([0, f(x)]\). Its Lebesgue measure is \(f(x)\) and so
+</p>
+<p>
+\[\begin {aligned} (m \times \lambda )(A_{f}) &amp; = \int _{S}\lambda [(A_{f})_{x}]dm(x)\\ &amp; = \int _{S}f(x)dm(x).\end {aligned}\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:sinxx"><b>5.8</b></a> First fix \(T &gt; 0\) and use the hint:
+</p>
+<p>
+\[ \int _{0}^{T} \ds \frac {\sin (x)}{x}dx = \int _{0}^{T} \sin (x)\left (\int _{0}^{\infty }e^{-xy}dy\right )dx.\]
+</p>
+<p>
+Now \(f(x,y) = e^{-xy}\sin (x)\) is continuous, and so Riemann integrable (and hence Lebesgue integrable) on \([0, t] \times [0, N]\). By Fubini’s theorem:
+</p>
+<p>
+\[\begin {aligned} \int _{0}^{T} \sin (x)\left (\int _{0}^{N}e^{-xy}dy\right )dx &amp; = \int _{0}^{N} \left (\int _{0}^{T}e^{-xy}\sin (x)dx\right )dy\\ &amp; = -\int _{0}^{N}
+\left (\frac {y}{1 + y^{2}}e^{-yT}\sin (T)\right .\\ &amp; + &amp; \left .\frac {1}{1 + y^{2}}(e^{-yT}\cos (T) - 1)\right )dy, \end {aligned}\]
+</p>
+<p>
+using integration by parts.
+</p>
+<p>
+On the other hand, \(\int _{0}^{N}e^{-xy}dy = \frac {1}{x}(1 - e^{-Ny})\) and so
+</p>
+<p>
+\[ \left |\int _{0}^{N}e^{-xy}dy\right | \leq \frac {2}{x}.\]
+</p>
+<p>
+Since \(x \rightarrow \frac {\sin (x)}{x}\) is continuous, and hence integrable, on \([0, T]\) we can use dominated convergence to assert that
+</p>
+<p>
+\[\begin {aligned} \int _{0}^{T} \ds \frac {\sin (x)}{x}dx &amp; = \int _{0}^{T} \sin (x)\left (\int _{0}^{\infty }e^{-xy}dy\right )dx \\ &amp; = -\int _{0}^{\infty } \left (\frac
+{y}{1 + y^{2}}e^{-yT}\sin (T) + \frac {1}{1 + y^{2}}(e^{-yT}\cos (T) - 1)\right )dy.                      \end {aligned}\]
+</p>
+<p>
+Now use monotonicity in the first integral (since \(y/1 + y^{2} \leq 1\)), and dominated convergence in the second (since \(|e^{-yT}\cos (T) - 1| \leq 2\)) to deduce that
+</p>
+<p>
+\[ \lim _{T \rightarrow \infty }\int _{0}^{T} \ds \frac {\sin (x)}{x}dx = \int _{0}^{\infty }\frac {1}{1+y^{2}}dy = \frac {\pi }{2}.\]
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:fub_counterex"><b>5.9</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Both integrals vanish by elementary calculus arguments.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Let \(S = \{(x,y) \in \R ^{2}; - 1 \leq x \leq 1, -1 \leq y \leq 1\}\) and \(A = \{(x,y)
+\in \R ^{2}; 0 \leq x \leq 1, 0 \leq y \leq 1\}\). We require \(\int _{S}|f(x,y)|dx dy &lt; \infty \). Note that \(\int _{S}|f(x,y)|dx dy \geq \int _{A}|f(x,y)|dx dy\). Now if \(f\) were
+integrable over \(A\), we could use Fubini’s theorem to write it as repeated integral. But consider
+</p>
+<p>
+\[ \int _{0}^{1}x \left (\int _{0}^{1}\frac {y}{(x^{2} + y^{2})^{2}}dy \right )dx = \frac {1}{2}\int _{0}^{1}\left (\frac {1}{x} - \frac {x}{x^{2} + 1}\right )dx.\]
+</p>
+<p>
+Since \(x \rightarrow \frac {1}{x}\) is not integrable over \([0, 1]\), the result follows.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-5.html#ps:fourier_conv"><b>5.10</b></a> First observe that by Problems <a href="Exercises-2.html#ps:translate_meas"><b>2.7</b></a> and <a
+href="Exercises-1.html#ps:conditional_measure"><b>1.6</b></a> part (a) the mapping \((x, y) \rightarrow f(x-y)g(y)\) is measurable. Let \(K = \sup _{x \in \R }|g(x)| &lt; \infty \), since
+\(g\) is bounded. Then since \(f\) is integrable
+</p>
+<p>
+\[ |(f*g)(x)| \leq \int _{\R }|f(x - y)|.|g(y)|dy \leq K \int _{\R }|f(x - y)|dy = K \int _{\R }|f(y)|dy &lt; \infty .\]
+</p>
+<p>
+We also have by Fubini’s theorem
+</p>
+<p>
+\[\begin {aligned} \int _{\R }\int _{\R }|(f(x-y)g(y)|dydx &amp; \leq &amp; \int _{\R }\left (\int _{\R }|f(x - y)|.|g(y)|dy \right )dx\\ &amp; = \int _{\R }\left (\int _{\R
+}|f(x-y)|dx \right )|g(y)|dy \\ &amp; = \int _{\R }|f(x)|dx \int _{\R }|g(y)|dy &lt; \infty , \end {aligned}\]
+</p>
+<p>
+from which it follows that \(f*g\) is both measurable, and integrable.
+</p>
+<p>
+By a similar argument using Fubini’s theorem, we have that
+</p>
+<p>
+\[\begin {aligned} \widehat {f * g}(y) &amp; = \int _{\R }e^{-ixy}\int _{\R }f(x -z)g(z)dz dx \\ &amp; = \int _{\R }\left (\int _{\R }e^{-iy(u + z)}f(u)du \right )g(z)dz \\ &amp;
+= \int _{\R }e^{-iyu}f(u)du.        \int _{\R }e^{-iyz}g(z)dz\\ &amp; = \widehat {f}(y)\widehat {g}(y), \end {aligned}\]
+</p>
+<p>
+where we used that change of variable \(x = u + z\).
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<a id="notes-autofile-last"></a> </section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 22, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

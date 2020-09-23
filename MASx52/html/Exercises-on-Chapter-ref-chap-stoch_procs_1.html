@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MASx52 — Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></title>
+<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
+             const useArgument = (parser, text) => {
+                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+                  parser.i = 0;
+                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
+                      throw new TexError('MaxMacroSub1',
+                      'MathJax maximum macro substitution count exceeded; ' +
+                      'is there a recursive macro call?');
+                  }
+             }
+
+
+             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
+             new CommandMap('ifstar-ifnextchar-setequnumber', {
+                  ifstar: 'IfstarFunction',
+                  ifnextchar: 'IfnextcharFunction',
+                  seteqnumber: 'SeteqnumberFunction'
+             }, {
+                  //      This function implements an ifstar macro.
+                  IfstarFunction(parser, name) {
+                      const resultstar = parser.GetArgument(name);
+                      const resultnostar = parser.GetArgument(name);
+                      const star = parser.GetStar();                        // true if there is a *
+                      useArgument(parser, star ? resultstar : resultnostar);
+                  },
+
+
+                  //      This function implements an ifnextchar macro.
+                  IfnextcharFunction(parser, name) {
+                      let whichchar = parser.GetArgument(name);
+                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+                          // $ syntax highlighting
+                          whichchar = String.fromCodePoint(parseInt(whichchar));
+                      }
+                      const resultnextchar = parser.GetArgument(name);
+                      const resultnotnextchar = parser.GetArgument(name);
+                      const gotchar = (parser.GetNext() === whichchar);
+                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+                  },
+
+
+                  //      This function modifies the equation numbers.
+                  SeteqnumberFunction(parser, name) {
+                          //   Get the macro parameters
+                          const star = parser.GetStar();                       // true if there is a *
+                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
+                          const newsubequations = parser.GetArgument(name);       // the subequations argument
+                          const neweqsection = parser.GetArgument(name);       // the eq section argument
+                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
+                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
+                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
+                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+                  }
+             });
+
+
+             //       Create the ifstar-ifnextchar-setequnumber package
+             Configuration.create('ifstar-ifnextchar-setequnumber', {
+                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
+             });
+
+
+             MathJax.startup.defaultReady();
+
+
+             // For forward references:
+             MathJax.startup.input[0].preFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          MathJax.config.subequations = math.inputData.recompile.subequations;
+                          MathJax.config.section = math.inputData.recompile.section;
+                  }
+             });
+             MathJax.startup.input[0].postFilters.add(({math}) => {
+                  if (math.inputData.recompile){
+                          math.inputData.recompile.subequations = MathJax.config.subequations;
+                          math.inputData.recompile.section = MathJax.config.section;
+                  }
+             });
+         }       // ready
+     },           // startup
+
+
+     tex: {
+         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
+         tags: "ams",
+                  tagFormat: {
+                          number: function (n) {
+                               if(MathJax.config.subequations==0)
+                                      return(MathJax.config.section + n);
+                               else
+                                      return(MathJax.config.section + String.fromCharCode(96+n));
+                          },
+                  },
+     }
+}
+</script>
+
+
+<script
+         id="MathJax-script"
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+
+
+</head>
+<body>
+
+
+
+<a id="notes_1-autopage-236"></a>
+<nav class="topnavigation" ><a href="notes_1.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 23, 2020
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc" >
+<div class="sidetoccontainer" >
+
+
+
+<nav class="sidetoc" >
+
+
+
+<div class="sidetoctitle" >
+
+<p>
+<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+(part one)</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents" >
+
+<p>
+<a href="notes_1.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Expectation-Arbitrage.html#autosec-13" class="tocchapter" >
+<span class="sectionnumber" >1</span>&#x2003;Expectation and Arbitrage</a>
+</p>
+
+
+
+<p>
+<a href="Expectation-Arbitrage.html#autosec-14" class="tocsection" >
+<span class="sectionnumber" >1.1</span>&#x2003;Betting on coin tosses</a>
+</p>
+
+
+
+<p>
+<a href="The-one-period-market.html#autosec-17" class="tocsection" >
+<span class="sectionnumber" >1.2</span>&#x2003;The one-period market</a>
+</p>
+
+
+
+<p>
+<a href="Arbitrage.html#autosec-22" class="tocsection" >
+<span class="sectionnumber" >1.3</span>&#x2003;Arbitrage</a>
+</p>
+
+
+
+<p>
+<a href="Modelling-discussion.html#autosec-32" class="tocsection" >
+<span class="sectionnumber" >1.4</span>&#x2003;Modelling discussion</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-34" class="tocsection" >
+<span class="sectionnumber" >1.5</span>&#x2003;Exercises on Chapter&nbsp;<a href="Expectation-Arbitrage.html#chap:pricing">1</a></a>
+</p>
+
+
+
+<p>
+<a href="Probability-spaces-random-variables.html#autosec-38" class="tocchapter" >
+<span class="sectionnumber" >2</span>&#x2003;Probability spaces and random variables</a>
+</p>
+
+
+
+<p>
+<a href="Probability-spaces-random-variables.html#autosec-39" class="tocsection" >
+<span class="sectionnumber" >2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
+</p>
+
+
+
+<p>
+<a href="Random-variables.html#autosec-49" class="tocsection" >
+<span class="sectionnumber" >2.2</span>&#x2003;Random variables</a>
+</p>
+
+
+
+<p>
+<a href="Infinite.html#autosec-63" class="tocsection" >
+<span class="sectionnumber" >2.3</span>&#x2003;Infinite \(\Omega \)</a>
+</p>
+
+
+
+<p>
+<a href="Expectation.html#autosec-69" class="tocsection" >
+<span class="sectionnumber" >2.4</span>&#x2003;Expectation</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-prob_meas.html#autosec-77" class="tocsection" >
+<span class="sectionnumber" >2.5</span>&#x2003;Exercises on Chapter <a href="Probability-spaces-random-variables.html#chap:prob_meas">2</a></a>
+</p>
+
+
+
+<p>
+<a href="Conditional-expectation-martingales.html#autosec-82" class="tocchapter" >
+<span class="sectionnumber" >3</span>&#x2003;Conditional expectation and martingales</a>
+</p>
+
+
+
+<p>
+<a href="Conditional-expectation-martingales.html#autosec-83" class="tocsection" >
+<span class="sectionnumber" >3.1</span>&#x2003;Conditional expectation</a>
+</p>
+
+
+
+<p>
+<a href="Properties-conditional-expectation.html#autosec-89" class="tocsection" >
+<span class="sectionnumber" >3.2</span>&#x2003;Properties of conditional expectation</a>
+</p>
+
+
+
+<p>
+<a href="Martingales.html#autosec-95" class="tocsection" >
+<span class="sectionnumber" >3.3</span>&#x2003;Martingales</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-cond_exp.html#autosec-106" class="tocsection" >
+<span class="sectionnumber" >3.4</span>&#x2003;Exercises on Chapter <a href="Conditional-expectation-martingales.html#chap:cond_exp">3</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes.html#autosec-110" class="tocchapter" >
+<span class="sectionnumber" >4</span>&#x2003;Stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes.html#autosec-112" class="tocsection" >
+<span class="sectionnumber" >4.1</span>&#x2003;Random walks</a>
+</p>
+
+
+
+<p>
+<a href="Urn-processes.html#autosec-118" class="tocsection" >
+<span class="sectionnumber" >4.2</span>&#x2003;Urn processes</a>
+</p>
+
+
+
+<p>
+<a href="A-branching-process.html#autosec-123" class="tocsection" >
+<span class="sectionnumber" >4.3</span>&#x2003;A branching process</a>
+</p>
+
+
+
+<p>
+<a href="Other-stochastic-processes.html#autosec-127" class="tocsection" >
+<span class="sectionnumber" >4.4</span>&#x2003;Other stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs.html#autosec-130" class="tocsection" >
+<span class="sectionnumber" >4.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes.html#chap:stoch_procs">4</a></a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model.html#autosec-134" class="tocchapter" >
+<span class="sectionnumber" >5</span>&#x2003;The binomial model</a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model.html#autosec-135" class="tocsection" >
+<span class="sectionnumber" >5.1</span>&#x2003;Arbitrage in the one-period model</a>
+</p>
+
+
+
+<p>
+<a href="Hedging-in-one-period-model.html#autosec-143" class="tocsection" >
+<span class="sectionnumber" >5.2</span>&#x2003;Hedging in the one-period model</a>
+</p>
+
+
+
+<p>
+<a href="Types-financial-derivative.html#autosec-154" class="tocsection" >
+<span class="sectionnumber" >5.3</span>&#x2003;Types of financial derivative</a>
+</p>
+
+
+
+<p>
+<a href="The-binomial-model-definition.html#autosec-156" class="tocsection" >
+<span class="sectionnumber" >5.4</span>&#x2003;The binomial model (definition)</a>
+</p>
+
+
+
+<p>
+<a href="Portfolios-arbitrage-martingales.html#autosec-160" class="tocsection" >
+<span class="sectionnumber" >5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
+</p>
+
+
+
+<p>
+<a href="Hedging.html#autosec-169" class="tocsection" >
+<span class="sectionnumber" >5.6</span>&#x2003;Hedging</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-bin_model.html#autosec-178" class="tocsection" >
+<span class="sectionnumber" >5.7</span>&#x2003;Exercises on Chapter <a href="The-binomial-model.html#chap:bin_model">5</a></a>
+</p>
+
+
+
+<p>
+<a href="Convergence-random-variables.html#autosec-183" class="tocchapter" >
+<span class="sectionnumber" >6</span>&#x2003;Convergence of random variables</a>
+</p>
+
+
+
+<p>
+<a href="Convergence-random-variables.html#autosec-184" class="tocsection" >
+<span class="sectionnumber" >6.1</span>&#x2003;Modes of convergence</a>
+</p>
+
+
+
+<p>
+<a href="The-monotone-convergence-theorem.html#autosec-190" class="tocsection" >
+<span class="sectionnumber" >6.2</span>&#x2003;The monotone convergence theorem</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-195" class="tocsection" >
+<span class="sectionnumber" >6.3</span>&#x2003;Exercises on Chapter <a href="Convergence-random-variables.html#chap:rv_conv">6</a></a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes-martingale-theory.html#autosec-200" class="tocchapter" >
+<span class="sectionnumber" >7</span>&#x2003;Stochastic processes and martingale theory</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes-martingale-theory.html#autosec-201" class="tocsection" >
+<span class="sectionnumber" >7.1</span>&#x2003;The martingale transform</a>
+</p>
+
+
+
+<p>
+<a href="Roulette.html#autosec-204" class="tocsection" >
+<span class="sectionnumber" >7.2</span>&#x2003;Roulette</a>
+</p>
+
+
+
+<p>
+<a href="The-martingale-convergence-theorem.html#autosec-210" class="tocsection" >
+<span class="sectionnumber" >7.3</span>&#x2003;The martingale convergence theorem</a>
+</p>
+
+
+
+<p>
+<a href="Long-term-behaviour-stochastic-processes.html#autosec-218" class="tocsection" >
+<span class="sectionnumber" >7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-237" class="tocsection" >
+<span class="sectionnumber" >7.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></a>
+</p>
+
+
+
+<p>
+<a href="Further-theory-stochastic-processes.html#autosec-242" class="tocchapter" >
+<span class="sectionnumber" >8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Further-theory-stochastic-processes.html#autosec-243" class="tocsection" >
+<span class="sectionnumber" >8.1</span>&#x2003;The dominated convergence theorem (\(\Delta \))</a>
+</p>
+
+
+
+<p>
+<a href="The-optional-stopping-theorem.html#autosec-248" class="tocsection" >
+<span class="sectionnumber" >8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Hitting-probabilities-random-walks.html#autosec-255" class="tocsection" >
+<span class="sectionnumber" >8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-262" class="tocsection" >
+<span class="sectionnumber" >8.4</span>&#x2003;Exercises on Chapter <a href="Further-theory-stochastic-processes.html#chap:stoch_procs_2">8</a> \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-266" class="tocchapter" >
+<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+<p>
+<a href="Formula-Sheet-part-one.html#autosec-283" class="tocchapter" >
+<span class="sectionnumber" >B</span>&#x2003;Formula Sheet (part one)</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<div class="bodycontainer" >
+
+
+
+<section class="textbody" >
+
+<h1>Stochastic Processes and Financial Mathematics<br />
+(part one)</h1>
+
+<!--MathJax customizations:-->
+
+
+
+<div class="hidden" >
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \ra {\Rightarrow }\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \wt {\widetilde }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \p {\partial }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \|{\,|\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \F {\mc {F}}\)
+
+\(\def \G {\mc {G}}\)
+
+\(\def \H {\mc {H}}\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+</div>
+
+<p>
+<h4 id="autosec-237"><span class="sectionnumber" >7.5&#x2003;</span>Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></h4>
+<a id="notes_1-autopage-237"></a>
+<a id="notes_1-autofile-35"></a>
+<h5 id="autosec-238">On the martingale transform</h5>
+<a id="notes_1-autopage-238"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<b>7.1</b> <a id="ps:mart_tranfs_calcs"></a> Let \(S_n=\sum _{i=1}^n X_i\) be the symmetric random walk, from Section <a
+href="Long-term-behaviour-stochastic-processes.html#sec:rw_long_term">7.4</a>. In each of the following cases, establish the given formula for \((C\circ S)_n\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> If \(C_n=0\), show that \((C\circ S)_n=0\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> If \(C_n=1\), show that \((C\circ S)_n=S_n\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> If \(C_n=S_n\), show that \((C\circ S)_n=\frac {S_n^2}{2}-\frac {n}{2}\)
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>7.2</b> <a id="ps:mart_tranfs_linear"></a> Let \(M_n\) be a stochastic process. Let \(\alpha ,\beta \in \R \) and let \(C_n\) and \(D_n\) be adapted stochastic processes. Let \(X_n=\alpha
+C_n+\beta D_n\). Show that
+</p>
+<p>
+\[(X \circ M)_n=\alpha (C\circ M)_n+\beta (D\circ M)_n\]
+</p>
+<p>
+for all \(n\).
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<h5 id="autosec-239">On long-term behaviour of stochastic processes</h5>
+<a id="notes_1-autopage-239"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<b>7.3</b> <a id="ps:rw_converge"></a> Let \((X_n)\) be a sequence of independent identically distribution random variables, with distribution \(\P [X_n=1]=\P [X_n=-1]=\frac 12\). Define
+</p>
+<p>
+\[S_n=\sum \limits _{i=1}^n\frac {X_i}{i^2}.\]
+</p>
+<p>
+where we take \(S_0=0\). Show that \(S_n\) is a martingale, and deduce that there exists a real-valued random variable \(S_\infty \) such that \(S_n\stackrel {a.s.}{\to }S_\infty \) as \(n\to \infty \).
+</p>
+</li>
+<li>
+<p>
+<b>7.4</b> <a id="ps:rw_simulate"></a> Write simulations of the symmetric &amp; asymmetric random walks (in a language of your choice). Add functionality to draw the random walk as a graph, with time
+on the horizontal axis and the value of the walk on the vertical axis.
+</p>
+<p>
+Look at several samples from your simulations, with e.g.&nbsp;\(1000\) steps of time, and check that they support the claims made in Section <a
+href="Long-term-behaviour-stochastic-processes.html#sec:rw_long_term">7.4</a>, about the long-term behaviour of random walks.
+</p>
+<p>
+Modify your simulation to sample the random walk in exercise <a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#ps:rw_converge"><b>7.3</b></a>. Check that your graphs support the result
+that, in this case, \(S_n\stackrel {a.s.}{\to }S_\infty \).
+</p>
+</li>
+<li>
+<p>
+<b>7.5</b> <a id="ps:rw_to_zero"></a> Let \(S_n\) denote the symmetric random walk, from Section <a href="Long-term-behaviour-stochastic-processes.html#sec:rw_long_term">7.4</a>. Recall
+that \(S_0=0\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Show that \(S_n\) is even when \(n\) is even, and odd when \(n\) is odd.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Define \(p_{n}=\P [S_{n}=0]\). Show that \(p_{2n}=\binom {2n}{n}2^{-2n}\) and \(p_{2n+1}=0\).
+</p>
+<p>
+<i>(Hint: Count the number of ways to return to zero after precisely \(2n\) steps.)</i>
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Show that \(p_{2(n+1)}=\big (1-\frac {1}{2(n+1)}\big )p_{2n}\) for all \(n\), and hence show
+that \(p_{2n}\to 0\) as \(n\to \infty \).
+</p>
+<p>
+<i>(Hint: Use the inequality \(1-x\leq e^{-x}\), which holds for all \(x\geq 0\).)</i>
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>7.6</b> <a id="ps:gw_when_dies_out"></a> Recall the Galton-Watson process \((Z_n)\) from Section <a href="Long-term-behaviour-stochastic-processes.html#sec:gw_long_term">7.4</a>, and
+recall that it is parametrized by its offspring distribution \(G\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Give an example of an offspring distribution \(G\) for which \(\P [Z_n\text { dies out}]=1\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Give an example of an offspring distribution \(G\) for which \(\P [Z_n\text { dies out}]=0\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>7.7</b> <a id="ps:urn_mean_revert"></a> Consider the following modification of the Po&#x0301;lya urn process. At time \(n=0\), the urn contains one red ball and one black ball. Then, at each time
+\(n=1,2,\ldots \), we draw a ball from the urn. We place this ball back into the urn, and add one ball of the <i>opposite</i> colour to the urn; so if we drew a red ball, we would add a black ball, and vice versa.
+</p>
+<p>
+Therefore, at time \(n\) (which means: after the \(n^{th}\) draw is complete) the urn contains \(n+2\) balls. Let \(B_n\) denote the number of red balls in the urn at time \(n\), and let \(M_n=\frac
+{B_n}{n+2}\) denote the fraction of red balls in the urn at time \(n\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Calculate \(\E [M_{n+1}\|\mc {F}_n]\) and hence show that \(M_n\) is not a martingale, with respect
+to the filtration \(\mc {F}_n=\sigma (B_1,\ldots ,B_n)\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Write a simulation of the urn (in a language of your choice) and use your simulation to make a conjecture
+about the value of the almost sure limit of \(M_n\) as \(n\to \infty \). Does this limit depend on the initial state of the urn?
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>7.8</b> <a id="ps:urn_moran"></a> Consider an urn that, at time \(n=0\), contains \(K\geq 1\) balls, each of which is either black or red. At each time \(n=1,2,\ldots \), we do the following, in order:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. Draw a ball \(X_1\) from the urn, and record its colour. Place \(X_1\) back into the urn.
+</p>
+
+
+</li>
+<li>
+<p>
+2. Draw a ball \(X_2\) from the urn, and discard it.
+</p>
+
+
+</li>
+<li>
+<p>
+3. Place a new ball, with the same colour as \(X_1\), into the urn.
+</p>
+</li>
+</ul>
+<p>
+Thus, for all time, the urn contains exactly \(K\) balls. We write \(M_n\) for the fraction of red balls in the urn, after the \(n^{th}\) iteration of the above steps is complete.
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Show that \(M_n\) is a martingale.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Show that there exists a random variable \(M_\infty \) such that \(M_n\stackrel {a.s.}{\to
+}M_\infty \) as \(n\to \infty \), and deduce that \(\P [M_\infty =0\text { or }M_\infty =1]=1\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>7.9</b> <a id="ps:urn_initial_conds"></a> Consider the Po&#x0301;lya urn process from Section <a href="Long-term-behaviour-stochastic-processes.html#sec:urn_long_term">7.4</a>. Suppose
+that we begin our urn, at time \(n=0\), with two red balls and one black ball. Let \(M_n\) denote the resulting fraction of red balls in the urn at time \(n\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Show that \(M_n\) does not converge almost surely to \(0\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Write a simulation of the Po&#x0301;lya urn process (in a language of your choice) and compare the
+effect of different initial conditions on \(M_\infty \).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>7.10</b> <a id="ps:rw_sign"></a> Let \(S_n\) denote the symmetric random walk, from Section <a href="Long-term-behaviour-stochastic-processes.html#sec:rw_long_term">7.4</a>. Let \(f:\N
+\to \N \) be a deterministic function.
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Show that if \(\frac {S_n}{f(n)}\) is a martingale (for \(n\geq 1\)), then \(f\) is constant.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Show that if \(\frac {S_n}{f(n)}\) is a supermartingale (for \(n\geq 1\)), then \(f\) is constant.
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="autosec-240">Challenge questions</h5>
+<a id="notes_1-autopage-240"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<b>7.11</b> <a id="ps:gw_var"></a> <i>In this question we establish the formula <span class="textup" >(<a
+href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.8</a>)</span>, which we used in the proof of Lemma <a
+href="Long-term-behaviour-stochastic-processes.html#lem:gw_supercrit">7.4.8</a>.</i>
+</p>
+<p>
+Let \((Z_n)\) be the Galton-Watson process, with the offspring distribution \(G\). Suppose that \(\E [G]=\mu \) and \(\var (G)=\sigma ^2&lt;\infty \). Set \(M_n=\frac {Z_n}{\mu ^n}\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Show that
+</p>
+<p>
+\[\E [(M_{n+1}-M_n)^2\|\mc {F}_n]=\frac {Z_n\sigma ^2}{\mu ^{2(n+1)}},\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Deduce from part (a) and exercise <a
+href="Exercises-on-Chapter-ref-chap-cond_exp.html#ps:doob_pre"><b>3.6</b></a> that \(\E [M_{n+1}^2]=\E [M_n^2]+\frac {\sigma ^2}{\mu ^{n+2}}.\)
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>7.12</b> <a id="ps:fatou_subst"></a> <i>In this question we prove the inequality <span class="textup" >(<a href="The-martingale-convergence-theorem.html#eq:fatou_subst">7.3</a>)</span>,
+which we used in the proof of the martingale convergence theorem.</i>
+</p>
+<p>
+Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\to }M_\infty \). Define
+</p>
+<p>
+\[X_n=\inf _{k\geq n} |M_k|.\]
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Explain why \((X_n)\) is an increasing sequence and, hence, why there is a random variable \(X_\infty
+\) such that \(X_n\stackrel {a.s.}{\to }X_\infty \).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Show that, for all \(\epsilon &gt;0\) and all \(n\in \N \) there exists some \(n’\geq n\) such that
+</p>
+<p>
+\[|M_{n’}|-\epsilon \leq X_n\leq |M_n|.\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Deduce that \(X_\infty =|M_\infty |\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(d)</span></span></span> Check that the monotone convergence theorem applies to \((X_n)\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(e)</span></span></span> Deduce that \(\E [|M_\infty |]\leq \sup _{n\in \N }\E [|M_n|]\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<b>7.13</b> <a id="ps:gw_subcrit"></a> <i>In this question we give a rigorous proof of Lemma <a href="Long-term-behaviour-stochastic-processes.html#lem:gw_subcrit">7.4.7</a>.</i>
+</p>
+<p>
+Let \(Z_n\) and \(X^{n+1}_i\) be as in <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.7</a>)</span> (i.e.&nbsp;\(Z_n\) is a
+Galton-Watson process) and suppose that \(\E [X^{n+1}_i]=\mu &lt;1\).
+</p>
+<p>
+Let \(\alpha \in [0,1]\). For each \(i,n\) we define an independent random variable \(C^{n+1}_i\), with the same distribution as \(C\) where \(\P \l [C=1\r ]=\alpha \) and \(\P \l [C=0\r ]=1-\alpha
+\). We define
+</p>
+<span class="hidden" > \(\seteqnumber{0}{7.}{8}\)</span>
+<!--
+
+                                                     
+                                                     
+                                                     
+                                                     
+                                                      0      if Xin+1 = 0 and Cin+1 = 0
+                                                     
+                                                     
+                                           e n+1 =
+                                           X i        1      if Xin+1 = 0 and Cin+1 = 1                                     (7.9)                              --><a id="eq:gw_coupling"></a><!--
+                                                     
+                                                     
+                                                     
+                                                      Xin+1   if Xin+1 ≥ 1.
+                                                     
+                                                     
+
+
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:gw_coupling} \wt {X}^{n+1}_i= \begin{cases} 0 &amp; \text { if }X^{n+1}_i=0\text { and }C^{n+1}_i=0\\ 1 &amp; \text { if }X^{n+1}_i=0\text { and }C^{n+1}_i=1\\
+X^{n+1}_i &amp; \text { if }X^{n+1}_i\geq 1.          \end {cases}
+\end{equation}
+
+
+</p>
+<p>
+Define \(\wt {Z}_n\) by setting \(\wt {Z}_0=1\), and then using <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.7</a>)</span> with
+\(\wt {Z}_n\) in place of \(Z_n\) and \(\wt {X}^{n+1}_i\) in place of \(X^{n+1}_i\). Define \(f:[0,1]\to \R \) by \(f(\alpha )=\E [X^{n+1}_i]\).
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Convince yourself that \(\wt {Z}_n\) is a Galton-Watson process, with offspring distribution given by
+<span class="textup" >(<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#eq:gw_coupling">7.9</a>)</span>.
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Explain briefly why \(0\leq Z_n\leq \wt {Z}_n\) for all \(n\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Show that \(f(0)&lt;1\) and \(f(1)\geq 1\). Deduce that there exists a value \(\alpha \in [0,1]\)
+such that \(f(\alpha )=1\).
+</p>
+
+
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(d)</span></span></span> Show that \(\P [Z_n\text { dies out}]=1\).
+</p>
+</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation" ><a href="notes_1.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>
