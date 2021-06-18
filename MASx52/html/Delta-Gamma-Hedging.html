@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Delta and Gamma Hedging</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -710,12 +710,12 @@ We focus first on \(\Delta _F\).
 
 
 
-<a id="autoid-129"></a>
+<a id="autoid-131"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 15.3.1</span> <a id="autoid-130" ></a >A portfolio with price function \(F\) is said to be <b>delta neutral</b> at time \(t\) if \(\Delta _F(t,S_t)=0\).
+<span class="theoremheaderplain" >Definition 15.3.1</span> <a id="autoid-132" ></a >A portfolio with price function \(F\) is said to be <b>delta neutral</b> at time \(t\) if \(\Delta _F(t,S_t)=0\).
 </p>
 
 
@@ -784,12 +784,12 @@ units of the derivative. Adding this amount of the deriative into our usual repl
 
 
 
-<a id="autoid-131"></a>
+<a id="autoid-133"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Example 15.3.2</span> <a id="autoid-132" ></a ><a id="ex:delta_hedge"></a> Suppose that we have sold an option that has price \(P(t,S_t)\) at time \(t\), and
+<span class="theoremheaderplain" >Example 15.3.2</span> <a id="autoid-134" ></a ><a id="ex:delta_hedge"></a> Suppose that we have sold an option that has price \(P(t,S_t)\) at time \(t\), and
 we want to delta hedge the sale. So, we have \(F(t,S_t)=-P(t,S_t)\).
 </p>
 
@@ -882,12 +882,12 @@ results in less effective delta hedge but lower transaction costs. This is natur
 
 
 
-<a id="autoid-133"></a>
+<a id="autoid-135"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 15.3.3</span> <a id="autoid-134" ></a >\((\star )\) It can be shown that as \(\epsilon \to 0\), the resulting portfolio approximates the true delta hedged
+<span class="theoremheaderplain" >Remark 15.3.3</span> <a id="autoid-136" ></a >\((\star )\) It can be shown that as \(\epsilon \to 0\), the resulting portfolio approximates the true delta hedged
 portfolio that corresponds, at all times, to holding \(z_t\) extra stock.
 </p>
 
@@ -908,12 +908,12 @@ Of course, there is no need for all of our rebalancing time intervals to have le
 
 
 
-<a id="autoid-135"></a>
+<a id="autoid-137"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 15.3.4</span> <a id="autoid-136" ></a >A portfolio with price function \(F\) is said to be <b>gamma neutral</b> at time \(t\) if \(\Gamma _F(t,S_t)=0\).
+<span class="theoremheaderplain" >Definition 15.3.4</span> <a id="autoid-138" ></a >A portfolio with price function \(F\) is said to be <b>gamma neutral</b> at time \(t\) if \(\Gamma _F(t,S_t)=0\).
 </p>
 
 
@@ -994,12 +994,12 @@ href="Delta-Gamma-Hedging.html#eq:delta_gamma_hedge">15.3</a>)</span> is known a
 
 
 
-<a id="autoid-137"></a>
+<a id="autoid-139"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 15.3.5</span> <a id="autoid-138" ></a >Of course, \(z_t\) and \(w_t\) vary with time, which means that implementing a gamma hedge requires a discrete
+<span class="theoremheaderplain" >Remark 15.3.5</span> <a id="autoid-140" ></a >Of course, \(z_t\) and \(w_t\) vary with time, which means that implementing a gamma hedge requires a discrete
 rebalancing scheme, in the same spirit as we described for the delta hedge. In the interests of brevity, we don’t go into any further details on this point.
 </p>
 
@@ -1023,7 +1023,7 @@ Delta and gamma hedging are the basis for many of the hedging strategies that ar
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

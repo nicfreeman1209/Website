@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — The martingale convergence theorem</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -859,7 +859,7 @@ This is an almost surely limit, since it holds for each \(\omega \in \Omega \). 
 </p>
 
 <p>
-\[ C_n=\1\{C_{n-1}=1,M_{n}\leq b\}+\1\{C_{n-1}=0,M_{n}\leq a\}.               \]
+\[ C_n=\1\{C_{n-1}=1,M_{n}\leq b\}+\1\{C_{n-1}=0,M_{n}\leq a\}.                 \]
 </p>
 
 <p>
@@ -867,8 +867,28 @@ The behaviour of \(C_n\) is that, when \(X\) enters the region below \(a\), \(C_
 \(C_n\) will start taking the value \(0\). It will continue to take the value \(0\) until \(M\) enters the region below \(a\), and so on. Hence,
 </p>
 
+<span class="hidden" > \(\seteqnumber{0}{7.}{1}\)</span>
+
+<!--
+
+
+                                                  N
+                                                  X
+                                    (C ◦ M )N =         Ck−1 (Mk − Mk−1 ) ≥ (b − a)UN [a, b] − |MN − a|.                                   (7.2)                                 --><a id="eq:Doobup_eq"></a><!--
+                                                  k=1
+
+
+
+-->
+
 <p>
-\[ (C\circ M)_N=\sum _{k=1}^N C_{k-1}(M_{k}-M_{k-1}) \ge (b-a)U_N[a,b]-|M_N-a|.                   \]
+
+
+\begin{equation}
+\label {eq:Doobup_eq} (C\circ M)_N=\sum _{k=1}^N C_{k-1}(M_{k}-M_{k-1}) \ge (b-a)U_N[a,b]-|M_N-a|.
+\end{equation}
+
+
 </p>
 
 <p>
@@ -876,8 +896,9 @@ That is, each upcrossing of \([a,b]\) by \(M\) picks up at least \((b-a)\); the 
 </p>
 
 <p>
-Note that \(C_n\) is adapted, bounded and non-negative. Hence, by Theorem <a href="Stochastic-processes-martingale-theory.html#thm:mart_transf">7.1.1</a> we have that \(C\circ X\) is a
-supermartingale. Thus \(\E [(C\circ M)_N]\le 0\), which proves the given result. &#x2003;&#x2003;&#x220E;
+Note that \(C_n\) is adapted, bounded and non-negative. Hence, by Theorem <a href="Stochastic-processes-martingale-theory.html#thm:mart_transf">7.1.1</a> we have that \(C\circ M\) is a
+supermartingale. Thus \(\E [(C\circ M)_N]\le 0\), which combined with <span class="textup" >(<a href="The-martingale-convergence-theorem.html#eq:Doobup_eq">7.2</a>)</span> proves the given
+result. &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodylemma" >
 
@@ -906,13 +927,13 @@ supermartingale. Thus \(\E [(C\circ M)_N]\le 0\), which proves the given result.
 href="The-martingale-convergence-theorem.html#lem:Doobup">7.3.2</a> we have
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{1}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{2}\)</span>
 
 <!--
 
 
 
-                                                 (b − a)E[UN [a, b]] ≤ |a| + sup E|Mn |.                                             (7.2)                                --><a id="eq:UNbound"></a><!--
+                                                 (b − a)E[UN [a, b]] ≤ |a| + sup E|Mn |.                                             (7.3)                                --><a id="eq:UNbound"></a><!--
                                                                             n∈N
 
 
@@ -934,7 +955,7 @@ href="The-martingale-convergence-theorem.html#lem:Doobup">7.3.2</a> we have
 We have that \(U_N[a,b]\) is increasing, as \(N\) increases, and the definition of \(U_\infty [a,b]\) in <span class="textup" >(<a
 href="The-martingale-convergence-theorem.html#eq:UNU">7.1</a>)</span> gives that that \(U_N[a,n]\to U_\infty [a,b]\) almost surely as \(N\to \infty \). Hence, by the monotone convergence
 theorem, \(\E [U_N[a,b]]\to \E [U_\infty [a,b]]\), and so by letting \(N\to \infty \) in <span class="textup" >(<a
-href="The-martingale-convergence-theorem.html#eq:UNbound">7.2</a>)</span> we have
+href="The-martingale-convergence-theorem.html#eq:UNbound">7.3</a>)</span> we have
 </p>
 
 <p>
@@ -1003,13 +1024,13 @@ which proves the first part of the theorem.
 To prove the second part we will use an inequality that holds for any convergent sequence \(M_n\stackrel {a.s.}{\to } M_\infty \) of random variables:
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{2}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{3}\)</span>
 
 <!--
 
 
 
-                                                      E[|M∞ |] ≤ sup E[|Mn |].                                                    (7.3)                                --><a id="eq:fatou_subst"></a><!--
+                                                      E[|M∞ |] ≤ sup E[|Mn |].                                                    (7.4)                                --><a id="eq:fatou_subst"></a><!--
                                                                  n∈N
 
 
@@ -1030,7 +1051,7 @@ To prove the second part we will use an inequality that holds for any convergent
 <p>
 This inequality can be proved using the monotone convergence theorem and some careful analysis, see exercise <a
 href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#ps:fatou_subst"><b>7.12</b></a>. Since we assumed that \((M_n)\) is bounded in \(L^1\), <span class="textup" >(<a
-href="The-martingale-convergence-theorem.html#eq:fatou_subst">7.3</a>)</span> gives us that \(\E [|M_\infty |]&lt;\infty \). Hence, \(\P [|M_\infty |=\infty ]=0\) (or else the expected value
+href="The-martingale-convergence-theorem.html#eq:fatou_subst">7.4</a>)</span> gives us that \(\E [|M_\infty |]&lt;\infty \). Hence, \(\P [|M_\infty |=\infty ]=0\) (or else the expected value
 would be infinite). &#x2003;&#x2003;&#x220E;
 </p>
 
@@ -1086,7 +1107,7 @@ The proof of Corollary <a href="The-martingale-convergence-theorem.html#thm:mart
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

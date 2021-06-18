@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — The Black-Scholes model</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -779,12 +779,12 @@ href="The-Black-Scholes-model.html#eq:stock_price">14.1</a>)</span>.
 
 
 
-<a id="autoid-87"></a>
+<a id="autoid-89"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 14.1.1</span> <a id="autoid-88" ></a >We write the initial value of the stock as \(S_0\). We will use \(s\) as a variable. Note that this is different to our use
+<span class="theoremheaderplain" >Remark 14.1.1</span> <a id="autoid-90" ></a >We write the initial value of the stock as \(S_0\). We will use \(s\) as a variable. Note that this is different to our use
 of \(s\) in discrete time, in which we set \(s=S_0\).
 </p>
 
@@ -817,12 +817,12 @@ As in the binomial model, we assume that we can borrow both cash and stock, and 
 
 
 
-<a id="autoid-89"></a>
+<a id="autoid-91"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 14.1.2</span> <a id="autoid-90" ></a >A <b>portfolio</b> is a pair \(h=(x,y)\) where \(x\in \R \) denotes an amount of cash and \(y\in \R \) denotes
+<span class="theoremheaderplain" >Definition 14.1.2</span> <a id="autoid-92" ></a >A <b>portfolio</b> is a pair \(h=(x,y)\) where \(x\in \R \) denotes an amount of cash and \(y\in \R \) denotes
 a number of units of stock. The value of this portfolio at time \(t\) is
 </p>
 
@@ -852,12 +852,12 @@ stock/cash changing in value. Now, both these process must occur together, conti
 
 
 
-<a id="autoid-91"></a>
+<a id="autoid-93"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 14.1.3</span> <a id="autoid-92" ></a >A <b>portfolio strategy</b> is a pair of continuous stochastic processes \((h_t)=(x_t,y_t)\) where both \(x_t\)
+<span class="theoremheaderplain" >Definition 14.1.3</span> <a id="autoid-94" ></a >A <b>portfolio strategy</b> is a pair of continuous stochastic processes \((h_t)=(x_t,y_t)\) where both \(x_t\)
 and \(y_t\) are adapted to the filtration \(\mc {F}_t\). The value of \((h_t)\) at time \(t\) is
 </p>
 
@@ -893,12 +893,12 @@ transaction costs) in Sections <a href="Application-extension-Black-Scholes-mode
 
 
 
-<a id="autoid-93"></a>
+<a id="autoid-95"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 14.1.4</span> <a id="autoid-94" ></a ><a id="defn:sf"></a> A portfolio strategy \((h_t)\) is said to be <b>self-financing</b> if
+<span class="theoremheaderplain" >Definition 14.1.4</span> <a id="autoid-96" ></a ><a id="defn:sf"></a> A portfolio strategy \((h_t)\) is said to be <b>self-financing</b> if
 </p>
 
 <span class="hidden" > \(\seteqnumber{0}{14.}{2}\)</span>
@@ -962,12 +962,12 @@ Finally, and exactly as before:
 
 
 
-<a id="autoid-95"></a>
+<a id="autoid-97"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 14.1.5</span> <a id="autoid-96" ></a >We say that a self-financing portfolio strategy \((h_t)\) is an <b>arbitrage possibility</b> if
+<span class="theoremheaderplain" >Definition 14.1.5</span> <a id="autoid-98" ></a >We say that a self-financing portfolio strategy \((h_t)\) is an <b>arbitrage possibility</b> if
 </p>
 <span class="hidden" > \(\seteqnumber{0}{14.}{3}\)</span>
 
@@ -981,7 +981,7 @@ Finally, and exactly as before:
 
                                                                                              P[Vth ≥ 0] = 1
 
-                                                                                             P[Vth > 0] > 1
+                                                                                             P[Vth > 0] > 0
 
 
 
@@ -994,7 +994,7 @@ Finally, and exactly as before:
 
 
 \begin{align*}
-V^h_0&amp;=0\\ \P [V^h_t\geq 0]&amp;=1\\ \P [V^h_t&gt; 0]&amp;&gt;1\\
+V^h_0&amp;=0\\ \P [V^h_t\geq 0]&amp;=1\\ \P [V^h_t&gt; 0]&amp;&gt;0\\
 \end{align*}
 
 
@@ -1012,13 +1012,13 @@ V^h_0&amp;=0\\ \P [V^h_t\geq 0]&amp;=1\\ \P [V^h_t&gt; 0]&amp;&gt;1\\
 
 
 
-<a id="autoid-97"></a>
+<a id="autoid-99"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 14.1.6</span> <a id="autoid-98" ></a >A <b>contingent claim</b> with date of exercise \(T\) is any random variable of the form \(X=\Phi (S_T)\), where
-\(\Phi :[0,\infty )\to [0,\infty )\) is a deterministic function.
+<span class="theoremheaderplain" >Definition 14.1.6</span> <a id="autoid-100" ></a >A <b>contingent claim</b> with date of exercise \(T\) is any random variable of the form \(X=\Phi (S_T)\),
+where \(\Phi :[0,\infty )\to \R \) is a deterministic function.
 </p>
 
 <p>
@@ -1046,7 +1046,7 @@ href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a>,
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

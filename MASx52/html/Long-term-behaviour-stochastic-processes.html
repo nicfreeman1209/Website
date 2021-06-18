@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Long term behaviour of stochastic processes</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -751,7 +751,7 @@ One fact, from real analysis, that we will find useful is the following:
 <span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Put \(\epsilon =\frac 13\) into the definition of a convergent real sequence, and we
 obtain that there exists \(N\in \N \) such that \(|a_n-a|\leq \frac 13\) for all \(n\geq N\). Hence, for \(n\geq N\) we have
 </p>
-<span class="hidden" > \(\seteqnumber{0}{7.}{3}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{4}\)</span>
 
 
 
@@ -853,13 +853,13 @@ the urn contains \(n+2\) balls.
 Recall also that we write \(B_n\) for the number of red balls in the urn at time \(n\), and
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{3}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{4}\)</span>
 
 <!--
 
 
                                                             Bn
-                                                    Mn =                                                         (7.4)                                                       --><a id="eq:urn_Mn2"></a><!--
+                                                    Mn =                                                         (7.5)                                                       --><a id="eq:urn_Mn2"></a><!--
                                                            n+2
 
 
@@ -927,7 +927,7 @@ Therefore, we can approximate a complicated object (our urn) with a much simpler
 We now aim to prove Proposition <a href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>, which means we must find out the distribution of \(M_\infty \). In order to do so,
 we will use Lemma <a href="Convergence-random-variables.html#lem:conv_modes">6.1.2</a>, which tells us that \(M_n\stackrel {d}{\to }M_\infty \), that is
 </p>
-<span class="hidden" > \(\seteqnumber{0}{7.}{4}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{5}\)</span>
 
 
 
@@ -935,7 +935,7 @@ we will use Lemma <a href="Convergence-random-variables.html#lem:conv_modes">6.1
 
 
 
-                                                                                                 P[Mn ≤ x] → P[M∞ ≤ x]                              (7.5)                          --><a id="eq:urn_Mconvd"></a><!--
+                                                                                                 P[Mn ≤ x] → P[M∞ ≤ x]                              (7.6)                          --><a id="eq:urn_Mconvd"></a><!--
 
 
 
@@ -950,8 +950,8 @@ we will use Lemma <a href="Convergence-random-variables.html#lem:conv_modes">6.1
 \label {eq:urn_Mconvd} \P [M_n\leq x]\to \P [M_\infty \leq x]
 \end{align}
 for all \(x\). We will begin with a surprising lemma that tells us the distribution of \(B_n\). Then, using <span class="textup" >(<a
-href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mn2">7.4</a>)</span>, we will be able to find the distribution of \(M_n\), from which <span class="textup" >(<a
-href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.5</a>)</span> will then tell us the distribution of \(M_\infty \).
+href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mn2">7.5</a>)</span>, we will be able to find the distribution of \(M_n\), from which <span class="textup" >(<a
+href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.6</a>)</span> will then tell us the distribution of \(M_\infty \).
 </p>
 <div class="theorembodylemma" >
 
@@ -979,14 +979,14 @@ href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.5</a>)</spa
 drawn are black. Then,
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{5}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{6}\)</span>
 
 <!--
 
 
                                                           12      k  1  2        j
-                                                 P[A] =      ...           ...       .                                                          (7.6)                         --><a id="eq:urn_rb_draws"></a><!--
-                                                          23     k+1k+2k+2     j+k+1
+                                                 P[A] =      ...           ...       .                                                          (7.7)                         --><a id="eq:urn_rb_draws"></a><!--
+                                                          23     k+1k+2k+3     j+k+1
 
 
 -->
@@ -995,7 +995,7 @@ drawn are black. Then,
 
 
 \begin{equation}
-\label {eq:urn_rb_draws} \P [A]=\frac {1}{2}\frac {2}{3}\ldots \frac {k}{k+1}\frac {1}{k+2}\frac {2}{k+2}\ldots \frac {j}{j+k+1}.
+\label {eq:urn_rb_draws} \P [A]=\frac {1}{2}\frac {2}{3}\ldots \frac {k}{k+1}\frac {1}{k+2}\frac {2}{k+3}\ldots \frac {j}{j+k+1}.
 \end{equation}
 
 
@@ -1004,12 +1004,12 @@ drawn are black. Then,
 <p>
 Here, each fraction corresponds (in order) to the probability of getting a red/black ball (as appropriate) on the corresponding draw, given the results of previous draws. For example, \(\frac 12\) is the probability
 that the first draw results in a red ball, after which the urn contains \(2\) red balls and \(1\) black ball, so \(\frac 23\) is the probability that the second draw results in a red ball, and so on. From <span
-class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:urn_rb_draws">7.6</a>)</span> we have \(\P [A]=\frac {j!k!}{(j+k+1)!}\).
+class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:urn_rb_draws">7.7</a>)</span> we have \(\P [A]=\frac {j!k!}{(j+k+1)!}\).
 </p>
 
 <p>
 Here is the clever part: we note that drawing \(k\) red balls and \(j\) black balls, in the first \(j+k\) draws but in a different order, would have the <i>same</i> probability. We would simply obtain the
-numerators in <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:urn_rb_draws">7.6</a>)</span> in a different order. There are \(\binom {j+k}{k}\) possible
+numerators in <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:urn_rb_draws">7.7</a>)</span> in a different order. There are \(\binom {j+k}{k}\) possible
 different orders (i.e.&nbsp;we must choose \(k\) time-points from \(j+k\) times at which to pick the red balls). Hence, the probability that we draw \(k\) red and \(j\) black in the first \(j+k\) draws is
 </p>
 
@@ -1025,11 +1025,11 @@ We set \(j=n-k\), to obtain the probability of drawing (and thus adding) \(k\) r
 <p>
 <span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span>[Of Proposition <a
 href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>.] Now that we know the distribution of \(B_n\), we can use <span class="textup" >(<a
-href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mn2">7.4</a>)</span> to find out the distribution of \(M_n\). Lemma <a
+href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mn2">7.5</a>)</span> to find out the distribution of \(M_n\). Lemma <a
 href="Long-term-behaviour-stochastic-processes.html#lem:urn_Bn_unif">7.4.5</a> tells us that \(B_n\) is uniformly distribution on the set \(\{1,\ldots ,n+1\}\). Hence \(M_n\) is uniform on
 \(\{\frac {1}{n+2},\frac {2}{n+2},\ldots ,\frac {n+1}{n+2}\}\). This gives us that, for \(x\in (0,1)\),
 </p>
-<span class="hidden" > \(\seteqnumber{0}{7.}{6}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{7}\)</span>
 
 
 
@@ -1063,7 +1063,7 @@ x\). Since \(x(n+2)-1\leq \lfloor x(n+2)\rfloor \leq x(n+2)\) we obtain that
 
 <p>
 and the sandwich rule tells us that \(\lim _{n\to \infty }\P [M_n\leq x]=x\). By <span class="textup" >(<a
-href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.5</a>)</span>, this means that
+href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.6</a>)</span>, this means that
 </p>
 
 <p>
@@ -1121,14 +1121,14 @@ Let us recall the notation from Section <a href="A-branching-process.html#sec:gw
 distribution \(G\). Define a sequence \((Z_n)\) by \(Z_0=1\) and
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{6}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{7}\)</span>
 
 <!--
 
                                                 
                                                  X n+1 + . . . + X n+1 ,   if \(Z_n&gt;0\)
                                                      1             Zn
-                                       Zn+1   =                                                                                    (7.7)                                  --><a id="eq:gw_iterative_defn"></a><!--
+                                       Zn+1   =                                                                                    (7.8)                                  --><a id="eq:gw_iterative_defn"></a><!--
                                                  0,                        if \(Z_n=0\)
 
 
@@ -1264,13 +1264,13 @@ href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#ps:gw_subcrit"><b>7.13</b
 <span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The first step of the argument is to show that, for all \(n\in \N \),
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{7}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{8}\)</span>
 
 <!--
 
 
                                                        2                    σ2
-                                                    E[Mn+1 ] = E[Mn2 ] +        .                                                 (7.8)                                --><a id="eq:gw_2nd_iterate"></a><!--
+                                                    E[Mn+1 ] = E[Mn2 ] +        .                                                 (7.9)                                --><a id="eq:gw_2nd_iterate"></a><!--
                                                                            µn+2
 
 
@@ -1292,7 +1292,7 @@ Section <a href="A-branching-process.html#sec:gw">4.3</a>, but a bit harder beca
 </p>
 
 <p>
-By iterating <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.8</a>)</span> and noting that \(\E [M_0]=1\), we obtain that
+By iterating <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.9</a>)</span> and noting that \(\E [M_0]=1\), we obtain that
 </p>
 
 <p>
@@ -1444,7 +1444,7 @@ href="Brownian-motion-heat-equation.html#sec:heat">10.3</a>.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

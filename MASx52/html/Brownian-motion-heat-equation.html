@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Brownian motion and the heat equation</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -156,14 +156,14 @@ MathJax = {
 
 
 
-<a id="notes_2-autopage-26"></a>
+<a id="notes_2-autopage-25"></a>
 <nav class="topnavigation" ><a href="notes_2.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -683,8 +683,8 @@ Home</a>
 </div>
 
 <p>
-<h4 id="autosec-27"><span class="sectionnumber" >10.3&#x2003;</span>Brownian motion and the heat equation</h4>
-<a id="notes_2-autopage-27"></a>
+<h4 id="autosec-26"><span class="sectionnumber" >10.3&#x2003;</span>Brownian motion and the heat equation</h4>
+<a id="notes_2-autopage-26"></a>
 <a id="notes_2-autofile-4"></a> <a id="sec:heat"></a>
 
 <p>
@@ -753,6 +753,28 @@ with the initial condition
 <p>
 describes how the temperature \(u(t,x)\) changes with time, from an initial temperature of \(f(x)\) at site \(x\). This equation has a close connection to Brownian motion, which we now explore.
 </p>
+<div class="theorembodyremark" >
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-15"></a>
+
+<li>
+
+<p>
+<span class="theoremheaderplain" >Remark 10.3.1</span> <a id="autoid-16" ></a >(\(\star \)) In the world of PDEs, the factor \(\frac 12\) in <span class="textup" >(<a
+href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span> is not normally included, but in probability we tend to include it. The difference is just that time runs twice as fast (i.e.&nbsp;we
+substituted \(2t\) in place of \(t\)), which isn’t very important.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
 
 <p>
 If we start Brownian motion from \(x\in \R \), then \(B_t\sim x+N(0,t)\sim N(x,t)\), so we can write down its probability density function
@@ -767,12 +789,12 @@ If we start Brownian motion from \(x\in \R \), then \(B_t\sim x+N(0,t)\sim N(x,t
 
 
 
-<a id="autoid-15"></a>
+<a id="autoid-17"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 10.3.1</span> <a id="autoid-16" ></a ><a id="lem:heat_1"></a> \(\phi _{t,x}(y)\) satisfies the heat equation <span class="textup" >(<a
+<span class="theoremheaderplain" >Lemma 10.3.2</span> <a id="autoid-18" ></a ><a id="lem:heat_1"></a> \(\phi _{t,x}(y)\) satisfies the heat equation <span class="textup" >(<a
 href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>.
 </p>
 
@@ -895,7 +917,7 @@ Hence, \(\frac {\p \phi }{\p t}=\frac 12\frac {\p ^2\phi }{\p x^2}\). &#x2003;&#
 </p>
 
 <p>
-We can use Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.1</a> to give a physical explanation of the connection between Brownian motion and heat diffusion. We define
+We can use Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.2</a> to give a physical explanation of the connection between Brownian motion and heat diffusion. We define
 </p>
 <span class="hidden" > \(\seteqnumber{0}{10.}{4}\)</span>
 
@@ -927,12 +949,12 @@ That is, to get \(w(t,x)\), we start a particle at location \(x\), let it perfor
 
 
 
-<a id="autoid-17"></a>
+<a id="autoid-19"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 10.3.2</span> <a id="autoid-18" ></a ><a id="lem:bm_heat_eq"></a> \(w(t,x)\) satisfies the heat equation <span class="textup" >(<a
+<span class="theoremheaderplain" >Lemma 10.3.3</span> <a id="autoid-20" ></a ><a id="lem:bm_heat_eq"></a> \(w(t,x)\) satisfies the heat equation <span class="textup" >(<a
 href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span> and the initial condition <span class="textup" >(<a
 href="Brownian-motion-heat-equation.html#eq:heat_init">10.4</a>)</span>.
 </p>
@@ -979,7 +1001,7 @@ href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>. To do so we 
                                                                                                w(t, x) = Ex [f (Bt )]
                                                                                                               Z   ∞
                                                                                                           =           f (y)φt,x (y) dy
-                                                                                                              −∞
+                                                                                                               −∞
 
 
 
@@ -994,7 +1016,7 @@ href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>. To do so we 
 \begin{align*}
 w(t,x)&amp;=\E _x[f(B_t)]\\ &amp;=\int _{-\infty }^\infty f(y)\phi _{t,x}(y)\,dy
 \end{align*}
-so, by Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.1</a>,
+so, by Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.2</a>,
 </p>
 <span class="hidden" > \(\seteqnumber{0}{10.}{5}\)</span>
 
@@ -1004,25 +1026,25 @@ so, by Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.1</a>,
 
 
 
-                                                                                              ∂w   ∂
-                                                                                                          Z       ∞
-                                                                                                 =                    f (y)φt,x (y) dy
-                                                                                              ∂t   ∂t         −∞
-                                                                                                      Z   ∞  ∂
-                                                                                                  =             φt,x (y) dy
+                                                                                             ∂w   ∂
+                                                                                                          Z   ∞
+                                                                                                =                  f (y)φt,x (y) dy
+                                                                                             ∂t   ∂t          −∞
+                                                                                                      Z   ∞    ∂
+                                                                                                  =               φt,x (y) dy
                                                                                                               f (y)
-                                                                                                     −∞      ∂t
-                                                                                                              ∂2
+                                                                                                     −∞        ∂t
+                                                                                                               1 ∂2
                                                                                                     Z ∞
-                                                                                                  =     f (y) 2 φt,x (y) dy
-                                                                                                     −∞      ∂x
-                                                                                                     ∂2
-                                                                                                        Z ∞
-                                                                                                  =          f (y)φt,x (y) dy
-                                                                                                    ∂x2 −∞
-                                                                                                    ∂2w
+                                                                                                  =      f (y)        φt,x (y) dy
+                                                                                                     −∞        2 ∂x2
+                                                                                                    1 ∂2
+                                                                                                           Z ∞
+                                                                                                  =              f (y)φt,x (y) dy
+                                                                                                    2 ∂x2 −∞
+                                                                                                    1 ∂2w
                                                                                                   =
-                                                                                                    ∂x2
+                                                                                                    2 ∂x2
 
 
 
@@ -1036,7 +1058,8 @@ so, by Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.1</a>,
 
 \begin{align*}
 \frac {\p w}{\p t} &amp;=\frac {\p }{\p t}\int _{-\infty }^\infty f(y)\phi _{t,x}(y)\,dy\\ &amp;=\int _{-\infty }^\infty f(y)\frac {\p }{\p t}\phi _{t,x}(y)\,dy\\ &amp;=\int
-_{-\infty }^\infty f(y)\frac {\p ^2}{\p x^2}\phi _{t,x}(y)\,dy\\ &amp;=\frac {\p ^2}{\p x^2}\int _{-\infty }^\infty f(y)\phi _{t,x}(y)\,dy\\ &amp;=\frac {\p ^2 w}{\p x^2}\\
+_{-\infty }^\infty f(y)\frac 12\frac {\p ^2}{\p x^2}\phi _{t,x}(y)\,dy\\ &amp;=\frac 12\frac {\p ^2}{\p x^2}\int _{-\infty }^\infty f(y)\phi _{t,x}(y)\,dy\\ &amp;=\frac 12\frac
+{\p ^2 w}{\p x^2}\\
 \end{align*}
 as required. &#x2003;&#x2003;&#x220E;
 </p>
@@ -1063,7 +1086,7 @@ MAS350/451 for details.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

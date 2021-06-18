@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Expectation</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -954,7 +954,7 @@ We can use <span class="textup" >(<a href="Expectation.html#eq:condition_ex">2.6
 
                                                                                        E[|X|] = E[|X|1{|X|≥1} ] + E[|X|1{|X|<1} ]
 
-                                                                                              ≤ E[X 2 1{X≥1} ] + 1
+                                                                                              ≤ E[X 2 1{|X|≥1} ] + 1
 
                                                                                               ≤ E[X 2 ] + 1.                              (2.7)                                        --><a id="eq:L1L2"></a><!--
 
@@ -968,7 +968,7 @@ We can use <span class="textup" >(<a href="Expectation.html#eq:condition_ex">2.6
 
 
 \begin{align}
-\E [|X|]&amp;=\E [|X|\1_{\{|X|\geq 1\}}]+\E [|X|\1_{\{|X|&lt;1\}}]\notag \\ &amp;\leq \E [X^2\1_{\{X\geq 1\}}]+1\notag \\ &amp;\leq \E [X^2]+1.\label {eq:L1L2}
+\E [|X|]&amp;=\E [|X|\1_{\{|X|\geq 1\}}]+\E [|X|\1_{\{|X|&lt;1\}}]\notag \\ &amp;\leq \E [X^2\1_{\{|X|\geq 1\}}]+1\notag \\ &amp;\leq \E [X^2]+1.\label {eq:L1L2}
 \end{align}
 Here, to deduce the second line, the key point is we can only use the inequality \(|x|\leq x^2\) if \(x\geq 1\). Hence, for the first term we can use that \(|X|\1_{\{|X|\geq 1\}}\leq X^2\1_{\{|X|\geq
 1\}}\). For the second term, we use that \(|X|\1_{\{|X|&lt;1\}}\leq 1\). In both cases, we also need the monotonicity of \(\E \).
@@ -1072,7 +1072,7 @@ If \(X\) is bounded, then using monotonicity we have \(\E [|X|^p]\leq \E [c^p]=c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

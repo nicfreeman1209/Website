@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Stochastic differential equations</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -740,12 +740,12 @@ solution for \(X_t\) exists.
 
 
 
-<a id="autoid-51"></a>
+<a id="autoid-53"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 12.0.1</span> <a id="autoid-52" ></a >(\(\star \)) The theory of existence and uniqueness of solutions to SDEs relies on analysis in more delicate ways than
+<span class="theoremheaderplain" >Remark 12.0.1</span> <a id="autoid-54" ></a >(\(\star \)) The theory of existence and uniqueness of solutions to SDEs relies on analysis in more delicate ways than
 we have time to discuss in this course. We use the term ‘solution’ for what is usually referred to in the theory of SDEs as a ‘strong solution’.
 </p>
 
@@ -817,12 +817,12 @@ We can rewrite our definition of an Ito process in our new notation.
 
 
 
-<a id="autoid-53"></a>
+<a id="autoid-55"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 12.0.2</span> <a id="autoid-54" ></a ><a id="defn:ito_proc_2"></a> A stochastic process \(X_t\) is an Ito process if it satisfies
+<span class="theoremheaderplain" >Definition 12.0.2</span> <a id="autoid-56" ></a ><a id="defn:ito_proc_2"></a> A stochastic process \(X_t\) is an Ito process if it satisfies
 </p>
 
 <p>
@@ -910,12 +910,12 @@ Of course, it is much neater to write <span class="textup" >(<a href="Stochastic
 
 
 
-<a id="autoid-55"></a>
+<a id="autoid-57"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 12.0.3</span> <a id="autoid-56" ></a >(\(\star \)) There is a limiting procedure that can extend the Ito integral, for a suitable class of stochastic processes
+<span class="theoremheaderplain" >Remark 12.0.3</span> <a id="autoid-58" ></a >(\(\star \)) There is a limiting procedure that can extend the Ito integral, for a suitable class of stochastic processes
 \(Z\), to define \(\int _0^t H_u\,dZ_u\) directly: in similar style to <span class="textup" >(<a href="Existence-Ito-integrals.html#eq:ito_simple_limit">11.12</a>)</span> but with increments of
 \(Z_t\) in place of increments of \(B_t\). This approach relies on some difficult analysis, and we won’t discuss it in this course.
 </p>
@@ -983,12 +983,12 @@ where \(G\in \mc {H}^2\) and \(F\) is a continuous adapted process.
 
 
 
-<a id="autoid-57"></a>
+<a id="autoid-59"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 12.1.1 (Ito’s formula)</span> <a id="autoid-58" ></a >Suppose that, for \(t\in \R \) and \(x\in \R \), \(f(t,x)\) is a deterministic function that is
+<span class="theoremheaderplain" >Lemma 12.1.1 (Ito’s formula)</span> <a id="autoid-60" ></a >Suppose that, for \(t\in \R \) and \(x\in \R \), \(f(t,x)\) is a deterministic function that is
 differentiable in \(t\) and twice differentiable in \(x\). Then \(Z_t=f(t,X_t)\) is an Ito process and
 </p>
 
@@ -1052,12 +1052,12 @@ Before we say a few words about the proof, let us practice using Ito’s formula
 
 
 
-<a id="autoid-59"></a>
+<a id="autoid-61"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Example 12.1.2</span> <a id="autoid-60" ></a ><a id="ex:intBtBt"></a> Let us apply Ito’s formula to calculate \(dZ_t\) where \(Z_t=B_t^2\). We have
+<span class="theoremheaderplain" >Example 12.1.2</span> <a id="autoid-62" ></a ><a id="ex:intBtBt"></a> Let us apply Ito’s formula to calculate \(dZ_t\) where \(Z_t=B_t^2\). We have
 \(Z_t=f(t,B_t)\) where \(f(t,x)=x^2\), which gives \(\frac {\p f}{\p t}=0\), \(\frac {\p f}{\p x}=2x\) and \(\frac {\p ^2f}{\p x^2}=2\). We’ll also use that \(B_t\) is an Ito process satisfying
 \(dB_t=0\,dt+1\,dB_t\). From Ito’s formula,
 </p>
@@ -1137,12 +1137,12 @@ This shows that Ito calculus behaves very differently to classical calculus (of 
 
 
 
-<a id="autoid-61"></a>
+<a id="autoid-63"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Example 12.1.3</span> <a id="autoid-62" ></a >Suppose that \(X\) satisfies \(dX_t=\mu \,dt+\sigma \,dB_t\), where \(\mu \in \R \) and \(\sigma &gt;0\) are
+<span class="theoremheaderplain" >Example 12.1.3</span> <a id="autoid-64" ></a >Suppose that \(X\) satisfies \(dX_t=\mu \,dt+\sigma \,dB_t\), where \(\mu \in \R \) and \(\sigma &gt;0\) are
 deterministic constants. Let \(Z_t=X_te^t\). We want to find \(dZ_t\).
 </p>
 
@@ -1196,12 +1196,12 @@ dZ_t&amp;=\l (X_te^t + (\mu )(e^t) + \frac 12(\sigma ^2)(0)\r )\,dt+(\sigma ) (e
 
 
 
-<a id="autoid-63"></a>
+<a id="autoid-65"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Example 12.1.4</span> <a id="autoid-64" ></a >Suppose that we want to calculate \(\E [B_t^4]\).
+<span class="theoremheaderplain" >Example 12.1.4</span> <a id="autoid-66" ></a >Suppose that we want to calculate \(\E [B_t^4]\).
 </p>
 
 <p>
@@ -1471,7 +1471,7 @@ After the limit has been taken, Ito’s formula is obtained by collecting the no
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

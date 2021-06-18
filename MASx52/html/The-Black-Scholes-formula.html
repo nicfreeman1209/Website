@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — The Black-Scholes formula</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -771,12 +771,12 @@ Before we attempt to price a call option, let us work through a simpler case.
 
 
 
-<a id="autoid-121"></a>
+<a id="autoid-123"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Example 14.5.1</span> <a id="autoid-122" ></a >We look to find the price, at time \(t\in [0,T]\), of the contingent claim \(\Phi (S_T)=2S_T+1\). From <span
+<span class="theoremheaderplain" >Example 14.5.1</span> <a id="autoid-124" ></a >We look to find the price, at time \(t\in [0,T]\), of the contingent claim \(\Phi (S_T)=2S_T+1\). From <span
 class="textup" >(<a href="The-Black-Scholes-formula.html#eq:call_rnv">14.19</a>)</span>, the price is
 </p>
 
@@ -979,7 +979,26 @@ and setting \(x-\frac {y+u}{v}\) we have
                                                                                                          = Ke−r(T −t)                                         √ e− 2 dx
                                                                                                                                  −∞                            2π
                                                                                                                                   1     s
-                                                                                                                                                                               s                                   −1 h 2
+                                                                                                                                     rm, we have an extra factor \(e^{z}\). To handle this factor we will have to complete the square inside the exponential term before we make the \(x\) substitution (i.e.&nbsp;the same
+technique as in exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:lognormal_mean"><b>10.5</b></a>). Again setting \(y=-z\) we have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{14.}{22}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                  s                −∞    Z             (−y−u)2
+                                                                         A= √         e−r(T −t)                 e−y e− 2v2 (−1) dy
+                                                                                  2πv            − log(K/s)
+                                                                                                Z log(s/K)
+                                                                                  s                                   (y+u)2
+                                                                            =   √     e−r(T −t)                e−y e− 2v2 dy
+                                                                                  2πv            −∞
+                                                                                                Z log(s/K)
+                                                                                  s                                   −1 h 2
                                                                                                                                                       i
                                                                             =   √     e−r(T −t)
                                                                                                                exp          y + (2u + 2v )y + u
@@ -1039,9 +1058,83 @@ obtain
                                                                                                      =s                      √ exp −              dx
                                                                                                          −∞                   2π             2
                                                                                                              1          s
-                                                                                                                                                                                                     σ T −t        K                                            2
+                                                                                                            l \{\log \l (\frac {s}{K}\r )+u+v^2\r \}\r ].
+\end{align*}
+
+
+</p>
+
+<p>
+Substituting back in for \(u\) and \(v\), and recalling that we use the shorthand \(s=S_t\), we obtain the following formula for price, at time \(t\in [0,T]\), of a European call option with strike price \(K\) and
+exercise date \(T\).
+</p>
+
+<span class="hidden" > \(\seteqnumber{0}{14.}{22}\)</span>
+
+<!--
+
+
+
+                                           F (t, St ) = St N [d1 ] − Ke−r(T −t) N [d2 ]                                                                                  (14.23)                              --><a id="eq:bs_formula"></a><!--
+
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:bs_formula} F(t,S_t)= S_t\,\mc {N}[d_1]-Ke^{-r(T-t)}\,\mc {N}[d_2]
+\end{equation}
+
+
+</p>
+
+<p>
+where
+</p>
+<span class="hidden" > \(\seteqnumber{0}{14.}{23}\)</span>
+
+
+
+<!--
+
+
+
                                                                                                        1          St                                           1 2
-                                                                                                                infinite loops).
+                                                                                                                        avide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+     subequations: "0",
+     section: "",
+     loader: {
+         load: ['[tex]/tagFormat'],
+     },
+     startup: {
+         ready() {
+             //       These would be replaced by import commands if you wanted to make
+             //       a proper extension.
+             const Configuration = MathJax._.input.tex.Configuration.Configuration;
+             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+             const Macro = MathJax._.input.tex.Symbol.Macro;
+             const TexError = MathJax._.input.tex.TexError.default;
+             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+             const expandable = MathJax._.util.Options.expandable;
+
+
+             //       Insert the replacement string into the TeX string, and check
+             //       that there haven't been too many maxro substitutions (prevents
+             //       infinite loops).
              const useArgument = (parser, text) => {
                   parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
                   parser.i = 0;
@@ -1157,7 +1250,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -1216,14 +1309,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -1475,8 +1568,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -1835,7 +1928,7 @@ Where is the flaw in this argument?
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

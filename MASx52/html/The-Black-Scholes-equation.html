@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — The Black-Scholes equation</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -737,12 +737,12 @@ prizes are only awarded to the living).
 
 
 
-<a id="autoid-109"></a>
+<a id="autoid-111"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Theorem 14.3.1</span> <a id="autoid-110" ></a ><a id="thm:bs_repl"></a> Let \(\Phi (S_T)\) be a contingent claim such that \(\E ^\Q [\Phi
+<span class="theoremheaderplain" >Theorem 14.3.1</span> <a id="autoid-112" ></a ><a id="thm:bs_repl"></a> Let \(\Phi (S_T)\) be a contingent claim such that \(\E ^\Q [\Phi
 (S_T)]&lt;\infty \). Then a replicating portfolio for \(\Phi (S_T)\) is given by
 </p>
 <span class="hidden" > \(\seteqnumber{0}{14.}{11}\)</span>
@@ -858,7 +858,7 @@ We will most of this section proving the claims in Theorem <a href="The-Black-Sc
 <span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> First let us deduce that <span class="textup" >(<a
 href="The-Black-Scholes-equation.html#eq:bs_boundary">14.11</a>)</span>. Equation <span class="textup" >(<a href="The-Black-Scholes-equation.html#eq:bs_boundary">14.11</a>)</span> is
 known as the boundary condition, because it relates to the exercise time \(T\). It holds because, at the exercise time \(T\), at which the value of \(S_T\) is known, to avoid arbitrage the value of the contingent
-claim \(\Phi (S_T)\) must be equal to its price \(F(T,S_T)\) i.e.&nbsp;\(\Phi (S_T)=F(T,S_T)\). Since \(S_T\) may take any positive value we simply replace \(S_T\) with a general \(s\geq 0\).
+claim \(\Phi (S_T)\) must be equal to its price \(F(T,S_T)\) i.e.&nbsp;\(\Phi (S_T)=F(T,S_T)\). Since \(S_T\) may take any positive value we simply replace \(S_T\) with a general \(s&gt;0\).
 </p>
 
 <p>
@@ -989,12 +989,12 @@ where we have suppressed the \((t,S_t)\) arguments of the partial derivatives of
 
 
 
-<a id="autoid-111"></a>
+<a id="autoid-113"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 14.3.2</span> <a id="autoid-112" ></a >Here, we assume, without justifying ourselves, that \(F(t,s)\) is differentiable (once in \(t\) and twice in \(s\)). This
+<span class="theoremheaderplain" >Remark 14.3.2</span> <a id="autoid-114" ></a >Here, we assume, without justifying ourselves, that \(F(t,s)\) is differentiable (once in \(t\) and twice in \(s\)). This
 is a minor issue that can be dealt with using appropriate results from analysis, but it is beyond the scope of our course.
 </p>
 
@@ -1160,12 +1160,12 @@ as required. &#x2003;&#x2003;&#x220E;
 
 
 
-<a id="autoid-113"></a>
+<a id="autoid-115"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Corollary 14.3.3</span> <a id="autoid-114" ></a ><a id="cor:repl_uniq"></a> The replicating portfolio given in Theorem <a
+<span class="theoremheaderplain" >Corollary 14.3.3</span> <a id="autoid-116" ></a ><a id="cor:repl_uniq"></a> The replicating portfolio given in Theorem <a
 href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a> for \(\Phi (S_T)\) is unique.
 </p>
 
@@ -1179,8 +1179,8 @@ href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a> for \(\Phi (S_T)\)
 <p>
 <span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The calculations in the proof of Theorem <a
 href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a> showed that any replicating portfolio (consisting solely of stocks and cash) could be written in terms of the solution to the Black-Scholes
-equation, as in the statement of Theorem <a href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a>. Since the Black-Scholes equation has a unique solution, this implies the replicating portfolio is
-also unique. &#x2003;&#x2003;&#x220E;
+equation, as in the statement of Theorem <a href="The-Black-Scholes-equation.html#thm:bs_repl">14.3.1</a>. It is known from the world of PDEs that the Black-Scholes equation has a unique solution, so
+the replicating portfolio is also unique. &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodyremark" >
 
@@ -1188,12 +1188,12 @@ also unique. &#x2003;&#x2003;&#x220E;
 
 
 
-<a id="autoid-115"></a>
+<a id="autoid-117"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 14.3.4</span> <a id="autoid-116" ></a >We have now seen that the Feynman-Kac formula is important to mathematical finance; it is the key to establishing the
+<span class="theoremheaderplain" >Remark 14.3.4</span> <a id="autoid-118" ></a >We have now seen that the Feynman-Kac formula is important to mathematical finance; it is the key to establishing the
 risk-neutral valuation formula <span class="textup" >(<a href="The-Black-Scholes-equation.html#eq:bs_rnv">14.13</a>)</span>. This formula links arbitrage free pricing theory to Brownian motion,
 through the stochastic differential equation \(dS_t=\mu S_t\,dt+\sigma S_t\, dB_t\).
 </p>
@@ -1249,7 +1249,7 @@ There are many others – Brownian motion sits right at the heart of the physica
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

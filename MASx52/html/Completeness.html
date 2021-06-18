@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Completeness</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -697,12 +697,12 @@ completeness in the Black-Scholes model.
 
 
 
-<a id="autoid-99"></a>
+<a id="autoid-101"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 14.2.1</span> <a id="autoid-100" ></a >The Black-Scholes model uses Ito integration. Up to now, whenever we wrote an Ito integral \(\int _0^t F_t\,dB_t\)
+<span class="theoremheaderplain" >Remark 14.2.1</span> <a id="autoid-102" ></a >The Black-Scholes model uses Ito integration. Up to now, whenever we wrote an Ito integral \(\int _0^t F_t\,dB_t\)
 we were careful to check that \(F\in \mc {H}^2\). From now on, we won’t go to the trouble of checking this condition (although it does always hold). We’ll say slightly more about this issue in Section <a
 href="Further-extensions.html#sec:discont">15.5</a>
 </p>
@@ -723,12 +723,12 @@ In the binomial model we discovered the importance of the so-called risk-neutral
 
 
 
-<a id="autoid-101"></a>
+<a id="autoid-103"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 14.2.2</span> <a id="autoid-102" ></a >The <b>risk-netural world</b> \(\Q \) is the probability measure under which \(S_t\) evolves according to the
+<span class="theoremheaderplain" >Definition 14.2.2</span> <a id="autoid-104" ></a >The <b>risk-netural world</b> \(\Q \) is the probability measure under which \(S_t\) evolves according to the
 SDE
 </p>
 
@@ -775,12 +775,12 @@ The key point here is that, compared to the ‘real’ dynamics of \(S_t\), give
 
 
 
-<a id="autoid-103"></a>
+<a id="autoid-105"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 14.2.3</span> <a id="autoid-104" ></a >As in Section <a href="Geometric-Brownian-motion.html#sec:gbm">12.2</a>, we refer to \(r\) as the
+<span class="theoremheaderplain" >Definition 14.2.3</span> <a id="autoid-106" ></a >As in Section <a href="Geometric-Brownian-motion.html#sec:gbm">12.2</a>, we refer to \(r\) as the
 <b>drift</b> and to \(\sigma \) as the <b>volatility</b>.
 </p>
 
@@ -805,12 +805,12 @@ For reasons that will become clear in Section <a href="Further-extensions.html#s
 
 
 
-<a id="autoid-105"></a>
+<a id="autoid-107"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 14.2.4</span> <a id="autoid-106" ></a ><a id="lem:compl_prep"></a> Let \(X\in \mc {F}_T\) be a contingent claim in the Black-Scholes market with
+<span class="theoremheaderplain" >Lemma 14.2.4</span> <a id="autoid-108" ></a ><a id="lem:compl_prep"></a> Let \(X\in \mc {F}_T\) be a contingent claim in the Black-Scholes market with
 exercise time \(T\). Suppose that the stochastic process
 </p>
 
@@ -910,7 +910,7 @@ Here, the first equation is ‘replication’ and the second is ‘self-financin
 \begin{align*}
 x_t&amp;=\l (M_t-e^{-rt}f_tS_t\r )\\ y_t&amp;=f_t.
 \end{align*}
-It is immediate that \(x_t\) and \(y_t\) are continuous and adapted, so \(h_t(x_t,y_t)\) is a portfolio strategy and we must check <span class="textup" >(<a
+It is immediate that \(x_t\) and \(y_t\) are continuous and adapted, so \(h_t=(x_t,y_t)\) is a portfolio strategy and we must check <span class="textup" >(<a
 href="Completeness.html#eq:repl_rep">14.6</a>)</span> and <span class="textup" >(<a href="Completeness.html#eq:repl_sf">14.7</a>)</span> hold. Recalling that \(C_t=e^{rt}\), we note that
 </p>
 <span class="hidden" > \(\seteqnumber{0}{14.}{7}\)</span>
@@ -1025,7 +1025,7 @@ and we are now ready to apply Ito’s formula to \(V^h_t=e^{rt}M_t\). We obtain
 dV^h_t &amp;=\l (re^{rt}M_t+e^{-rt}f_tS_t(\mu -r)e^{rt}+0\r )\,dt+\sigma e^{-rt}f_tS_te^{rt}\,dB_t\\ &amp;=\l (re^{rt}M_t-rf_tS_t\r )\,dt+f_t\l [\mu S_t\,dt+\sigma S_t\,dB_t\r
 ]\\ &amp;=\l (M_t-e^{-rt}f_tS_t\r )\l [re^{rt}\,dt\r ]+f_t\l [\mu S_t\,dt+\sigma S_t\,dB_t\r ].\\ &amp;=\l (M_t-e^{-rt}f_tS_t\r )\,dC_t+f_t\,dS_t.
 \end{align*}
-The second and third lines are collecting terms, so as in the final line we can use the definitions of \(dC_t\) and \(dS_t\) from <span class="textup" >(<a
+The second and third lines are collecting terms, so that in the final line we can use the definitions of \(dC_t\) and \(dS_t\) from <span class="textup" >(<a
 href="The-Black-Scholes-model.html#eq:cash_price">14.2</a>)</span> and <span class="textup" >(<a href="The-Black-Scholes-model.html#eq:stock_price">14.1</a>)</span>. Recalling the
 definitions of \(x_t\) and \(y_t\) we now have
 </p>
@@ -1043,12 +1043,12 @@ and, as required, we have checked <span class="textup" >(<a href="Completeness.h
 
 
 
-<a id="autoid-107"></a>
+<a id="autoid-109"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Theorem 14.2.5</span> <a id="autoid-108" ></a ><a id="thm:bs_compl"></a> Let \(X\in \mc {F}_T\) be a contingent claim in the Black-Scholes market with
+<span class="theoremheaderplain" >Theorem 14.2.5</span> <a id="autoid-110" ></a ><a id="thm:bs_compl"></a> Let \(X\in \mc {F}_T\) be a contingent claim in the Black-Scholes market with
 exercise time \(T\). Suppose that \(\E ^\Q [|X|]&lt;\infty \). Then there exists a replicating portfolio strategy for \(X\).
 </p>
 
@@ -1123,23 +1123,15 @@ when we apply Ito’s formula to \(Z_t\) we obtain
 \begin{align*}
 dZ_t&amp;=\l (-re^{-rt}S_t+rS_te^{-rt}+0\r )\,dt+\sigma e^{-rt}S_t\,dB_t\\ &amp;=\sigma Z_t\,dB_t.
 \end{align*}
-Rearranging,
+Combining with <span class="textup" >(<a href="Completeness.html#eq:dMt_gtBt">14.9</a>)</span> we obtain
 </p>
 
 <p>
-\[\frac {1}{\sigma Z_t}\,dZ_t=dB_t\]
+\[dM_t=\frac {g_t}{\sigma Z_t}\sigma Z_t\,dB_t=\frac {g_t}{\sigma Z_t}\,dZ_t.\]
 </p>
 
 <p>
-and putting this expression into <span class="textup" >(<a href="Completeness.html#eq:dMt_gtBt">14.9</a>)</span> we obtain
-</p>
-
-<p>
-\[dM_t=\frac {g_t}{\sigma Z_t}\,dZ_t.\]
-</p>
-
-<p>
-This shows that <span class="textup" >(<a href="Completeness.html#eq:wtf">14.5</a>)</span> holds, with \(f_t=\frac {g_t}{\sigma Z_t}\). Hence, we apply Lemma <a
+This shows that <span class="textup" >(<a href="Completeness.html#eq:wtf">14.5</a>)</span> holds, with \(f_t=\frac {g_t}{\sigma Z_t}\). Finally, we apply Lemma <a
 href="Completeness.html#lem:compl_prep">14.2.4</a> and deduce that there exists a replicating portfolio strategy for \(X\). &#x2003;&#x2003;&#x220E;
 </p>
 
@@ -1169,7 +1161,7 @@ in fact, unique.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

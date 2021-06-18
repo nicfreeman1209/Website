@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Further extensions </title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -765,12 +765,12 @@ formulas for prices to be found, but in general numerical techniques are the onl
 
 
 
-<a id="autoid-139"></a>
+<a id="autoid-141"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 15.5.1</span> <a id="autoid-140" ></a >\((\Delta )\) To be precise, what American options lead too, in place of the risk-neutral valuation formula, is a
+<span class="theoremheaderplain" >Remark 15.5.1</span> <a id="autoid-142" ></a >\((\Delta )\) To be precise, what American options lead too, in place of the risk-neutral valuation formula, is a
 so-called ‘optimal stopping problem’: their value is given by
 </p>
 
@@ -855,12 +855,12 @@ If you want to see some examples, there are plenty in Chapters 11-14 of the book
 
 
 
-<a id="autoid-141"></a>
+<a id="autoid-143"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 15.5.2</span> <a id="autoid-142" ></a >In Section <a href="Completeness.html#sec:bs_compl">14.2</a> we were careful to write our contingent claims as
+<span class="theoremheaderplain" >Remark 15.5.2</span> <a id="autoid-144" ></a >In Section <a href="Completeness.html#sec:bs_compl">14.2</a> we were careful to write our contingent claims as
 \(X\), rather than \(\Phi (S_T)\). The reason is that the argument we gave for the Theorem <a href="Completeness.html#thm:bs_compl">14.2.5</a>, which essentially stated that the Black-Scholes market was
 complete, relied only on the fact that \(X\in m\mc {F}_T\) (and not on having the form \(X=\Phi (S_T)\)).
 </p>
@@ -908,9 +908,9 @@ exactly how the ‘average’ is taken.
 </div>
 
 <p>
-The feature of the graph that grabs our immediate attention is the huge fall, which occurs on Monday \(19^{\text {th}}\) October 1987. This date has become known as <i>Black Monday</i>. We see an
-instantaneous drop, with apparently no warning, in which the S&amp;P 500 loses nearly \(30\%\) of its value. This is its largest fall ever, over twice the magnitude of the second largest fall (which you may
-remember: it occurred on \(15^{\text {th}}\) October 2008).
+The feature of the graph that grabs our immediate attention is the huge fall, which occurs on Monday 19<sup>th</sup> October 1987. This date has become known as <i>Black Monday</i>. We see an
+instantaneous drop, with apparently no warning, in which the S&amp;P 500 loses nearly 30% of its value. This is its largest fall ever, over twice the magnitude of the second largest fall (which you may remember: it
+occurred on 15<sup>th</sup> October 2008).
 </p>
 <div class="theorembodyremark" >
 
@@ -918,12 +918,12 @@ remember: it occurred on \(15^{\text {th}}\) October 2008).
 
 
 
-<a id="autoid-143"></a>
+<a id="autoid-145"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 15.5.3</span> <a id="autoid-144" ></a >Something which may strike you as very strange: <i>no</i> single explanation for the Black Monday crash has ever
+<span class="theoremheaderplain" >Remark 15.5.3</span> <a id="autoid-146" ></a >Something which may strike you as very strange: <i>no</i> single explanation for the Black Monday crash has ever
 been found. There are various theories as to what triggered the crash, ranging from a sudden lack liquidity to sudden implementations of new pricing methodology. It is often claimed that some <i>high-frequency
 trading algorithms</i> (which were relatively new, at the time) were programmed to automatically sell stocks when they saw them drop; meaning that once a small crash occurred there was suddenly a huge number of
 investors wanting to sell, exacerbating the drop in prices. However, in this case the largest drops occurred when trading volumes were low, meaning that high frequency trading is unlikely to be the full explanation.
@@ -1049,12 +1049,12 @@ where \(\bar \xi =\frac {1}{n}\sum _{i=1}^n \xi _i\).
 
 
 
-<a id="autoid-145"></a>
+<a id="autoid-147"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 15.5.4</span> <a id="autoid-146" ></a >If you are familiar with statistical inference, you should recognize the maximum likelihood estimator for the variance of
+<span class="theoremheaderplain" >Remark 15.5.4</span> <a id="autoid-148" ></a >If you are familiar with statistical inference, you should recognize the maximum likelihood estimator for the variance of
 the normal distribution.
 </p>
 
@@ -1233,7 +1233,7 @@ We won’t go into any details on this procedure in these notes. A good source o
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

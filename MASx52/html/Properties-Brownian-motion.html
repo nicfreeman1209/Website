@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Properties of Brownian motion</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -705,12 +705,12 @@ motion.
 
 
 
-<a id="autoid-19"></a>
+<a id="autoid-21"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 10.4.1</span> <a id="autoid-20" ></a ><a id="lem:bm_sym"></a> The stochastic process \(W_t=-B_t\) is a standard Brownian motion.
+<span class="theoremheaderplain" >Lemma 10.4.1</span> <a id="autoid-22" ></a ><a id="lem:bm_sym"></a> The stochastic process \(W_t=-B_t\) is a standard Brownian motion.
 </p>
 
 
@@ -773,12 +773,12 @@ motion are not differentiable!
 
 
 
-<a id="autoid-21"></a>
+<a id="autoid-23"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 10.4.2</span> <a id="autoid-22" ></a ><a id="lem:bm_non_diff"></a> Let \(t\in [0,\infty )\). Almost surely, the function \(t\mapsto B_t\) is not
+<span class="theoremheaderplain" >Lemma 10.4.2</span> <a id="autoid-24" ></a ><a id="lem:bm_non_diff"></a> Let \(t\in [0,\infty )\). Almost surely, the function \(t\mapsto B_t\) is not
 differentiable at \(t\).
 </p>
 
@@ -806,15 +806,15 @@ where \(X\sim N(0,1)\). Note that \(X\) is positive half the time and negative h
 
 <!--
 
-                                                              
-                                                                       with probability 1/2,
-                                                              
-                                                X a.s.        ∞
-                                                              
-                                                √ → X∞ =                                                                                    (10.6)                             --><a id="eq:limXsqrth"></a><!--
-                                                 h       −∞
-                                                         
-                                                                      with probability 1/2.
+                                                             
+                                                                      with probability 1/2,
+                                                             
+                                               X a.s.        ∞
+                                                             
+                                               √ → X∞ =                                                                                   (10.6)                               --><a id="eq:limXsqrth"></a><!--
+                                                h       −∞
+                                                        
+                                                                     with probability 1/2.
 
 
 -->
@@ -860,12 +860,12 @@ and others in later sections of the course.
 
 
 
-<a id="autoid-23"></a>
+<a id="autoid-25"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 10.4.3</span> <a id="autoid-24" ></a ><a id="lem:bm_mart"></a> Brownian motion is a martingale.
+<span class="theoremheaderplain" >Lemma 10.4.3</span> <a id="autoid-26" ></a ><a id="lem:bm_mart"></a> Brownian motion is a martingale.
 </p>
 
 
@@ -918,12 +918,12 @@ Here, we use the properties of Brownian motion: \(B_t-B_s\) is independent of \(
 
 
 
-<a id="autoid-25"></a>
+<a id="autoid-27"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 10.4.4</span> <a id="autoid-26" ></a ><a id="lem:bm2_mart"></a> \(B_t^2-t\) is a martingale
+<span class="theoremheaderplain" >Lemma 10.4.4</span> <a id="autoid-28" ></a ><a id="lem:bm2_mart"></a> \(B_t^2-t\) is a martingale
 </p>
 
 
@@ -946,15 +946,15 @@ t\),
 
 
 
-                                                                           E[Bt2 − t | Fu ] = E[(Bt − Bu )2 + 2Bt Bu − Bu2 | Fu ] − t
+                                                                          E[Bt2 − t | Fu ] = E[(Bt − Bu )2 + 2Bt Bu − Bu2 | Fu ] − t
 
-                                                                                          = E[(Bt − Bu )2 | Fu ] + 2Bu E[Bt | Fu ] − Bu2 − t
+                                                                                         = E[(Bt − Bu )2 | Fu ] + 2Bu E[Bt | Fu ] − Bu2 − t
 
-                                                                                          = E[(Bt − Bu )2 ] + 2Bu2 − Bu2 − t
+                                                                                         = E[(Bt − Bu )2 ] + 2Bu2 − Bu2 − t
 
-                                                                                          = (t − u) + Bu2 − t
+                                                                                         = (t − u) + Bu2 − t
 
-                                                                                          = Bu2 − u
+                                                                                         = Bu2 − u
 
 
 
@@ -982,7 +982,7 @@ as required. Here we use that \(B_t-B_u\) is independent of \(\mc {F}_u\), along
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

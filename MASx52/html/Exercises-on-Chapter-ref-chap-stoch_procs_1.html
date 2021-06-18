@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -993,7 +993,7 @@ effect of different initial conditions on \(M_\infty \).
 <li>
 <p>
 <b>7.11</b> <a id="ps:gw_var"></a> <i>In this question we establish the formula <span class="textup" >(<a
-href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.8</a>)</span>, which we used in the proof of Lemma <a
+href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.9</a>)</span>, which we used in the proof of Lemma <a
 href="Long-term-behaviour-stochastic-processes.html#lem:gw_supercrit">7.4.8</a>.</i>
 </p>
 <p>
@@ -1020,7 +1020,7 @@ href="Exercises-on-Chapter-ref-chap-cond_exp.html#ps:doob_pre"><b>3.6</b></a> th
 </li>
 <li>
 <p>
-<b>7.12</b> <a id="ps:fatou_subst"></a> <i>In this question we prove the inequality <span class="textup" >(<a href="The-martingale-convergence-theorem.html#eq:fatou_subst">7.3</a>)</span>,
+<b>7.12</b> <a id="ps:fatou_subst"></a> <i>In this question we prove the inequality <span class="textup" >(<a href="The-martingale-convergence-theorem.html#eq:fatou_subst">7.4</a>)</span>,
 which we used in the proof of the martingale convergence theorem.</i>
 </p>
 <p>
@@ -1074,14 +1074,14 @@ Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\t
 <b>7.13</b> <a id="ps:gw_subcrit"></a> <i>In this question we give a rigorous proof of Lemma <a href="Long-term-behaviour-stochastic-processes.html#lem:gw_subcrit">7.4.7</a>.</i>
 </p>
 <p>
-Let \(Z_n\) and \(X^{n+1}_i\) be as in <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.7</a>)</span> (i.e.&nbsp;\(Z_n\) is a
+Let \(Z_n\) and \(X^{n+1}_i\) be as in <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.8</a>)</span> (i.e.&nbsp;\(Z_n\) is a
 Galton-Watson process) and suppose that \(\E [X^{n+1}_i]=\mu &lt;1\).
 </p>
 <p>
 Let \(\alpha \in [0,1]\). For each \(i,n\) we define an independent random variable \(C^{n+1}_i\), with the same distribution as \(C\) where \(\P \l [C=1\r ]=\alpha \) and \(\P \l [C=0\r ]=1-\alpha
 \). We define
 </p>
-<span class="hidden" > \(\seteqnumber{0}{7.}{8}\)</span>
+<span class="hidden" > \(\seteqnumber{0}{7.}{9}\)</span>
 <!--
 
                                                      
@@ -1092,7 +1092,7 @@ Let \(\alpha \in [0,1]\). For each \(i,n\) we define an independent random varia
                                                      
                                                      
                                            e n+1 =
-                                           X i        1      if Xin+1 = 0 and Cin+1 = 1                                     (7.9)                              --><a id="eq:gw_coupling"></a><!--
+                                           Xi         1      if Xin+1 = 0 and Cin+1 = 1                                    (7.10)                              --><a id="eq:gw_coupling"></a><!--
                                                      
                                                      
                                                      
@@ -1107,13 +1107,13 @@ Let \(\alpha \in [0,1]\). For each \(i,n\) we define an independent random varia
 
 \begin{equation}
 \label {eq:gw_coupling} \wt {X}^{n+1}_i= \begin{cases} 0 &amp; \text { if }X^{n+1}_i=0\text { and }C^{n+1}_i=0\\ 1 &amp; \text { if }X^{n+1}_i=0\text { and }C^{n+1}_i=1\\
-X^{n+1}_i &amp; \text { if }X^{n+1}_i\geq 1.          \end {cases}
+X^{n+1}_i &amp; \text { if }X^{n+1}_i\geq 1.           \end {cases}
 \end{equation}
 
 
 </p>
 <p>
-Define \(\wt {Z}_n\) by setting \(\wt {Z}_0=1\), and then using <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.7</a>)</span> with
+Define \(\wt {Z}_n\) by setting \(\wt {Z}_0=1\), and then using <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.8</a>)</span> with
 \(\wt {Z}_n\) in place of \(Z_n\) and \(\wt {X}^{n+1}_i\) in place of \(X^{n+1}_i\). Define \(f:[0,1]\to \R \) by \(f(\alpha )=\E [X^{n+1}_i]\).
 </p>
 <ul style="list-style-type:none">
@@ -1122,7 +1122,7 @@ Define \(\wt {Z}_n\) by setting \(\wt {Z}_0=1\), and then using <span class="tex
 <li>
 <p>
 <span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Convince yourself that \(\wt {Z}_n\) is a Galton-Watson process, with offspring distribution given by
-<span class="textup" >(<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#eq:gw_coupling">7.9</a>)</span>.
+<span class="textup" >(<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#eq:gw_coupling">7.10</a>)</span>.
 </p>
 
 
@@ -1160,7 +1160,7 @@ such that \(f(\alpha )=1\).
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

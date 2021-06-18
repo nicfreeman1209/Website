@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Connections between SDEs and PDEs</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -738,12 +738,12 @@ Here, \(\alpha (t,x)\) and \(\beta (t,x)\) are (deterministic) continuous functi
 
 
 
-<a id="autoid-73"></a>
+<a id="autoid-75"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 13.1.1</span> <a id="autoid-74" ></a >(\(\star \)) Those familiar with partial differential equations may want to hear the ‘proper’ terminology: this is a
+<span class="theoremheaderplain" >Remark 13.1.1</span> <a id="autoid-76" ></a >(\(\star \)) Those familiar with partial differential equations may want to hear the ‘proper’ terminology: this is a
 second order parabolic PDE with a terminal boundary condition.
 </p>
 
@@ -795,12 +795,12 @@ The connection is as follows.
 
 
 
-<a id="autoid-75"></a>
+<a id="autoid-77"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 13.1.2</span> <a id="autoid-76" ></a ><a id="lem:fk_1"></a> Suppose that \(F\) is a solution of <span class="textup" >(<a
+<span class="theoremheaderplain" >Lemma 13.1.2</span> <a id="autoid-78" ></a ><a id="lem:fk_1"></a> Suppose that \(F\) is a solution of <span class="textup" >(<a
 href="Connections-between-SDEs-PDEs.html#eq:fk1a">13.1</a>)</span> and <span class="textup" >(<a href="Connections-between-SDEs-PDEs.html#eq:fk1b">13.2</a>)</span>, and also that
 \(\beta (t,X_t)\frac {\p F}{\p x}(t,X_t)\) is in \(\mc {H}^2\). Then,
 </p>
@@ -899,12 +899,12 @@ where \(\alpha ,\beta , \Phi \) are as before and \(r\) is a deterministic const
 
 
 
-<a id="autoid-77"></a>
+<a id="autoid-79"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 13.1.3</span> <a id="autoid-78" ></a ><a id="lem:fk_2"></a> Suppose that \(F\) is a solution of <span class="textup" >(<a
+<span class="theoremheaderplain" >Lemma 13.1.3</span> <a id="autoid-80" ></a ><a id="lem:fk_2"></a> Suppose that \(F\) is a solution of <span class="textup" >(<a
 href="Connections-between-SDEs-PDEs.html#eq:fk2a">13.4</a>)</span> and <span class="textup" >(<a href="Connections-between-SDEs-PDEs.html#eq:fk2b">13.5</a>)</span>, and also that
 \(\beta (t,X_t)\frac {\p F}{\p x}(t,X_t)\) is in \(\mc {H}^2\). Then,
 </p>
@@ -915,7 +915,7 @@ href="Connections-between-SDEs-PDEs.html#eq:fk2a">13.4</a>)</span> and <span cla
 
 
 
-                                     F (t, x) = e−r(T −t) Et,x [Φ(XT )]                                      (13.6)                                                     --><a id="eq:fk_2_eq"></a><!--
+                                     F (t, x) = e−r(T −t) Et,x [Φ(XT )]                                   (13.6)                                                      --><a id="eq:fk_2_eq"></a><!--
 
 
 
@@ -954,16 +954,16 @@ for all \(x\in \R \) and \(t\in [0,T]\).
 
 
                                                                                                            1
-                                                                                                                                      !
-                                                                                    ∂F                 ∂F                  ∂2F                                 ∂F
-                                                              dZt = −re−rt F + e−rt    + α(t, Xt )e−rt    + β(t, Xt )2 e−rt 2             dt + β(t, Xt )e−rt      dBt
-                                                                                    ∂t                 ∂x  2               ∂x                                  ∂x
-                                                                                                            1
-                                                                                                                             !
-                                                                                      −rt ∂F            ∂F             ∂2F                             ∂F
+                                                                                                                                    !
+                                                                                    ∂F                 ∂F                  ∂2F                               ∂F
+                                                              dZt = −re−rt F + e−rt    + α(t, Xt )e−rt    + β(t, Xt )2 e−rt 2           dt + β(t, Xt )e−rt      dBt
+                                                                                    ∂t                 ∂x  2               ∂x                                ∂x
+                                                                                                     1
+                                                                                                                      !
+                                                                                  ∂F             ∂F             ∂2F                             ∂F
                                                                   =e  −rt
-                                                                            −rF + e         + α(t, Xt )    + β(t, Xt )2 2        dt + e−rt β(t, Xt )      dBt .
-                                                                                         ∂t             ∂x  2          ∂x                              ∂x
+                                                                            −rF +    + α(t, Xt )    + β(t, Xt )2 2        dt + e−rt β(t, Xt )      dBt .
+                                                                                  ∂t             ∂x  2          ∂x                              ∂x
 
 
 
@@ -976,7 +976,7 @@ for all \(x\in \R \) and \(t\in [0,T]\).
 
 \begin{align*}
 dZ_t &amp;=\l (-re^{-rt}F+e^{-rt}\frac {\p F}{\p t}+\alpha (t,X_t)e^{-rt}\frac {\p F}{\p x}+\frac 12\beta (t,X_t)^2e^{-rt}\frac {\p ^2 F}{\p x^2}\r )\,dt+\beta
-(t,X_t)e^{-rt}\frac {\p F}{\p x}\,dB_t\\ &amp;=e^{-rt}\l (-rF+e^{-rt}\frac {\p F}{\p t}+\alpha (t,X_t)\frac {\p F}{\p x}+\frac 12\beta (t,X_t)^2\frac {\p ^2 F}{\p x^2}\r
+(t,X_t)e^{-rt}\frac {\p F}{\p x}\,dB_t\\ &amp;=e^{-rt}\l (-rF+\frac {\p F}{\p t}+\alpha (t,X_t)\frac {\p F}{\p x}+\frac 12\beta (t,X_t)^2\frac {\p ^2 F}{\p x^2}\r
 )\,dt+e^{-rt}\beta (t,X_t)\frac {\p F}{\p x}\,dB_t.
 \end{align*}
 We know that \(F\) satisfies <span class="textup" >(<a href="Connections-between-SDEs-PDEs.html#eq:fk2a">13.4</a>)</span>, so the first term on the right hand side vanishes. Writing the result as
@@ -984,7 +984,7 @@ integrals with time interval \([t,T]\) we obtain
 </p>
 
 <p>
-\[e^{-rT}F(T,X_T)=e^{-rt}F(t,X_t)+\int _t^T e^{-ru}\frac {\p F}{\p x}(u,X_u)\,dB_u.\]
+\[e^{-rT}F(T,X_T)=e^{-rt}F(t,X_t)+\int _t^T e^{-ru}\beta (u,X_u)\frac {\p F}{\p x}(u,X_u)\,dB_u.\]
 </p>
 
 <p>
@@ -1020,12 +1020,12 @@ as required. &#x2003;&#x2003;&#x220E;
 
 
 
-<a id="autoid-79"></a>
+<a id="autoid-81"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 13.1.4</span> <a id="autoid-80" ></a >Setting \(r=0\) in Lemma <a href="Connections-between-SDEs-PDEs.html#lem:fk_2">13.1.3</a> gets us back to
+<span class="theoremheaderplain" >Remark 13.1.4</span> <a id="autoid-82" ></a >Setting \(r=0\) in Lemma <a href="Connections-between-SDEs-PDEs.html#lem:fk_2">13.1.3</a> gets us back to
 the statement of Lemma <a href="Connections-between-SDEs-PDEs.html#lem:fk_1">13.1.2</a>.
 </p>
 
@@ -1066,12 +1066,12 @@ famous for his contributions to probability theory).
 
 
 
-<a id="autoid-81"></a>
+<a id="autoid-83"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Remark 13.1.5</span> <a id="autoid-82" ></a >\((\star )\) There are many other families of PDEs that have relationships to other families of stochastic processes.
+<span class="theoremheaderplain" >Remark 13.1.5</span> <a id="autoid-84" ></a >\((\star )\) There are many other families of PDEs that have relationships to other families of stochastic processes.
 These connections are exploited by researchers to transfer information and results between the ‘dual’ worlds of stochastic processes and PDEs.
 </p>
 
@@ -1087,12 +1087,12 @@ These connections are exploited by researchers to transfer information and resul
 
 
 
-<a id="autoid-83"></a>
+<a id="autoid-85"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Example 13.1.6</span> <a id="autoid-84" ></a >In cases where we can solve <span class="textup" >(<a
+<span class="theoremheaderplain" >Example 13.1.6</span> <a id="autoid-86" ></a >In cases where we can solve <span class="textup" >(<a
 href="Connections-between-SDEs-PDEs.html#eq:fk_base">13.3</a>)</span>, we can use the Feynman-Kac formula to find explicit solutions to PDEs. For example, consider
 </p>
 <span class="hidden" > \(\seteqnumber{0}{13.}{6}\)</span>
@@ -1103,10 +1103,10 @@ href="Connections-between-SDEs-PDEs.html#eq:fk_base">13.3</a>)</span>, we can us
 
 
 
-                                                                                        ∂F         1 ∂2F
-                                                                                           (t, x) + σ 2 2 (t, x) = 0
-                                                                                        ∂t         2 ∂x
-                                                                                                               f (T, x) = x2 .
+                                                                                    ∂F         1 ∂2F
+                                                                                       (t, x) + σ 2 2 (t, x) = 0
+                                                                                    ∂t         2 ∂x
+                                                                                                           f (T, x) = x2 .
 
 
 
@@ -1142,9 +1142,9 @@ where \(dX_u=0\,du+\sigma \,dB_u=\sigma \,dB_u\). This means that
 <!--
 
 
-                                                                                                  Z   T
-                                                                                  XT = Xt + σ             dBu = Xt + σ(BT − Bt ).
-                                                                                                  t
+                                                                                              Z   T
+                                                                              XT = Xt + σ             dBu = Xt + σ(BT − Bt ).
+                                                                                              t
 
 
 
@@ -1168,14 +1168,14 @@ Therefore,
 <!--
 
 
-                                                                                              h                        i
-                                                                               F (t, x) = Et,x (Xt + σ(BT − Bt ))2
                                                                                           h                        i
-                                                                                      = E (x + σ(BT − Bt ))2
-                                                                                          h                                         i
-                                                                                      = E x2 + σ 2 (BT − Bt )2 + 2xσ(BT − Bt )
+                                                                           F (t, x) = Et,x (Xt + σ(BT − Bt ))2
+                                                                                      h                        i
+                                                                                  = E (x + σ(BT − Bt ))2
+                                                                                      h                                         i
+                                                                                  = E x2 + σ 2 (BT − Bt )2 + 2xσ(BT − Bt )
 
-                                                                                      = x2 + σ 2 (T − t).
+                                                                                  = x2 + σ 2 (T − t).
 
 
 
@@ -1214,7 +1214,7 @@ method.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

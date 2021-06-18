@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Solutions to exercises</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -818,8 +818,8 @@ href="Properties-Brownian-motion.html#lem:bm_mart">10.4.3</a>) implies that \(\E
 
 <li>
 <p>
-<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Integrating by parts (using that \(\frac {d}{dz}e^{-\frac {z^2}{2t}}=\frac {-z}{t}e^{-\frac
-{z^2}{2t}}\)) we have
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We’ll use the pdf of the normal distribution to write \(\E [B_t^n]\) as an integral. Then, integrating by
+parts (note that \(\frac {d}{dz}e^{-\frac {z^2}{2t}}=\frac {-z}{t}e^{-\frac {z^2}{2t}}\)) we have
 </p>
 <span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
 
@@ -864,7 +864,7 @@ href="Properties-Brownian-motion.html#lem:bm_mart">10.4.3</a>) implies that \(\E
 </li>
 <li>
 <p>
-<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> Now, we use the formula we deduced in part (a). Since \(\E [B_t^0]=\E [1]=1\), we have \(\E
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> We use the formula we deduced in part (a). Since \(\E [B_t^0]=\E [1]=1\), we have \(\E
 [B_t^2]=t(2-1)(1)=t\). Hence \(\E [B_t^4]=t(4-1)\E [B_t^2]=t(4-1)t=3t^2\) and therefore \(\var (B_t^2)=\E [B_t^4]-\E [B_t^2]^2=2t^2\).
 </p>
 
@@ -903,66 +903,23 @@ Then, \(e^Z=e^\mu e^Y\) and
                                                                                             E[eY ] = √           ey e− 2σ2 dy
                                                                                                          2πσ −∞
                                                                                                           1                 1  2
-                                                                                                             Z ∞                                                      2πσ −∞               2σ 2
-                                                                                                          σ2
-                                                                                                    =e2 .
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-\E [e^Y] &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty e^y e^{-\frac {y^2}{2\sigma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
-\{-\frac {1}{2\sigma ^2}\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
-^4\r )\r \}\,dy\\ &amp;=e^{\frac {\sigma ^2}{2}}\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {(y-\sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
-{\sigma ^2}{2}}.
-\end{align*}
-Here, to deduce the third line we complete the square, and to deduce the final line we use that the p.d.f.&nbsp;of a \(N(\sigma ^2,\sigma )\) random variable integrates to \(1\). Therefore,
-</p>
-<p>
-\[\E [e^Z]=e^\mu \E [e^Y]=e^{\mu +\frac {\sigma ^2}{2}}.\]
-</p>
-</li>
-<li>
-<p>
-<a href="Exercises-on-Chapter-ref-chap-bm.html#q:mart_bm"><b>10.6</b></a>
-</p>
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Since \(B_t\) is adapted, \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is also adapted. By <span
-class="textup" >(<a href="Brownian-motion-definition.html#eq:lognormal_mean">10.2</a>)</span> we have that \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is in \(L^1\). It remains only to check that
-</p>
-<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
-
-
-<!--
-
-
-                                                                                 1                                                               1
-                                                                                                                                                                                                         
+                                                                                                             Z ∞                                                                                                                                                
                                                                       E exp σBt − σ 2 t                        | Fu = E exp σ(Bt − Bu ) + σBu − σ 2 t | Fu
                                                                                  2                                                               2
-                                                                                                                               1
-                                                                                                                                    
-                                                                                                                    = exp σBu − σ 2 t E [exp (σ(Bt − Bu )) | Fu ]
+                                                                                                                               1 2
+                                                                                                                                   
+                                                                                                                    = exp σBu − σ t E [exp (σ(Bt − Bu )) | Fu ]
                                                                                                                                2
-                                                                                                                               1
-                                                                                                                                    
-                                                                                                                    = exp σBu − σ 2 t E [exp (σ(Bt − Bu ))]
+                                                                                                                               1 2
+                                                                                                                                   
+                                                                                                                    = exp σBu − σ t E [exp (σ(Bt − Bu ))]
                                                                                                                                2
-                                                                                                                               1            1 2
-                                                                                                                                                    
-                                                                                                                    = exp σBu − σ 2 t exp     σ (t − u)
+                                                                                                                               1 2          1 2
+                                                                                                                                                    
+                                                                                                                    = exp σBu − σ t exp       σ (t − u)
                                                                                                                                2            2
                                                                                                                                1 2
-                                                                                                                                    
+                                                                                                                                   
                                                                                                                     = exp σBu − σ u .
                                                                                                                                2
 
@@ -1153,9 +1110,10 @@ exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b
 
 <!--
 
-                                                                                                  "n−1                              #           n−1        h                                i
-                                                                                                          (Btk +1 − Btk )2 =                            E (Btk +1 − Btk )2
+                                                                                                  "n−1                                 #        n−1        h                                i
+                                                                                                          (Btk +1 − Btk )                   =           E (Btk +1 − Btk )2
                                                                                                    X                                            X
+                                                                                                                                   2
                                                                                               E
                                                                                                     k=0                                         k=0
                                                                                                                                                 n−1
@@ -2005,8 +1963,8 @@ which matches <span class="textup" >(<a href="Solutions-exercises.html#eq:ii2">C
 </li>
 </ul>
 <p>
-\(Y\) satisfies the differential equation \(\frac {d Y_t}{dt}=t\). Using equation <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:intBtBt">12.6</a>)</span> from
-Example <a href="Stochastic-differential-equations.html#ex:intBtBt">12.1.2</a>, we have that
+By using the fundamental theorem of calculus, we obtain that \(Y\) satisfies the differential equation \(\frac {d Y_t}{dt}=t\). Using equation <span class="textup" >(<a
+href="Stochastic-differential-equations.html#eq:intBtBt">12.6</a>)</span> from Example <a href="Stochastic-differential-equations.html#ex:intBtBt">12.1.2</a>, we have that
 </p>
 <span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
 
@@ -2042,8 +2000,59 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 
                                                                                                                        1
-                                                                                                                                                                                                                              −1            1        2                                                  −1
-                                                                                                B_t^{n-1}\,dB_t\\ &amp;=\frac {n(n-1)B_t^{n-2}}{2}\,dt+nB_t^{n-1}\,dB_t.
+                                                                                                                  
+                                                                        dZt = (0) + (cos Xt ) (cos Xt ) + (cos Xt )2 (− sin Xt )                                                      dt + (cos Xt )(cos Xt ) dBt
+                                                                                                         2
+                                                                                                                                               
+                                                                              = 1−        Zt
+                                                                                          2         1 − Zt2 dt + 1 − Zt2 dBt
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dZ_t &amp;=\l \{(0)+(\cos X_t)\l (\cos X_t\r )+\frac 12(\cos X_t)^2\l (-\sin X_t\r )\r \}\,dt+(\cos X_t)(\cos X_t)\,dB_t\\ &amp;=\l (1-\tfrac {Z_t}{2}\r )\l (1-Z_t^2\r )\,dt+\l
+(1-Z_t^2\r )\,dB_t
+\end{align*}
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:Btn_diff"><b>12.4</b></a> We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                        1
+                                                                                                                                                                               
+                                                                                dFt = 0 + (0)(nBtn−1 ) + (12 )(n(n − 1)Btn−2                                                         dt + (1)nBtn−1 dBt
+                                                                                                        2
+                                                                                      n(n − 1)Bt
+                                                                                               n−2
+                                                                                    =              dt + nBtn−1 dBt .
+                                                                                            2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dF_t &amp;=\l (0+(0)(nB_{t}^{n-1})+\frac 12(1^2)(n(n-1)B_t^{n-2}\r )\,dt+(1) n B_t^{n-1}\,dB_t\\ &amp;=\frac {n(n-1)B_t^{n-2}}{2}\,dt+nB_t^{n-1}\,dB_t.
 \end{align*}
 Written out in integral form this gives
 </p>
@@ -2136,36 +2145,7 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 
                                                                                                1
-                                                                                      ��Bt −t/2 + (0) e−Bt −t/2 − (Bt + t)e−Bt −t/2
-                                                                                               2
-                                                                                               1                                                
-                                                                                              + (12 ) −e−Bt −t/2 − e−Bt −t/2 + (Bt + t)e−Bt −t/2    dt
-                                                                                               2
-                                                                                                                                                                                                      
-                                                                                                                                   + (12 ) e−Bt −t/2 − (Bt + t)e−Bt −t/2 dBt
-
-                                                                                    = (1 − t − Bt )e−Bt −t/2 dBt .
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dY_t &amp;=\bigg \{e^{-B_t-t/2}-\frac {1}{2}(B_t+t)e^{-B_t-t/2}+(0)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\\ &amp;\hspace {5pc} + \frac 12(1^2)\l
-(-e^{-B_t-t/2}-e^{-B_t-t/2}+(B_t+t)e^{-B_t-t/2}\r )\bigg \}\,dt \\ &amp;\hspace {10pc} + (1^2)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\,dB_t\\ &amp;=(1-t-B_t)e^{-B_t-t/2}\,dB_t.
-\end{align*}
-Hence \(Y_t=Y_0+\int _0^t(1-u-B_u)e^{-B_u-u/2}\,dB_u\), which is martingale by Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a>.
-</p>
-</li>
-</ul>
-</li>
-<li>
-<p>
-<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:inttBt"><b>12.6</b></a> We apply Ito’s formula with \(f(t,x)=tx\) to \(Z_t=f(t,B_t)=tB_t\) and obtain
+                                                                                      nd obtain
 </p>
 <p>
 \[dZ_t=\l (B_t+(0)(t)+\frac 12(1^2)(0)\r )\,dt+(1)(t)\,dB_t\]
@@ -2294,7 +2274,7 @@ Hence, using that \(\E [X_t^2]=\E [Y_t]\),
 <li>
 <p>
 <span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> If we change the \(dB_t\) coefficient then we won’t change the mean, because we can see from (a) that
-\(\E [X_t]\) depends only on the \(dB_t\) coefficient. However, as we can see from part (b), the variance depends on both the \(dt\) and \(dB_t\) terms, so will change if we alter the \(dB_t\) coefficient.
+\(\E [X_t]\) depends only on the \(dB_t\) coefficient. However, as we can see from part (b), the variance depends on both the \(dt\) and \(dB_t\) terms, so will typically change if we alter the \(dB_t\) coefficient.
 </p>
 </li>
 </ul>
@@ -4157,13 +4137,13 @@ that there is positive probability of a catastrophic default if and only if \(\a
 <p>
 <span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> The probability that both \(B\) and \(C\) fail is \(\frac 12\frac 12=\frac 14\). Given this event, the
 probability that both \(D\) and \(E\) fail is \(\frac 12(1-\frac 34\frac 34\frac 34)=\frac {37}{128}\); here the first term \(\frac 12\) is the probability of \(D\) failing (via its link to \(B\)) and the
-second term is one minus the probability of \(E\) not failing despite all its inbound loans defaulting. Given that \(D\) and \(E\) both fail, the probability that \(F\) fails is \(1-\frac 13\frac 13=\frac 89\).
+second term is one minus the probability of \(E\) not failing despite all its inbound loans defaulting. Given that \(D\) and \(E\) both fail, the probability that \(F\) fails is \(1-\frac 23\frac 23=\frac 59\).
 </p>
 <p>
 Hence, the probability that every node fails is
 </p>
 <p>
-\[\frac 14\frac {37}{128}\frac 89=\frac {37}{576}.\]
+\[\frac 14\frac {37}{128}\frac 59=\frac {185}{4608}.\]
 </p>
 </li>
 <li>
@@ -4185,13 +4165,13 @@ Stage 2: Hence, the probability that \(E\) fails and \(D\) does not is
 The three terms in the above correspond respectively to the three cases considered in the first paragraph. Similarly, the probability that \(D\) fails and \(E\) does not is
 </p>
 <p>
-\[\frac 14\l (\frac 12\frac 34\r )+\frac 14\l (0\r )+\frac 14\l (\frac 12\r )\l (\frac 34\frac 34\frac 34\r )=\frac {75}{512}\]
+\[\frac 14\l (\frac 12\frac 34\frac 34\r )+\frac 14\l (0\r )+\frac 14\l (\frac 12\r )\l (\frac 34\frac 34\frac 34\r )=\frac {63}{512}\]
 </p>
 <p>
 and the probability that both \(D\) and \(E\) fail is
 </p>
 <p>
-\[\frac 14\l (\frac 14+\frac 34\frac 12\frac 14\r )+\frac 14\l (0\r )+\frac 14\l (\frac 12\r )\l (1-\frac 34\frac 34\frac 34\r )=\frac {81}{512}\]
+\[\frac 14\l (\frac 12\r )\l (\frac 14+\frac 34\frac 14\r )+\frac 14\l (0\r )+\frac 14\l (\frac 12\r )\l (1-\frac 34\frac 34\frac 34\r )=\frac {65}{512}\]
 </p>
 <p>
 .
@@ -4200,7 +4180,7 @@ and the probability that both \(D\) and \(E\) fail is
 Stage 3: Finally, considering these three cases in turn, the probability that \(F\) fails is
 </p>
 <p>
-\[\frac {19}{128}\l (\frac 13\r )+\frac {75}{512}\l (\frac 13\r )+\frac {81}{512}\l (1-\frac 13\frac 13\r )=\frac {367}{1536}.\]
+\[\frac {19}{128}\l (\frac 13\r )+\frac {63}{512}\l (\frac 13\r )+\frac {65}{512}\l (1-\frac 23\frac 23\r )=\frac {371}{2304}.\]
 </p>
 <p>
 
@@ -4220,7 +4200,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>

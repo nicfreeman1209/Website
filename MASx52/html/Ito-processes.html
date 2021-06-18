@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 23, 2020." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Ito processes</title>
-<link rel="stylesheet" type="text/css" href="lwarp_sagebrush.css" />
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 
 
 <script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 23, 2020
+last updated: June 7, 2021
 </p>
 
 </header>
@@ -222,14 +222,14 @@ Home</a>
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-20" class="tocsection" >
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
 <span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-27" class="tocsection" >
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
 <span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
@@ -481,8 +481,8 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
+<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
@@ -696,12 +696,12 @@ We are now ready to define precisely the types of stochastic process that we wil
 
 
 
-<a id="autoid-41"></a>
+<a id="autoid-43"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Definition 11.4.1</span> <a id="autoid-42" ></a ><a id="def:ito_proc"></a> A stochastic process \(X\) is known as an Ito process if \(X_0\) is \(\mc {F}_0\)
+<span class="theoremheaderplain" >Definition 11.4.1</span> <a id="autoid-44" ></a ><a id="def:ito_proc"></a> A stochastic process \(X\) is known as an Ito process if \(X_0\) is \(\mc {F}_0\)
 measurable and \(X\) can be written in the form
 </p>
 
@@ -753,12 +753,12 @@ to know a fact from integration theory:
 
 
 
-<a id="autoid-43"></a>
+<a id="autoid-45"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 11.4.2</span> <a id="autoid-44" ></a ><a id="lem:baby_fubini"></a> For a continuous stochastic process \(F\), if one (which \(\ra \) both) of the two
+<span class="theoremheaderplain" >Lemma 11.4.2</span> <a id="autoid-46" ></a ><a id="lem:baby_fubini"></a> For a continuous stochastic process \(F\), if one (which \(\ra \) both) of the two
 sides is finite, then we have \(\E \l [\int _0^t F_u\,du\r ]=\int _0^t\E [F_u]\,du.\)
 </p>
 
@@ -814,12 +814,12 @@ Here, Lemma <a href="Ito-processes.html#lem:baby_fubini">11.4.2</a> allows us to
 
 
 
-<a id="autoid-45"></a>
+<a id="autoid-47"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Example 11.4.3</span> <a id="autoid-46" ></a >Let \(X_t\) be the Ito process satisfying
+<span class="theoremheaderplain" >Example 11.4.3</span> <a id="autoid-48" ></a >Let \(X_t\) be the Ito process satisfying
 </p>
 
 <p>
@@ -836,17 +836,17 @@ Then
 <!--
 
 
-                                                                                                    Z    t                  Z   t            
-                                                                           E[Xt ] = E[1] + E                  2Bu2   du + E            3u dBu
-                                                                                                      0                        0
-                                                                                            Z   t
-                                                                                 =1+2               E[Bu2 ] du
-                                                                                            0
-                                                                                            Z   t
-                                                                                 =1+2               u du
-                                                                                            0
+                                                                                                      Z    t                  Z   t            
+                                                                           E[Xt ] = E[1] + E                    2Bu2   du + E            3u dBu
+                                                                                                        0                        0
+                                                                                         Z        t
+                                                                                 =1+2                 E[Bu2 ] du
+                                                                                              0
+                                                                                         Z        t
+                                                                                 =1+2                 u du
+                                                                                              0
 
-                                                                                 = 1 + t.
+                                                                                 = 1 + t2 .
 
 
 
@@ -858,7 +858,7 @@ Then
 
 
 \begin{align*}
-\E [X_t]&amp;=\E [1]+\E \l [\int _0^t2B_u^2\,du\r ]+\E \l [\int _0^t 3u\,dB_u\,\r ]\\ &amp;=1+2\int _0^t\E [B_u^2]\,du\\ &amp;=1+2\int _0^t u\,du\\ &amp;=1+t.
+\E [X_t]&amp;=\E [1]+\E \l [\int _0^t2B_u^2\,du\r ]+\E \l [\int _0^t 3u\,dB_u\,\r ]\\ &amp;=1+2\int _0^t\E [B_u^2]\,du\\ &amp;=1+2\int _0^t u\,du\\ &amp;=1+t^2.
 \end{align*}
 
 
@@ -876,12 +876,12 @@ Then
 
 
 
-<a id="autoid-47"></a>
+<a id="autoid-49"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Example 11.4.4</span> <a id="autoid-48" ></a >Brownian motion is an Ito process. It satisfies \(B_t=B_0+\int _0^t0\,du+\int _0^t 1\,dB_u\).
+<span class="theoremheaderplain" >Example 11.4.4</span> <a id="autoid-50" ></a >Brownian motion is an Ito process. It satisfies \(B_t=B_0+\int _0^t0\,du+\int _0^t 1\,dB_u\).
 </p>
 
 
@@ -904,12 +904,12 @@ A useful fact about Ito processes is that we can ‘equate coefficients’ in mu
 
 
 
-<a id="autoid-49"></a>
+<a id="autoid-51"></a>
 
 <li>
 
 <p>
-<span class="theoremheaderplain" >Lemma 11.4.5</span> <a id="autoid-50" ></a ><a id="lem:ito_coeff"></a> Suppose that
+<span class="theoremheaderplain" >Lemma 11.4.5</span> <a id="autoid-52" ></a ><a id="lem:ito_coeff"></a> Suppose that
 </p>
 <span class="hidden" > \(\seteqnumber{0}{11.}{13}\)</span>
 
@@ -971,7 +971,7 @@ Proof of this lemma is outside of the scope of our course. However, the result w
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 23, 2020
+Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
 </p>
 
 </footer>
