@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 15, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: June 7, 2021
+last updated: September 15, 2021
 </p>
 
 </header>
@@ -776,17 +776,17 @@ motion.
 
 
 
-                                                                                                     cov(Bu , Bt ) = E[Bt Bu ] − E[Bt ]E[Bu ]
+                                                                                                    cov(Bu , Bt ) = E[Bt Bu ] − E[Bt ]E[Bu ]
 
-                                                                                                                       = E[Bt Bu ]
+                                                                                                                             = E[Bt Bu ]
 
-                                                                                                                       = E[(Bt − Bu )Bu ] + E[Bu2 ]
+                                                                                                                             = E[(Bt − Bu )Bu ] + E[Bu2 ]
 
-                                                                                                                       = E[Bt − Bu ]E[Bu ] + E[Bu2 ]
+                                                                                                                             = E[Bt − Bu ]E[Bu ] + E[Bu2 ]
 
-                                                                                                                       =0×0+u
+                                                                                                                             =0×0+u
 
-                                                                                                                       =u
+                                                                                                                             =u
 
 
 
@@ -899,29 +899,47 @@ Then, \(e^Z=e^\mu e^Y\) and
 
 
                                                                                                           1    ∞        y2
-                                                                                                                   Z
+                                                                                                                     Z
                                                                                             E[eY ] = √           ey e− 2σ2 dy
                                                                                                          2πσ −∞
                                                                                                           1                 1  2
-                                                                                                             Z ∞                                                                                                                                                
-                                                                      E exp σBt − σ 2 t                        | Fu = E exp σ(Bt − Bu ) + σBu − σ 2 t | Fu
-                                                                                 2                                                               2
-                                                                                                                               1 2
-                                                                                                                                   
-                                                                                                                    = exp σBu − σ t E [exp (σ(Bt − Bu )) | Fu ]
-                                                                                                                               2
-                                                                                                                               1 2
-                                                                                                                                   
-                                                                                                                    = exp σBu − σ t E [exp (σ(Bt − Bu ))]
-                                                                                                                               2
-                                                                                                                               1 2          1 2
-                                                                                                                                                    
-                                                                                                                    = exp σBu − σ t exp       σ (t − u)
-                                                                                                                               2            2
-                                                                                                                               1 2
-                                                                                                                                   
-                                                                                                                    = exp σBu − σ u .
-                                                                                                                               2
+                                                                                                             Z ∞      f-chap-bm.html#q:mart_bm"><b>10.6</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> Since \(B_t\) is adapted, \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is also adapted. By <span
+class="textup" >(<a href="Brownian-motion-definition.html#eq:lognormal_mean">10.2</a>)</span> and scaling of normal random variables we have that \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is in
+\(L^1\). It remains only to check that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+
+                                                                                 1                                                                 1
+                                                                                                                                                                                                            
+                                                                      E exp σBt − σ 2 t                          | Fu = E exp σ(Bt − Bu ) + σBu − σ 2 t | Fu
+                                                                                 2                                                                 2
+                                                                                                                                 1 2
+                                                                                                                                     
+                                                                                                                      = exp σBu − σ t E [exp (σ(Bt − Bu )) | Fu ]
+                                                                                                                                 2
+                                                                                                                                 1 2
+                                                                                                                                     
+                                                                                                                      = exp σBu − σ t E [exp (σ(Bt − Bu ))]
+                                                                                                                                 2
+                                                                                                                                 1 2          1 2
+                                                                                                                                                      
+                                                                                                                      = exp σBu − σ t exp       σ (t − u)
+                                                                                                                                 2            2
+                                                                                                                                 1 2
+                                                                                                                                     
+                                                                                                                      = exp σBu − σ u .
+                                                                                                                                 2
 
 
 -->
@@ -953,8 +971,10 @@ href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a> we hav
 <!--
 
 
-                                                                                h                          i                                        h                                                       i
-                                                                              E Bt3 − 3tBt | Fu = Bu3 − 3uBu + E Bt3 − Bu3 − 3tBt + 3uBu | Fu
+                                                                              h                         i            h                                                                                             i
+                                                                          E Bt3 − 3tBt | Fu = E (Bu3 − 3uBu ) + Bt3 − 3tBt + (Bu3 − 3uBu ) | Fu
+                                                                                                                                                      h                                                        i
+                                                                                                            = Bu3 − 3uBu + E Bt3 − Bu3 − 3tBt + 3uBu | Fu
 
 
 
@@ -965,7 +985,7 @@ href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a> we hav
 
 
 \begin{align*}
-\E \l [B_t^3-3tB_t\|\mc {F}_u\r ] &amp;=B_u^3-3uB_u+\E \l [B_t^3-B_u^3-3tB_t+3uB_u\|\mc {F}_u\r ]
+\E \l [B_t^3-3tB_t\|\mc {F}_u\r ] &amp;=\E \l [(B_u^3-3uB_u)+B_t^3-3tB_t+(B_u^3-3uB_u)\|\mc {F}_u\r ] \\ &amp;=B_u^3-3uB_u+\E \l [B_t^3-B_u^3-3tB_t+3uB_u\|\mc {F}_u\r ]
 \end{align*}
 so we need only check that the second term on the right hand side is zero. To see this,
 </p>
@@ -975,19 +995,19 @@ so we need only check that the second term on the right hand side is zero. To se
 <!--
 
 
-                                                          h                                         i          h                                                                                        i
+                                                          h                                         i            h                                                                                             i
                                                         E Bt3 − Bu3 − 3tBt + 3uBu | Fu = E Bt3 − Bu3 − 3tBu + 3uBu − 3t(Bt − Bu ) | Fu
-                                                                                                               h                                                             i
+                                                                                                                 h                                                                  i
                                                                                                         = E Bt3 − Bu3 − 3tBu + 3uBu | Fu + 0
-                                                                                                               h                            i
+                                                                                                                 h                                i
                                                                                                         = E Bt3 − Bu3 | Fu − 3Bu (t − u)
-                                                                                                               h                                                                        i
+                                                                                                                 h                                                                             i
                                                                                                         = E (Bt − Bu )3 + 3Bt2 Bu − 3Bu2 Bt | Fu − 3Bu (t − u)
-                                                                                                               h                                i                    h              i
+                                                                                                                 h                                    i                     h              i
                                                                                                         = E (Bt − Bu )3 | Fu + 3Bu E Bt2 | Fu − 3Bu2 E[Bt | Fu ] − 3Bu (t − u)
-                                                                                                               h                       i                    h                          i       
+                                                                                                                 h                           i                     h                          i       
                                                                                                         = E (Bt − Bu )3 + 3Bu E Bt2 − t | Fu + t − 3Bu3 − 3Bu (t − u)
-                                                                                                                                                      
+                                                                                                                                                             
                                                                                                         = 0 + 3Bu Bu2 − u + t − 3Bu3 − 3Bu (t − u)
 
                                                                                                         = 0.
@@ -1030,7 +1050,7 @@ and \(B_t^2-t\) are martingales (from Lemmas <a href="Properties-Brownian-motion
 <!--
 
                                                                           n−1
-                                                                                (tk+1 − tk ) = (tn − tn−1 ) + (tn−1 − tn−2 ) + . . . + (t2 − t1 ) + (t1 − t0 )
+                                                                                  (tk+1 − tk ) = (tn − tn−1 ) + (tn−1 − tn−2 ) + . . . + (t2 − t1 ) + (t1 − t0 )
                                                                           X
 
                                                                           k=0
@@ -1066,21 +1086,22 @@ This is known as a ‘telescoping sum’. The same method shows that \(\sum _{k=
 
 <!--
 
-                                                                                             n−1                           n−1                                                                     
-                                                                                     0≤            (tk+1 − tk )2 ≤                 (tk+1 − tk )                    max
-                                                                                             X                             X
-                                                                                                                                                                                 |tj+1 − tj |
-                                                                                                                                                               j=0,...,n−1
-                                                                                             k=0                           k=0
-                                                                                                                                                                         n−1
-                                                                                                                       =           max                                             (tk+1 − tk )
-                                                                                                                                                                           X
-                                                                                                                                                    |tj+1 − tj |
-                                                                                                                               j=0,...,n−1
-                                                                                                                                                                             k=0
-                                                                                                                                                                        
-                                                                                                                       =           max              |tj+1 − tj | t.
-                                                                                                                               j=0,...,n−1
+                                                                                             n−1                                 n−1                                                                      
+                                                                                       0≤          (tk+1 − tk ) ≤                        (tk+1 − tk )                     max
+                                                                                             X                                   X
+                                                                                                                     2
+                                                                                                                                                                                        |tj+1 − tj |
+                                                                                                                                                                      j=0,...,n−1
+                                                                                             k=0                                 k=0
+                                                                                                                                                                                n−1
+                                                                                                                             =           max                                              (tk+1 − tk )
+                                                                                                                                                                                  X
+                                                                                                                                                          |tj+1 − tj |
+                                                                                                                                     j=0,...,n−1
+                                                                                                                                                                                    k=0
+                                                                                                                                                                               
+                                                                                                                             =           max              |tj+1 − tj | t.
+                                                                                                                                     j=0,...,n−1
 
 
 
@@ -1110,19 +1131,19 @@ exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b
 
 <!--
 
-                                                                                                  "n−1                                 #        n−1        h                                i
-                                                                                                          (Btk +1 − Btk )                   =           E (Btk +1 − Btk )2
-                                                                                                   X                                            X
-                                                                                                                                   2
+                                                                                                  "n−1                                       #        n−1         h                                i
+                                                                                                          (Btk +1 − Btk )                         =           E (Btk +1 − Btk )2
+                                                                                                   X                                                  X
+                                                                                                                                         2
                                                                                               E
-                                                                                                    k=0                                         k=0
-                                                                                                                                                n−1
-                                                                                                                                            =           (tk+1 − tk )
-                                                                                                                                                X
+                                                                                                    k=0                                               k=0
+                                                                                                                                                      n−1
+                                                                                                                                                  =           (tk+1 − tk )
+                                                                                                                                                      X
 
-                                                                                                                                                k=0
+                                                                                                                                                      k=0
 
-                                                                                                                                            = t.
+                                                                                                                                                  = t.
 
 
 
@@ -1147,19 +1168,19 @@ independent of each other. So, using exercise <a href="Exercises-on-Chapter-ref-
 
 <!--
 
-                                                                                                   n−1                                          n−1
-                                                                                                                                    !
-                                                                                                                                                                                               
-                                                                                            var           (Btk +1 − Btk )                   =           var (Btk +1 − Btk )2
-                                                                                                   X                                            X
-                                                                                                                                2
+                                                                                                   n−1                                                n−1
+                                                                                                                                          !
+                                                                                                                                                                                                      
+                                                                                            var          (Btk +1 − Btk )                          =           var (Btk +1 − Btk )2
+                                                                                                   X                                                  X
+                                                                                                                                      2
 
-                                                                                                    k=0                                         k=0
-                                                                                                                                                n−1
-                                                                                                                                            =           2(tk+1 − tk )2
-                                                                                                                                                X
+                                                                                                   k=0                                                k=0
+                                                                                                                                                      n−1
+                                                                                                                                                  =           2(tk+1 − tk )2
+                                                                                                                                                      X
 
-                                                                                                                                                k=0
+                                                                                                                                                      k=0
 
 
 
@@ -1194,29 +1215,29 @@ which tends to zero as \(n\to \infty \), by the same calculation as in part (b).
 <!--
 
 
-                                                                                                                                            ∞     1 − z2
-                                                                                                                                    Z
-                                                                                                           P [Bt ≥ y] =                         √     e 2t dz
-                                                                                                                                       y         2πt
-                                                                                                                                            ∞     1
-                                                                                                                                    Z
-                                                                                                                                                          z2
-                                                                                                                               ≤                √     ye− 2t dz
-                                                                                                                                        y         2πt
-                                                                                                                                            ∞     1
-                                                                                                                                    Z
-                                                                                                                                                          z2
-                                                                                                                               ≤                √     ze− 2t dz
-                                                                                                                                        y         2πt
-                                                                                                                                   1
-                                                                                                                                                                  ∞
-                                                                                                                                             z2
-                                                                                                                               =√       −te− 2t
-                                                                                                                                   2πt                               z=y
-                                                                                                                                 r
-                                                                                                                                    t − y2
-                                                                                                                               =      e 2t .
-                                                                                                                                   2π
+                                                                                                                                                  ∞     1 − z2
+                                                                                                                                          Z
+                                                                                                             P [Bt ≥ y] =                             √     e 2t dz
+                                                                                                                                             y         2πt
+                                                                                                                                                  ∞     1
+                                                                                                                                          Z
+                                                                                                                                                                z2
+                                                                                                                                     ≤                √     ye− 2t dz
+                                                                                                                                              y         2πt
+                                                                                                                                                  ∞     1
+                                                                                                                                          Z
+                                                                                                                                                                z2
+                                                                                                                                     ≤                √     ze− 2t dz
+                                                                                                                                              y         2πt
+                                                                                                                                         1
+                                                                                                                                                                         ∞
+                                                                                                                                                   z2
+                                                                                                                                     =√       −te− 2t
+                                                                                                                                         2πt                                z=y
+                                                                                                                                       r
+                                                                                                                                          t − y2
+                                                                                                                                     =      e 2t .
+                                                                                                                                         2π
 
 
 -->
@@ -1239,7 +1260,7 @@ Putting \(y=t^\alpha \) where \(\alpha &gt;\frac 12\) we have
                                                                            t − 1 t2α−1
                                                        P[Bt ≥ t ] ≤
                                                                 α
-                                                                             e 2       .                                                                                                                (C.1)       --><a id="eq:bm_asymp_1"></a><!--
+                                                                             e 2       .                                                                                                                       (C.1)   --><a id="eq:bm_asymp_1"></a><!--
                                                                           2π
 
 
@@ -1278,7 +1299,7 @@ which is independent of \(t\) and hence does not tend to zero as \(t\to \infty \
 
 
                                                                                         ∞     1 − −z2        1   ∞ 1
-                                                                                 Z                                                 Z
+                                                                                   Z                                                     Z
                                                                                                                         −y 2
                                                                                             √    e 2t dz = √         ze− 2t dz
                                                                                     y        2πt            2πt y z
@@ -1290,18 +1311,18 @@ which is independent of \(t\) and hence does not tend to zero as \(t\to \infty \
                                                                                                                         
                                                                                                          =√       − e 2t       −        e 2t dz
                                                                                                             2πt    z       z=y    y  z2
-                                                                                                                      1
-                                                                                                                                                           ∞ !
-                                                                                                                               t z2
-                                                                                                                                        
-                                                                                                                   ≤√       − e− 2t
-                                                                                                                      2πt      z                               z=y
-                                                                                                                      1 t −y   2
-                                                                                                                   =√      e 2t
-                                                                                                                     2πt y
-                                                                                                                     t 1 − y2
-                                                                                                                   =√     e 2t
-                                                                                                                     2π y
+                                                                                                                        1
+                                                                                                                                                                  ∞ !
+                                                                                                                                 t z2
+                                                                                                                                              
+                                                                                                                     ≤√       − e− 2t
+                                                                                                                        2πt      z                                    z=y
+                                                                                                                        1 t −y   2
+                                                                                                                     =√      e 2t
+                                                                                                                       2πt y
+                                                                                                                       t 1 − y2
+                                                                                                                     =√     e 2t
+                                                                                                                       2π y
 
 
 -->
@@ -1327,10 +1348,10 @@ Using the symmetry of normal random variables about \(0\), along with this inequ
 
                                                                                                         P[|Bt | ≥ a] = P[Bt ≥ a] + P[Bt ≤ −a]
 
-                                                                                                                           = 2P[Bt ≥ a]
-                                                                                                                               t 1 − a2
-                                                                                                                           ≤ 2√      e 2t .
-                                                                                                                                2π a
+                                                                                                                                 = 2P[Bt ≥ a]
+                                                                                                                                     t 1 − a2
+                                                                                                                                 ≤ 2√      e 2t .
+                                                                                                                                      2π a
 
 
 -->
@@ -2000,34 +2021,7 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 
                                                                                                                        1
-                                                                                                                  
-                                                                        dZt = (0) + (cos Xt ) (cos Xt ) + (cos Xt )2 (− sin Xt )                                                      dt + (cos Xt )(cos Xt ) dBt
-                                                                                                         2
-                                                                                                                                               
-                                                                              = 1−        Zt
-                                                                                          2         1 − Zt2 dt + 1 − Zt2 dBt
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dZ_t &amp;=\l \{(0)+(\cos X_t)\l (\cos X_t\r )+\frac 12(\cos X_t)^2\l (-\sin X_t\r )\r \}\,dt+(\cos X_t)(\cos X_t)\,dB_t\\ &amp;=\l (1-\tfrac {Z_t}{2}\r )\l (1-Z_t^2\r )\,dt+\l
-(1-Z_t^2\r )\,dB_t
-\end{align*}
-
-
-</p>
-</li>
-</ul>
-</li>
-<li>
-<p>
-<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:Btn_diff"><b>12.4</b></a> We have
+                                                                                                             /span></span> We have
 </p>
 <span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
 
@@ -2035,18 +2029,8 @@ dZ_t &amp;=\l \{(0)+(\cos X_t)\l (\cos X_t\r )+\frac 12(\cos X_t)^2\l (-\sin X_t
 <!--
 
 
-                                                                                                        1
-                                                                                                                                                                               
-                                                                                dFt = 0 + (0)(nBtn−1 ) + (12 )(n(n − 1)Btn−2                                                         dt + (1)nBtn−1 dBt
-                                                                                                        2
-                                                                                      n(n − 1)Bt
-                                                                                               n−2
-                                                                                    =              dt + nBtn−1 dBt .
-                                                                                            2
-
-
--->
-
+                                                                                                                       −1            1        2                                                  −1
+                                                                                               
 
 <p>
 
@@ -2145,7 +2129,36 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 
                                                                                                1
-                                                                                      nd obtain
+                                                                                                                                                               dYt = e−Bt −t/2 − (Bt + t)e−Bt −t/2 + (0) e−Bt −t/2 − (Bt + t)e−Bt −t/2
+                                                                                               2
+                                                                                               1                                                
+                                                                                              + (12 ) −e−Bt −t/2 − e−Bt −t/2 + (Bt + t)e−Bt −t/2    dt
+                                                                                               2
+                                                                                                                                                                                                      
+                                                                                                                                   + (12 ) e−Bt −t/2 − (Bt + t)e−Bt −t/2 dBt
+
+                                                                                    = (1 − t − Bt )e−Bt −t/2 dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dY_t &amp;=\bigg \{e^{-B_t-t/2}-\frac {1}{2}(B_t+t)e^{-B_t-t/2}+(0)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\\ &amp;\hspace {5pc} + \frac 12(1^2)\l
+(-e^{-B_t-t/2}-e^{-B_t-t/2}+(B_t+t)e^{-B_t-t/2}\r )\bigg \}\,dt \\ &amp;\hspace {10pc} + (1^2)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\,dB_t\\ &amp;=(1-t-B_t)e^{-B_t-t/2}\,dB_t.
+\end{align*}
+Hence \(Y_t=Y_0+\int _0^t(1-u-B_u)e^{-B_u-u/2}\,dB_u\), which is martingale by Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a>.
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:inttBt"><b>12.6</b></a> We apply Ito’s formula with \(f(t,x)=tx\) to \(Z_t=f(t,B_t)=tB_t\) and obtain
 </p>
 <p>
 \[dZ_t=\l (B_t+(0)(t)+\frac 12(1^2)(0)\r )\,dt+(1)(t)\,dB_t\]
@@ -4200,7 +4213,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
+Copyright Nic Freeman, Sheffield University, last updated September 15, 2021
 </p>
 
 </footer>

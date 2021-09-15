@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, June 7, 2021." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 15, 2021." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: June 7, 2021
+last updated: September 15, 2021
 </p>
 
 </header>
@@ -979,7 +979,27 @@ and setting \(x-\frac {y+u}{v}\) we have
                                                                                                          = Ke−r(T −t)                                         √ e− 2 dx
                                                                                                                                  −∞                            2π
                                                                                                                                   1     s
-                                                                                                                                     rm, we have an extra factor \(e^{z}\). To handle this factor we will have to complete the square inside the exponential term before we make the \(x\) substitution (i.e.&nbsp;the same
+                                                                                                                                                                  v     K
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\mc {B} &amp;=\frac {K}{\sqrt {2\pi } v} e^{-r(T-t)}\int ^{\frac {1}{v}\l (\log (s/K)+u\r )}_{-\infty }e^{-\frac {x^2}{2}}v\,dx\\ &amp;=Ke^{-r(T-t)}\int ^{\frac {1}{v}\l (\log
+(s/K)+u\r )}_{-\infty }\frac {1}{\sqrt {2\pi }}e^{-\frac {x^2}{2}}\,dx\\ &amp;=Ke^{-r(T-t)}\,\mc {N}\l [\frac {1}{v}\l \{\log \l (\frac {s}{K}\r )+u\r \}\r ].
+\end{align*}
+
+
+</p>
+
+<p>
+For the \(\mc {A}\) term, we have an extra factor \(e^{z}\). To handle this factor we will have to complete the square inside the exponential term before we make the \(x\) substitution (i.e.&nbsp;the same
 technique as in exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:lognormal_mean"><b>10.5</b></a>). Again setting \(y=-z\) we have
 </p>
 <span class="hidden" > \(\seteqnumber{0}{14.}{22}\)</span>
@@ -1058,7 +1078,21 @@ obtain
                                                                                                      =s                      √ exp −              dx
                                                                                                          −∞                   2π             2
                                                                                                              1          s
-                                                                                                            l \{\log \l (\frac {s}{K}\r )+u+v^2\r \}\r ].
+                                                                                                                             .
+                                                                                                             v         K
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\mc {A} &amp;=\frac {s}{\sqrt {2\pi } v}\int _{-\infty }^{\frac {1}{v}\l (\log (s/K)+u+v^2\r )}\exp \l (-\frac {x^2}{2}\r )v\,dx\\ &amp;=s\int _{-\infty }^{\frac {1}{v}\l (\log
+(s/K)+u+v^2\r )}\frac {1}{\sqrt {2\pi }}\exp \l (-\frac {x^2}{2}\r )\,dx\\ &amp;=s\,\mc {N}\l [\frac {1}{v}\l \{\log \l (\frac {s}{K}\r )+u+v^2\r \}\r ].
 \end{align*}
 
 
@@ -1103,7 +1137,19 @@ where
 
 
                                                                                                        1          St                                           1 2
-                                                                                                                        avide P. Cervone.
+                                                                                                                        ffield University, September 15, 2021." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MASx52 — Exercises on Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></title>
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
+
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
 // Equation numbering: https://github.com/mathjax/MathJax/issues/2427
 // Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
 //
@@ -1250,7 +1296,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: June 7, 2021
+last updated: September 15, 2021
 </p>
 
 </header>
@@ -1928,7 +1974,7 @@ Where is the flaw in this argument?
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated June 7, 2021
+Copyright Nic Freeman, Sheffield University, last updated September 15, 2021
 </p>
 
 </footer>
