@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, October 4, 2021." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 5, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 4, 2021
+last updated: January 5, 2022
 </p>
 
 </header>
@@ -883,12 +883,12 @@ stopping time. Then \(M^T\) is also a martingale (resp.&nbsp;supmartingale, supe
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(C_n:=\1\{T\ge n\}\). Note that \(\{T\ge n\}=\Omega \sc \{T\le n-1\}\), so
-\(\{T\ge n\}\in \mc {F}_{n-1}\). By Lemma <a href="Expectation.html#lem:indicator_meas">2.4.2</a> \(C_n\in m\mc {F}_{n-1}\). That is, \((C_n)\) is a previsible process. Moreover,
+<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(C_n:=\1\{T-1\ge n\}\). Note that \(\{T-1\ge n\}=\Omega \sc \{T\le n-1\}\),
+so \(\{T\ge n\}\in \mc {F}_{n}\). By Lemma <a href="Expectation.html#lem:indicator_meas">2.4.2</a> \(C_n\in m\mc {F}_{n-1}\). That is, \((C_n)\) is an adapted process. Moreover,
 </p>
 
 <p>
-\[ (C\circ M)_n = \sum _{k=1}^n \1_{k\le T} (M_k-M_{k-1}) = \sum _{k=1}^{n\wedge T} (M_k-M_{k-1}) = M_{T\wedge n}-M_{0}.                   \]
+\[ (C\circ M)_n = \sum _{k=1}^n \1_{k-1\le T-1} (M_k-M_{k-1}) = \sum _{k=1}^n \1_{k\le T} (M_k-M_{k-1}) = \sum _{k=1}^{n\wedge T} (M_k-M_{k-1}) = M_{T\wedge n}-M_{0}.                  \]
 </p>
 
 <p>
@@ -1017,7 +1017,7 @@ These three sets of conditions for the optional stopping theorem are listed on t
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 4, 2021
+Copyright Nic Freeman, Sheffield University, last updated January 5, 2022
 </p>
 
 </footer>
