@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 5, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 24, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: January 5, 2022
+last updated: January 24, 2022
 </p>
 
 </header>
@@ -903,7 +903,21 @@ Then, \(e^Z=e^\mu e^Y\) and
                                                                                             E[eY ] = √           ey e− 2σ2 dy
                                                                                                          2πσ −∞
                                                                                                           1                 1  2
-                                                                                                             Z ∞      \sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
+                                                                                                             Z ∞                                                                                               σ2
+                                                                                                    =e2 .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [e^Y] &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty e^y e^{-\frac {y^2}{2\sigma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
+\{-\frac {1}{2\sigma ^2}\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
+^4\r )\r \}\,dy\\ &amp;=e^{\frac {\sigma ^2}{2}}\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {(y-\sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
 {\sigma ^2}{2}}.
 \end{align*}
 Here, to deduce the third line we complete the square, and to deduce the final line we use that the p.d.f.&nbsp;of a \(N(\sigma ^2,\sigma )\) random variable integrates to \(1\). Therefore,
@@ -2032,7 +2046,34 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 
                                                                                                                        1
-                                                                                                             {B_t^2+(0)(2tB_t)+\frac 12(1^2)(2t)\r \}\,dt+(1)(2tB_t)\,dB_t=\l (B_t^2+t\r
+                                                                                                                                                                      
+                                                                                                         = 3t2 Xt + αt3 dt + βt3 dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dZ_t&amp;=\l \{3t^2X_t+(\alpha )(t^3)+\frac 12(\beta )(0)\r \}\,dt+\beta t^3\,dB_t\\ &amp;=\l (3t^2X_t+\alpha t^3\r )\,dt+\beta t^3\,dB_t.
+\end{align*}
+
+
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:various_diff"><b>12.3</b></a> By Ito’s formula, using that \(dB_t=0\,dt+1\,dB_t\), we have
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> \(dZ_t=\l \{B_t^2+(0)(2tB_t)+\frac 12(1^2)(2t)\r \}\,dt+(1)(2tB_t)\,dB_t=\l (B_t^2+t\r
 )\,dt+2tB_t\,dB_t\).
 </p>
 
@@ -2057,7 +2098,18 @@ e^{\alpha t}\,dt\).
 
 
                                                                                                                        −1            1        2                                                  −1
-                                                                                                2
+                                                                                               -sdes.html#q:Btn_diff"><b>12.4</b></a> We have
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+
+                                                                                                        1
+                                                                                                                                                                               
+                                                                                dFt = 0 + (0)(nBtn−1 ) + (12 )(n(n − 1)Btn−2                                                         dt + (1)nBtn−1 dBt
+                                                                                                        2
                                                                                       n(n − 1)Bt
                                                                                                n−2
                                                                                     =              dt + nBtn−1 dBt .
@@ -2164,7 +2216,23 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 
                                                                                                1
-                                                                                      Ito integrals have zero mean, we obtain
+                                                                                                                              
+                                                                                          dYt = 0 + (2 + 2t)(2Xt ) + 12 (Bt )2 (2) dt + Bt (2Xt ) dBt
+                                                                                                                                               
+                                                                                                = 4(1 + t)Xt + (Bt )2 dt + 2Xt Bt dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dY_t&amp;=\l (0+(2+2t)(2X_t)+\tfrac 12(B_t)^2(2)\r )\,dt+B_t (2X_t)\,dB_t\\ &amp;=\l (4(1+t)X_t+(B_t)^2\r )\,dt+ 2X_t B_t\,dB_t.
+\end{align*}
+Writing in integral form, taking expectations, and using that Ito integrals have zero mean, we obtain
 </p>
 <span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
 
@@ -3485,7 +3553,7 @@ doesn’t work within the ‘old’ model. Consequently, there is no reason to e
       width:173pt;
       "
       class="inlineimage"
-      alt="(image)"
+      alt="(A plot of the payoff functions)"
 ></a>
 </p>
 </div>
@@ -3600,7 +3668,7 @@ so we can hedge \(\Phi (S_T)\) by holding a single call option with strike price
       width:173pt;
       "
       class="inlineimage"
-      alt="(image)"
+      alt="(A plot of the payoff function)"
 ></a>
 </p>
 </div>
@@ -3638,7 +3706,7 @@ The right-hand side of this equation corresponds to a portfolio of one put optio
       width:173pt;
       "
       class="inlineimage"
-      alt="(image)"
+      alt="(A plot of the payoff functions)"
 ></a>
 </p>
 </div>
@@ -4162,7 +4230,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated January 5, 2022
+Copyright Nic Freeman, Sheffield University, last updated January 24, 2022
 </p>
 
 </footer>
