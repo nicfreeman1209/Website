@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 24, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: January 24, 2022
+last updated: March 20, 2022
 </p>
 
 </header>
@@ -747,7 +747,7 @@ following theorem formally states that Ito integrals exist, and gives some of th
 </p>
 
 <p>
-\[\int _0^t F_t\,dB_t\]
+\[\int _0^t F_u\,dB_u\]
 </p>
 
 <p>
@@ -760,13 +760,13 @@ exists, and is a continuous martingale with mean and variance given by
 <!--
 
 
-                                                                                                                                           Z         t        
-                                                                                                                                      E                   Ft dBt = 0,
-                                                                                                                                                  0
-                                                                                                                                     "Z
-                                                                                                                                              t              2 #       Z   t
-                                                                                                                                E                 Ft dBt            =           E[Ft2 ] dt.
-                                                                                                                                          0                             0
+                                                                                                                                       Z         t        
+                                                                                                                                  E                   Fu dBu = 0,
+                                                                                                                                              0
+                                                                                                                                 "Z
+                                                                                                                                          t              2 #       Z   t
+                                                                                                                            E                 Fu dBu            =           E[Fu2 ] du.
+                                                                                                                                      0                             0
 
 
 
@@ -779,7 +779,7 @@ exists, and is a continuous martingale with mean and variance given by
 
 
 \begin{align*}
-\E \l [\int _0^t F_t\,dB_t\r ]&amp;=0,\\ \E \l [\l (\int _0^t F_t\,dB_t\r )^2\r ]&amp;=\int _0^t\E [F_t^2]\,dt.
+\E \l [\int _0^t F_u\,dB_u\r ]&amp;=0,\\ \E \l [\l (\int _0^t F_u\,dB_u\r )^2\r ]&amp;=\int _0^t\E [F_u^2]\,du.
 \end{align*}
 
 
@@ -801,9 +801,9 @@ that this gives the usual consistency property
 
 <!--
 
-                                                             Z    c              Z   b                 Z     c
-                                                                      Ft dBt =           Ft dBt +                Ft dBt                                                                          (11.6)      --><a id="eq:intabc"></a><!--
-                                                              a                  a                       b
+                                                         Z    c              Z   b                 Z     c
+                                                                  Ft dBt =           Ft dBt +                Ft dBt                                                                          (11.6)      --><a id="eq:intabc"></a><!--
+                                                          a                  a                       b
 
 
 
@@ -832,9 +832,9 @@ Like classical integrals, Ito integrals are linear. For \(\alpha ,\beta \in \R \
 
 <!--
 
-                                             Z       b                               Z       b                   Z    b
-                                                         αFt + βGt dBt = α                       Ft dBt + β               Gt dBt .                                                            (11.7)      --><a id="eq:itolinear"></a><!--
-                                                 a                                       a                        a
+                                            Z    b                               Z       b                   Z    b
+                                                     αFt + βGt dBt = α                       Ft dBt + β               Gt dBt .                                                            (11.7)      --><a id="eq:itolinear"></a><!--
+                                             a                                       a                        a
 
 
 
@@ -886,9 +886,9 @@ href="Stochastic-integration.html#eq:stoch_int_approx">11.3</a>)</span>, then we
 
 <!--
 
-                                                                Z     t
-                                                                          1 dBu = Bt .                                                          (11.8)                                  --><a id="eq:intBt"></a><!--
-                                                                  0
+                                                                Z    t
+                                                                         1 dBu = Bt .                                                          (11.8)                                   --><a id="eq:intBt"></a><!--
+                                                                 0
 
 
 
@@ -916,8 +916,8 @@ href="Stochastic-differential-equations.html#ex:intBtBt">12.1.2</a> we will see 
 </p>
 
 <p>
-This corresponds to taking \(f\) to be the identity function in <span class="textup" >(<a href="Stochastic-integration.html#eq:stoch_int_approx">11.3</a>)</span>, \(f(x)=x\). Of course, in classical
-calculus we have \(\int _0^t u\,du=\frac {u^2}{2}\), which is very different.
+This corresponds to taking \(f(t)=B_t\) in <span class="textup" >(<a href="Stochastic-integration.html#eq:stoch_int_approx">11.3</a>)</span>. Of course, in classical calculus we have \(\int _0^t
+u\,du=\frac {u^2}{2}\), which is very different.
 </p>
 
 </section>
@@ -929,7 +929,7 @@ calculus we have \(\int _0^t u\,du=\frac {u^2}{2}\), which is very different.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated January 24, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
 </p>
 
 </footer>

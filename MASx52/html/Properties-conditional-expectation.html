@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 24, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: January 24, 2022
+last updated: March 20, 2022
 </p>
 
 </header>
@@ -788,8 +788,7 @@ work with them via a set of useful properties, provided by the following proposi
 </div>
 
 <p>
-Proof of these properties is beyond the scope of our course – they are part of MAS350/451/6352. Note that the first five properties above are common properties of both \(\E [\cdot ]\) and \(\E [\cdot \|\mc
-{G}]\).
+Proof of these properties is beyond the scope of our course. Note that the first five properties above are common properties of both \(\E [\cdot ]\) and \(\E [\cdot \|\mc {G}]\).
 </p>
 
 <p>
@@ -915,9 +914,13 @@ In the middle term above, we can write
 
                                                                                  E[(X − Y )(Y − Y 0 )] = E[E[(X − Y )(Y − Y 0 )|G]]
 
-                                                                                                       = E[(Y − Y 0 )E[X − Y |G]]
+                                                                                                        = E[(Y − Y 0 )E[X − Y |G]]
 
-                                                                                                       = E[(Y − Y 0 )(E[X|G] − Y )].
+                                                                                                        = E[(Y − Y 0 )(E[X|G] − Y )]
+
+                                                                                                        = E[(Y − Y 0 )(0)]
+
+                                                                                                        = 0.
 
 
 
@@ -929,7 +932,7 @@ In the middle term above, we can write
 
 
 \begin{align*}
-\E [(X-Y)(Y-Y’)] &amp;= \E [\E [(X-Y)(Y-Y’)|\mc {G}]]\\ &amp;=\E [(Y-Y’)\E [X-Y|\mc {G}]]\\ &amp;=\E [(Y-Y’)(\E [X|\mc {G}]-Y)].
+\E [(X-Y)(Y-Y’)] &amp;= \E [\E [(X-Y)(Y-Y’)|\mc {G}]]\\ &amp;=\E [(Y-Y’)\E [X-Y|\mc {G}]]\\ &amp;=\E [(Y-Y’)(\E [X|\mc {G}]-Y)]\\ &amp;=\E [(Y-Y’)(0)]\\ &amp;=0.
 \end{align*}
 Here, in the first step we used the ‘taking \(\E \)’ property, in the second step we used Proposition <a href="Random-variables.html#itsallmeas">2.2.6</a> to tell us that \(Y-Y’\) is \(\mc {G}\)-measurable,
 followed by the ‘taking out what is known’ rule. In the final step we used the linearity and measurability properties. Since \(\E [X|\mc {G}]=Y\) almost surely, we obtain that \(\E [(X-Y)(Y-Y’)]=0\). Hence,
@@ -946,7 +949,7 @@ since \(\E [(Y-Y’)^2]\geq 0\), from <span class="textup" >(<a href="Properties
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated January 24, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
 </p>
 
 </footer>

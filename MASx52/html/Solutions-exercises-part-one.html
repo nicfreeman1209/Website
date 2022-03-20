@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 24, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: January 24, 2022
+last updated: March 20, 2022
 </p>
 
 </header>
@@ -1358,7 +1358,8 @@ Dividing through by \(a\) finishes the proof.
 </li>
 <li>
 <p>
-<a href="Exercises-on-Chapter-ref-chap-prob_meas.html#ps:exp_zero"><b>2.11</b></a> Since \(X\geq 0\), Markov’s inequality gives us that
+<a href="Exercises-on-Chapter-ref-chap-prob_meas.html#ps:exp_zero"><b>2.11</b></a> Since \(X\geq 0\), Markov’s inequality (from <a
+href="Exercises-on-Chapter-ref-chap-prob_meas.html#ps:markovs_ineq"><b>2.10</b></a>) gives us that
 </p>
 <p>
 \[\P [X\geq a]\leq \frac {1}{a}\E [X]=0\]
@@ -2996,7 +2997,7 @@ _{i=1}^\infty \E [X_i]\).
 <li>
 <p>
 <span class="textmd" ><span class="textrm" ><span class="textup" >(c)</span></span></span> Since \(\P [X_i=1]=\P [X_i=-1]\), we have \(\E [X_i]=0\) and hence also \(\sum _{i=1}^\infty \E
-[X_i]=0\). However, the limit \(\sum _{i=1}^\infty X_i\) is not well defined, because \(Y_n=\sum _{i=1}^n X_i\) oscillates (it jumps back and forth between \(0\) and \(1\)) and does not converge. Hence, in
+[X_i]=0\). However, the limit \(\sum _{i=1}^\infty X_i\) is not well defined, because \(Y_n=\sum _{i=1}^n X_i\) oscillates (it jumps up/down by \(\pm 1\) on each step) and does not converge. Hence, in
 this case \(\E \big [\sum _{i=1}^\infty X_i\big ]\) is not well defined.
 </p>
 </li>
@@ -3264,12 +3265,9 @@ Adapting it to plot the asymmetric case and the random walk from exercise <a hre
 <p>
 In case you prefer Python, here’s some Python code that does the same job. (I prefer Python.)
 </p>
-import random
 import numpy as np
-<pre class="verbatim">
 import matplotlib.pyplot as plt
-%matplotlib inline
-
+<pre class="verbatim">
 
 p = 0.5
 rr = np.random.random(1000)
@@ -3337,13 +3335,13 @@ Iterating this formula obtains that
 
 
                                                                                                             1          1                  1
-                                                                                                                                                                               
+                                                                                                                                                                                 
                                                                                              p2n   ≤ exp −    exp −          . . . exp −      p0
                                                                                                            2n       2(n − 1)             2(1)
                                                                                                               n
-                                                                                                                         !
+                                                                                                                           !
                                                                                                            1X    1
-                                                                                                   = exp −         .                                         (A.7)                                           --><a id="eq:ssrw_p2n"></a><!--
+                                                                                                   = exp −         .                                           (A.7)                                           --><a id="eq:ssrw_p2n"></a><!--
                                                                                                            2 i=1 i
 
 
@@ -3403,31 +3401,31 @@ hence \(Z_n\to \infty \).
 <!--
 
 
-
                                                                             E[Mn+1 | Fn ] = E Mn+1 1{nth draw is red} Fn + E Mn+1 1{nth draw is black} Fn
-                                                                                              h                                                i            h                                     i
+                                                                                              h                                                  i            h                                     i
 
 
-                                                                                               Bn                                  B +1
-                                                                                                                                                                                                   
-                                                                                         =E          1{nth draw is red} Fn + E n          1{nth draw is black} Fn
-                                                                                              n+3                                   n+3
-                                                                                            Bn                             i B +1 h
-                                                                                                 E 1{nth draw is red} Fn +             E 1{nth draw is black} Fn
-                                                                                                   h                                                             i
-                                                                                                                                 n
+                                                                                                 Bn                                  B +1
+                                                                                                                                                                                                     
+                                                                                         =E           1{nth draw is red} Fn + E n           1{nth draw is black} Fn
+                                                                                                n+3                                   n+3
+                                                                                              Bn                             i B +1 h
+                                                                                                   E 1{nth draw is red} Fn +             E 1{nth draw is black} Fn
+                                                                                                    h                                                              i
+                                                                                                                                   n
                                                                                          =
-                                                                                           n+3                                  n+3
-                                                                                            Bn Bn         Bn + 1         Bn
-                                                                                                                            
-                                                                                         =             +           1−
-                                                                                           n+3n+2          n+3          n+2
-                                                                                                 Bn2         Bn (n + 2) + (n + 2) − Bn2 − Bn
-                                                                                         =                +
-                                                                                           (n + 2)(n + 3)             (n + 2)(n + 3)
-                                                                                           (n + 1)Bn + (n + 2)
+                                                                                             n+3                                  n+3
+                                                                                              Bn Bn         Bn + 1         Bn
+                                                                                                                              
+                                                                                         =               +           1−
+                                                                                             n+3n+2         n+3           n+2
+                                                                                                    2
+                                                                                                   Bn          Bn (n + 2) + (n + 2) − Bn2 − Bn
+                                                                                         =                  +
+                                                                                             (n + 2)(n + 3)             (n + 2)(n + 3)
+                                                                                             (n + 1)Bn + (n + 2)
                                                                                          =
-                                                                                              (n + 2)(n + 3)
+                                                                                                (n + 2)(n + 3)
 
 
 -->
@@ -3484,16 +3482,15 @@ Let \(\mc {F}_n=\sigma (B_1,\ldots ,B_n)\). It is clear that \(M_n\in [0,1]\), s
 <!--
 
 
-
                                                                             E[Mn+1 | Fn ] = E Mn+1 1{X1 =r,X2 =r} | Fn + E Mn+1 1{X1 =r,X2 =b} | Fn
-                                                                                              h                                  i             h                                        i
+                                                                                              h                                    i             h                                        i
 
 
                                                                                                + E Mn+1 1{X1 =b,X2 =r} | Fn + E Mn+1 1{X1 =b,X2 =b} | Fn
-                                                                                                       h                                   i            h                                     i
+                                                                                                       h                                     i            h                                     i
 
                                                                                                 Bn                              B +1
-                                                                                                                                                                                     
+                                                                                                                                                                                       
                                                                                          =E        1{X1 =r,X2 =r} | Fn + E n           1{X1 =r,X2 =b} | Fn
                                                                                                 K                                 K
                                                                                                      Bn − 1                              B
@@ -3525,7 +3522,6 @@ Let \(\mc {F}_n=\sigma (B_1,\ldots ,B_n)\). It is clear that \(M_n\in [0,1]\), s
                                                                                          =       K Bn
                                                                                              K3
                                                                                          = Mn
-
 
 
 -->
@@ -3637,7 +3633,7 @@ a simple formula!).
 
 
                                                                                                    Sn+1            Sn        1
-                                                                                                                    
+                                                                                                                      
                                                                                               E           Fn =           +         E[Xn+1 | Fn ]
                                                                                                 f (n + 1)      f (n + 1) f (n + 1)
                                                                                                                    Sn        1
@@ -3667,7 +3663,7 @@ Since \(\frac {S_n}{f(n)}\) is a martingale we must have
 <!--
 
                                                                    Sn       Sn
-                                                                         =       .                                                                                     (A.8)                                    --><a id="eq:ESnfn"></a><!--
+                                                                         =       .                                                                                       (A.8)                                    --><a id="eq:ESnfn"></a><!--
                                                                f (n + 1)   f (n)
 
 
@@ -3697,7 +3693,7 @@ href="Solutions-exercises-part-one.html#eq:ESnfn">A.8</a>)</span>, we would need
 <!--
 
                                                               Sn       Sn
-                                                                    ≤       .                                                                           (A.9)                                             --><a id="eq:ssrw_fnmart"></a><!--
+                                                                    ≤       .                                                                             (A.9)                                             --><a id="eq:ssrw_fnmart"></a><!--
                                                           f (n + 1)   f (n)
 
 
@@ -3754,7 +3750,7 @@ positive probability that \(S_n&lt;0\), hence by <span class="textup" >(<a href=
 
 
                                                                                                               1
-                                                                                                                   (Zn+1 − µZn )2 = (Mn+1 − Mn )2 .                                 (A.10)                   --><a id="eq:gw_sqr_1"></a><!--
+                                                                                                                     (Zn+1 − µZn )2 = (Mn+1 − Mn )2 .                                 (A.10)                   --><a id="eq:gw_sqr_1"></a><!--
                                                                                                            µ2(n+1)
 
 
@@ -3786,29 +3782,28 @@ and \(Y_1,Y_2,\ldots ,Y_n\) are independent. Moreover, the \(Y_i\) are identical
 
 <!--
 
-                                                                                                                                      
-                                                                                                                                               Zn
-                                                                                                                                                            !2         
-                                                                                               h                         i                     X
-                                                                                             E (Zn+1 − µZn )2 | Fn = E                                Yi           Fn 
-                                                                                                                                               i=1
-                                                                                                                                     Zn
-                                                                                                                                     X                               Zn
-                                                                                                                                                                     X
-                                                                                                                             =             E[Yi2       | Fn ] +              E[Yi Yj | Fn ]
-                                                                                                                                     i=1                             i,j=1
-                                                                                                                                                                     i6=j
-                                                                                                                                     Zn
-                                                                                                                                     X                       Zn
-                                                                                                                                                             X
-                                                                                                                             =             E[Yi2 ] +                 E[Yi ]E[Yj ]
-                                                                                                                                     i=1                     i,j=1
-                                                                                                                                                             i6=j
+                                                                                                                                        
+                                                                                                                                                 Zn
+                                                                                                                                                              !2         
+                                                                                               h                           i                     X
+                                                                                             E (Zn+1 − µZn )2 | Fn = E                                  Yi           Fn 
+                                                                                                                                                 i=1
+                                                                                                                                       Zn
+                                                                                                                                       X                               Zn
+                                                                                                                                                                       X
+                                                                                                                               =             E[Yi2 | Fn ] +                    E[Yi Yj | Fn ]
+                                                                                                                                       i=1                             i,j=1
+                                                                                                                                                                       i6=j
+                                                                                                                                       Zn
+                                                                                                                                       X                       Zn
+                                                                                                                                                               X
+                                                                                                                               =             E[Yi2 ] +                 E[Yi ]E[Yj ]
+                                                                                                                                       i=1                     i,j=1
+                                                                                                                                                               i6=j
 
-                                                                                                                             = Zn E[Y1 ]2 + 0
+                                                                                                                               = Zn E[Y1 ]2 + 0
 
-                                                                                                                             = Zn σ 2 .
-
+                                                                                                                               = Zn σ 2 .
 
 
 -->
@@ -3892,7 +3887,7 @@ for each \(\epsilon &gt;0\) and \(n\in \N \) there exists some \(n’\geq n\) su
 <!--
 
                                                                    
-                                                 E inf |Mn | → E[|M∞ |].                                                                                     (A.11)                                            --><a id="eq:Mnconv"></a><!--
+                                                 E inf |Mn | → E[|M∞ |].                                                                                       (A.11)                                            --><a id="eq:Mnconv"></a><!--
                                                       k≥n
 
 
@@ -3914,7 +3909,7 @@ However, since \(\inf _{k\geq n}|M_n|\leq |M_n|\leq C=\sup _{j\in \N } \E [|M_j|
 <!--
 
                                                                        
-                                                      E inf |Mn | ≤ C.                                                                                 (A.12)                                                --><a id="eq:Mn_bound"></a><!--
+                                                      E inf |Mn | ≤ C.                                                                                   (A.12)                                                --><a id="eq:Mn_bound"></a><!--
                                                             k≥n
 
 
@@ -3969,18 +3964,17 @@ Since \(Z_0=\wt {Z}_0=1\), an easy induction shows that \(Z_n\leq \wt {Z}_n\) fo
 
 <!--
 
-
-                                                                                                                    h            i
+                                                                                                                       h           i
                                                                                                                      e n+1
                                                                                                            f (α) = E X i
-                                                                                                                                                        ∞
-                                                                                                                                                        X
-                                                                                                                 = P[G = 0]P[C = 1] +                             iP[G = i]
-                                                                                                                                                            i=1
-                                                                                                                                           ∞
-                                                                                                                                           X
-                                                                                                                 = αP[G = 0] +                     iP[G = i].
-                                                                                                                                           i=1
+                                                                                                                                                          ∞
+                                                                                                                                                          X
+                                                                                                                  = P[G = 0]P[C = 1] +                              iP[G = i]
+                                                                                                                                                              i=1
+                                                                                                                                             ∞
+                                                                                                                                             X
+                                                                                                                  = αP[G = 0] +                      iP[G = i].
+                                                                                                                                             i=1
 
 
 
@@ -4435,7 +4429,7 @@ as required.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated January 24, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 24, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: January 24, 2022
+last updated: March 20, 2022
 </p>
 
 </header>
@@ -903,19 +903,7 @@ Then, \(e^Z=e^\mu e^Y\) and
                                                                                             E[eY ] = √           ey e− 2σ2 dy
                                                                                                          2πσ −∞
                                                                                                           1                 1  2
-                                                                                                             Z ∞                                                                                               σ2
-                                                                                                    =e2 .
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-\E [e^Y] &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty e^y e^{-\frac {y^2}{2\sigma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
+                                                                                                             Z ∞      ma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
 \{-\frac {1}{2\sigma ^2}\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
 ^4\r )\r \}\,dy\\ &amp;=e^{\frac {\sigma ^2}{2}}\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {(y-\sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
 {\sigma ^2}{2}}.
@@ -2046,19 +2034,7 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 
                                                                                                                        1
-                                                                                                                                                                      
-                                                                                                         = 3t2 Xt + αt3 dt + βt3 dBt .
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dZ_t&amp;=\l \{3t^2X_t+(\alpha )(t^3)+\frac 12(\beta )(0)\r \}\,dt+\beta t^3\,dB_t\\ &amp;=\l (3t^2X_t+\alpha t^3\r )\,dt+\beta t^3\,dB_t.
+                                                                                                             ^2X_t+\alpha t^3\r )\,dt+\beta t^3\,dB_t.
 \end{align*}
 
 
@@ -2098,16 +2074,7 @@ e^{\alpha t}\,dt\).
 
 
                                                                                                                        −1            1        2                                                  −1
-                                                                                               -sdes.html#q:Btn_diff"><b>12.4</b></a> We have
-</p>
-<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
-
-
-<!--
-
-
-                                                                                                        1
-                                                                                                                                                                               
+                                                                                                                                                                        
                                                                                 dFt = 0 + (0)(nBtn−1 ) + (12 )(n(n − 1)Btn−2                                                         dt + (1)nBtn−1 dBt
                                                                                                         2
                                                                                       n(n − 1)Bt
@@ -2216,9 +2183,7 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 
                                                                                                1
-                                                                                                                              
-                                                                                          dYt = 0 + (2 + 2t)(2Xt ) + 12 (Bt )2 (2) dt + Bt (2Xt ) dBt
-                                                                                                                                               
+                                                                                        
                                                                                                 = 4(1 + t)Xt + (Bt )2 dt + 2Xt Bt dBt .
 
 
@@ -3411,7 +3376,7 @@ where \(Z\sim N(0,1)\) is independent of \(\mc {F}_t\). Here we use that \(B_T-B
                                                                                                          √                 ≤Z≤         √                                                                     
                                                                                                        σ T −t                        σ T                                                     −t           
 
-                                                                                       = N (e1 ) − N (e2 )
+                                                                                       = N (e2 ) − N (e1 )
 
 
 
@@ -3425,7 +3390,7 @@ where \(Z\sim N(0,1)\) is independent of \(\mc {F}_t\). Here we use that \(B_T-B
 \E ^\Q \l [\1_{\{S_T\in [\alpha ,\beta ]\}}\|\mc {F}_t\r ] &amp;=\E ^\Q \l [\1_{\l \{S_t e^{(r-\frac 12\sigma ^2)(T-t)+\sigma \sqrt {T-t} Z}\in [\alpha ,\beta ]\r \}}\,\Big
 |\,\mc {F}_t\r ]\\ &amp;=\E ^\Q \l [\1\l \{\frac {\log \l (\frac {\alpha }{S_t}\r )-\l (r+\frac 12\sigma ^2\r )(T-t)}{\sigma \sqrt {T-t}}\leq Z\leq \frac {\log \l (\frac {\beta
 }{S_t}\r )-\l (r+\frac 12\sigma ^2\r )t}{\sigma \sqrt {T-t}}\r \}\,\Bigg |\,\mc {F}_t\r ]\\ &amp;=\E ^\Q \l [\1\l \{\frac {\log \l (\frac {\alpha }{S_t}\r )-\l (r+\frac 12\sigma
-^2\r )(T-t)}{\sigma \sqrt {T-t}}\leq Z\leq \frac {\log \l (\frac {\beta }{S_t}\r )-\l (r+\frac 12\sigma ^2\r )t}{\sigma \sqrt {T-t}}\r \}\r ]\\ &amp;=\mc {N}(e_1)-\mc {N}(e_2)
+^2\r )(T-t)}{\sigma \sqrt {T-t}}\leq Z\leq \frac {\log \l (\frac {\beta }{S_t}\r )-\l (r+\frac 12\sigma ^2\r )t}{\sigma \sqrt {T-t}}\r \}\r ]\\ &amp;=\mc {N}(e_2)-\mc {N}(e_1)
 \end{align*}
 where
 </p>
@@ -3468,7 +3433,7 @@ Hence the price at time \(t\) is given by \(Ke^{r(T-t)}\l [\mc {N}(e_1)-\mc {N}(
 <a href="Exercises-on-Chapter-ref-chap-bs.html#q:P_mart_bs"><b>14.6</b></a> If we take \(F_t=e^{\mu t}\) then (in world \(\P \)) we have
 </p>
 <p>
-\[\frac {S_t}{F_t}=\frac {\exp \l (\l (\mu -\tfrac 12\sigma ^2\r )t+\sigma B_t\r )}{\exp \l (\mu t\r )}=\exp \l (\sigma B_t-\frac 12\sigma ^2 t\r ),\]
+\[\frac {S_t}{F_t}=\frac {S_0\exp \l (\l (\mu -\tfrac 12\sigma ^2\r )t+\sigma B_t\r )}{\exp \l (\mu t\r )}=S_0\exp \l (\sigma B_t-\frac 12\sigma ^2 t\r ),\]
 </p>
 <p>
 which we showed was a martingale in <a href="Exercises-on-Chapter-ref-chap-bm.html#q:mart_bm"><b>10.6</b></a>.
@@ -4230,7 +4195,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated January 24, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
 </p>
 
 </footer>

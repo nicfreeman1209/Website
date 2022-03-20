@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 24, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: January 24, 2022
+last updated: March 20, 2022
 </p>
 
 </header>
@@ -756,15 +756,18 @@ second order parabolic PDE with a terminal boundary condition.
 
 <p>
 We will now show that the solutions of this PDE can be written in terms the solutions to a SDE. In particular, let \(X\) be a stochastic process that satisfies
-</p>
 
+<p>
+
+
+</p>
 <span class="hidden" > \(\seteqnumber{0}{13.}{2}\)</span>
 
 <!--
 
 
 
-                                         dXu = α(u, Xu ) dt + β(u, Xu ) dBu .                                         (13.3)                                                      --><a id="eq:fk_base"></a><!--
+                                         dXu = α(u, Xu ) dt + β(u, Xu ) dBu .                                        (13.3)                                                       --><a id="eq:fk_base"></a><!--
 
 
 
@@ -872,11 +875,11 @@ a theoretical point of view, but it is not quite what we need for later. The PDE
 
 
 
-                                                                           ∂F                  ∂F         1           2
-                                                                                                                   2∂ F
-                                                                              (t, x) + α(t, x)    (t, x) + β(t, x)(13.4) (t, x) − rF (t, x) = 0                                   --><a id="eq:fk2a"></a><!--
-                                                                           ∂t                  ∂x         2          ∂x2
-                                                                                                                  (13.5)          F (T, x) = Φ(x)                                 --><a id="eq:fk2b"></a><!--
+                                                                          ∂F                  ∂F         1           2
+                                                                                                                  2∂ F
+                                                                             (t, x) + α(t, x)    (t, x) + β(t, x)(13.4) (t, x) − rF (t, x) = 0                                    --><a id="eq:fk2a"></a><!--
+                                                                          ∂t                  ∂x         2          ∂x2
+                                                                                                                 (13.5)          F (T, x) = Φ(x)                                  --><a id="eq:fk2b"></a><!--
 
 
 
@@ -1103,10 +1106,10 @@ href="Connections-between-SDEs-PDEs.html#eq:fk_base">13.3</a>)</span>, we can us
 
 
 
-                                                                                      ∂F         1 ∂2F
-                                                                                         (t, x) + σ 2 2 (t, x) = 0
-                                                                                      ∂t         2 ∂x
-                                                                                                             f (T, x) = x2 .
+                                                                                    ∂F         1 ∂2F
+                                                                                       (t, x) + σ 2 2 (t, x) = 0
+                                                                                    ∂t         2 ∂x
+                                                                                                           f (T, x) = x2 .
 
 
 
@@ -1142,9 +1145,9 @@ where \(dX_u=0\,du+\sigma \,dB_u=\sigma \,dB_u\). This means that
 <!--
 
 
-                                                                                                Z   T
-                                                                                XT = Xt + σ             dBu = Xt + σ(BT − Bt ).
-                                                                                                t
+                                                                                              Z   T
+                                                                              XT = Xt + σ             dBu = Xt + σ(BT − Bt ).
+                                                                                              t
 
 
 
@@ -1168,14 +1171,14 @@ Therefore,
 <!--
 
 
-                                                                                            h                        i
-                                                                             F (t, x) = Et,x (Xt + σ(BT − Bt ))2
-                                                                                        h                        i
-                                                                                    = E (x + σ(BT − Bt ))2
-                                                                                        h                                         i
-                                                                                    = E x2 + σ 2 (BT − Bt )2 + 2xσ(BT − Bt )
+                                                                                          h                        i
+                                                                           F (t, x) = Et,x (Xt + σ(BT − Bt ))2
+                                                                                      h                        i
+                                                                                  = E (x + σ(BT − Bt ))2
+                                                                                      h                                         i
+                                                                                  = E x2 + σ 2 (BT − Bt )2 + 2xσ(BT − Bt )
 
-                                                                                    = x2 + σ 2 (T − t).
+                                                                                  = x2 + σ 2 (T − t).
 
 
 
@@ -1214,7 +1217,7 @@ method.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated January 24, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
 </p>
 
 </footer>
