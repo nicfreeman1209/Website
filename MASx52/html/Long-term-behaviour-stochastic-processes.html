@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -156,14 +156,14 @@ MathJax = {
 
 
 
-<a id="notes_1-autopage-216"></a>
+<a id="notes_1-autopage-217"></a>
 <nav class="topnavigation" ><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: March 20, 2022
+last updated: May 20, 2022
 </p>
 
 </header>
@@ -712,8 +712,8 @@ Home</a>
 </div>
 
 <p>
-<h4 id="autosec-217"><span class="sectionnumber" >7.4&#x2003;</span>Long term behaviour of stochastic processes</h4>
-<a id="notes_1-autopage-217"></a>
+<h4 id="autosec-218"><span class="sectionnumber" >7.4&#x2003;</span>Long term behaviour of stochastic processes</h4>
+<a id="notes_1-autopage-218"></a>
 <a id="notes_1-autofile-34"></a>
 
 <p>
@@ -780,8 +780,8 @@ obtain that there exists \(N\in \N \) such that \(|a_n-a|\leq \frac 13\) for all
 Since \(\frac 23&lt;1\), and \(a_n\) takes only integer values, this means that \(a_n=a_{n+1}\). Since this holds for all \(n\geq N\), we must have \(a_N=a_{N+1}=a_{N+2}=\ldots \), which means that
 \(a_n\to a_N\) as \(N\to \infty \) (and hence \(a=a_N\)). &#x2003;&#x2003;&#x220E;
 </p>
-<h5 id="autosec-219">Long term behaviour of Roulette</h5>
-<a id="notes_1-autopage-219"></a>
+<h5 id="autosec-220">Long term behaviour of Roulette</h5>
+<a id="notes_1-autopage-220"></a>
 
 
 
@@ -802,8 +802,8 @@ M)_n.\) Thus, if our gambler starts with an amount of money \(K\in \N \) at time
 </p>
 
 <p>
-We’ll assume that our gambler never stops playing, unless they run out of money, so we have \(C_n\geq 1\) and \(W_n\geq 0\) for all \(n\). Since money is a discrete quantity, we can assume that \(K\) and
-\(C_n\) are integers, hence \(W_n\) is also always an integer.
+We’ll assume that our gambler keeps betting until they run out of money, so we have \(C_n\geq 1\) and \(W_n\geq 0\) for all \(n\) before they run out of money (and, if and when they do run out, \(C_n=0\) for
+all remaining \(n\)). Since money is a discrete quantity, we can assume that \(K\) and \(C_n\) are integers, hence \(W_n\) is also always an integer.
 </p>
 
 <p>
@@ -836,8 +836,8 @@ win (an increase) or a loss (a decrease) the only way \(W_n\) can become eventua
 </ul>
 
 </div>
-<h5 id="autosec-221">Long term behaviour of urn processes</h5>
-<a id="notes_1-autopage-221"></a>
+<h5 id="autosec-222">Long term behaviour of urn processes</h5>
+<a id="notes_1-autopage-222"></a>
 
 
 
@@ -1074,8 +1074,8 @@ href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.6</a>)</spa
 Therefore, \(M_\infty \) has a uniform distribution on \((0,1)\). This proves Proposition <a href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>.
 &#x2003;&#x2003;&#x220E;
 </p>
-<h6 id="autosec-225">Extensions and applications of urn processes</h6>
-<a id="notes_1-autopage-225"></a>
+<h6 id="autosec-226">Extensions and applications of urn processes</h6>
+<a id="notes_1-autopage-226"></a>
 
 
 
@@ -1104,8 +1104,8 @@ learned information), and maximal safe dosage estimation in clinical trials (com
 features an example of an urn process that is the basis for modern models of evolution (successful organisms tend to have more descendants, who are themselves more likely to inherit genes that will make them
 successful).
 </p>
-<h5 id="autosec-226">Long term behaviour of Galton-Watson processes</h5>
-<a id="notes_1-autopage-226"></a>
+<h5 id="autosec-227">Long term behaviour of Galton-Watson processes</h5>
+<a id="notes_1-autopage-227"></a>
 
 
 
@@ -1325,8 +1325,8 @@ The behaviour \(Z_n\to \infty \) is often called ‘explosion’, reflecting the
 &gt;1\) and \(\sigma ^2=\infty \) behaves in the same way as Lemma <a href="Long-term-behaviour-stochastic-processes.html#lem:gw_supercrit">7.4.8</a>, but the proof is more difficult and we
 don’t study it in this course.
 </p>
-<h6 id="autosec-230">Extensions and applications of the Galton-Watson process</h6>
-<a id="notes_1-autopage-230"></a>
+<h6 id="autosec-231">Extensions and applications of the Galton-Watson process</h6>
+<a id="notes_1-autopage-231"></a>
 
 
 
@@ -1346,8 +1346,8 @@ banking networks.
 Branching processes are used by biologists to model population growth, and they are good models for populations that are rapidly increasing in size. (For populations that have reached a roughly constant size,
 models based on urn processes, such as that of exercise <a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#ps:urn_moran"><b>7.8</b></a>, are more effective.)
 </p>
-<h5 id="autosec-231">Long term behaviour of random walks \((\star )\)</h5>
-<a id="notes_1-autopage-231"></a>
+<h5 id="autosec-232">Long term behaviour of random walks \((\star )\)</h5>
+<a id="notes_1-autopage-232"></a>
 
 
 
@@ -1410,8 +1410,8 @@ Of course, if \(q&lt;p\) then \(S_n\) would drift downwards, and then \(S_n\stac
 In both cases, it is possible to show that \(S_n\) is not bounded in \(L^1\) (even if we compensate for drift) and the martingale convergence theorem does not apply. Different techniques, which we won’t study, are
 needed here.
 </p>
-<h6 id="autosec-234">Extensions and applications of random walks</h6>
-<a id="notes_1-autopage-234"></a>
+<h6 id="autosec-235">Extensions and applications of random walks</h6>
+<a id="notes_1-autopage-235"></a>
 
 
 
@@ -1444,7 +1444,7 @@ href="Brownian-motion-heat-equation.html#sec:heat">10.3</a>.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: March 20, 2022
+last updated: May 20, 2022
 </p>
 
 </header>
@@ -702,9 +702,9 @@ We now understand how to make sense of equations of the form
 
 <!--
 
-                                                             Z    t             Z   t
-                                                 Xt = X0 +            Fu du +           Gu dBt                                       (12.1)                                  --><a id="eq:example_sde"></a><!--
-                                                              0                 0
+                                                               Z   t             Z   t
+                                                   Xt = X0 +           Fu du +           Gu dBt                                      (12.1)                                  --><a id="eq:example_sde"></a><!--
+                                                               0                 0
 
 
 
@@ -730,9 +730,9 @@ known as stochastic integral equations, but for historical reasons the term SDE 
 <p>
 ‘Solving’ the equation <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> essentially means finding \(X_t\) in terms of \(B_t\). If \(F_t\) and
 \(G_t\) depend only on \(t\) and \(B_t\), then <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> is just an explicit formula, which
-automatically that tells us that there is a solution to <span class="textup" >(<a href="Ito-processes.html#eq:ito_proc">11.13</a>)</span>. However, if \(F_t\) and/or \(G_t\) depend on \(X_t\)
-(e.g.&nbsp;\(F_t=2X_t\)) then <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> is not an explicit formula and there is no guarantee that a
-solution for \(X_t\) exists.
+automatically that tells us that there is a solution to <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span>. However, if \(F_t\) and/or \(G_t\)
+depend on \(X_t\) (e.g.&nbsp;\(F_t=2X_t\)) then <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> is not an explicit formula and there is
+no guarantee that a solution for \(X_t\) exists.
 </p>
 <div class="theorembodyremark" >
 
@@ -803,9 +803,8 @@ href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> we
 </p>
 
 <p>
-(Rigorously, we can do this because <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> implies <span class="textup" >(<a
-href="Stochastic-differential-equations.html#eq:example_stoch_diff">12.2</a>)</span> with \(v\) in place of \(t\), which we can then subtract from <span class="textup" >(<a
-href="Stochastic-differential-equations.html#eq:example_stoch_diff">12.2</a>)</span> to obtain limits \([v,t]\).)
+(Rigorously, we can do this because <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_sde">12.1</a>)</span> holds with \(v\) in place of \(t\), which we can then
+subtract from <span class="textup" >(<a href="Stochastic-differential-equations.html#eq:example_stoch_diff">12.2</a>)</span> (with \(t\) as written) to obtain limits \([v,t]\).)
 </p>
 
 <p>
@@ -1471,7 +1470,7 @@ After the limit has been taken, Ito’s formula is obtained by collecting the no
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -156,14 +156,14 @@ MathJax = {
 
 
 
-<a id="notes_2-autopage-225"></a>
+<a id="notes_2-autopage-226"></a>
 <nav class="topnavigation" ><a href="notes_2.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: March 20, 2022
+last updated: May 20, 2022
 </p>
 
 </header>
@@ -683,11 +683,11 @@ Home</a>
 </div>
 
 <p>
-<h3 id="autosec-226">Chapter&nbsp;<span class="sectionnumber" >C&#x2003;</span>Solutions to exercises (book two)</h3>
-<a id="notes_2-autopage-226"></a>
-<a id="notes_2-autofile-36"></a>
-<h5 id="autosec-227">Chapter <a href="Brownian-motion.html#chap:bm">10</a></h5>
+<h3 id="autosec-227">Chapter&nbsp;<span class="sectionnumber" >C&#x2003;</span>Solutions to exercises (book two)</h3>
 <a id="notes_2-autopage-227"></a>
+<a id="notes_2-autofile-36"></a>
+<h5 id="autosec-228">Chapter <a href="Brownian-motion.html#chap:bm">10</a></h5>
+<a id="notes_2-autopage-228"></a>
 
 
 
@@ -903,8 +903,7 @@ Then, \(e^Z=e^\mu e^Y\) and
                                                                                             E[eY ] = √           ey e− 2σ2 dy
                                                                                                          2πσ −∞
                                                                                                           1                 1  2
-                                                                                                             Z ∞      ma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
-\{-\frac {1}{2\sigma ^2}\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
+                                                                                                             Z ∞      }\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
 ^4\r )\r \}\,dy\\ &amp;=e^{\frac {\sigma ^2}{2}}\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {(y-\sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
 {\sigma ^2}{2}}.
 \end{align*}
@@ -985,7 +984,7 @@ href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a> we hav
 
 
                                                                               h                         i            h                                                                                             i
-                                                                          E Bt3 − 3tBt | Fu = E (Bu3 − 3uBu ) + Bt3 − 3tBt + (Bu3 − 3uBu ) | Fu
+                                                                          E Bt3 − 3tBt | Fu = E (Bu3 − 3uBu ) + Bt3 − 3tBt − (Bu3 − 3uBu ) | Fu
                                                                                                                                                       h                                                        i
                                                                                                             = Bu3 − 3uBu + E Bt3 − Bu3 − 3tBt + 3uBu | Fu
 
@@ -998,7 +997,7 @@ href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a> we hav
 
 
 \begin{align*}
-\E \l [B_t^3-3tB_t\|\mc {F}_u\r ] &amp;=\E \l [(B_u^3-3uB_u)+B_t^3-3tB_t+(B_u^3-3uB_u)\|\mc {F}_u\r ] \\ &amp;=B_u^3-3uB_u+\E \l [B_t^3-B_u^3-3tB_t+3uB_u\|\mc {F}_u\r ]
+\E \l [B_t^3-3tB_t\|\mc {F}_u\r ] &amp;=\E \l [(B_u^3-3uB_u)+B_t^3-3tB_t-(B_u^3-3uB_u)\|\mc {F}_u\r ] \\ &amp;=B_u^3-3uB_u+\E \l [B_t^3-B_u^3-3tB_t+3uB_u\|\mc {F}_u\r ]
 \end{align*}
 so we need only check that the second term on the right hand side is zero. To see this,
 </p>
@@ -1383,8 +1382,8 @@ As \(t\searrow 0\), the exponential term tends to \(0\), which dominates the \(\
 </ul>
 </li>
 </ul>
-<h5 id="autosec-228">Chapter <a href="Stochastic-integration.html#chap:ito">11</a></h5>
-<a id="notes_2-autopage-228"></a>
+<h5 id="autosec-229">Chapter <a href="Stochastic-integration.html#chap:ito">11</a></h5>
+<a id="notes_2-autopage-229"></a>
 
 
 
@@ -1411,16 +1410,16 @@ href="Brownian-motion-definition.html#eq:lognormal_mean">10.2</a>)</span> we hav
 
 <!--
 
-                                                                                                                        Z       t                    2                            Z   t           h             i
-                                                                                                                                    E        e    Bu
-                                                                                                                                                                      du =                    E e2Bu du
-                                                                                                                            0                                                         0
-                                                                                                                                                                                      Z   t       1       2 )u
-                                                                                                                                                                               =              e 2 (2               du
-                                                                                                                                                                                      0
-                                                                                                                                                                                      Z   t
-                                                                                                                                                                               =              e2u du < ∞.
-                                                                                                                                                                                      0
+                                                                                                                         Z       t                    2                            Z    t           h             i
+                                                                                                                                     E        e    Bu
+                                                                                                                                                                       du =                     E e2Bu du
+                                                                                                                             0                                                         0
+                                                                                                                                                                                       Z    t       1       2 )u
+                                                                                                                                                                                =               e 2 (2               du
+                                                                                                                                                                                       0
+                                                                                                                                                                                       Z    t
+                                                                                                                                                                                =               e2u du < ∞.
+                                                                                                                                                                                       0
 
 
 
@@ -1479,22 +1478,22 @@ which is not finite. Note also that \(F_t\) is adapted to \(\mc {F}_t\). Since \
 
 <!--
 
-                                                                                                                                                      Z          t                                              Z        t                 
-                                                                                                          E[Xt ] = E[2] + E                                           t + Bu2 du + E                                            Bu2 dBu
-                                                                                                                                                              0                                                         0
-                                                                                                                                        Z     t
-                                                                                                                    =2+                           t+          E[Bu2 ] du              +0
-                                                                                                                                          0
-                                                                                                                                                      Z       t
-                                                                                                                    = 2 + t2 +                                    u du
-                                                                                                                                                          0
-                                                                                                                                                          2
-                                                                                                                                                      t
-                                                                                                                    = 2 + t2 +
-                                                                                                                                                      2
-                                                                                                                                        3t2
-                                                                                                                    =2+                     .
-                                                                                                                                         2
+                                                                                                                                                       Z          t                                               Z        t                 
+                                                                                                           E[Xt ] = E[2] + E                                           t + Bu2 du + E                                             Bu2 dBu
+                                                                                                                                                               0                                                          0
+                                                                                                                                         Z     t
+                                                                                                                     =2+                           t+          E[Bu2 ] du              +0
+                                                                                                                                           0
+                                                                                                                                                       Z       t
+                                                                                                                     = 2 + t2 +                                    u du
+                                                                                                                                                           0
+                                                                                                                                                           2
+                                                                                                                                                       t
+                                                                                                                     = 2 + t2 +
+                                                                                                                                                       2
+                                                                                                                                         3t2
+                                                                                                                     =2+                     .
+                                                                                                                                          2
 
 
 -->
@@ -1549,11 +1548,11 @@ href="Ito-integrals.html#eq:intBt">11.8</a>)</span>, so \(Y_t\) is an Ito proces
 
 <!--
 
-                                                                                                                                                                                                  Z          t                  
-                                                                                                                   E[Vt ] = E[e−kt v] + σe−kt E                                                                   eks dBs
-                                                                                                                                                                                                          0
+                                                                                                                                                                                                    Z          t                  
+                                                                                                                    E[Vt ] = E[e−kt v] + σe−kt E                                                                    eks dBs
+                                                                                                                                                                                                            0
 
-                                                                                                                                    = e−kt v.
+                                                                                                                                     = e−kt v.
 
 
 
@@ -1574,26 +1573,24 @@ Here we use Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a> 
 <!--
 
 
-                                                                                    h        i                                                                Z          t                                                         "Z
-                                                                                                                                                                                                                                                  t               2 #
-                                                                                  E Vt2 = E[e−2kt v 2 ] + 2σe−kt E                                                            eks dBs + σ 2 e−2kt E                                                   eks dBs
-                                                                                                                                                                      0                                                                       0
-                                                                                                                                                              Z       t        h                  i
-                                                                                                     =e       v +0+σ e
-                                                                                                          −2kt 2                         2 −2kt
-                                                                                                                                                                          E (eks )2 du
-                                                                                                                                                                  0
-                                                                                                                                                  Z    t
-                                                                                                     = e−2kt v 2 + σ 2 e−2kt                                  e2ku du
-                                                                                                                                                   0
-                                                                                                                                                   1  2kt 
-                                                                                                     = e−2kt v 2 + σ 2 e−2kt                          e −1
-                                                                                                                                                  2k
-                                                                                                                             σ2            
-                                                                                                     = e−2kt v 2 +                1 − e−2kt
-                                                                                                                             2k
-                                                                                                     =
-
+                                                                                     h        i                                                                Z          t                                                          "Z
+                                                                                                                                                                                                                                                    t               2 #
+                                                                                   E Vt2 = E[e−2kt v 2 ] + 2σe−kt E                                                            eks dBs + σ 2 e−2kt E                                                    eks dBs
+                                                                                                                                                                       0                                                                        0
+                                                                                                                                                               Z       t        h                   i
+                                                                                                      =e       v +0+σ e
+                                                                                                           −2kt 2                         2 −2kt
+                                                                                                                                                                           E (eks )2 du
+                                                                                                                                                                   0
+                                                                                                                                                   Z    t
+                                                                                                      = e−2kt v 2 + σ 2 e−2kt                                  e2ku du
+                                                                                                                                                    0
+                                                                                                                                                    1  2kt 
+                                                                                                      = e−2kt v 2 + σ 2 e−2kt                          e −1
+                                                                                                                                                   2k
+                                                                                                                              σ2            
+                                                                                                      = e−2kt v 2 +                1 − e−2kt
+                                                                                                                              2k
 
 
 -->
@@ -1605,7 +1602,7 @@ Here we use Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a> 
 \begin{align*}
 \E \l [V_t^2\r ] &amp;=\E [e^{-2kt}v^2]+2\sigma e^{-kt}\E \l [\int _0^t e^{ks}\,dB_s\r ]+\sigma ^2 e^{-2kt}\E \l [\l (\int _0^t e^{ks}\,dB_s\r )^2\r ]\\
 &amp;=e^{-2kt}v^2+0+\sigma ^2 e^{-2kt}\int _0^t \E \l [(e^{ks})^2\r ]\,du\\ &amp;=e^{-2kt}v^2+\sigma ^2 e^{-2kt}\int _0^t e^{2ku}\,du\\ &amp;=e^{-2kt}v^2+\sigma ^2 e^{-2kt}\frac
-{1}{2k}\l (e^{2kt}-1\r )\\ &amp;=e^{-2kt}v^2+\frac {\sigma ^2}{2k}\l (1-e^{-2kt}\r )\\ &amp;=
+{1}{2k}\l (e^{2kt}-1\r )\\ &amp;=e^{-2kt}v^2+\frac {\sigma ^2}{2k}\l (1-e^{-2kt}\r )
 \end{align*}
 Again, we use Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a> to calculate the final term on the first line. We obtain that
 </p>
@@ -1616,10 +1613,10 @@ Again, we use Theorem <a href="Ito-integrals.html#thm:stoch_int_final">11.2.1</a
 
 
 
-                                                                                                                                        var(Vt ) = E[Vt2 ] − E[Vt ]2
-                                                                                                                                                                      σ2           
-                                                                                                                                                              =            1 − e−2kt .
-                                                                                                                                                                      2k
+                                                                                                                                         var(Vt ) = E[Vt2 ] − E[Vt ]2
+                                                                                                                                                                       σ2           
+                                                                                                                                                               =            1 − e−2kt .
+                                                                                                                                                                       2k
 
 
 -->
@@ -1653,17 +1650,16 @@ Since \(M_t=\int _0^t \sigma _u\,dB_u\) is a martingale (by Theorem <a href="Ito
 
 
 
-                                                                                                                                    E [Xt | Fv ] = µt + E [Mt | Fv ]
+                                                                                                                                     E [Xt | Fv ] = µt + E [Mt | Fv ]
 
-                                                                                                                                                                  = µt + Mv
-                                                                                                                                                                                      Z       v
-                                                                                                                                                                  = µt +                          σu dBu
-                                                                                                                                                                                          0
-                                                                                                                                                                                          Z   v
-                                                                                                                                                                  ≥ µv +                          σu dBu
-                                                                                                                                                                                          0
+                                                                                                                                                                   = µt + Mv
+                                                                                                                                                                                       Z        v
+                                                                                                                                                                   = µt +                           σu dBu
+                                                                                                                                                                                           Z0 v
+                                                                                                                                                                   ≥ µv +                           σu dBu
+                                                                                                                                                                                            0
 
-                                                                                                                                                                  = Xv .
+                                                                                                                                                                   = Xv .
 
 
 
@@ -1739,11 +1735,11 @@ and hence that
 
                                                                                                          |E[Zt2 ]| = α2 E[Xt2 ] + 2αβE[Xt Yt ] + β 2 E[Yt2 ]
 
-                                                                                                                    ≤ α2 E[Xt2 ] + 2|αβ| |E[Xt Yt ]| + β 2 E[Yt2 ]
+                                                                                                                     ≤ α2 E[Xt2 ] + 2|αβ| |E[Xt Yt ]| + β 2 E[Yt2 ]
 
-                                                                                                                    ≤ α2 E[Xt2 ] + |αβ|(E[Xt2 ] + E[Yt2 ]) + β 2 E[Yt2 ]
+                                                                                                                     ≤ α2 E[Xt2 ] + |αβ|(E[Xt2 ] + E[Yt2 ]) + β 2 E[Yt2 ]
 
-                                                                                                                    = (α2 + |αβ|)E[Xt2 ] + (β 2 + |αβ|)|E[Yt2 ].
+                                                                                                                     = (α2 + |αβ|)E[Xt2 ] + (β 2 + |αβ|)|E[Yt2 ].
 
 
 
@@ -1765,12 +1761,12 @@ where we use part (a) to deduce the third line from the second. Hence,
 
 <!--
 
-                                                                                   Z    t                       Z       t
-                                                                                            E[Zu2 ] du ≤                    (α2 + |αβ|)E[Xu2 ] + (β 2 + |αβ|)|E[Yu2 ] du
-                                                                                    0                               0
-                                                                                                                                                  Z       t                                                                      Z    t
-                                                                                                             = (α2 + |αβ|)                                    E[Xu2 ] du + (β 2 + |αβ|)                                                   E[Yu2 ] du < ∞
-                                                                                                                                                      0                                                                           0
+                                                                                    Z    t                       Z       t
+                                                                                             E[Zu2 ] du ≤                    (α2 + |αβ|)E[Xu2 ] + (β 2 + |αβ|)|E[Yu2 ] du
+                                                                                     0                               0
+                                                                                                                                                   Z       t                                                                       Z    t
+                                                                                                             = (α2 + |αβ|)                                     E[Xu2 ] du + (β 2 + |αβ|)                                                    E[Yu2 ] du < ∞
+                                                                                                                                                       0                                                                            0
 
 
 
@@ -1797,11 +1793,9 @@ to show that
 <span class="hidden" > \(\seteqnumber{0}{C.}{1}\)</span>
 <!--
 
-                                                        Z   t
-                                         E[IF (t) ] =
-                                                2
-                                                                E[Fu2 ] du.                                                                                                     (C.2)                                                                                                       --><a id="eq:ii1"></a><!--
-                                                        0
+                                                         Z   t
+                                         E[IF (t)2 ] =           E[Fu2 ] du.                                                                                                     (C.2)                                                                                                        --><a id="eq:ii1"></a><!--
+                                                         0
 
 
 
@@ -1823,15 +1817,15 @@ On the right hand side we have
 
 <!--
 
-                                                                                                              Z     t                                     m Z                 ti ∧t
-                                                                                                                        E[Fu2 ] du =                                                  E[Fu2 ] du
-                                                                                                                                                          X
-                                                                                                                0                                          i=1            ti−1∧t
-                                                                                                                                                          m
-                                                                                                                                                  =                   (ti ∧ t − ti−1 ∧ t)E[Ft2i−1 ]                                                         (C.3)
-                                                                                                                                                          X
-                                                                                                                                                                                                                                                                                            --><a id="eq:ii2"></a><!--
-                                                                                                                                                           i=1
+                                                                                                               Z     t                                     m Z                 ti ∧t
+                                                                                                                         E[Fu2 ] du =                                                  E[Fu2 ] du
+                                                                                                                                                           X
+                                                                                                                 0                                          i=1            ti−1∧t
+                                                                                                                                                           m
+                                                                                                                                                   =                   (ti ∧ t − ti−1 ∧ t)E[Ft2i−1 ]                                                          (C.3)
+                                                                                                                                                           X
+                                                                                                                                                                                                                                                                                              --><a id="eq:ii2"></a><!--
+                                                                                                                                                            i=1
 
 
 
@@ -1853,25 +1847,25 @@ href="Solutions-exercises-book-two.html#eq:ii1">C.2</a>)</span> we have
 
 <!--
 
-                                                                                                                                                     !2 
-                                                                                            m
-                                                                    E[IF (t)2 ] = E                  Fti−1 [Bti ∧t − Bti−1 ∧t ]
-                                                                                            X
-                                                                                                                                                              
-                                                                                            i=1
-                                                                                                                                                                              
-                                                                                    m                                  i−1
-                                                                                                                     m X
-                                                                              = E  Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 + 2       Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ]
-                                                                                   X                                 X
+                                                                                                                                                      !2 
+                                                                                             m
+                                                                     E[IF (t)2 ] = E                  Fti−1 [Bti ∧t − Bti−1 ∧t ]
+                                                                                             X
+                                                                                                                                                               
+                                                                                             i=1
+                                                                                                                                                                               
+                                                                                     m                                m X
+                                                                                                                        i−1
+                                                                               = E  Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 + 2       Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ]
+                                                                                    X                                 X
 
-                                                                                        i=1                                                                       i=1 j=1
-                                                                                  m          h                                                    i                     i−1
-                                                                                                                                                                      m X
-                                                                              =         E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 + 2                                                            E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ]
-                                                                                  X                                                                                   X                                                                                                          
+                                                                                         i=1                                                                       i=1 j=1
+                                                                                   m          h                                                    i                     i−1
+                                                                                                                                                                       m X
+                                                                               =         E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 + 2                                                            E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ]
+                                                                                   X                                                                                   X                                                                                                           
 
-                                                                                  i=1                                                                                 i=1 j=1
+                                                                                   i=1                                                                                 i=1 j=1
 
 
 
@@ -1895,14 +1889,14 @@ In the first sum, using the tower rule, taking out what is known, independence, 
 <!--
 
 
-                                                                                                 h                                                    i                   h h                                                                                ii
-                                                                                            E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 = E E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 | Fti−1
-                                                                                                                                                                          h                   h                                                              ii
-                                                                                                                                                           = E Ft2i−1 E [Bti ∧t − Bti−1 ∧t ]2 | Fti−1
-                                                                                                                                                                          h                   h                                               ii
-                                                                                                                                                           = E Ft2i−1 E [Bti ∧t − Bti−1 ∧t ]2
-                                                                                                                                                                          h                                                               i
-                                                                                                                                                           = E Ft2i−1 (ti ∧ t − ti−1 ∧ t)
+                                                                                                  h                                                    i                   h h                                                                                 ii
+                                                                                             E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 = E E Ft2i−1 [Bti ∧t − Bti−1 ∧t ]2 | Fti−1
+                                                                                                                                                                           h                    h                                                              ii
+                                                                                                                                                            = E Ft2i−1 E [Bti ∧t − Bti−1 ∧t ]2 | Fti−1
+                                                                                                                                                                           h                    h                                               ii
+                                                                                                                                                            = E Ft2i−1 E [Bti ∧t − Bti−1 ∧t ]2
+                                                                                                                                                                           h                                                                i
+                                                                                                                                                            = E Ft2i−1 (ti ∧ t − ti−1 ∧ t)
 
 
 
@@ -1926,19 +1920,19 @@ In the second sum, since \(j&lt;i\) we have \(t_{j-1}\leq t_i\), so using the to
 
 
 
-                                                            E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ] = E E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ] | Fti−1
-                                                                                                                                                                                                                                                                                  
+                                                             E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ] = E E Fti−1 Ftj−1 [Bti ∧t − Bti−1 ∧t ][Btj ∧t − Btj−1 ∧t ] | Fti−1
+                                                                                                                                                                                                                                                                                    
 
 
-                                                                                                                                                          = E Ftj−1 [Btj ∧t − Btj−1 ∧t ]Fti−1 E Bti ∧t | Fti−1 − Bti−1 ∧t
-                                                                                                                                                                                                                                                                                    
+                                                                                                                                                           = E Ftj−1 [Btj ∧t − Btj−1 ∧t ]Fti−1 E Bti ∧t | Fti−1 − Bti−1 ∧t
+                                                                                                                                                                                                                                                                                      
 
 
-                                                                                                                                                          = E Ftj−1 [Btj ∧t − Btj−1 ∧t ]Fti−1 Bti−1 ∧t − Bti−1 ∧t
-                                                                                                                                                                                                                                                                            
+                                                                                                                                                           = E Ftj−1 [Btj ∧t − Btj−1 ∧t ]Fti−1 Bti−1 ∧t − Bti−1 ∧t
+                                                                                                                                                                                                                                                                              
 
 
-                                                                                                                                                          = 0.
+                                                                                                                                                           = 0.
 
 
 
@@ -1968,8 +1962,8 @@ which matches <span class="textup" >(<a href="Solutions-exercises-book-two.html#
 </p>
 </li>
 </ul>
-<h5 id="autosec-229">Chapter <a href="Stochastic-differential-equations.html#chap:sdes">12</a></h5>
-<a id="notes_2-autopage-229"></a>
+<h5 id="autosec-230">Chapter <a href="Stochastic-differential-equations.html#chap:sdes">12</a></h5>
+<a id="notes_2-autopage-230"></a>
 
 
 
@@ -2006,9 +2000,9 @@ href="Stochastic-differential-equations.html#eq:intBtBt">12.6</a>)</span> from E
 <!--
 
 
-                                                                                                                                                               Bt2   t
-                                                                                                                       Xt = X0 + t2 +                              −
-                                                                                                                                                               2     2
+                                                                                                                                                                      Bt2   t
+                                                                                                                              Xt = X0 + t2 +                              −
+                                                                                                                                                                      2     2
 
 
 -->
@@ -2033,31 +2027,8 @@ which is not differentiable because \(B_t\) is not differentiable.
 <!--
 
 
-                                                                                                                       1
-                                                                                                             ^2X_t+\alpha t^3\r )\,dt+\beta t^3\,dB_t.
-\end{align*}
-
-
-</p>
-</li>
-<li>
-<p>
-<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:various_diff"><b>12.3</b></a> By Ito’s formula, using that \(dB_t=0\,dt+1\,dB_t\), we have
-</p>
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> \(dZ_t=\l \{B_t^2+(0)(2tB_t)+\frac 12(1^2)(2t)\r \}\,dt+(1)(2tB_t)\,dB_t=\l (B_t^2+t\r
-)\,dt+2tB_t\,dB_t\).
-</p>
-
-
-</li>
-<li>
-<p>
-<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> \(dZ_t=\l \{\alpha e^{\alpha t}+(0)(0)+\frac 12(1^2)(0)\r \}\,dt+(1)(0)\,dB_t=\alpha
+                                                                                                                               1
+                                                                                                                  b)</span></span></span> \(dZ_t=\l \{\alpha e^{\alpha t}+(0)(0)+\frac 12(1^2)(0)\r \}\,dt+(1)(0)\,dB_t=\alpha
 e^{\alpha t}\,dt\).
 </p>
 
@@ -2073,14 +2044,11 @@ e^{\alpha t}\,dt\).
 <!--
 
 
-                                                                                                                       −1            1        2                                                  −1
-                                                                                                                                                                        
-                                                                                dFt = 0 + (0)(nBtn−1 ) + (12 )(n(n − 1)Btn−2                                                         dt + (1)nBtn−1 dBt
-                                                                                                        2
-                                                                                      n(n − 1)Bt
-                                                                                               n−2
-                                                                                    =              dt + nBtn−1 dBt .
-                                                                                            2
+                                                                                                     −1                                     1        2                                            −1
+                                                                                                                                       2
+                                                                                                 n(n − 1)Btn−2
+                                                                                             =                 dt + nBtn−1 dBt .
+                                                                                                       2
 
 
 -->
@@ -2107,15 +2075,15 @@ mean, we obtain
 <!--
 
 
-                                                                                                                            n(n − 1)E[Bun−2 ]
-                                                                                                                                   t
-                                                                                                                            Z
-                                                                                                             E[Btn ] =                         du + 0
-                                                                                                                          0         2
-                                                                                                                         n(n − 1) t
-                                                                                                                                 Z
-                                                                                                                       =              E[Bun−2 ] du.
-                                                                                                                            2      0
+                                                                                                                                   n(n − 1)E[Bun−2 ]
+                                                                                                                                          t
+                                                                                                                                  Z
+                                                                                                                  E[Btn ]     =                       du + 0
+                                                                                                                                 0         2
+                                                                                                                                n(n − 1)
+                                                                                                                                         Z t
+                                                                                                                              =              E[Bun−2 ] du
+                                                                                                                                   2      0
 
 
 
@@ -2126,10 +2094,37 @@ mean, we obtain
 
 
 \begin{align*}
-\E [B_t^n] &amp;=\int _0^t\frac {n(n-1)\E [B_u^{n-2}]}{2}\,du+0\\ &amp;=\frac {n(n-1)}{2}\int _0^t\E [B_u^{n-2}]\,du.
+\E [B_t^n] &amp;=\int _0^t\frac {n(n-1)\E [B_u^{n-2}]}{2}\,du+0\\ &amp;=\frac {n(n-1)}{2}\int _0^t\E [B_u^{n-2}]\,du
 \end{align*}
+as required.
+</p>
+<p>
+Let us check that this formula agrees with the results of exercise <a href="Exercises-on-Chapter-ref-chap-bm.html#q:bm_moments"><b>10.4</b></a> part (c). When \(n\) is odd, we had obtained \(\E
+[B^n_t]=0\), so this case is trivial. When \(n\) is even, we had obtained \(\E [B^n_t]=t^{n/2}(n-1)(n-3)\ldots (1)\). Note that
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
 
 
+<!--
+
+
+                                                                       n(n − 1)          t                                                                              n(n − 1) tn/2
+                                                                                  Z
+                                                                                             u(n−2)/2 (n − 3)(n − 5) . . . (1) du =                                                   (n − 3)(n − 5) . . . (1) du
+                                                                          2          0                                                                                     2     n/2
+                                                                                                                                                                    = tn/2 (n − 1)(n − 3) . . . (1)
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\frac {n(n-1)}{2}\int _0^t u^{(n-2)/2}(n-3)(n-5)\ldots (1)\,du &amp;= \frac {n(n-1)}{2} \frac {t^{n/2}}{n/2}(n-3)(n-5)\ldots (1)\,du \\ &amp;= t^{n/2}(n-1)(n-3)\ldots (1)
+\end{align*}
+as required.
 </p>
 </li>
 <li>
@@ -2150,11 +2145,10 @@ mean, we obtain
 
 
                                                                            1 t/2                             1
-                                                                                                                                                                                                                
-                                                             dXt =           e cos(Bt ) + (0) −et/2 sin(Bt ) + (12 )(−et/2 cos(Bt ))                                                        dt + (1) −et/2 sin(Bt ) dBt
+                                                                                                                                                                                                                      
+                                                             dXt =           e cos(Bt ) + (0) −et/2 sin(Bt ) + (12 )(−et/2 cos(Bt ))                                                              dt + (1) −et/2 sin(Bt ) dBt
                                                                            2                                  2
                                                                      = −et/2 sin(Bt ) dBt .
-
 
 
 -->
@@ -2183,9 +2177,50 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 
                                                                                                1
-                                                                                        
-                                                                                                = 4(1 + t)Xt + (Bt )2 dt + 2Xt Bt dBt .
+                                                                                         :inttBt"><b>12.6</b></a> We apply Ito’s formula with \(f(t,x)=tx\) to \(Z_t=f(t,B_t)=tB_t\) and obtain
+</p>
+<p>
+\[dZ_t=\l (B_t+(0)(t)+\frac 12(1^2)(0)\r )\,dt+(1)(t)\,dB_t\]
+</p>
+<p>
+so we obtain
+</p>
+<p>
+\[tB_t=0B_0+\int _0^tB_u\,du+\int _0^t u\,dB_u,\]
+</p>
+<p>
+as required.
+</p>
+</li>
+<li>
+<p>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#q:sde_Evar_ode"><b>12.7</b></a>
+</p>
+<ul style="list-style-type:none">
 
+
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(a)</span></span></span> We have \(X_t=X_0+\int _0^t 2+2s\,ds+\int _0^t B_s\,dB_s\). Taking expectations, and recalling
+that Ito integrals have zero mean, we obtain that
+</p>
+<p>
+\[\E [X_t]=X_0+\int _0^t 2+2s\,ds+0=1+\l [2s+s^2\r ]_{s=0}^t=1+2t+t^2=(1+t)^2.\]
+</p>
+</li>
+<li>
+<p>
+<span class="textmd" ><span class="textrm" ><span class="textup" >(b)</span></span></span> From Ito’s formula,
+</p>
+<span class="hidden" > \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                                                                                                                  
+                                                                                              dYt = 0 + (2 + 2t)(2Xt ) + 12 (Bt )2 (2) dt + Bt (2Xt ) dBt
+                                                                                                                                                      
+                                                                                                      = 4(1 + t)Xt + (Bt )2 dt + 2Xt Bt dBt .
 
 
 -->
@@ -2204,21 +2239,21 @@ Writing in integral form, taking expectations, and using that Ito integrals have
 
 <!--
 
-                                                                                                                                   Z      t                                            
-                                                                                                    E[Yt ] = Y0 + E                            4(1 + s)Xt + (Bs ) ds + 0          2
-                                                                                                                                       0
-                                                                                                                       Z       t
-                                                                                                             =1+                   4(1 + s)E[Xs ] + E[Bs2 ] ds
-                                                                                                                           0
-                                                                                                                       Z       t
-                                                                                                             =1+                   4(1 + s)3 + s ds
-                                                                                                                           0
-                                                                                                                       h                                   it
-                                                                                                                                                        s2
-                                                                                                             = 1 + (1 + s)4 +                           2 s=0
+                                                                                                                                          Z      t                                           
+                                                                                                         E[Yt ] = Y0 + E                              4(1 + s)Xt + (Bs )2 ds + 0
+                                                                                                                                              0
+                                                                                                                              Z       t
+                                                                                                                  =1+                     4(1 + s)E[Xs ] + E[Bs2 ] ds
+                                                                                                                                  0
+                                                                                                                              Z       t
+                                                                                                                  =1+                     4(1 + s)3 + s ds
+                                                                                                                                  0
+                                                                                                                              h                                   it
+                                                                                                                                                               s2
+                                                                                                                  = 1 + (1 + s)4 +                             2 s=0
 
-                                                                                                                                           t2
-                                                                                                             = (1 + t)4 +                  2
+                                                                                                                                                  t2
+                                                                                                                  = (1 + t)4 +                    2
 
 
 
@@ -2241,12 +2276,11 @@ Hence, using that \(\E [X_t^2]=\E [Y_t]\),
 <!--
 
 
-
-                                                                                                                 var(X) = E[Xt2 ] − E[Xt ]2
-                                                                                                                                                               t2
-                                                                                                                               = (1 + t)4 +                    2    − (1 + t)4
-                                                                                                                                       t2
-                                                                                                                               =       2.
+                                                                                                                      var(X) = E[Xt2 ] − E[Xt ]2
+                                                                                                                                                                      t2
+                                                                                                                                      = (1 + t)4 +                    2    − (1 + t)4
+                                                                                                                                              t2
+                                                                                                                                      =       2.
 
 
 
@@ -2311,14 +2345,12 @@ which has solution \(x_t=Ce^{\alpha t}\). Putting in \(t=0\) shows that \(C=\E [
 
 <!--
 
+                                                                                                                                                                          
+                                                                                                 dYt = 0 + (0)(2Xt ) + 21 (Xt )2 (2) dt + (Xt )(2Xt ) dBt
 
-                                                                                                                                                                   
-                                                                                           dYt = 0 + (0)(2Xt ) + 21 (Xt )2 (2) dt + (Xt )(2Xt ) dBt
+                                                                                                         = (Xt2 ) dt + 2Xt2 dBt .
 
-                                                                                                    = (Xt2 ) dt + 2Xt2 dBt .
-
-                                                                                                    = Yt dt + 2Yt dBt
-
+                                                                                                         = Yt dt + 2Yt dBt
 
 
 -->
@@ -2337,9 +2369,9 @@ Writing in integral form and taking expectations, we obtain
 
 <!--
 
-                                                                                                                                                    Z   t
-                                                                                                                   E[Yt ] = 1 +                             E[Ys ] ds + 0.
-                                                                                                                                                    0
+                                                                                                                                                       Z       t
+                                                                                                                          E[Yt ] = 1 +                             E[Ys ] ds + 0.
+                                                                                                                                                           0
 
 
 
@@ -2376,12 +2408,11 @@ Hence, by the fundamental theorem of calculus, \(f(t)=\E [Y_t]\) satisfies the d
 <!--
 
 
-                                                                                                                                        1
-                                                                                                                                                                       
-                                                                                           dZt = 0 +              (0)(3Bt2 )           + (12 )(6Bt )                        dt + (1)(3Bt2 ) dBt
-                                                                                                                                        2
-                                                                                                    = 3Bt dt + 3Bt2 dt
-
+                                                                                                                       1
+                                                                                                                                                                              
+                                                                                                 dZt = 0 + (0)(3Bt2 ) + (12 )(6Bt )                                                dt + (1)(3Bt2 ) dBt
+                                                                                                                       2
+                                                                                                         = 3Bt dt + 3Bt2 dt
 
 
 -->
@@ -2429,11 +2460,10 @@ Using Ito’s formula, with \(f(t,x)=X_0\exp \l ((\alpha -\tfrac 12\sigma ^2)t+\
 
 
                                                                                                                    1
-                                                                                                                                                                                
-                                                                                dXt = (α − 12 σ 2 )Xt + (0)(σXt ) + (12 )(σ 2 Xt )                                                    dt + (1)(σXt )dBt
+                                                                                                                                                                                       
+                                                                                dXt = (α − 12 σ 2 )Xt + (0)(σXt ) + (12 )(σ 2 Xt )                                                           dt + (1)(σXt )dBt
                                                                                                                    2
-                                                                                       = αXt dt + σXt dBt
-
+                                                                                             = αXt dt + σXt dBt
 
 
 -->
@@ -2472,12 +2502,11 @@ theorem of calculus) we obtain
 <!--
 
 
-                                                                                             1                   1
-                                                                                                                                                                           
-                                                                                      dXt = − σt2 Xt + (0)(Xt ) + (σt2 )(Xt )                                                   dt + (σt )(Xt ) dBt
-                                                                                             2                   2
-                                                                                               = σt Xt dBt .
-
+                                                                                                    1                   1
+                                                                                                                                                                                  
+                                                                                             dXt = − σt2 Xt + (0)(Xt ) + (σt2 )(Xt )                                                   dt + (σt )(Xt ) dBt
+                                                                                                    2                   2
+                                                                                                     = σt Xt dBt .
 
 
 -->
@@ -2528,9 +2557,9 @@ href="Properties-Brownian-motion.html#lem:bm2_mart">10.4.4</a> that \(B_t^2-t\) 
 
 
 
-                                                                                                                 E[BT2 | Ft ] = E[BT2 − T + T | Ft ]
+                                                                                                     E[BT2 | Ft ] = E[BT2 − T + T | Ft ]
 
-                                                                                                                                        = Bt2 − t + T
+                                                                                                                          = Bt2 − t + T
 
 
 
@@ -2607,12 +2636,12 @@ so as
 
 <!--
 
-                                                                                    Z        t               Z    t                             Z          t                     Z   t       
-                                                               E[BT3   | Ft ] = 3                Bu du + 3            Bu2      dBu − 3                          Bu du +                   u dBu + 3T Bt
-                                                                                        0                     0                                         0                         0
-                                                                                    Z        t                   Z        t                         Z       t
-                                                                            =3                   Bu2 dBu − 3                  u dBu + 3T                        1 dBu
-                                                                                         0                            0                                 0
+                                                                                    Z        t               Z    t                        Z      t                      Z   t       
+                                                               E[BT3   | Ft ] = 3                Bu du + 3            Bu2      dBu − 3                  Bu du +                   u dBu + 3T Bt
+                                                                                        0                     0                                0                          0
+                                                                                    Z        t                   Z        t                 Z       t
+                                                                            =3                   Bu2 dBu − 3                  u dBu + 3T                1 dBu
+                                                                                         0                            0                         0
                                                                                 Z       t
                                                                             =            3Bu2 − 3u + 3T dBu .
                                                                                     0
@@ -2646,14 +2675,12 @@ href="Exercises-on-Chapter-ref-chap-bm.html#q:mart_bm"><b>10.6</b></a> that \(e^
 <!--
 
 
-                                                                                                                                           1        2           1   2T
-                                                                                                  E[eσBT | Ft ] = E[eσBT − 2 σ T e 2 σ                                   | Ft ]
-                                                                                                                               σBt − 12 σ 2 t       1 2
-                                                                                                                      =e                        e   2
-                                                                                                                                                      σ T
-
-                                                                                                                                       1   2 (T −t)
-                                                                                                                      = eσBt − 2 σ                          .
+                                                                                                                                       1   2            1   2T
+                                                                                                  E[eσBT | Ft ] = E[eσBT − 2 σ T e 2 σ                           | Ft ]
+                                                                                                                                   1   2   1    2T
+                                                                                                                      = eσBt − 2 σ t e 2 σ
+                                                                                                                                   1   2 (T −t)
+                                                                                                                      = eσBt − 2 σ                  .
 
 
 
@@ -2676,8 +2703,8 @@ Applying Ito’s formula to \(Z_t=e^{\sigma B_t-\frac 12\sigma ^2(T-t)}\) gives 
 
 
                                                                               1                    1
-                                                                                                                                                                   
-                                                                       dZt = − σ 2 Zt + (0)(σZt ) + (12 )(σ 2 Zt )                                                      dt + (1)(σZt ) dBt
+                                                                                                                                                           
+                                                                       dZt = − σ 2 Zt + (0)(σZt ) + (12 )(σ 2 Zt )                                              dt + (1)(σZt ) dBt
                                                                               2                    2
                                                                             = σZt dBt
 
@@ -2712,8 +2739,8 @@ so we can take \(h_t=\sigma Z_t=\sigma e^{\sigma B_t-\frac 12\sigma ^2(T-t)}\).
 </ul>
 </li>
 </ul>
-<h5 id="autosec-231">Chapter <a href="Connections-between-SDEs-PDEs.html#chap:fk">13</a></h5>
-<a id="notes_2-autopage-231"></a>
+<h5 id="autosec-232">Chapter <a href="Connections-between-SDEs-PDEs.html#chap:fk">13</a></h5>
+<a id="notes_2-autopage-232"></a>
 
 
 
@@ -2899,7 +2926,7 @@ href="Connections-between-SDEs-PDEs.html#lem:fk_1">13.1.2</a>. Writing out \(dZ_
 Taking expectations \(\E _{t,x}\) gives us
 </p>
 <p>
-\[\E _{x,t}\l [F(T,X_T)+\gamma (T)\r ]=\E _{t,x}[F(t,X_t)+\gamma (t)]\]
+\[\E _{t,x}\l [F(T,X_T)+\gamma (T)\r ]=\E _{t,x}[F(t,X_t)+\gamma (t)]\]
 </p>
 <p>
 and noting that \(X_t=x\) under \(\E _{t,x}\), we have
@@ -3034,8 +3061,8 @@ which is non-zero.
 </p>
 </li>
 </ul>
-<h5 id="autosec-232">Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></h5>
-<a id="notes_2-autopage-232"></a>
+<h5 id="autosec-233">Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></h5>
+<a id="notes_2-autopage-233"></a>
 
 
 
@@ -3488,8 +3515,8 @@ doesn’t work within the ‘old’ model. Consequently, there is no reason to e
 </p>
 </li>
 </ul>
-<h5 id="autosec-233">Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></h5>
-<a id="notes_2-autopage-233"></a>
+<h5 id="autosec-234">Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></h5>
+<a id="notes_2-autopage-234"></a>
 
 
 
@@ -3981,8 +4008,8 @@ w_t&amp;=-\frac {\Gamma _{F}}{\Gamma _{W}}\\ z_t&amp;=\frac {\Delta _{W}\Gamma _
 </p>
 </li>
 </ul>
-<h5 id="autosec-237">Chapter <a href="Financial-networks.html#chap:fin_net">17</a></h5>
-<a id="notes_2-autopage-237"></a>
+<h5 id="autosec-238">Chapter <a href="Financial-networks.html#chap:fin_net">17</a></h5>
+<a id="notes_2-autopage-238"></a>
 
 
 
@@ -4195,7 +4222,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
 </p>
 
 </footer>

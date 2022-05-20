@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: March 20, 2022
+last updated: May 20, 2022
 </p>
 
 </header>
@@ -767,7 +767,7 @@ We will now show that the solutions of this PDE can be written in terms the solu
 
 
 
-                                         dXu = α(u, Xu ) dt + β(u, Xu ) dBu .                                        (13.3)                                                       --><a id="eq:fk_base"></a><!--
+                                         dXu = α(u, Xu ) du + β(u, Xu ) dBu .                                        (13.3)                                                       --><a id="eq:fk_base"></a><!--
 
 
 
@@ -777,7 +777,7 @@ We will now show that the solutions of this PDE can be written in terms the solu
 
 
 \begin{equation}
-\label {eq:fk_base} dX_u=\alpha (u,X_u)\,dt+\beta (u,X_u)\,dB_u.
+\label {eq:fk_base} dX_u=\alpha (u,X_u)\,du+\beta (u,X_u)\,dB_u.
 \end{equation}
 
 
@@ -787,6 +787,7 @@ We will now show that the solutions of this PDE can be written in terms the solu
 We will need to consider solutions to this SDE where we vary the initial value of \(x\), and also the time at which the ‘initial’ value occurs. For given \(x\in \R \) and \(t\in [0,T]\) we write the subscripts \(\P
 _{t,x}\) (and \(\E _{t,x}\)) to specify that \(X\) represents the solution of <span class="textup" >(<a href="Connections-between-SDEs-PDEs.html#eq:fk_base">13.3</a>)</span> with the initial
 condition that \(X_t=x\) (and we are then interested in \(X_u\) during time \(u\in [t,T]\)). We will continue to use \(\P \) and \(\E \) to denote starting at time \(0\) with unspecified initial value \(X_0\).
+We assume also that \(\beta (t,X_t)\frac {\p F}{\p x}(u,X_u)\) is in \(\mc {H}^2\), to ensure that the Ito integrals in the proof really exist.
 </p>
 
 <p>
@@ -804,8 +805,7 @@ The connection is as follows.
 
 <p>
 <span class="theoremheaderplain" >Lemma 13.1.2</span> <a id="autoid-78" ></a ><a id="lem:fk_1"></a> Suppose that \(F\) is a solution of <span class="textup" >(<a
-href="Connections-between-SDEs-PDEs.html#eq:fk1a">13.1</a>)</span> and <span class="textup" >(<a href="Connections-between-SDEs-PDEs.html#eq:fk1b">13.2</a>)</span>, and also that
-\(\beta (t,X_t)\frac {\p F}{\p x}(t,X_t)\) is in \(\mc {H}^2\). Then,
+href="Connections-between-SDEs-PDEs.html#eq:fk1a">13.1</a>)</span> and <span class="textup" >(<a href="Connections-between-SDEs-PDEs.html#eq:fk1b">13.2</a>)</span>. Then,
 </p>
 
 <p>
@@ -908,8 +908,7 @@ where \(\alpha ,\beta , \Phi \) are as before and \(r\) is a deterministic const
 
 <p>
 <span class="theoremheaderplain" >Lemma 13.1.3</span> <a id="autoid-80" ></a ><a id="lem:fk_2"></a> Suppose that \(F\) is a solution of <span class="textup" >(<a
-href="Connections-between-SDEs-PDEs.html#eq:fk2a">13.4</a>)</span> and <span class="textup" >(<a href="Connections-between-SDEs-PDEs.html#eq:fk2b">13.5</a>)</span>, and also that
-\(\beta (t,X_t)\frac {\p F}{\p x}(t,X_t)\) is in \(\mc {H}^2\). Then,
+href="Connections-between-SDEs-PDEs.html#eq:fk2a">13.4</a>)</span> and <span class="textup" >(<a href="Connections-between-SDEs-PDEs.html#eq:fk2b">13.5</a>)</span>. Then,
 </p>
 
 <span class="hidden" > \(\seteqnumber{0}{13.}{5}\)</span>
@@ -918,7 +917,7 @@ href="Connections-between-SDEs-PDEs.html#eq:fk2a">13.4</a>)</span> and <span cla
 
 
 
-                                     F (t, x) = e−r(T −t) Et,x [Φ(XT )]                                   (13.6)                                                      --><a id="eq:fk_2_eq"></a><!--
+                                     F (t, x) = e−r(T −t) Et,x [Φ(XT )]                                           (13.6)                                                   --><a id="eq:fk_2_eq"></a><!--
 
 
 
@@ -956,17 +955,18 @@ for all \(x\in \R \) and \(t\in [0,T]\).
 
 
 
-                                                                                                           1
-                                                                                                                                    !
-                                                                                    ∂F                 ∂F                  ∂2F                               ∂F
-                                                              dZt = −re−rt F + e−rt    + α(t, Xt )e−rt    + β(t, Xt )2 e−rt 2           dt + β(t, Xt )e−rt      dBt
-                                                                                    ∂t                 ∂x  2               ∂x                                ∂x
+                                                                                                                 1
+                                                                                                                                         !
+                                                                                     −rt ∂F              −rt ∂F                  ∂2F                              ∂F
+                                                              dZt = −re     −rt
+                                                                                  F +e        + α(t, Xt )e      + β(t, Xt )2 e−rt 2          dt + β(t, Xt )e−rt      dBt
+                                                                                         ∂t                  ∂x  2               ∂x                               ∂x
                                                                                                      1
-                                                                                                                      !
-                                                                                  ∂F             ∂F             ∂2F                             ∂F
+                                                                                                                           !
+                                                                                  ∂F             ∂F             ∂2F                                  ∂F
                                                                   =e  −rt
-                                                                            −rF +    + α(t, Xt )    + β(t, Xt )2 2        dt + e−rt β(t, Xt )      dBt .
-                                                                                  ∂t             ∂x  2          ∂x                              ∂x
+                                                                            −rF +    + α(t, Xt )    + β(t, Xt )2 2             dt + e−rt β(t, Xt )      dBt .
+                                                                                  ∂t             ∂x  2          ∂x                                   ∂x
 
 
 
@@ -1217,7 +1217,7 @@ method.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
 </p>
 
 </footer>

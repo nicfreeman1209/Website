@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, March 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -163,7 +163,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: March 20, 2022
+last updated: May 20, 2022
 </p>
 
 </header>
@@ -812,7 +812,7 @@ In integral form this gives us
 
                                                                                                          1t         t
                                                                                                       Z              Z
-                                                                                          Zt = Z0 +  α − σ 2 du +     σ dBt
+                                                                                          Zt = Z0 +  α − σ 2 du +     σ dBu
                                                                                                    0     2        0
                                                                                                        1
                                                                                                           
@@ -829,7 +829,7 @@ In integral form this gives us
 
 
 \begin{align*}
-Z_t&amp;=Z_0+\int _0^t\alpha -\frac {1}{2}\sigma ^2\,du+\int _0^t\sigma \,dB_t\\ &amp;=Z_0+\l (\alpha -\frac 12\sigma ^2\r )t+\sigma B_t.
+Z_t&amp;=Z_0+\int _0^t\alpha -\frac {1}{2}\sigma ^2\,du+\int _0^t\sigma \,dB_u\\ &amp;=Z_0+\l (\alpha -\frac 12\sigma ^2\r )t+\sigma B_t.
 \end{align*}
 Since \(Z_t=\log X_t\), raising both sides to the power \(e\) gives us
 </p>
@@ -840,7 +840,7 @@ Since \(Z_t=\log X_t\), raising both sides to the power \(e\) gives us
 
 
                                                                                
-                                                 Xt = X0 exp (α − 21 σ 2 )t + σBt .                                                      (12.9)                          --><a id="eq:gbm_soln"></a><!--
+                                                 Xt = X0 exp (α − 12 σ 2 )t + σBt .                                                      (12.9)                          --><a id="eq:gbm_soln"></a><!--
 
 
 
@@ -872,7 +872,7 @@ For future use, applying <span class="textup" >(<a href="Geometric-Brownian-moti
 
 
                                                                                      
-                                        XT = Xt exp (α − 21 σ 2 )(T − t) + σ(BT − Bt ) .                                           (12.10)                           --><a id="eq:gbm_soln_tT"></a><!--
+                                        XT = Xt exp (α − 21 σ 2 )(T − t) + σ(BT − Bt ) .                                          (12.10)                            --><a id="eq:gbm_soln_tT"></a><!--
 
 
 
@@ -897,7 +897,7 @@ For future use, applying <span class="textup" >(<a href="Geometric-Brownian-moti
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
 </p>
 
 </footer>
