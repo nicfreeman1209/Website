@@ -4,21 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, May 20, 2022." />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MAS350 — Lebesgue Integrability</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
-
-
 <script>
 // Lwarp MathJax emulation code
 //
 // Based on code by Davide P. Cervone.
 // Equation numbering: https://github.com/mathjax/MathJax/issues/2427
 // Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
 //
 // Modified by Brian Dunn to adjust equation numbering and add subequations.
 //
@@ -28,126 +27,195 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-     subequations: "0",
-     section: "",
-     loader: {
-         load: ['[tex]/tagFormat'],
-     },
-     startup: {
-         ready() {
-             //       These would be replaced by import commands if you wanted to make
-             //       a proper extension.
-             const Configuration = MathJax._.input.tex.Configuration.Configuration;
-             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-             const Macro = MathJax._.input.tex.Symbol.Macro;
-             const TexError = MathJax._.input.tex.TexError.default;
-             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-             const expandable = MathJax._.util.Options.expandable;
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
 
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-             //       Insert the replacement string into the TeX string, and check
-             //       that there haven't been too many maxro substitutions (prevents
-             //       infinite loops).
-             const useArgument = (parser, text) => {
-                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-                  parser.i = 0;
-                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
-                      throw new TexError('MaxMacroSub1',
-                      'MathJax maximum macro substitution count exceeded; ' +
-                      'is there a recursive macro call?');
-                  }
-             }
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
 
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
 
-             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
-             new CommandMap('ifstar-ifnextchar-setequnumber', {
-                  ifstar: 'IfstarFunction',
-                  ifnextchar: 'IfnextcharFunction',
-                  seteqnumber: 'SeteqnumberFunction'
-             }, {
-                  //      This function implements an ifstar macro.
-                  IfstarFunction(parser, name) {
-                      const resultstar = parser.GetArgument(name);
-                      const resultnostar = parser.GetArgument(name);
-                      const star = parser.GetStar();                        // true if there is a *
-                      useArgument(parser, star ? resultstar : resultnostar);
-                  },
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
 
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
 
-                  //      This function implements an ifnextchar macro.
-                  IfnextcharFunction(parser, name) {
-                      let whichchar = parser.GetArgument(name);
-                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-                          // $ syntax highlighting
-                          whichchar = String.fromCodePoint(parseInt(whichchar));
-                      }
-                      const resultnextchar = parser.GetArgument(name);
-                      const resultnotnextchar = parser.GetArgument(name);
-                      const gotchar = (parser.GetNext() === whichchar);
-                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-                  },
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
 
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
 
-                  //      This function modifies the equation numbers.
-                  SeteqnumberFunction(parser, name) {
-                          //   Get the macro parameters
-                          const star = parser.GetStar();                       // true if there is a *
-                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
-                          const newsubequations = parser.GetArgument(name);       // the subequations argument
-                          const neweqsection = parser.GetArgument(name);       // the eq section argument
-                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
-                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
-                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
-                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-                  }
-             });
+        });
 
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
 
-             //       Create the ifstar-ifnextchar-setequnumber package
-             Configuration.create('ifstar-ifnextchar-setequnumber', {
-                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
-             });
+        MathJax.startup.defaultReady();
 
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
 
-             MathJax.startup.defaultReady();
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
 
-
-             // For forward references:
-             MathJax.startup.input[0].preFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          MathJax.config.subequations = math.inputData.recompile.subequations;
-                          MathJax.config.section = math.inputData.recompile.section;
-                  }
-             });
-             MathJax.startup.input[0].postFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          math.inputData.recompile.subequations = MathJax.config.subequations;
-                          math.inputData.recompile.section = MathJax.config.section;
-                  }
-             });
-         }       // ready
-     },           // startup
-
-
-     tex: {
-         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
-         tags: "ams",
-                  tagFormat: {
-                          number: function (n) {
-                               if(MathJax.config.subequations==0)
-                                      return(MathJax.config.section + n);
-                               else
-                                      return(MathJax.config.section + String.fromCharCode(96+n));
-                          },
-                  },
-     }
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
+         },
+  }
 }
 </script>
 
-
 <script
-         id="MathJax-script"
-         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
 
@@ -157,7 +225,7 @@ MathJax = {
 
 
 <a id="notes-autopage-126"></a>
-<nav class="topnavigation" ><a href="notes.html" class="linkhome" >
+<nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
@@ -170,19 +238,19 @@ MAS350 Probability with Measure
 
 
 
-<div class="bodyandsidetoc" >
-<div class="sidetoccontainer" >
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
 
 
 
-<nav class="sidetoc" >
+<nav class="sidetoc">
 
 
 
-<div class="sidetoctitle" >
+<div class="sidetoctitle">
 
 <p>
-<span class="sidetocthetitle" >Probability with Measure</span>
+<span class="sidetocthetitle">Probability with Measure</span>
 </p>
 
 <p>
@@ -192,7 +260,7 @@ Contents
 
 
 
-<div class="sidetoccontents" >
+<div class="sidetoccontents">
 
 <p>
 <a href="notes.html" class="linkhome" >
@@ -201,364 +269,364 @@ Home</a>
 
 <p>
 <a href="Introduction.html#autosec-5" class="tocchapter" >
-<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+<span class="sectionnumber">0</span>&#x2003;Introduction</a>
 </p>
 
 
 
 <p>
 <a href="Introduction.html#autosec-6" class="tocsection" >
-<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
 </p>
 
 
 
 <p>
 <a href="Preliminaries.html#autosec-13" class="tocsection" >
-<span class="sectionnumber" >0.2</span>&#x2003;Preliminaries</a>
+<span class="sectionnumber">0.2</span>&#x2003;Preliminaries</a>
 </p>
 
 
 
 <p>
 <a href="Measure-Spaces.html#autosec-16" class="tocchapter" >
-<span class="sectionnumber" >1</span>&#x2003;Measure Spaces</a>
+<span class="sectionnumber">1</span>&#x2003;Measure Spaces</a>
 </p>
 
 
 
 <p>
 <a href="Measure-Spaces.html#autosec-17" class="tocsection" >
-<span class="sectionnumber" >1.1</span>&#x2003;What is measure theory?</a>
+<span class="sectionnumber">1.1</span>&#x2003;What is measure theory?</a>
 </p>
 
 
 
 <p>
 <a href="Sigma-Fields.html#autosec-20" class="tocsection" >
-<span class="sectionnumber" >1.2</span>&#x2003;Sigma Fields</a>
+<span class="sectionnumber">1.2</span>&#x2003;Sigma Fields</a>
 </p>
 
 
 
 <p>
 <a href="Measure.html#autosec-31" class="tocsection" >
-<span class="sectionnumber" >1.3</span>&#x2003;Measure</a>
+<span class="sectionnumber">1.3</span>&#x2003;Measure</a>
 </p>
 
 
 
 <p>
 <a href="The-Borel-field.html#autosec-37" class="tocsection" >
-<span class="sectionnumber" >1.4</span>&#x2003;The Borel \(\sigma \)-field</a>
+<span class="sectionnumber">1.4</span>&#x2003;The Borel \(\sigma \)-field</a>
 </p>
 
 
 
 <p>
 <a href="Lebesgue-Measure.html#autosec-42" class="tocsection" >
-<span class="sectionnumber" >1.5</span>&#x2003;Lebesgue Measure</a>
+<span class="sectionnumber">1.5</span>&#x2003;Lebesgue Measure</a>
 </p>
 
 
 
 <p>
 <a href="An-example-non-measurable-set.html#autosec-49" class="tocsection" >
-<span class="sectionnumber" >1.6</span>&#x2003;An example of a non-measurable set \((\star )\)</a>
+<span class="sectionnumber">1.6</span>&#x2003;An example of a non-measurable set \((\star )\)</a>
 </p>
 
 
 
 <p>
-<a href="Two-Useful-Theorems-About-Measure.html#autosec-53" class="tocsection" >
-<span class="sectionnumber" >1.7</span>&#x2003;Two Useful Theorems About Measure</a>
+<a href="Measure-limits.html#autosec-53" class="tocsection" >
+<span class="sectionnumber">1.7</span>&#x2003;Measure and limits</a>
 </p>
 
 
 
 <p>
 <a href="Product-Measures.html#autosec-57" class="tocsection" >
-<span class="sectionnumber" >1.8</span>&#x2003;Product Measures</a>
+<span class="sectionnumber">1.8</span>&#x2003;Product Measures</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-1.html#autosec-62" class="tocsection" >
-<span class="sectionnumber" >1.9</span>&#x2003;Exercises 1</a>
+<span class="sectionnumber">1.9</span>&#x2003;Exercises 1</a>
 </p>
 
 
 
 <p>
-<a href="Measurable-Functions.html#autosec-65" class="tocchapter" >
-<span class="sectionnumber" >2</span>&#x2003;Measurable Functions</a>
+<a href="Measurable-Functions.html#autosec-66" class="tocchapter" >
+<span class="sectionnumber">2</span>&#x2003;Measurable Functions</a>
 </p>
 
 
 
 <p>
-<a href="Measurable-Functions.html#autosec-66" class="tocsection" >
-<span class="sectionnumber" >2.1</span>&#x2003;Liminf and Limsup</a>
+<a href="Measurable-Functions.html#autosec-67" class="tocsection" >
+<span class="sectionnumber">2.1</span>&#x2003;Liminf and Limsup</a>
 </p>
 
 
 
 <p>
-<a href="Measurable-Functions-Basic-Concepts.html#autosec-69" class="tocsection" >
-<span class="sectionnumber" >2.2</span>&#x2003;Measurable Functions - Basic Concepts</a>
+<a href="Measurable-Functions-Basic-Concepts.html#autosec-70" class="tocsection" >
+<span class="sectionnumber">2.2</span>&#x2003;Measurable Functions - Basic Concepts</a>
 </p>
 
 
 
 <p>
-<a href="Examples-Measurable-Functions.html#autosec-76" class="tocsection" >
-<span class="sectionnumber" >2.3</span>&#x2003;Examples of Measurable Functions</a>
+<a href="Examples-Measurable-Functions.html#autosec-78" class="tocsection" >
+<span class="sectionnumber">2.3</span>&#x2003;Examples of Measurable Functions</a>
 </p>
 
 
 
 <p>
-<a href="Algebra-Measurable-Functions.html#autosec-81" class="tocsection" >
-<span class="sectionnumber" >2.4</span>&#x2003;Algebra of Measurable Functions</a>
+<a href="Algebra-Measurable-Functions.html#autosec-83" class="tocsection" >
+<span class="sectionnumber">2.4</span>&#x2003;Algebra of Measurable Functions</a>
 </p>
 
 
 
 <p>
-<a href="Simple-Functions.html#autosec-89" class="tocsection" >
-<span class="sectionnumber" >2.5</span>&#x2003;Simple Functions</a>
+<a href="Simple-Functions.html#autosec-90" class="tocsection" >
+<span class="sectionnumber">2.5</span>&#x2003;Simple Functions</a>
 </p>
 
 
 
 <p>
-<a href="Extended-Real-Functions.html#autosec-92" class="tocsection" >
-<span class="sectionnumber" >2.6</span>&#x2003;Extended Real Functions</a>
+<a href="Extended-Real-Functions.html#autosec-93" class="tocsection" >
+<span class="sectionnumber">2.6</span>&#x2003;Extended Real Functions</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-2.html#autosec-94" class="tocsection" >
-<span class="sectionnumber" >2.7</span>&#x2003;Exercises 2</a>
+<a href="Exercises-2.html#autosec-95" class="tocsection" >
+<span class="sectionnumber">2.7</span>&#x2003;Exercises 2</a>
 </p>
 
 
 
 <p>
-<a href="Lebesgue-Integration.html#autosec-98" class="tocchapter" >
-<span class="sectionnumber" >3</span>&#x2003;Lebesgue Integration</a>
+<a href="Lebesgue-Integration.html#autosec-99" class="tocchapter" >
+<span class="sectionnumber">3</span>&#x2003;Lebesgue Integration</a>
 </p>
 
 
 
 <p>
-<a href="Lebesgue-Integration.html#autosec-99" class="tocsection" >
-<span class="sectionnumber" >3.1</span>&#x2003;Introduction</a>
+<a href="Lebesgue-Integration.html#autosec-100" class="tocsection" >
+<span class="sectionnumber">3.1</span>&#x2003;Introduction</a>
 </p>
 
 
 
 <p>
-<a href="The-Lebesgue-Integral-Simple-Functions.html#autosec-102" class="tocsection" >
-<span class="sectionnumber" >3.2</span>&#x2003;The Lebesgue Integral for Simple Functions</a>
+<a href="The-Lebesgue-Integral-Simple-Functions.html#autosec-103" class="tocsection" >
+<span class="sectionnumber">3.2</span>&#x2003;The Lebesgue Integral for Simple Functions</a>
 </p>
 
 
 
 <p>
-<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#autosec-107" class="tocsection" >
-<span class="sectionnumber" >3.3</span>&#x2003;The Lebesgue Integral for Non-negative Measurable Functions</a>
+<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#autosec-108" class="tocsection" >
+<span class="sectionnumber">3.3</span>&#x2003;The Lebesgue Integral for Non-negative Measurable Functions</a>
 </p>
 
 
 
 <p>
-<a href="The-Monotone-Convergence-Theorem.html#autosec-118" class="tocsection" >
-<span class="sectionnumber" >3.4</span>&#x2003;The Monotone Convergence Theorem</a>
+<a href="The-Monotone-Convergence-Theorem.html#autosec-119" class="tocsection" >
+<span class="sectionnumber">3.4</span>&#x2003;The Monotone Convergence Theorem</a>
 </p>
 
 
 
 <p>
-<a href="Fatou-Lemma.html#autosec-123" class="tocsection" >
-<span class="sectionnumber" >3.5</span>&#x2003;Fatou’s Lemma</a>
+<a href="Fatou-Lemma.html#autosec-124" class="tocsection" >
+<span class="sectionnumber">3.5</span>&#x2003;Fatou’s Lemma</a>
 </p>
 
 
 
 <p>
-<a href="Lebesgue-Integrability.html#autosec-126" class="tocsection" >
-<span class="sectionnumber" >3.6</span>&#x2003;Lebesgue Integrability</a>
+<a href="Lebesgue-Integrability.html#autosec-127" class="tocsection" >
+<span class="sectionnumber">3.6</span>&#x2003;Lebesgue Integrability</a>
 </p>
 
 
 
 <p>
-<a href="The-Dominated-Convergence-Theorem.html#autosec-132" class="tocsection" >
-<span class="sectionnumber" >3.7</span>&#x2003;The Dominated Convergence Theorem</a>
+<a href="The-Dominated-Convergence-Theorem.html#autosec-133" class="tocsection" >
+<span class="sectionnumber">3.7</span>&#x2003;The Dominated Convergence Theorem</a>
 </p>
 
 
 
 <p>
-<a href="Calculations-with-Lebesgue-Integral.html#autosec-136" class="tocsection" >
-<span class="sectionnumber" >3.8</span>&#x2003;Calculations with the Lebesgue Integral</a>
+<a href="Calculations-with-Lebesgue-Integral.html#autosec-137" class="tocsection" >
+<span class="sectionnumber">3.8</span>&#x2003;Calculations with the Lebesgue Integral</a>
 </p>
 
 
 
 <p>
-<a href="Fubini-Theorem-Function-Spaces.html#autosec-143" class="tocsection" >
-<span class="sectionnumber" >3.9</span>&#x2003;Fubini’s Theorem and Function Spaces \((\star )\)</a>
+<a href="Fubini-Theorem-Function-Spaces.html#autosec-144" class="tocsection" >
+<span class="sectionnumber">3.9</span>&#x2003;Fubini’s Theorem and Function Spaces \((\star )\)</a>
 </p>
 
 
 
 <p>
 <a href="Riemann-Integration.html#autosec-149" class="tocsection" >
-<span class="sectionnumber" >3.10</span>&#x2003;Riemann Integration \((\star )\)</a>
+<span class="sectionnumber">3.10</span>&#x2003;Riemann Integration \((\star )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-3.html#autosec-160" class="tocsection" >
-<span class="sectionnumber" >3.11</span>&#x2003;Exercises 3</a>
+<a href="Exercises-3.html#autosec-159" class="tocsection" >
+<span class="sectionnumber">3.11</span>&#x2003;Exercises 3</a>
 </p>
 
 
 
 <p>
-<a href="Probability-Measure.html#autosec-168" class="tocchapter" >
-<span class="sectionnumber" >4</span>&#x2003;Probability and Measure</a>
+<a href="Probability-Measure.html#autosec-167" class="tocchapter" >
+<span class="sectionnumber">4</span>&#x2003;Probability and Measure</a>
 </p>
 
 
 
 <p>
-<a href="Probability-Measure.html#autosec-170" class="tocsection" >
-<span class="sectionnumber" >4.1</span>&#x2003;Probability as Measure</a>
+<a href="Probability-Measure.html#autosec-169" class="tocsection" >
+<span class="sectionnumber">4.1</span>&#x2003;Probability as Measure</a>
 </p>
 
 
 
 <p>
-<a href="The-Cumulative-Distribution-Function.html#autosec-173" class="tocsection" >
-<span class="sectionnumber" >4.2</span>&#x2003;The Cumulative Distribution Function</a>
+<a href="The-Cumulative-Distribution-Function.html#autosec-172" class="tocsection" >
+<span class="sectionnumber">4.2</span>&#x2003;The Cumulative Distribution Function</a>
 </p>
 
 
 
 <p>
-<a href="Discrete-Continuous-Random-Variables.html#autosec-178" class="tocsection" >
-<span class="sectionnumber" >4.3</span>&#x2003;Discrete and Continuous Random Variables</a>
+<a href="Discrete-Continuous-Random-Variables.html#autosec-177" class="tocsection" >
+<span class="sectionnumber">4.3</span>&#x2003;Discrete and Continuous Random Variables</a>
 </p>
 
 
 
 <p>
-<a href="Independence.html#autosec-181" class="tocsection" >
-<span class="sectionnumber" >4.4</span>&#x2003;Independence</a>
+<a href="Independence.html#autosec-180" class="tocsection" >
+<span class="sectionnumber">4.4</span>&#x2003;Independence</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-4.html#autosec-185" class="tocsection" >
-<span class="sectionnumber" >4.5</span>&#x2003;Exercises 4</a>
+<span class="sectionnumber">4.5</span>&#x2003;Exercises 4</a>
 </p>
 
 
 
 <p>
 <a href="Sequences-random-variables.html#autosec-188" class="tocchapter" >
-<span class="sectionnumber" >5</span>&#x2003;Sequences of random variables</a>
+<span class="sectionnumber">5</span>&#x2003;Sequences of random variables</a>
 </p>
 
 
 
 <p>
 <a href="Sequences-random-variables.html#autosec-189" class="tocsection" >
-<span class="sectionnumber" >5.1</span>&#x2003;The Borel-Cantelli lemmas</a>
+<span class="sectionnumber">5.1</span>&#x2003;The Borel-Cantelli lemmas</a>
 </p>
 
 
 
 <p>
 <a href="Convergence-Random-Variables.html#autosec-193" class="tocsection" >
-<span class="sectionnumber" >5.2</span>&#x2003;Convergence of Random Variables</a>
+<span class="sectionnumber">5.2</span>&#x2003;Convergence of Random Variables</a>
 </p>
 
 
 
 <p>
-<a href="Laws-Large-Numbers.html#autosec-199" class="tocsection" >
-<span class="sectionnumber" >5.3</span>&#x2003;Laws of Large Numbers</a>
+<a href="Laws-Large-Numbers.html#autosec-200" class="tocsection" >
+<span class="sectionnumber">5.3</span>&#x2003;Laws of Large Numbers</a>
 </p>
 
 
 
 <p>
-<a href="Characteristic-Functions-Weak-Convergence.html#autosec-205" class="tocsection" >
-<span class="sectionnumber" >5.4</span>&#x2003;Characteristic Functions and Weak Convergence (\(\star \))</a>
+<a href="Characteristic-Functions-Weak-Convergence.html#autosec-206" class="tocsection" >
+<span class="sectionnumber">5.4</span>&#x2003;Characteristic Functions and Weak Convergence (\(\star \))</a>
 </p>
 
 
 
 <p>
-<a href="The-Central-Limit-Theorem.html#autosec-213" class="tocsection" >
-<span class="sectionnumber" >5.5</span>&#x2003;The Central Limit Theorem (\(\star \))</a>
+<a href="The-Central-Limit-Theorem.html#autosec-214" class="tocsection" >
+<span class="sectionnumber">5.5</span>&#x2003;The Central Limit Theorem (\(\star \))</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-5.html#autosec-217" class="tocsection" >
-<span class="sectionnumber" >5.6</span>&#x2003;Exercises 5</a>
+<a href="Exercises-5.html#autosec-218" class="tocsection" >
+<span class="sectionnumber">5.6</span>&#x2003;Exercises 5</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-220" class="tocchapter" >
-<span class="sectionnumber" >6</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-221" class="tocchapter" >
+<span class="sectionnumber">6</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-221" class="tocsection" >
-<span class="sectionnumber" >6.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
+<a href="Product-Measures-Fubini-Theorem.html#autosec-222" class="tocsection" >
+<span class="sectionnumber">6.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measure.html#autosec-226" class="tocsection" >
-<span class="sectionnumber" >6.2</span>&#x2003;Product Measure \((\Delta )\)</a>
+<a href="Product-Measure.html#autosec-227" class="tocsection" >
+<span class="sectionnumber">6.2</span>&#x2003;Product Measure \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Fubini-Theorem.html#autosec-230" class="tocsection" >
-<span class="sectionnumber" >6.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
+<a href="Fubini-Theorem.html#autosec-231" class="tocsection" >
+<span class="sectionnumber">6.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-6.html#autosec-234" class="tocsection" >
-<span class="sectionnumber" >6.4</span>&#x2003;Exercises 6</a>
+<a href="Exercises-6.html#autosec-235" class="tocsection" >
+<span class="sectionnumber">6.4</span>&#x2003;Exercises 6</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises.html#autosec-237" class="tocchapter" >
-<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises</a>
+<a href="Solutions-exercises.html#autosec-238" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Solutions to exercises</a>
 </p>
 
 
@@ -571,11 +639,11 @@ Home</a>
 
 
 
-<div class="bodycontainer" >
+<main class="bodycontainer">
 
 
 
-<section class="textbody" >
+<section class="textbody">
 
 <h1>Probability with Measure</h1>
 
@@ -583,7 +651,7 @@ Home</a>
 
 
 
-<div class="hidden" >
+<div class="hidden">
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -592,6 +660,12 @@ Home</a>
 \(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
 
 \(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
 
 \(\newcommand \ensuremath [1]{#1}\)
 
@@ -605,6 +679,12 @@ Home</a>
 
 \(\newcommand {\addtocounter }[2]{}\)
 
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
 \(\newcommand {\cline }[1]{}\)
 
 \(\newcommand {\directlua }[1]{\text {(directlua)}}\)
@@ -617,6 +697,10 @@ Home</a>
 
 \(\def \LWRabsorbquotenumber &quot;#1 {}\)
 
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
 \(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
 
 \(\def \mathcode #1={\mathchar }\)
@@ -625,11 +709,69 @@ Home</a>
 
 \(\let \delimiter \mathchar \)
 
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
 \(\let \LWRref \ref \)
 
 \(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
 
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
 \(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
 
 \(\DeclareMathOperator {\var }{var}\)
 
@@ -695,7 +837,7 @@ Home</a>
 
 \(\def \1{\unicode {x1D7D9}}\)
 
-\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+\(\def \cadlag {c\&grave;{a}dl\&grave;{a}g}\)
 
 \(\def \p {\partial }\)
 
@@ -710,7 +852,10 @@ Home</a>
 </div>
 
 <p>
-<h4 id="autosec-127"><span class="sectionnumber" >3.6&#x2003;</span>Lebesgue Integrability</h4>
+<!--
+......     section Lebesgue Integrability ......
+-->
+<h4 id="autosec-127"><span class="sectionnumber">3.6&#x2003;</span>Lebesgue Integrability</h4>
 <a id="notes-autopage-127"></a>
 <a id="notes-autofile-24"></a>
 
@@ -750,18 +895,16 @@ and using Step 3, we see that we can construct both \(\int _{S}f_{+}dm\) and \(\
 <p>
 which is then an extended real number \(\in [-\infty ,+\infty ]\). It is important that we also have a way of restricting to a class of functions that avoids having infinite integrals:
 </p>
-<div class="theorembodydefn" >
+<div class="theorembodydefn">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-111"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Definition 3.6.1</span> <a id="autoid-112" ></a >We say that \(f\) is <i>integrable</i> if both \(\int _S f_+\,dm\) and \(\int _S f_-\,dm\) exist and are finite.
+<span class="theoremheaderplain">Definition 3.6.1</span> <a id="autoid-112" ></a >We say that \(f\) is <i>integrable</i> if both \(\int _S f_+\,dm\) and \(\int _S f_-\,dm\) exist and are finite.
 </p>
 
 
@@ -783,16 +926,13 @@ Note that \(|f|=f_++f_-\), where \(|f|\) is defined pointwise as \(|f(x)|=|f|(x)
 We also have the useful inequality
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{3.}{6}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{3.}{6}\)</span>
 
 <!--
 
                                                          Z             Z
                                                               f dm ≤       |f |dm,                                                     (3.7)                                   --><a id="eq:triangle_int"></a><!--
                                                           S            S
-
-
-
 
 -->
 
@@ -807,7 +947,7 @@ We also have the useful inequality
 </p>
 
 <p>
-for all integrable \(f\). This is a version of the familiar triangle inequality \(|\sum a_n|\leq \sum |a_n|\) which applies to integrals. Proof of <span class="textup" >(<a
+for all integrable \(f\). This is a version of the familiar triangle inequality \(|\sum a_n|\leq \sum |a_n|\) which applies to integrals. Proof of <span class="textup">(<a
 href="Lebesgue-Integrability.html#eq:triangle_int">3.7</a>)</span> is Problem <a href="Exercises-3.html#ps:abs_int"><b>3.9</b></a> part (a).
 </p>
 
@@ -821,18 +961,16 @@ substitution, by parts, the Fundamental Theorem of Calculus, and so on.
 We will begin to look at examples where we evaluate integrals in the next section. First, let us complete the process of establishing the key properties of the Lebesgue integral. The first two parts of the next theorem
 give linearity, and the final parts is monotonicity.
 </p>
-<div class="theorembodytheorem" >
+<div class="theorembodytheorem">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-113"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Theorem 3.6.2</span> <a id="autoid-114" ></a ><a id="thm:basicsli"></a> Suppose that \(f\) and \(g\) are integrable functions from \(S\) to \(\R \).
+<span class="theoremheaderplain">Theorem 3.6.2</span> <a id="autoid-114" ></a ><a id="thm:basicsli"></a> Suppose that \(f\) and \(g\) are integrable functions from \(S\) to \(\R \).
 </p>
 <ul style="list-style-type:none">
 
@@ -845,6 +983,8 @@ give linearity, and the final parts is monotonicity.
 
 </li>
 <li>
+
+
 <p>
 2. \(f + g\) is integrable and \(\int _{S}(f+g)dm = \int _{S}f dm + \int _{S}g dm\),
 </p>
@@ -852,6 +992,8 @@ give linearity, and the final parts is monotonicity.
 
 </li>
 <li>
+
+
 <p>
 3. If \(f \leq g\) then \(\int _{S}f dm \leq \int _{S} g dm\).
 </p>
@@ -866,7 +1008,7 @@ give linearity, and the final parts is monotonicity.
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> (1) and (3) are Problem <a href="Exercises-3.html#ps:T351"><b>3.8</b></a>. For
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> (1) and (3) are Problem <a href="Exercises-3.html#ps:T351"><b>3.8</b></a>. For
 (2), we may assume that both \(f, g\) are not identically \(0\). The fact that \(f+g\) is integrable if \(f\) and \(g\) are follows from Problem <a href="Exercises-3.html#ps:abs_int"><b>3.9</b></a> part
 (b). To show that the integral of the sum is the sum of the integrals, we first need to consider six different cases (writing \(h = f+g\))&nbsp;(i) \(f \geq 0, g \geq 0, h \geq 0\),&nbsp;(ii) \(f \leq 0, g
 \leq 0, h \leq 0\),&nbsp;(iii) \(f \geq 0, g \leq 0, h \geq 0\),&nbsp;(iv) \(f \leq 0, g \geq 0, h \geq 0\),&nbsp;(v) \(f \geq 0, g \leq 0, h \leq 0\),&nbsp;(vi) \(f \leq 0, g \geq 0, h
@@ -897,18 +1039,16 @@ disjoint and measurable and using linearity of Step 3 from Theorem <a href="The-
 <p>
 as was required. &#x2003;&#x2003;&#x220E;
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-115"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 3.6.3</span> <a id="autoid-116" ></a ><a id="lem:dom_int"></a> Let \(g:S\to \R \) be integrable and suppose that \(f:S\to \R \) is measurable with
+<span class="theoremheaderplain">Lemma 3.6.3</span> <a id="autoid-116" ></a ><a id="lem:dom_int"></a> Let \(g:S\to \R \) be integrable and suppose that \(f:S\to \R \) is measurable with
 \(|f(x)|\leq |g(x)|\) almost everywhere. Then \(f\) is integrable.
 </p>
 
@@ -920,22 +1060,20 @@ as was required. &#x2003;&#x2003;&#x220E;
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> By part 1 of Theorem <a
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> By part 1 of Theorem <a
 href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a> we have \(\int _S |f|\,dm\leq \int _S|g|\,dm\), which completes the proof. (Exercise: Why don’t we
 use part 3 of Theorem <a href="Lebesgue-Integrability.html#thm:basicsli">3.6.2</a> here?) &#x2003;&#x2003;&#x220E;
 </p>
-<div class="theorembodyremark" >
+<div class="theorembodyremark">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-117"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Remark 3.6.4</span> <a id="autoid-118" ></a ><a id="rem:leb_C"></a> \((\star )\) The definition of the Lebesgue integral can be extended to complex valued
+<span class="theoremheaderplain">Remark 3.6.4</span> <a id="autoid-118" ></a ><a id="rem:leb_C"></a> \((\star )\) The definition of the Lebesgue integral can be extended to complex valued
 functions. Let \((S, \Sigma , m)\) be a measure space and \(f:S \rightarrow \C \). We can always write \(f = f_{1} + if_{2}\), where the real and imaginary parts are \(f_{i}:S \rightarrow \R
 ~(i=1,2)\). We say that \(f\) is measurable/integrable if both \(f_{1}\) and \(f_{2}\) are. When \(f\) is integrable, we may define
 </p>
@@ -958,21 +1096,21 @@ href="Exercises-3.html#ps:fourier_linear"><b>3.18</b></a>-<a href="Exercises-3.h
 
 </section>
 
-</div>
+</main>
 
 </div>
 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
 </p>
 
 </footer>
 
 
 
-<nav class="botnavigation" ><a href="notes.html" class="linkhome" >
+<nav class="botnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 </body>
