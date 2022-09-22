@@ -4,21 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 22, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Random variables</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
-
-
 <script>
 // Lwarp MathJax emulation code
 //
 // Based on code by Davide P. Cervone.
 // Equation numbering: https://github.com/mathjax/MathJax/issues/2427
 // Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
 //
 // Modified by Brian Dunn to adjust equation numbering and add subequations.
 //
@@ -28,126 +27,195 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-     subequations: "0",
-     section: "",
-     loader: {
-         load: ['[tex]/tagFormat'],
-     },
-     startup: {
-         ready() {
-             //       These would be replaced by import commands if you wanted to make
-             //       a proper extension.
-             const Configuration = MathJax._.input.tex.Configuration.Configuration;
-             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-             const Macro = MathJax._.input.tex.Symbol.Macro;
-             const TexError = MathJax._.input.tex.TexError.default;
-             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-             const expandable = MathJax._.util.Options.expandable;
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
 
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-             //       Insert the replacement string into the TeX string, and check
-             //       that there haven't been too many maxro substitutions (prevents
-             //       infinite loops).
-             const useArgument = (parser, text) => {
-                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-                  parser.i = 0;
-                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
-                      throw new TexError('MaxMacroSub1',
-                      'MathJax maximum macro substitution count exceeded; ' +
-                      'is there a recursive macro call?');
-                  }
-             }
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
 
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
 
-             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
-             new CommandMap('ifstar-ifnextchar-setequnumber', {
-                  ifstar: 'IfstarFunction',
-                  ifnextchar: 'IfnextcharFunction',
-                  seteqnumber: 'SeteqnumberFunction'
-             }, {
-                  //      This function implements an ifstar macro.
-                  IfstarFunction(parser, name) {
-                      const resultstar = parser.GetArgument(name);
-                      const resultnostar = parser.GetArgument(name);
-                      const star = parser.GetStar();                        // true if there is a *
-                      useArgument(parser, star ? resultstar : resultnostar);
-                  },
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
 
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
 
-                  //      This function implements an ifnextchar macro.
-                  IfnextcharFunction(parser, name) {
-                      let whichchar = parser.GetArgument(name);
-                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-                          // $ syntax highlighting
-                          whichchar = String.fromCodePoint(parseInt(whichchar));
-                      }
-                      const resultnextchar = parser.GetArgument(name);
-                      const resultnotnextchar = parser.GetArgument(name);
-                      const gotchar = (parser.GetNext() === whichchar);
-                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-                  },
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
 
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
 
-                  //      This function modifies the equation numbers.
-                  SeteqnumberFunction(parser, name) {
-                          //   Get the macro parameters
-                          const star = parser.GetStar();                       // true if there is a *
-                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
-                          const newsubequations = parser.GetArgument(name);       // the subequations argument
-                          const neweqsection = parser.GetArgument(name);       // the eq section argument
-                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
-                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
-                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
-                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-                  }
-             });
+        });
 
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
 
-             //       Create the ifstar-ifnextchar-setequnumber package
-             Configuration.create('ifstar-ifnextchar-setequnumber', {
-                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
-             });
+        MathJax.startup.defaultReady();
 
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
 
-             MathJax.startup.defaultReady();
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
 
-
-             // For forward references:
-             MathJax.startup.input[0].preFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          MathJax.config.subequations = math.inputData.recompile.subequations;
-                          MathJax.config.section = math.inputData.recompile.section;
-                  }
-             });
-             MathJax.startup.input[0].postFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          math.inputData.recompile.subequations = MathJax.config.subequations;
-                          math.inputData.recompile.section = MathJax.config.section;
-                  }
-             });
-         }       // ready
-     },           // startup
-
-
-     tex: {
-         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
-         tags: "ams",
-                  tagFormat: {
-                          number: function (n) {
-                               if(MathJax.config.subequations==0)
-                                      return(MathJax.config.section + n);
-                               else
-                                      return(MathJax.config.section + String.fromCharCode(96+n));
-                          },
-                  },
-     }
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
+         },
+  }
 }
 </script>
 
-
 <script
-         id="MathJax-script"
-         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
 
@@ -156,33 +224,33 @@ MathJax = {
 
 
 
-<a id="notes_1-autopage-47"></a>
-<nav class="topnavigation" ><a href="notes_1.html" class="linkhome" >
+<a id="notes_1-autopage-46"></a>
+<nav class="topnavigation"><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: May 20, 2022
+last updated: September 22, 2022
 </p>
 
 </header>
 
 
 
-<div class="bodyandsidetoc" >
-<div class="sidetoccontainer" >
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
 
 
 
-<nav class="sidetoc" >
+<nav class="sidetoc">
 
 
 
-<div class="sidetoctitle" >
+<div class="sidetoctitle">
 
 <p>
-<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+<span class="sidetocthetitle">Stochastic Processes and Financial Mathematics<br />
 (part one)</span>
 </p>
 
@@ -193,7 +261,7 @@ Contents
 
 
 
-<div class="sidetoccontents" >
+<div class="sidetoccontents">
 
 <p>
 <a href="notes_1.html" class="linkhome" >
@@ -202,350 +270,350 @@ Home</a>
 
 <p>
 <a href="Introduction.html#autosec-4" class="tocchapter" >
-<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+<span class="sectionnumber">0</span>&#x2003;Introduction</a>
 </p>
 
 
 
 <p>
 <a href="Introduction.html#autosec-5" class="tocsection" >
-<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
 </p>
 
 
 
 <p>
 <a href="Expectation-Arbitrage.html#autosec-12" class="tocchapter" >
-<span class="sectionnumber" >1</span>&#x2003;Expectation and Arbitrage</a>
+<span class="sectionnumber">1</span>&#x2003;Expectation and Arbitrage</a>
 </p>
 
 
 
 <p>
 <a href="Expectation-Arbitrage.html#autosec-13" class="tocsection" >
-<span class="sectionnumber" >1.1</span>&#x2003;Betting on coin tosses</a>
+<span class="sectionnumber">1.1</span>&#x2003;Betting on coin tosses</a>
 </p>
 
 
 
 <p>
 <a href="The-one-period-market.html#autosec-16" class="tocsection" >
-<span class="sectionnumber" >1.2</span>&#x2003;The one-period market</a>
+<span class="sectionnumber">1.2</span>&#x2003;The one-period market</a>
 </p>
 
 
 
 <p>
 <a href="Arbitrage.html#autosec-21" class="tocsection" >
-<span class="sectionnumber" >1.3</span>&#x2003;Arbitrage</a>
+<span class="sectionnumber">1.3</span>&#x2003;Arbitrage</a>
 </p>
 
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-31" class="tocsection" >
-<span class="sectionnumber" >1.4</span>&#x2003;Modelling discussion</a>
+<a href="Modelling-discussion.html#autosec-30" class="tocsection" >
+<span class="sectionnumber">1.4</span>&#x2003;Modelling discussion</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-33" class="tocsection" >
-<span class="sectionnumber" >1.5</span>&#x2003;Exercises on Chapter&nbsp;<a href="Expectation-Arbitrage.html#chap:pricing">1</a></a>
+<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-32" class="tocsection" >
+<span class="sectionnumber">1.5</span>&#x2003;Exercises on Chapter&nbsp;1</a>
 </p>
 
 
 
 <p>
-<a href="Probability-spaces-random-variables.html#autosec-37" class="tocchapter" >
-<span class="sectionnumber" >2</span>&#x2003;Probability spaces and random variables</a>
+<a href="Probability-spaces-random-variables.html#autosec-36" class="tocchapter" >
+<span class="sectionnumber">2</span>&#x2003;Probability spaces and random variables</a>
 </p>
 
 
 
 <p>
-<a href="Probability-spaces-random-variables.html#autosec-38" class="tocsection" >
-<span class="sectionnumber" >2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
+<a href="Probability-spaces-random-variables.html#autosec-37" class="tocsection" >
+<span class="sectionnumber">2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
 </p>
 
 
 
 <p>
-<a href="Random-variables.html#autosec-48" class="tocsection" >
-<span class="sectionnumber" >2.2</span>&#x2003;Random variables</a>
+<a href="Random-variables.html#autosec-47" class="tocsection" >
+<span class="sectionnumber">2.2</span>&#x2003;Random variables</a>
 </p>
 
 
 
 <p>
 <a href="Infinite.html#autosec-62" class="tocsection" >
-<span class="sectionnumber" >2.3</span>&#x2003;Infinite \(\Omega \)</a>
+<span class="sectionnumber">2.3</span>&#x2003;Infinite \(\Omega \)</a>
 </p>
 
 
 
 <p>
 <a href="Expectation.html#autosec-68" class="tocsection" >
-<span class="sectionnumber" >2.4</span>&#x2003;Expectation</a>
+<span class="sectionnumber">2.4</span>&#x2003;Expectation</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-prob_meas.html#autosec-76" class="tocsection" >
-<span class="sectionnumber" >2.5</span>&#x2003;Exercises on Chapter <a href="Probability-spaces-random-variables.html#chap:prob_meas">2</a></a>
+<span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a>
 </p>
 
 
 
 <p>
 <a href="Conditional-expectation-martingales.html#autosec-81" class="tocchapter" >
-<span class="sectionnumber" >3</span>&#x2003;Conditional expectation and martingales</a>
+<span class="sectionnumber">3</span>&#x2003;Conditional expectation and martingales</a>
 </p>
 
 
 
 <p>
 <a href="Conditional-expectation-martingales.html#autosec-82" class="tocsection" >
-<span class="sectionnumber" >3.1</span>&#x2003;Conditional expectation</a>
+<span class="sectionnumber">3.1</span>&#x2003;Conditional expectation</a>
 </p>
 
 
 
 <p>
 <a href="Properties-conditional-expectation.html#autosec-88" class="tocsection" >
-<span class="sectionnumber" >3.2</span>&#x2003;Properties of conditional expectation</a>
+<span class="sectionnumber">3.2</span>&#x2003;Properties of conditional expectation</a>
 </p>
 
 
 
 <p>
 <a href="Martingales.html#autosec-94" class="tocsection" >
-<span class="sectionnumber" >3.3</span>&#x2003;Martingales</a>
+<span class="sectionnumber">3.3</span>&#x2003;Martingales</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-cond_exp.html#autosec-105" class="tocsection" >
-<span class="sectionnumber" >3.4</span>&#x2003;Exercises on Chapter <a href="Conditional-expectation-martingales.html#chap:cond_exp">3</a></a>
+<span class="sectionnumber">3.4</span>&#x2003;Exercises on Chapter 3</a>
 </p>
 
 
 
 <p>
 <a href="Stochastic-processes.html#autosec-109" class="tocchapter" >
-<span class="sectionnumber" >4</span>&#x2003;Stochastic processes</a>
+<span class="sectionnumber">4</span>&#x2003;Stochastic processes</a>
 </p>
 
 
 
 <p>
 <a href="Stochastic-processes.html#autosec-111" class="tocsection" >
-<span class="sectionnumber" >4.1</span>&#x2003;Random walks</a>
+<span class="sectionnumber">4.1</span>&#x2003;Random walks</a>
 </p>
 
 
 
 <p>
 <a href="Urn-processes.html#autosec-117" class="tocsection" >
-<span class="sectionnumber" >4.2</span>&#x2003;Urn processes</a>
+<span class="sectionnumber">4.2</span>&#x2003;Urn processes</a>
 </p>
 
 
 
 <p>
 <a href="A-branching-process.html#autosec-122" class="tocsection" >
-<span class="sectionnumber" >4.3</span>&#x2003;A branching process</a>
+<span class="sectionnumber">4.3</span>&#x2003;A branching process</a>
 </p>
 
 
 
 <p>
 <a href="Other-stochastic-processes.html#autosec-126" class="tocsection" >
-<span class="sectionnumber" >4.4</span>&#x2003;Other stochastic processes</a>
+<span class="sectionnumber">4.4</span>&#x2003;Other stochastic processes</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-stoch_procs.html#autosec-129" class="tocsection" >
-<span class="sectionnumber" >4.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes.html#chap:stoch_procs">4</a></a>
+<span class="sectionnumber">4.5</span>&#x2003;Exercises on Chapter 4</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model.html#autosec-133" class="tocchapter" >
-<span class="sectionnumber" >5</span>&#x2003;The binomial model</a>
+<span class="sectionnumber">5</span>&#x2003;The binomial model</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model.html#autosec-134" class="tocsection" >
-<span class="sectionnumber" >5.1</span>&#x2003;Arbitrage in the one-period model</a>
+<span class="sectionnumber">5.1</span>&#x2003;Arbitrage in the one-period model</a>
 </p>
 
 
 
 <p>
 <a href="Hedging-in-one-period-model.html#autosec-142" class="tocsection" >
-<span class="sectionnumber" >5.2</span>&#x2003;Hedging in the one-period model</a>
+<span class="sectionnumber">5.2</span>&#x2003;Hedging in the one-period model</a>
 </p>
 
 
 
 <p>
 <a href="Types-financial-derivative.html#autosec-153" class="tocsection" >
-<span class="sectionnumber" >5.3</span>&#x2003;Types of financial derivative</a>
+<span class="sectionnumber">5.3</span>&#x2003;Types of financial derivative</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model-definition.html#autosec-155" class="tocsection" >
-<span class="sectionnumber" >5.4</span>&#x2003;The binomial model (definition)</a>
+<span class="sectionnumber">5.4</span>&#x2003;The binomial model (definition)</a>
 </p>
 
 
 
 <p>
 <a href="Portfolios-arbitrage-martingales.html#autosec-159" class="tocsection" >
-<span class="sectionnumber" >5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
+<span class="sectionnumber">5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
 </p>
 
 
 
 <p>
 <a href="Hedging.html#autosec-168" class="tocsection" >
-<span class="sectionnumber" >5.6</span>&#x2003;Hedging</a>
+<span class="sectionnumber">5.6</span>&#x2003;Hedging</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-bin_model.html#autosec-177" class="tocsection" >
-<span class="sectionnumber" >5.7</span>&#x2003;Exercises on Chapter <a href="The-binomial-model.html#chap:bin_model">5</a></a>
+<span class="sectionnumber">5.7</span>&#x2003;Exercises on Chapter 5</a>
 </p>
 
 
 
 <p>
 <a href="Convergence-random-variables.html#autosec-182" class="tocchapter" >
-<span class="sectionnumber" >6</span>&#x2003;Convergence of random variables</a>
+<span class="sectionnumber">6</span>&#x2003;Convergence of random variables</a>
 </p>
 
 
 
 <p>
 <a href="Convergence-random-variables.html#autosec-183" class="tocsection" >
-<span class="sectionnumber" >6.1</span>&#x2003;Modes of convergence</a>
+<span class="sectionnumber">6.1</span>&#x2003;Modes of convergence</a>
 </p>
 
 
 
 <p>
 <a href="The-monotone-convergence-theorem.html#autosec-189" class="tocsection" >
-<span class="sectionnumber" >6.2</span>&#x2003;The monotone convergence theorem</a>
+<span class="sectionnumber">6.2</span>&#x2003;The monotone convergence theorem</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-194" class="tocsection" >
-<span class="sectionnumber" >6.3</span>&#x2003;Exercises on Chapter <a href="Convergence-random-variables.html#chap:rv_conv">6</a></a>
+<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-193" class="tocsection" >
+<span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-199" class="tocchapter" >
-<span class="sectionnumber" >7</span>&#x2003;Stochastic processes and martingale theory</a>
+<a href="Stochastic-processes-martingale-theory.html#autosec-198" class="tocchapter" >
+<span class="sectionnumber">7</span>&#x2003;Stochastic processes and martingale theory</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-200" class="tocsection" >
-<span class="sectionnumber" >7.1</span>&#x2003;The martingale transform</a>
+<a href="Stochastic-processes-martingale-theory.html#autosec-199" class="tocsection" >
+<span class="sectionnumber">7.1</span>&#x2003;The martingale transform</a>
 </p>
 
 
 
 <p>
-<a href="Roulette.html#autosec-203" class="tocsection" >
-<span class="sectionnumber" >7.2</span>&#x2003;Roulette</a>
+<a href="Roulette.html#autosec-202" class="tocsection" >
+<span class="sectionnumber">7.2</span>&#x2003;Roulette</a>
 </p>
 
 
 
 <p>
-<a href="The-martingale-convergence-theorem.html#autosec-209" class="tocsection" >
-<span class="sectionnumber" >7.3</span>&#x2003;The martingale convergence theorem</a>
+<a href="The-martingale-convergence-theorem.html#autosec-208" class="tocsection" >
+<span class="sectionnumber">7.3</span>&#x2003;The martingale convergence theorem</a>
 </p>
 
 
 
 <p>
-<a href="Long-term-behaviour-stochastic-processes.html#autosec-217" class="tocsection" >
-<span class="sectionnumber" >7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
+<a href="Long-term-behaviour-stochastic-processes.html#autosec-216" class="tocsection" >
+<span class="sectionnumber">7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-236" class="tocsection" >
-<span class="sectionnumber" >7.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></a>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-235" class="tocsection" >
+<span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Further-theory-stochastic-processes.html#autosec-241" class="tocchapter" >
-<span class="sectionnumber" >8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
+<a href="Further-theory-stochastic-processes.html#autosec-240" class="tocchapter" >
+<span class="sectionnumber">8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Further-theory-stochastic-processes.html#autosec-242" class="tocsection" >
-<span class="sectionnumber" >8.1</span>&#x2003;The dominated convergence theorem \((\Delta )\)</a>
+<a href="Further-theory-stochastic-processes.html#autosec-241" class="tocsection" >
+<span class="sectionnumber">8.1</span>&#x2003;The dominated convergence theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-optional-stopping-theorem.html#autosec-247" class="tocsection" >
-<span class="sectionnumber" >8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
+<a href="The-optional-stopping-theorem.html#autosec-246" class="tocsection" >
+<span class="sectionnumber">8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Hitting-probabilities-random-walks.html#autosec-254" class="tocsection" >
-<span class="sectionnumber" >8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
+<a href="Hitting-probabilities-random-walks.html#autosec-253" class="tocsection" >
+<span class="sectionnumber">8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-261" class="tocsection" >
-<span class="sectionnumber" >8.4</span>&#x2003;Exercises on Chapter <a href="Further-theory-stochastic-processes.html#chap:stoch_procs_2">8</a> \((\Delta )\)</a>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-260" class="tocsection" >
+<span class="sectionnumber">8.4</span>&#x2003;Exercises on Chapter 8 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises-part-one.html#autosec-265" class="tocchapter" >
-<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises (part one)</a>
+<a href="Solutions-exercises-part-one.html#autosec-264" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Solutions to exercises (part one)</a>
 </p>
 
 
 
 <p>
-<a href="Formula-Sheet-part-one.html#autosec-282" class="tocchapter" >
-<span class="sectionnumber" >B</span>&#x2003;Formula Sheet (part one)</a>
+<a href="Formula-Sheet-part-one.html#autosec-281" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Formula Sheet (part one)</a>
 </p>
 
 
@@ -558,11 +626,11 @@ Home</a>
 
 
 
-<div class="bodycontainer" >
+<main class="bodycontainer">
 
 
 
-<section class="textbody" >
+<section class="textbody">
 
 <h1>Stochastic Processes and Financial Mathematics<br />
 (part one)</h1>
@@ -571,7 +639,7 @@ Home</a>
 
 
 
-<div class="hidden" >
+<div class="hidden">
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -580,6 +648,12 @@ Home</a>
 \(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
 
 \(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
 
 \(\newcommand \ensuremath [1]{#1}\)
 
@@ -593,6 +667,12 @@ Home</a>
 
 \(\newcommand {\addtocounter }[2]{}\)
 
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
 \(\newcommand {\cline }[1]{}\)
 
 \(\newcommand {\directlua }[1]{\text {(directlua)}}\)
@@ -605,6 +685,10 @@ Home</a>
 
 \(\def \LWRabsorbquotenumber &quot;#1 {}\)
 
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
 \(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
 
 \(\def \mathcode #1={\mathchar }\)
@@ -613,11 +697,69 @@ Home</a>
 
 \(\let \delimiter \mathchar \)
 
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
 \(\let \LWRref \ref \)
 
 \(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
 
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
 \(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
 
 \(\DeclareMathOperator {\var }{var}\)
 
@@ -691,7 +833,7 @@ Home</a>
 
 \(\def \1{\unicode {x1D7D9}}\)
 
-\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+\(\def \cadlag {c\&grave;{a}dl\&grave;{a}g}\)
 
 \(\def \p {\partial }\)
 
@@ -712,8 +854,11 @@ Home</a>
 </div>
 
 <p>
-<h4 id="autosec-48"><span class="sectionnumber" >2.2&#x2003;</span>Random variables</h4>
-<a id="notes_1-autopage-48"></a>
+<!--
+......     section Random variables ......
+-->
+<h4 id="autosec-47"><span class="sectionnumber">2.2&#x2003;</span>Random variables</h4>
+<a id="notes_1-autopage-47"></a>
 <a id="notes_1-autofile-8"></a>
 
 <p>
@@ -746,30 +891,26 @@ example above \(X^{-1}(\{0\})=\{1,3,5\}\), \(X^{-1}(\{1\})=\{2,4,6\}\) and \(X^{
 It is common to write \(X^{-1}(a)\) in place of \(X^{-1}(\{a\})\), because it makes easier reading. Similarly, for an interval \((a,b)\sw \R \) we write \(X^{-1}(a,b)\) in place of \(X^{-1}\big ((a,b)\big
 )\).
 </p>
-<div class="theorembodydefn" >
+<div class="theorembodydefn">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-24"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Definition 2.2.1</span> <a id="autoid-25" ></a ><a id="def:meas"></a> Let \(\mc {G}\) be a \(\sigma \)-field. A function \(X:\Omega \to \R \) is said to be
-\(\mc {G}\)-measurable if
+<span class="theoremheaderplain">Definition 2.2.1</span> <a id="autoid-25" ></a ><a id="def:meas"></a> Let \(\mc {G}\) be a \(\sigma \)-field. A function \(X:\Omega \to \R \) is said to be \(\mc
+{G}\)-measurable if
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{2.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
 
 <!--
 
 
 
                                                                                  for all subintervals I ⊆ R, we have X −1 (I) ∈ G.
-
-
 
 -->
 
@@ -803,7 +944,7 @@ If it is clear which \(\sigma \)-field \(\mc {G}\) we mean to use, which might s
 For a probability space \((\Omega ,\mc {F},\P )\), we say that \(X:\Omega \to \R \) is a <i>random variable</i> if \(X\) is \(\mc {F}\)-measurable. The relationship to the usual notation for probability is
 that \(\P [X\in A]\) means \(\P [X^{-1}(A)]\), so as e.g.
 </p>
-<span class="hidden" > \(\seteqnumber{0}{2.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
 
 
 
@@ -851,8 +992,11 @@ For example, suppose we toss a coin twice, with \(\Omega =\{HH,HT,TH,TT\}\) as i
 we have \(X^{-1}([0,1])=\{HH,HT,TH\}\notin \mc {G},\) so \(X\) is not \(\mc {G}\)-measurable. The intuition here is that \(\sigma \)-field \(\mc {G}\) ‘isn’t big enough’ for \(X\), because \(\mc {G}\)
 only contains information about whether we threw two tails (or not).
 </p>
-<h5 id="autosec-50">\(\sigma \)-fields and information</h5>
-<a id="notes_1-autopage-50"></a>
+<!--
+......   subsection -fields and information ......
+-->
+<h5 id="autosec-49">\(\sigma \)-fields and information</h5>
+<a id="notes_1-autopage-49"></a>
 
 
 
@@ -875,7 +1019,7 @@ just this information provided by \(\G \) doesn’t allow us to deduce \(X\) –
 The interaction between random variables and \(\sigma \)-fields can be summarised as follows:
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{2.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
 
 <p>
 
@@ -892,8 +1036,11 @@ The interaction between random variables and \(\sigma \)-fields can be summarise
 Rigorously, if we want to check that \(X\) is \(\mc {G}\)-measurable, we have to check that \(X^{-1}(I)\in \mc {G}\) for every subinterval of \(I\sw \R \). This can be tedious, especially if \(X\) takes many
 different values. Fortunately, we will shortly see that, in practice, there is rarely any need to do so. What is important for us is to understand the role played by a \(\sigma \)-field.
 </p>
-<h5 id="autosec-51">\(\sigma \)-fields and pre-images</h5>
-<a id="notes_1-autopage-51"></a>
+<!--
+......   subsection -fields and pre-images ......
+-->
+<h5 id="autosec-50">\(\sigma \)-fields and pre-images</h5>
+<a id="notes_1-autopage-50"></a>
 
 
 
@@ -905,18 +1052,16 @@ Suppose that we have a probability space \((\Omega ,\mc {F},\P )\) and a random 
 <p>
 If \(X\) is a discrete random variable, we can use the following lemma.
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-26"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 2.2.2</span> <a id="autoid-27" ></a ><a id="lem:finitemeas"></a> Let \(\mc {G}\) be a \(\sigma \)-field on \(\Omega \). Let \(X:\Omega \to \R \),
+<span class="theoremheaderplain">Lemma 2.2.2</span> <a id="autoid-27" ></a ><a id="lem:finitemeas"></a> Let \(\mc {G}\) be a \(\sigma \)-field on \(\Omega \). Let \(X:\Omega \to \R \),
 and suppose \(X\) takes a finite or countable set of values \(\{x_1,x_2,\ldots \}\). Then:
 </p>
 
@@ -937,7 +1082,7 @@ and suppose \(X\) takes a finite or countable set of values \(\{x_1,x_2,\ldots \
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let us first prove the \(\Rightarrow \) implication. So, assume the left hand side: \(X\in
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let us first prove the \(\Rightarrow \) implication. So, assume the left hand side: \(X\in
 m\mc {G}\). Since \(\{X=x_j\}=X^{-1}(x_j)\) and \(\{x_j\}=[x_j,x_j]\) is a subinterval of \(\R \), by Definition <a href="Random-variables.html#def:meas">2.2.1</a> we have that \(\{X=x_j\}\in \mc
 {G}\). Since this holds for any \(j=1,\ldots ,n\), we have shown the right hand side.
 </p>
@@ -958,7 +1103,7 @@ Since \(\{X=x_j\}\in \mc {G}\), the definition of a \(\sigma \)-field tell us th
 <p>
 For example, take \(\Omega =\{1,2,3,4,5,6\}\), which we think of as rolling a dice, and take \(\mc {F}=\P (\Omega )\). Consider
 </p>
-<span class="hidden" > \(\seteqnumber{0}{2.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
 
 
 
@@ -989,7 +1134,7 @@ and \(\mc {G}_2\) are both \(\sigma \)-fields.
 <p>
 Let us define
 </p>
-<span class="hidden" > \(\seteqnumber{0}{2.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
 
 
 
@@ -1038,15 +1183,13 @@ We can justify our intuition rigorously using Lemma <a href="Random-variables.ht
 Lets extend this example by introducing a third \(\sigma \)-field,
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{2.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
 
 <!--
 
 
                                                                                                                               
                                                                                           G3 = σ {1, 3}, {2}, {4}, {5}, {6} .
-
-
 
 -->
 
@@ -1078,18 +1221,16 @@ To check if \(X_1\in m\mc \G _3\), we need to check if \(\G _3\) contains \(\{1,
 which shows that \(\{1,3,5\},\{2,4,6\}\in \mc {G}_3\) because, in both cases, the right hand sides are made up of sets that we already know are in \(\G _3\), plus countable set operations. Hence, \(X_1\) is
 \(\mc {G}_3\) measurable. You can check for yourself that \(X_2\) is also \(\mc {G}_3\) measurable.
 </p>
-<div class="theorembodyremark" >
+<div class="theorembodyremark">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-28"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Remark 2.2.3</span> <a id="autoid-29" ></a >\((\star )\) For continuous random variables, there is no equivalent of Lemma <a
+<span class="theoremheaderplain">Remark 2.2.3</span> <a id="autoid-29" ></a >\((\star )\) For continuous random variables, there is no equivalent of Lemma <a
 href="Random-variables.html#lem:finitemeas">2.2.2</a>. More sophisticated tools from measure theory are needed – see MAS350/451/6352.
 </p>
 
@@ -1099,8 +1240,11 @@ href="Random-variables.html#lem:finitemeas">2.2.2</a>. More sophisticated tools 
 </ul>
 
 </div>
-<h5 id="autosec-54">\(\sigma \)-fields generated by random variables</h5>
-<a id="notes_1-autopage-54"></a>
+<!--
+......   subsection -fields generated by random variables ......
+-->
+<h5 id="autosec-53">\(\sigma \)-fields generated by random variables</h5>
+<a id="notes_1-autopage-53"></a>
 
 
 
@@ -1108,18 +1252,16 @@ href="Random-variables.html#lem:finitemeas">2.2.2</a>. More sophisticated tools 
 We can think of random variables as containing information, because their values tell us something about the result of the experiment. We can express this idea formally: there is a natural \(\sigma \)-field
 associated to each function \(X:\Omega \to \R \).
 </p>
-<div class="theorembodydefn" >
+<div class="theorembodydefn">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-30"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Definition 2.2.4</span> <a id="autoid-31" ></a >The \(\sigma \)-field generated by \(X\), denoted \(\sigma (X)\), is
+<span class="theoremheaderplain">Definition 2.2.4</span> <a id="autoid-31" ></a >The \(\sigma \)-field generated by \(X\), denoted \(\sigma (X)\), is
 </p>
 
 <p>
@@ -1187,18 +1329,16 @@ The information contained in this \(\sigma \)-field is whether \(\omega \) is eq
 <p>
 It’s natural that \(X\) should be measurable with respect to the \(\sigma \)-field that contains precisely the information on which \(X\) depends. Formally:
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-32"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 2.2.5</span> <a id="autoid-33" ></a ><a id="XXmeas"></a> Let \(X:\Omega \to \R \). Then \(X\) is \(\sigma (X)\)-measurable.
+<span class="theoremheaderplain">Lemma 2.2.5</span> <a id="autoid-33" ></a ><a id="XXmeas"></a> Let \(X:\Omega \to \R \). Then \(X\) is \(\sigma (X)\)-measurable.
 </p>
 
 
@@ -1209,7 +1349,7 @@ It’s natural that \(X\) should be measurable with respect to the \(\sigma \)-f
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(I\) be a subinterval of \(\R \). Then, by definition of \(\sigma (X)\), we have that
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(I\) be a subinterval of \(\R \). Then, by definition of \(\sigma (X)\), we have that
 \(X^{-1}(I)\in \sigma (X)\) for all \(I\). &#x2003;&#x2003;&#x220E;
 </p>
 
@@ -1217,8 +1357,11 @@ It’s natural that \(X\) should be measurable with respect to the \(\sigma \)-f
 If we have a finite or countable set of random variables \(X_1,X_2,\ldots \) we define \(\sigma (X_1,X_2,\ldots )\) to be \(\sigma (X^{-1}_1(I),X^{-1}_2(I),\ldots \-I\text { is a subinterval of
 }\R )\). The intuition is the same: \(\sigma (X_1,X_2,\ldots )\) corresponds to the information jointly contained in \(X_1,X_2,\ldots \).
 </p>
-<h5 id="autosec-57">Combining random variables</h5>
-<a id="notes_1-autopage-57"></a>
+<!--
+......   subsection Combining random variables ......
+-->
+<h5 id="autosec-56">Combining random variables</h5>
+<a id="notes_1-autopage-56"></a>
 
 
 
@@ -1226,30 +1369,26 @@ If we have a finite or countable set of random variables \(X_1,X_2,\ldots \) we 
 Given a collection of random variables, it is useful to be able to construct other random variables from them. To do so we have the following proposition. Since we will eventually deal with more than one \(\sigma
 \)-field at once, it is useful to express this idea for a sub-\(\sigma \)-field \(\mc {G}\sw \mc {F}\).
 </p>
-<div class="theorembodyprop" >
+<div class="theorembodyprop">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-34"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Proposition 2.2.6</span> <a id="autoid-35" ></a ><a id="itsallmeas"></a> Let \(\alpha \in \R \) and let \(X,Y,X_1,X_2,\ldots \) be \(\mc {G}\)-measurable
+<span class="theoremheaderplain">Proposition 2.2.6</span> <a id="autoid-35" ></a ><a id="itsallmeas"></a> Let \(\alpha \in \R \) and let \(X,Y,X_1,X_2,\ldots \) be \(\mc {G}\)-measurable
 functions from \(\Omega \to \R \). Then
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{2.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
 
 <!--
 
 
 
-                                                        α,   αX,    X + Y,       XY,   1/X,                                                      (2.2)                           --><a id="itsallmeaseq"></a><!--
-
-
+                                                    α,   αX,    X + Y,      XY,   1/X,                                        (2.2)                       --><a id="itsallmeaseq"></a><!--
 
 -->
 
@@ -1264,7 +1403,7 @@ functions from \(\Omega \to \R \). Then
 </p>
 
 <p>
-are all \(\mc {G}\)-measurable<sup>1</sup>. Further, if \(X_\infty \) given by
+are all \(\mc {G}\)-measurable<sup>1</sup><a id="notes_1-autopage-57"></a>. Further, if \(X_\infty \) given by
 </p>
 
 <p>
@@ -1279,6 +1418,17 @@ exists for all \(\omega \), then \(X_\infty \) is \(\mc {G}\)-measurable.
 </li>
 
 </ul>
+<div role="note" class="footnotes">
+
+<a id="notes_1-autopage-58"></a>
+
+<p>
+<sup>1</sup>&nbsp;In the case of \(1/X\), we require that \(\P [X=0]=0\).
+</p>
+
+
+
+</div>
 
 </div>
 
@@ -1298,7 +1448,7 @@ For example, if \(X\) is a random variable then so is \(\frac {X^2+X}{2}\). For 
 </p>
 
 <p>
-is a random variable (we could use <span class="textup" >(<a href="Random-variables.html#itsallmeaseq">2.2</a>)</span> repeatedly to show this) and, since the limit exists, \(Y(\omega )=\lim _{n\to
+is a random variable (we could use <span class="textup">(<a href="Random-variables.html#itsallmeaseq">2.2</a>)</span> repeatedly to show this) and, since the limit exists, \(Y(\omega )=\lim _{n\to
 \infty }Y_n(\omega )\) is measurable.
 </p>
 
@@ -1306,15 +1456,11 @@ is a random variable (we could use <span class="textup" >(<a href="Random-variab
 In general, if \(X\) is a random variable and \(g:\R \to \R \) is any ‘sensible’ function then \(g(X)\) is also a random variable. This includes polynomials, powers, all trig functions, all monotone functions, all
 continuous and piecewise continuous functions, integrals/derivatives, etc etc.
 </p>
-<div class="footnotes" >
-
-<p>
-<sup>1</sup>&nbsp;In the case of \(1/X\), we require that \(\P [X=0]=0\).
-</p>
-
-</div>
-<h5 id="autosec-60">Independence</h5>
-<a id="notes_1-autopage-60"></a>
+<!--
+......   subsection Independence ......
+-->
+<h5 id="autosec-59">Independence</h5>
+<a id="notes_1-autopage-59"></a>
 
 
 
@@ -1322,18 +1468,16 @@ continuous and piecewise continuous functions, integrals/derivatives, etc etc.
 We can express the concept of independence, which you already know about for random variables, in terms of \(\sigma \)-fields. Recall that two events \(E_1,E_2\in \mc {F}\) are said to be independent if \(\P
 [E_1\cap E_2]=\P [E_1]\P [E_2].\) Using \(\sigma \)-fields, we have a consistent way of defining independence, for both random variables and events.
 </p>
-<div class="theorembodydefn" >
+<div class="theorembodydefn">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-36"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Definition 2.2.7</span> <a id="autoid-37" ></a ><a id="indepdef"></a> Sub-\(\sigma \)-fields \(\G _1,\G _2\) of \(\F \) are said to be independent if \(\P
+<span class="theoremheaderplain">Definition 2.2.7</span> <a id="autoid-37" ></a ><a id="indepdef"></a> Sub-\(\sigma \)-fields \(\G _1,\G _2\) of \(\F \) are said to be independent if \(\P
 (G_1\cap G_2)=\P (G_1)\P (G_2)\) for all \(G_1\in \G _1\) and \(G_2\in \G _2\).
 </p>
 
@@ -1364,21 +1508,21 @@ defining what it means for e.g.&nbsp;a random variable and an event to be indepe
 
 </section>
 
-</div>
+</main>
 
 </div>
 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
 </p>
 
 </footer>
 
 
 
-<nav class="botnavigation" ><a href="notes_1.html" class="linkhome" >
+<nav class="botnavigation"><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 </body>

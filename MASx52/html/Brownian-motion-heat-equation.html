@@ -4,21 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 22, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Brownian motion and the heat equation</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
-
-
 <script>
 // Lwarp MathJax emulation code
 //
 // Based on code by Davide P. Cervone.
 // Equation numbering: https://github.com/mathjax/MathJax/issues/2427
 // Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
 //
 // Modified by Brian Dunn to adjust equation numbering and add subequations.
 //
@@ -28,126 +27,195 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-     subequations: "0",
-     section: "",
-     loader: {
-         load: ['[tex]/tagFormat'],
-     },
-     startup: {
-         ready() {
-             //       These would be replaced by import commands if you wanted to make
-             //       a proper extension.
-             const Configuration = MathJax._.input.tex.Configuration.Configuration;
-             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-             const Macro = MathJax._.input.tex.Symbol.Macro;
-             const TexError = MathJax._.input.tex.TexError.default;
-             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-             const expandable = MathJax._.util.Options.expandable;
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
 
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-             //       Insert the replacement string into the TeX string, and check
-             //       that there haven't been too many maxro substitutions (prevents
-             //       infinite loops).
-             const useArgument = (parser, text) => {
-                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-                  parser.i = 0;
-                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
-                      throw new TexError('MaxMacroSub1',
-                      'MathJax maximum macro substitution count exceeded; ' +
-                      'is there a recursive macro call?');
-                  }
-             }
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
 
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
 
-             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
-             new CommandMap('ifstar-ifnextchar-setequnumber', {
-                  ifstar: 'IfstarFunction',
-                  ifnextchar: 'IfnextcharFunction',
-                  seteqnumber: 'SeteqnumberFunction'
-             }, {
-                  //      This function implements an ifstar macro.
-                  IfstarFunction(parser, name) {
-                      const resultstar = parser.GetArgument(name);
-                      const resultnostar = parser.GetArgument(name);
-                      const star = parser.GetStar();                        // true if there is a *
-                      useArgument(parser, star ? resultstar : resultnostar);
-                  },
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
 
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
 
-                  //      This function implements an ifnextchar macro.
-                  IfnextcharFunction(parser, name) {
-                      let whichchar = parser.GetArgument(name);
-                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-                          // $ syntax highlighting
-                          whichchar = String.fromCodePoint(parseInt(whichchar));
-                      }
-                      const resultnextchar = parser.GetArgument(name);
-                      const resultnotnextchar = parser.GetArgument(name);
-                      const gotchar = (parser.GetNext() === whichchar);
-                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-                  },
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
 
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
 
-                  //      This function modifies the equation numbers.
-                  SeteqnumberFunction(parser, name) {
-                          //   Get the macro parameters
-                          const star = parser.GetStar();                       // true if there is a *
-                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
-                          const newsubequations = parser.GetArgument(name);       // the subequations argument
-                          const neweqsection = parser.GetArgument(name);       // the eq section argument
-                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
-                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
-                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
-                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-                  }
-             });
+        });
 
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
 
-             //       Create the ifstar-ifnextchar-setequnumber package
-             Configuration.create('ifstar-ifnextchar-setequnumber', {
-                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
-             });
+        MathJax.startup.defaultReady();
 
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
 
-             MathJax.startup.defaultReady();
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
 
-
-             // For forward references:
-             MathJax.startup.input[0].preFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          MathJax.config.subequations = math.inputData.recompile.subequations;
-                          MathJax.config.section = math.inputData.recompile.section;
-                  }
-             });
-             MathJax.startup.input[0].postFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          math.inputData.recompile.subequations = MathJax.config.subequations;
-                          math.inputData.recompile.section = MathJax.config.section;
-                  }
-             });
-         }       // ready
-     },           // startup
-
-
-     tex: {
-         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
-         tags: "ams",
-                  tagFormat: {
-                          number: function (n) {
-                               if(MathJax.config.subequations==0)
-                                      return(MathJax.config.section + n);
-                               else
-                                      return(MathJax.config.section + String.fromCharCode(96+n));
-                          },
-                  },
-     }
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
+         },
+  }
 }
 </script>
 
-
 <script
-         id="MathJax-script"
-         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
 
@@ -156,33 +224,33 @@ MathJax = {
 
 
 
-<a id="notes_2-autopage-25"></a>
-<nav class="topnavigation" ><a href="notes_2.html" class="linkhome" >
+<a id="notes_2-autopage-24"></a>
+<nav class="topnavigation"><a href="notes_2.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: May 20, 2022
+last updated: September 22, 2022
 </p>
 
 </header>
 
 
 
-<div class="bodyandsidetoc" >
-<div class="sidetoccontainer" >
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
 
 
 
-<nav class="sidetoc" >
+<nav class="sidetoc">
 
 
 
-<div class="sidetoctitle" >
+<div class="sidetoctitle">
 
 <p>
-<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+<span class="sidetocthetitle">Stochastic Processes and Financial Mathematics<br />
 (part two)</span>
 </p>
 
@@ -193,7 +261,7 @@ Contents
 
 
 
-<div class="sidetoccontents" >
+<div class="sidetoccontents">
 
 <p>
 <a href="notes_2.html" class="linkhome" >
@@ -202,315 +270,315 @@ Home</a>
 
 <p>
 <a href="The-transition-continuous-time.html#autosec-5" class="tocchapter" >
-<span class="sectionnumber" >9</span>&#x2003;The transition to continuous time</a>
+<span class="sectionnumber">9</span>&#x2003;The transition to continuous time</a>
 </p>
 
 
 
 <p>
 <a href="Brownian-motion.html#autosec-11" class="tocchapter" >
-<span class="sectionnumber" >10</span>&#x2003;Brownian motion</a>
+<span class="sectionnumber">10</span>&#x2003;Brownian motion</a>
 </p>
 
 
 
 <p>
 <a href="Brownian-motion.html#autosec-12" class="tocsection" >
-<span class="sectionnumber" >10.1</span>&#x2003;The limit of random walks</a>
+<span class="sectionnumber">10.1</span>&#x2003;The limit of random walks</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
-<span class="sectionnumber" >10.2</span>&#x2003;Brownian motion (definition)</a>
+<a href="Brownian-motion-definition.html#autosec-18" class="tocsection" >
+<span class="sectionnumber">10.2</span>&#x2003;Brownian motion (definition)</a>
 </p>
 
 
 
 <p>
-<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
-<span class="sectionnumber" >10.3</span>&#x2003;Brownian motion and the heat equation</a>
+<a href="Brownian-motion-heat-equation.html#autosec-25" class="tocsection" >
+<span class="sectionnumber">10.3</span>&#x2003;Brownian motion and the heat equation</a>
 </p>
 
 
 
 <p>
-<a href="Properties-Brownian-motion.html#autosec-32" class="tocsection" >
-<span class="sectionnumber" >10.4</span>&#x2003;Properties of Brownian motion</a>
+<a href="Properties-Brownian-motion.html#autosec-31" class="tocsection" >
+<span class="sectionnumber">10.4</span>&#x2003;Properties of Brownian motion</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-bm.html#autosec-41" class="tocsection" >
-<span class="sectionnumber" >10.5</span>&#x2003;Exercises on Chapter <a href="Brownian-motion.html#chap:bm">10</a></a>
+<a href="Exercises-on-Chapter-ref-chap-bm.html#autosec-40" class="tocsection" >
+<span class="sectionnumber">10.5</span>&#x2003;Exercises on Chapter 10</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-integration.html#autosec-45" class="tocchapter" >
-<span class="sectionnumber" >11</span>&#x2003;Stochastic integration</a>
+<a href="Stochastic-integration.html#autosec-44" class="tocchapter" >
+<span class="sectionnumber">11</span>&#x2003;Stochastic integration</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-integration.html#autosec-46" class="tocsection" >
-<span class="sectionnumber" >11.1</span>&#x2003;Introduction to Ito calculus</a>
+<a href="Stochastic-integration.html#autosec-45" class="tocsection" >
+<span class="sectionnumber">11.1</span>&#x2003;Introduction to Ito calculus</a>
 </p>
 
 
 
 <p>
-<a href="Ito-integrals.html#autosec-51" class="tocsection" >
-<span class="sectionnumber" >11.2</span>&#x2003;Ito integrals</a>
+<a href="Ito-integrals.html#autosec-50" class="tocsection" >
+<span class="sectionnumber">11.2</span>&#x2003;Ito integrals</a>
 </p>
 
 
 
 <p>
-<a href="Existence-Ito-integrals.html#autosec-55" class="tocsection" >
-<span class="sectionnumber" >11.3</span>&#x2003;Existence of Ito integrals \((\star )\)</a>
+<a href="Existence-Ito-integrals.html#autosec-54" class="tocsection" >
+<span class="sectionnumber">11.3</span>&#x2003;Existence of Ito integrals \((\star )\)</a>
 </p>
 
 
 
 <p>
-<a href="Ito-processes.html#autosec-60" class="tocsection" >
-<span class="sectionnumber" >11.4</span>&#x2003;Ito processes</a>
+<a href="Ito-processes.html#autosec-59" class="tocsection" >
+<span class="sectionnumber">11.4</span>&#x2003;Ito processes</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-ito.html#autosec-68" class="tocsection" >
-<span class="sectionnumber" >11.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-integration.html#chap:ito">11</a></a>
+<a href="Exercises-on-Chapter-ref-chap-ito.html#autosec-67" class="tocsection" >
+<span class="sectionnumber">11.5</span>&#x2003;Exercises on Chapter 11</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-differential-equations.html#autosec-72" class="tocchapter" >
-<span class="sectionnumber" >12</span>&#x2003;Stochastic differential equations</a>
+<a href="Stochastic-differential-equations.html#autosec-71" class="tocchapter" >
+<span class="sectionnumber">12</span>&#x2003;Stochastic differential equations</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-differential-equations.html#autosec-76" class="tocsection" >
-<span class="sectionnumber" >12.1</span>&#x2003;Ito’s formula</a>
+<a href="Stochastic-differential-equations.html#autosec-75" class="tocsection" >
+<span class="sectionnumber">12.1</span>&#x2003;Ito’s formula</a>
 </p>
 
 
 
 <p>
-<a href="Geometric-Brownian-motion.html#autosec-84" class="tocsection" >
-<span class="sectionnumber" >12.2</span>&#x2003;Geometric Brownian motion</a>
+<a href="Geometric-Brownian-motion.html#autosec-82" class="tocsection" >
+<span class="sectionnumber">12.2</span>&#x2003;Geometric Brownian motion</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-exponentials-martingale-representation.html#autosec-87" class="tocsection" >
-<span class="sectionnumber" >12.3</span>&#x2003;Stochastic exponentials and martingale representation</a>
+<a href="Stochastic-exponentials-martingale-representation.html#autosec-85" class="tocsection" >
+<span class="sectionnumber">12.3</span>&#x2003;Stochastic exponentials and martingale representation</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-sdes.html#autosec-93" class="tocsection" >
-<span class="sectionnumber" >12.4</span>&#x2003;Exercises on Chapter <a href="Stochastic-differential-equations.html#chap:sdes">12</a></a>
+<a href="Exercises-on-Chapter-ref-chap-sdes.html#autosec-91" class="tocsection" >
+<span class="sectionnumber">12.4</span>&#x2003;Exercises on Chapter 12</a>
 </p>
 
 
 
 <p>
-<a href="Connections-between-SDEs-PDEs.html#autosec-98" class="tocchapter" >
-<span class="sectionnumber" >13</span>&#x2003;Connections between SDEs and PDEs</a>
+<a href="Connections-between-SDEs-PDEs.html#autosec-96" class="tocchapter" >
+<span class="sectionnumber">13</span>&#x2003;Connections between SDEs and PDEs</a>
 </p>
 
 
 
 <p>
-<a href="Connections-between-SDEs-PDEs.html#autosec-99" class="tocsection" >
-<span class="sectionnumber" >13.1</span>&#x2003;The Feynman-Kac formula</a>
+<a href="Connections-between-SDEs-PDEs.html#autosec-97" class="tocsection" >
+<span class="sectionnumber">13.1</span>&#x2003;The Feynman-Kac formula</a>
 </p>
 
 
 
 <p>
-<a href="The-Markov-property.html#autosec-107" class="tocsection" >
-<span class="sectionnumber" >13.2</span>&#x2003;The Markov property</a>
+<a href="The-Markov-property.html#autosec-105" class="tocsection" >
+<span class="sectionnumber">13.2</span>&#x2003;The Markov property</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-fk.html#autosec-110" class="tocsection" >
-<span class="sectionnumber" >13.3</span>&#x2003;Exercises on Chapter <a href="Connections-between-SDEs-PDEs.html#chap:fk">13</a></a>
+<a href="Exercises-on-Chapter-ref-chap-fk.html#autosec-108" class="tocsection" >
+<span class="sectionnumber">13.3</span>&#x2003;Exercises on Chapter 13</a>
 </p>
 
 
 
 <p>
-<a href="The-Black-Scholes-model.html#autosec-114" class="tocchapter" >
-<span class="sectionnumber" >14</span>&#x2003;The Black-Scholes model</a>
+<a href="The-Black-Scholes-model.html#autosec-112" class="tocchapter" >
+<span class="sectionnumber">14</span>&#x2003;The Black-Scholes model</a>
 </p>
 
 
 
 <p>
-<a href="The-Black-Scholes-model.html#autosec-115" class="tocsection" >
-<span class="sectionnumber" >14.1</span>&#x2003;The Black-Scholes market</a>
+<a href="The-Black-Scholes-model.html#autosec-113" class="tocsection" >
+<span class="sectionnumber">14.1</span>&#x2003;The Black-Scholes market</a>
 </p>
 
 
 
 <p>
-<a href="Completeness.html#autosec-123" class="tocsection" >
-<span class="sectionnumber" >14.2</span>&#x2003;Completeness</a>
+<a href="Completeness.html#autosec-121" class="tocsection" >
+<span class="sectionnumber">14.2</span>&#x2003;Completeness</a>
 </p>
 
 
 
 <p>
-<a href="The-Black-Scholes-equation.html#autosec-130" class="tocsection" >
-<span class="sectionnumber" >14.3</span>&#x2003;The Black-Scholes equation</a>
+<a href="The-Black-Scholes-equation.html#autosec-128" class="tocsection" >
+<span class="sectionnumber">14.3</span>&#x2003;The Black-Scholes equation</a>
 </p>
 
 
 
 <p>
-<a href="Martingales-risk-neutral-world.html#autosec-137" class="tocsection" >
-<span class="sectionnumber" >14.4</span>&#x2003;Martingales and ‘the risk-neutral world’</a>
+<a href="Martingales-risk-neutral-world.html#autosec-134" class="tocsection" >
+<span class="sectionnumber">14.4</span>&#x2003;Martingales and ‘the risk-neutral world’</a>
 </p>
 
 
 
 <p>
-<a href="The-Black-Scholes-formula.html#autosec-141" class="tocsection" >
-<span class="sectionnumber" >14.5</span>&#x2003;The Black-Scholes formula</a>
+<a href="The-Black-Scholes-formula.html#autosec-138" class="tocsection" >
+<span class="sectionnumber">14.5</span>&#x2003;The Black-Scholes formula</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-bs.html#autosec-144" class="tocsection" >
-<span class="sectionnumber" >14.6</span>&#x2003;Exercises on Chapter <a href="The-Black-Scholes-model.html#chap:bs">14</a></a>
+<a href="Exercises-on-Chapter-ref-chap-bs.html#autosec-141" class="tocsection" >
+<span class="sectionnumber">14.6</span>&#x2003;Exercises on Chapter 14</a>
 </p>
 
 
 
 <p>
-<a href="Application-extension-Black-Scholes-model.html#autosec-150" class="tocchapter" >
-<span class="sectionnumber" >15</span>&#x2003;Application and extension of the Black-Scholes model</a>
+<a href="Application-extension-Black-Scholes-model.html#autosec-147" class="tocchapter" >
+<span class="sectionnumber">15</span>&#x2003;Application and extension of the Black-Scholes model</a>
 </p>
 
 
 
 <p>
-<a href="Application-extension-Black-Scholes-model.html#autosec-151" class="tocsection" >
-<span class="sectionnumber" >15.1</span>&#x2003;Transaction costs and parity relations</a>
+<a href="Application-extension-Black-Scholes-model.html#autosec-148" class="tocsection" >
+<span class="sectionnumber">15.1</span>&#x2003;Transaction costs and parity relations</a>
 </p>
 
 
 
 <p>
-<a href="The-Greeks.html#autosec-155" class="tocsection" >
-<span class="sectionnumber" >15.2</span>&#x2003;The Greeks</a>
+<a href="The-Greeks.html#autosec-152" class="tocsection" >
+<span class="sectionnumber">15.2</span>&#x2003;The Greeks</a>
 </p>
 
 
 
 <p>
-<a href="Delta-Gamma-Hedging.html#autosec-158" class="tocsection" >
-<span class="sectionnumber" >15.3</span>&#x2003;Delta and Gamma Hedging</a>
+<a href="Delta-Gamma-Hedging.html#autosec-155" class="tocsection" >
+<span class="sectionnumber">15.3</span>&#x2003;Delta and Gamma Hedging</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#autosec-165" class="tocsection" >
-<span class="sectionnumber" >15.4</span>&#x2003;Exercises on Chapter <a href="Application-extension-Black-Scholes-model.html#chap:bs_extensions">15</a></a>
+<a href="Exercises-on-Chapter-ref-chap-bs_extensions.html#autosec-162" class="tocsection" >
+<span class="sectionnumber">15.4</span>&#x2003;Exercises on Chapter 15</a>
 </p>
 
 
 
 <p>
-<a href="Further-extensions.html#autosec-172" class="tocsection" >
-<span class="sectionnumber" >15.5</span>&#x2003;Further extensions \((\star )\)</a>
+<a href="Further-extensions.html#autosec-169" class="tocsection" >
+<span class="sectionnumber">15.5</span>&#x2003;Further extensions \((\star )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-financial-crisis-2007-08.html#autosec-188" class="tocchapter" >
-<span class="sectionnumber" >16</span>&#x2003;The financial crisis of 2007/08 \((\star )\)</a>
+<a href="The-financial-crisis-2007-08.html#autosec-184" class="tocchapter" >
+<span class="sectionnumber">16</span>&#x2003;The financial crisis of 2007/08 \((\star )\)</a>
 </p>
 
 
 
 <p>
-<a href="Financial-networks.html#autosec-199" class="tocchapter" >
-<span class="sectionnumber" >17</span>&#x2003;Financial networks \((\Delta )\)</a>
+<a href="Financial-networks.html#autosec-195" class="tocchapter" >
+<span class="sectionnumber">17</span>&#x2003;Financial networks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Financial-networks.html#autosec-200" class="tocsection" >
-<span class="sectionnumber" >17.1</span>&#x2003;Graphs and random graphs \((\Delta )\)</a>
+<a href="Financial-networks.html#autosec-196" class="tocsection" >
+<span class="sectionnumber">17.1</span>&#x2003;Graphs and random graphs \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-Gai-Kapadia-model-debt-contagion.html#autosec-206" class="tocsection" >
-<span class="sectionnumber" >17.2</span>&#x2003;The Gai-Kapadia model of debt contagion \((\Delta )\)</a>
+<a href="The-Gai-Kapadia-model-debt-contagion.html#autosec-202" class="tocsection" >
+<span class="sectionnumber">17.2</span>&#x2003;The Gai-Kapadia model of debt contagion \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Approximating-contagion-Galton-Watson-process.html#autosec-213" class="tocsection" >
-<span class="sectionnumber" >17.3</span>&#x2003;Approximating contagion by a Galton-Watson process \((\Delta )\)</a>
+<a href="Approximating-contagion-Galton-Watson-process.html#autosec-209" class="tocsection" >
+<span class="sectionnumber">17.3</span>&#x2003;Approximating contagion by a Galton-Watson process \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Modelling-discussion-on-financial-networks.html#autosec-215" class="tocsection" >
-<span class="sectionnumber" >17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-211" class="tocsection" >
+<span class="sectionnumber">17.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-fin_net.html#autosec-218" class="tocsection" >
-<span class="sectionnumber" >17.5</span>&#x2003;Exercises on Chapter <a href="Financial-networks.html#chap:fin_net">17</a></a>
+<a href="Exercises-on-Chapter-ref-chap-fin_net.html#autosec-214" class="tocsection" >
+<span class="sectionnumber">17.5</span>&#x2003;Exercises on Chapter 17</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises-book-two.html#autosec-226" class="tocchapter" >
-<span class="sectionnumber" >C</span>&#x2003;Solutions to exercises (book two)</a>
+<a href="Solutions-exercises-book-two.html#autosec-222" class="tocchapter" >
+<span class="sectionnumber">C</span>&#x2003;Solutions to exercises (book two)</a>
 </p>
 
 
 
 <p>
-<a href="Advice-revision-exams.html#autosec-239" class="tocchapter" >
-<span class="sectionnumber" >D</span>&#x2003;Advice for revision/exams</a>
+<a href="Advice-revision-exams.html#autosec-235" class="tocchapter" >
+<span class="sectionnumber">D</span>&#x2003;Advice for revision/exams</a>
 </p>
 
 
 
 <p>
-<a href="Formula-sheet-part-two.html#autosec-243" class="tocchapter" >
-<span class="sectionnumber" >E</span>&#x2003;Formula sheet (part two)</a>
+<a href="Formula-sheet-part-two.html#autosec-239" class="tocchapter" >
+<span class="sectionnumber">E</span>&#x2003;Formula sheet (part two)</a>
 </p>
 
 
@@ -523,11 +591,11 @@ Home</a>
 
 
 
-<div class="bodycontainer" >
+<main class="bodycontainer">
 
 
 
-<section class="textbody" >
+<section class="textbody">
 
 <h1>Stochastic Processes and Financial Mathematics<br />
 (part two)</h1>
@@ -536,7 +604,7 @@ Home</a>
 
 
 
-<div class="hidden" >
+<div class="hidden">
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -545,6 +613,12 @@ Home</a>
 \(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
 
 \(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
 
 \(\newcommand \ensuremath [1]{#1}\)
 
@@ -558,6 +632,12 @@ Home</a>
 
 \(\newcommand {\addtocounter }[2]{}\)
 
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
 \(\newcommand {\cline }[1]{}\)
 
 \(\newcommand {\directlua }[1]{\text {(directlua)}}\)
@@ -570,6 +650,10 @@ Home</a>
 
 \(\def \LWRabsorbquotenumber &quot;#1 {}\)
 
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
 \(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
 
 \(\def \mathcode #1={\mathchar }\)
@@ -578,11 +662,69 @@ Home</a>
 
 \(\let \delimiter \mathchar \)
 
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
 \(\let \LWRref \ref \)
 
 \(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
 
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
 \(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
 
 \(\DeclareMathOperator {\var }{var}\)
 
@@ -660,7 +802,7 @@ Home</a>
 
 \(\def \1{\unicode {x1D7D9}}\)
 
-\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+\(\def \cadlag {c\&grave;{a}dl\&grave;{a}g}\)
 
 \(\def \p {\partial }\)
 
@@ -683,8 +825,11 @@ Home</a>
 </div>
 
 <p>
-<h4 id="autosec-26"><span class="sectionnumber" >10.3&#x2003;</span>Brownian motion and the heat equation</h4>
-<a id="notes_2-autopage-26"></a>
+<!--
+......     section Brownian motion and the heat equation ......
+-->
+<h4 id="autosec-25"><span class="sectionnumber">10.3&#x2003;</span>Brownian motion and the heat equation</h4>
+<a id="notes_2-autopage-25"></a>
 <a id="notes_2-autofile-4"></a> <a id="sec:heat"></a>
 
 <p>
@@ -702,7 +847,7 @@ temperature at the point \(x\) is \(f(x)=u(0,x)\).
 Then (as you may have seen from e.g.&nbsp;MAS222), it is well known that the <i>heat equation</i>
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{10.}{2}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{10.}{2}\)</span>
 
 <!--
 
@@ -710,8 +855,6 @@ Then (as you may have seen from e.g.&nbsp;MAS222), it is well known that the <i>
                                                                                                        ∂u   1 ∂2u
                                                                                                           =                                                                        (10.3)--><a id="eq:heat"></a><!--
                                                                                                        ∂t   2 ∂x2
-
-
 -->
 
 <p>
@@ -728,15 +871,13 @@ Then (as you may have seen from e.g.&nbsp;MAS222), it is well known that the <i>
 with the initial condition
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{10.}{3}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{10.}{3}\)</span>
 
 <!--
 
 
 
                                                                                                      u(0, x) = f (x)                                                         (10.4)--><a id="eq:heat_init"></a><!--
-
-
 
 -->
 
@@ -753,18 +894,16 @@ with the initial condition
 <p>
 describes how the temperature \(u(t,x)\) changes with time, from an initial temperature of \(f(x)\) at site \(x\). This equation has a close connection to Brownian motion, which we now explore.
 </p>
-<div class="theorembodyremark" >
+<div class="theorembodyremark">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-15"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Remark 10.3.1</span> <a id="autoid-16" ></a >(\(\star \)) In the world of PDEs, the factor \(\frac 12\) in <span class="textup" >(<a
+<span class="theoremheaderplain">Remark 10.3.1</span> <a id="autoid-16" ></a >(\(\star \)) In the world of PDEs, the factor \(\frac 12\) in <span class="textup">(<a
 href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span> is not normally included, but in probability we tend to include it. The difference is just that time runs twice as fast (i.e.&nbsp;we
 substituted \(2t\) in place of \(t\)), which isn’t very important.
 </p>
@@ -783,18 +922,16 @@ If we start Brownian motion from \(x\in \R \), then \(B_t\sim x+N(0,t)\sim N(x,t
 <p>
 \[\phi _{t,x}(y)=\frac {1}{\sqrt {2\pi t}}\exp \l (-\frac {(y-x)^2}{2t}\r ).\]
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-17"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 10.3.2</span> <a id="autoid-18" ></a ><a id="lem:heat_1"></a> \(\phi _{t,x}(y)\) satisfies the heat equation <span class="textup" >(<a
+<span class="theoremheaderplain">Lemma 10.3.2</span> <a id="autoid-18" ></a ><a id="lem:heat_1"></a> \(\phi _{t,x}(y)\) satisfies the heat equation <span class="textup">(<a
 href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>.
 </p>
 
@@ -806,7 +943,7 @@ href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>.
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that if any function \(u(t,x)\) satisfies the heat equation, so does \(u(t,x-y)\) for
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that if any function \(u(t,x)\) satisfies the heat equation, so does \(u(t,x-y)\) for
 any value of \(y\). So, we can assume \(y=0\) and need to show that
 </p>
 
@@ -815,9 +952,9 @@ any value of \(y\). So, we can assume \(y=0\) and need to show that
 </p>
 
 <p>
-satisfies <span class="textup" >(<a href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>. This is an exercise in partial differentiation. Using the chain and product rules:
+satisfies <span class="textup">(<a href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>. This is an exercise in partial differentiation. Using the chain and product rules:
 </p>
-<span class="hidden" > \(\seteqnumber{0}{10.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{10.}{4}\)</span>
 
 
 
@@ -827,14 +964,14 @@ satisfies <span class="textup" >(<a href="Brownian-motion-heat-equation.html#eq:
                                                                                      −1
                                                                                                               1 −x2 (−1)
                                                                                                        !                             !
-                                                                               ∂φ             x2                               x2
+                                                                               ∂ϕ             x2                               x2
                                                                                   = √ 2 exp −              +√            exp −
                                                                                ∂t    2πt3     2t              2πt 2t2          2t
-                                                                                     1               1
+                                                                                     1              1
                                                                                                             !              !
                                                                                              x2                       x2
-                                                                                   =√             − 3/2         exp −
-                                                                                     2π     2t5/2  2t                 2t
+                                                                                   =√            −              exp −
+                                                                                     2π     2t5/2 2t3/2               2t
 
 
 
@@ -851,7 +988,7 @@ satisfies <span class="textup" >(<a href="Brownian-motion-heat-equation.html#eq:
 \end{align*}
 and
 </p>
-<span class="hidden" > \(\seteqnumber{0}{10.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{10.}{4}\)</span>
 
 
 
@@ -861,7 +998,7 @@ and
 
                                                                                                   1 −2x
                                                                                                                                !
-                                                                                            ∂φ                 x2
+                                                                                            ∂ϕ                 x2
                                                                                                =√        exp −
                                                                                             ∂x    2πt 2t       2t
                                                                                                                       !
@@ -883,7 +1020,7 @@ and
 \end{align*}
 so that
 </p>
-<span class="hidden" > \(\seteqnumber{0}{10.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{10.}{4}\)</span>
 
 
 
@@ -891,7 +1028,7 @@ so that
 
 
                                                                                                            !                        !
-                                                                                ∂2φ    −1         x2             −x −2x        x2
+                                                                                ∂2ϕ    −1         x2             −x −2x        x2
                                                                                     = √     exp −              +√        exp −
                                                                                 ∂x2    2πt3       2t             2πt3 2t       2t
                                                                                        1               1
@@ -919,7 +1056,7 @@ Hence, \(\frac {\p \phi }{\p t}=\frac 12\frac {\p ^2\phi }{\p x^2}\). &#x2003;&#
 <p>
 We can use Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.2</a> to give a physical explanation of the connection between Brownian motion and heat diffusion. We define
 </p>
-<span class="hidden" > \(\seteqnumber{0}{10.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{10.}{4}\)</span>
 
 
 
@@ -943,19 +1080,17 @@ We can use Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.2<
 \end{align}
 That is, to get \(w(t,x)\), we start a particle at location \(x\), let it perform Brownian motion for time \(t\), and then take the expected value of \(f(B_t)\).
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-19"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 10.3.3</span> <a id="autoid-20" ></a ><a id="lem:bm_heat_eq"></a> \(w(t,x)\) satisfies the heat equation <span class="textup" >(<a
-href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span> and the initial condition <span class="textup" >(<a
+<span class="theoremheaderplain">Lemma 10.3.3</span> <a id="autoid-20" ></a ><a id="lem:bm_heat_eq"></a> \(w(t,x)\) satisfies the heat equation <span class="textup">(<a
+href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span> and the initial condition <span class="textup">(<a
 href="Brownian-motion-heat-equation.html#eq:heat_init">10.4</a>)</span>.
 </p>
 
@@ -973,13 +1108,12 @@ in random directions. If we could pick on an individual ‘piece’ of heat and 
 </p>
 
 <p>
-We should think of the Brownian motion in <span class="textup" >(<a href="Brownian-motion-heat-equation.html#eq:heat_duality">10.5</a>)</span> as running in reverse time, so as it tracks
-(backwards in time) the path through space that a typical piece of heat has followed. Then, after running for time \(t\), it looks at the initial condition to find out how much heat there was initially that its eventual
-location.
+We should think of the Brownian motion in <span class="textup">(<a href="Brownian-motion-heat-equation.html#eq:heat_duality">10.5</a>)</span> as running in reverse time, so as it tracks (backwards
+in time) the path through space that a typical piece of heat has followed. Then, after running for time \(t\), it looks at the initial condition to find out how much heat there was initially that its eventual location.
 </p>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We have \(B_0=x\), so
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We have \(B_0=x\), so
 </p>
 
 <p>
@@ -987,10 +1121,11 @@ location.
 </p>
 
 <p>
-Hence the initial condition <span class="textup" >(<a href="Brownian-motion-heat-equation.html#eq:heat_init">10.4</a>)</span> is satisfied. We still need to check <span class="textup" >(<a
-href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>. To do so we will allow ourselves to swap \(\int \)s and partial derivatives<sup>2</sup>. We have
+Hence the initial condition <span class="textup">(<a href="Brownian-motion-heat-equation.html#eq:heat_init">10.4</a>)</span> is satisfied. We still need to check <span class="textup">(<a
+href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>. To do so we will allow ourselves to swap \(\int \)s and partial derivatives<sup>2</sup><a id="notes_2-autopage-28"></a>. We
+have
 </p>
-<span class="hidden" > \(\seteqnumber{0}{10.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{10.}{5}\)</span>
 
 
 
@@ -1000,7 +1135,7 @@ href="Brownian-motion-heat-equation.html#eq:heat">10.3</a>)</span>. To do so we 
 
                                                                                                w(t, x) = Ex [f (Bt )]
                                                                                                               Z   ∞
-                                                                                                          =           f (y)φt,x (y) dy
+                                                                                                          =           f (y)ϕt,x (y) dy
                                                                                                                −∞
 
 
@@ -1018,7 +1153,7 @@ w(t,x)&amp;=\E _x[f(B_t)]\\ &amp;=\int _{-\infty }^\infty f(y)\phi _{t,x}(y)\,dy
 \end{align*}
 so, by Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.2</a>,
 </p>
-<span class="hidden" > \(\seteqnumber{0}{10.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{10.}{5}\)</span>
 
 
 
@@ -1028,19 +1163,19 @@ so, by Lemma <a href="Brownian-motion-heat-equation.html#lem:heat_1">10.3.2</a>,
 
                                                                                              ∂w   ∂
                                                                                                           Z   ∞
-                                                                                                =                  f (y)φt,x (y) dy
+                                                                                                =                  f (y)ϕt,x (y) dy
                                                                                              ∂t   ∂t          −∞
                                                                                                       Z   ∞    ∂
-                                                                                                  =               φt,x (y) dy
+                                                                                                  =               ϕt,x (y) dy
                                                                                                               f (y)
                                                                                                      −∞        ∂t
                                                                                                                1 ∂2
                                                                                                     Z ∞
-                                                                                                  =      f (y)        φt,x (y) dy
+                                                                                                  =      f (y)        ϕt,x (y) dy
                                                                                                      −∞        2 ∂x2
                                                                                                     1 ∂2
                                                                                                            Z ∞
-                                                                                                  =              f (y)φt,x (y) dy
+                                                                                                  =              f (y)ϕt,x (y) dy
                                                                                                     2 ∂x2 −∞
                                                                                                     1 ∂2w
                                                                                                   =
@@ -1068,32 +1203,36 @@ as required. &#x2003;&#x2003;&#x220E;
 There are many similar ways to connect various stochastic processes to PDEs. This kind of connection can be very useful, because it allows us to transfer knowledge about stochastic process to (and from) knowledge
 about PDEs. We’ll see a more sophisticated example in Section <a href="Connections-between-SDEs-PDEs.html#sec:fk">13.1</a>.
 </p>
-<div class="footnotes" >
+<div role="note" class="footnotes">
+
+<a id="notes_2-autopage-29"></a>
 
 <p>
 <sup>2</sup>&nbsp;As far as this course is concerned, there is no need for you to justify interchanging \(\int \) and derivatives. In reality, though, it can (occasionally) fail and there are conditions to check. See
 MAS350/451 for details.
 </p>
 
+
+
 </div>
 
 </section>
 
-</div>
+</main>
 
 </div>
 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
 </p>
 
 </footer>
 
 
 
-<nav class="botnavigation" ><a href="notes_2.html" class="linkhome" >
+<nav class="botnavigation"><a href="notes_2.html" class="linkhome" >
 Home</a></nav>
 
 </body>

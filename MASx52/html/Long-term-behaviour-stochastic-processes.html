@@ -4,21 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, September 22, 2022." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Long term behaviour of stochastic processes</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
-
-
 <script>
 // Lwarp MathJax emulation code
 //
 // Based on code by Davide P. Cervone.
 // Equation numbering: https://github.com/mathjax/MathJax/issues/2427
 // Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
 //
 // Modified by Brian Dunn to adjust equation numbering and add subequations.
 //
@@ -28,126 +27,195 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-     subequations: "0",
-     section: "",
-     loader: {
-         load: ['[tex]/tagFormat'],
-     },
-     startup: {
-         ready() {
-             //       These would be replaced by import commands if you wanted to make
-             //       a proper extension.
-             const Configuration = MathJax._.input.tex.Configuration.Configuration;
-             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-             const Macro = MathJax._.input.tex.Symbol.Macro;
-             const TexError = MathJax._.input.tex.TexError.default;
-             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-             const expandable = MathJax._.util.Options.expandable;
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
 
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-             //       Insert the replacement string into the TeX string, and check
-             //       that there haven't been too many maxro substitutions (prevents
-             //       infinite loops).
-             const useArgument = (parser, text) => {
-                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-                  parser.i = 0;
-                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
-                      throw new TexError('MaxMacroSub1',
-                      'MathJax maximum macro substitution count exceeded; ' +
-                      'is there a recursive macro call?');
-                  }
-             }
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
 
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
 
-             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
-             new CommandMap('ifstar-ifnextchar-setequnumber', {
-                  ifstar: 'IfstarFunction',
-                  ifnextchar: 'IfnextcharFunction',
-                  seteqnumber: 'SeteqnumberFunction'
-             }, {
-                  //      This function implements an ifstar macro.
-                  IfstarFunction(parser, name) {
-                      const resultstar = parser.GetArgument(name);
-                      const resultnostar = parser.GetArgument(name);
-                      const star = parser.GetStar();                        // true if there is a *
-                      useArgument(parser, star ? resultstar : resultnostar);
-                  },
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
 
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
 
-                  //      This function implements an ifnextchar macro.
-                  IfnextcharFunction(parser, name) {
-                      let whichchar = parser.GetArgument(name);
-                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-                          // $ syntax highlighting
-                          whichchar = String.fromCodePoint(parseInt(whichchar));
-                      }
-                      const resultnextchar = parser.GetArgument(name);
-                      const resultnotnextchar = parser.GetArgument(name);
-                      const gotchar = (parser.GetNext() === whichchar);
-                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-                  },
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
 
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
 
-                  //      This function modifies the equation numbers.
-                  SeteqnumberFunction(parser, name) {
-                          //   Get the macro parameters
-                          const star = parser.GetStar();                       // true if there is a *
-                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
-                          const newsubequations = parser.GetArgument(name);       // the subequations argument
-                          const neweqsection = parser.GetArgument(name);       // the eq section argument
-                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
-                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
-                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
-                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-                  }
-             });
+        });
 
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
 
-             //       Create the ifstar-ifnextchar-setequnumber package
-             Configuration.create('ifstar-ifnextchar-setequnumber', {
-                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
-             });
+        MathJax.startup.defaultReady();
 
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
 
-             MathJax.startup.defaultReady();
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
 
-
-             // For forward references:
-             MathJax.startup.input[0].preFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          MathJax.config.subequations = math.inputData.recompile.subequations;
-                          MathJax.config.section = math.inputData.recompile.section;
-                  }
-             });
-             MathJax.startup.input[0].postFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          math.inputData.recompile.subequations = MathJax.config.subequations;
-                          math.inputData.recompile.section = MathJax.config.section;
-                  }
-             });
-         }       // ready
-     },           // startup
-
-
-     tex: {
-         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
-         tags: "ams",
-                  tagFormat: {
-                          number: function (n) {
-                               if(MathJax.config.subequations==0)
-                                      return(MathJax.config.section + n);
-                               else
-                                      return(MathJax.config.section + String.fromCharCode(96+n));
-                          },
-                  },
-     }
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
+         },
+  }
 }
 </script>
 
-
 <script
-         id="MathJax-script"
-         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
 
@@ -156,33 +224,33 @@ MathJax = {
 
 
 
-<a id="notes_1-autopage-217"></a>
-<nav class="topnavigation" ><a href="notes_1.html" class="linkhome" >
+<a id="notes_1-autopage-215"></a>
+<nav class="topnavigation"><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: May 20, 2022
+last updated: September 22, 2022
 </p>
 
 </header>
 
 
 
-<div class="bodyandsidetoc" >
-<div class="sidetoccontainer" >
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
 
 
 
-<nav class="sidetoc" >
+<nav class="sidetoc">
 
 
 
-<div class="sidetoctitle" >
+<div class="sidetoctitle">
 
 <p>
-<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+<span class="sidetocthetitle">Stochastic Processes and Financial Mathematics<br />
 (part one)</span>
 </p>
 
@@ -193,7 +261,7 @@ Contents
 
 
 
-<div class="sidetoccontents" >
+<div class="sidetoccontents">
 
 <p>
 <a href="notes_1.html" class="linkhome" >
@@ -202,350 +270,350 @@ Home</a>
 
 <p>
 <a href="Introduction.html#autosec-4" class="tocchapter" >
-<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+<span class="sectionnumber">0</span>&#x2003;Introduction</a>
 </p>
 
 
 
 <p>
 <a href="Introduction.html#autosec-5" class="tocsection" >
-<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
 </p>
 
 
 
 <p>
 <a href="Expectation-Arbitrage.html#autosec-12" class="tocchapter" >
-<span class="sectionnumber" >1</span>&#x2003;Expectation and Arbitrage</a>
+<span class="sectionnumber">1</span>&#x2003;Expectation and Arbitrage</a>
 </p>
 
 
 
 <p>
 <a href="Expectation-Arbitrage.html#autosec-13" class="tocsection" >
-<span class="sectionnumber" >1.1</span>&#x2003;Betting on coin tosses</a>
+<span class="sectionnumber">1.1</span>&#x2003;Betting on coin tosses</a>
 </p>
 
 
 
 <p>
 <a href="The-one-period-market.html#autosec-16" class="tocsection" >
-<span class="sectionnumber" >1.2</span>&#x2003;The one-period market</a>
+<span class="sectionnumber">1.2</span>&#x2003;The one-period market</a>
 </p>
 
 
 
 <p>
 <a href="Arbitrage.html#autosec-21" class="tocsection" >
-<span class="sectionnumber" >1.3</span>&#x2003;Arbitrage</a>
+<span class="sectionnumber">1.3</span>&#x2003;Arbitrage</a>
 </p>
 
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-31" class="tocsection" >
-<span class="sectionnumber" >1.4</span>&#x2003;Modelling discussion</a>
+<a href="Modelling-discussion.html#autosec-30" class="tocsection" >
+<span class="sectionnumber">1.4</span>&#x2003;Modelling discussion</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-33" class="tocsection" >
-<span class="sectionnumber" >1.5</span>&#x2003;Exercises on Chapter&nbsp;<a href="Expectation-Arbitrage.html#chap:pricing">1</a></a>
+<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-32" class="tocsection" >
+<span class="sectionnumber">1.5</span>&#x2003;Exercises on Chapter&nbsp;1</a>
 </p>
 
 
 
 <p>
-<a href="Probability-spaces-random-variables.html#autosec-37" class="tocchapter" >
-<span class="sectionnumber" >2</span>&#x2003;Probability spaces and random variables</a>
+<a href="Probability-spaces-random-variables.html#autosec-36" class="tocchapter" >
+<span class="sectionnumber">2</span>&#x2003;Probability spaces and random variables</a>
 </p>
 
 
 
 <p>
-<a href="Probability-spaces-random-variables.html#autosec-38" class="tocsection" >
-<span class="sectionnumber" >2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
+<a href="Probability-spaces-random-variables.html#autosec-37" class="tocsection" >
+<span class="sectionnumber">2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
 </p>
 
 
 
 <p>
-<a href="Random-variables.html#autosec-48" class="tocsection" >
-<span class="sectionnumber" >2.2</span>&#x2003;Random variables</a>
+<a href="Random-variables.html#autosec-47" class="tocsection" >
+<span class="sectionnumber">2.2</span>&#x2003;Random variables</a>
 </p>
 
 
 
 <p>
 <a href="Infinite.html#autosec-62" class="tocsection" >
-<span class="sectionnumber" >2.3</span>&#x2003;Infinite \(\Omega \)</a>
+<span class="sectionnumber">2.3</span>&#x2003;Infinite \(\Omega \)</a>
 </p>
 
 
 
 <p>
 <a href="Expectation.html#autosec-68" class="tocsection" >
-<span class="sectionnumber" >2.4</span>&#x2003;Expectation</a>
+<span class="sectionnumber">2.4</span>&#x2003;Expectation</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-prob_meas.html#autosec-76" class="tocsection" >
-<span class="sectionnumber" >2.5</span>&#x2003;Exercises on Chapter <a href="Probability-spaces-random-variables.html#chap:prob_meas">2</a></a>
+<span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a>
 </p>
 
 
 
 <p>
 <a href="Conditional-expectation-martingales.html#autosec-81" class="tocchapter" >
-<span class="sectionnumber" >3</span>&#x2003;Conditional expectation and martingales</a>
+<span class="sectionnumber">3</span>&#x2003;Conditional expectation and martingales</a>
 </p>
 
 
 
 <p>
 <a href="Conditional-expectation-martingales.html#autosec-82" class="tocsection" >
-<span class="sectionnumber" >3.1</span>&#x2003;Conditional expectation</a>
+<span class="sectionnumber">3.1</span>&#x2003;Conditional expectation</a>
 </p>
 
 
 
 <p>
 <a href="Properties-conditional-expectation.html#autosec-88" class="tocsection" >
-<span class="sectionnumber" >3.2</span>&#x2003;Properties of conditional expectation</a>
+<span class="sectionnumber">3.2</span>&#x2003;Properties of conditional expectation</a>
 </p>
 
 
 
 <p>
 <a href="Martingales.html#autosec-94" class="tocsection" >
-<span class="sectionnumber" >3.3</span>&#x2003;Martingales</a>
+<span class="sectionnumber">3.3</span>&#x2003;Martingales</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-cond_exp.html#autosec-105" class="tocsection" >
-<span class="sectionnumber" >3.4</span>&#x2003;Exercises on Chapter <a href="Conditional-expectation-martingales.html#chap:cond_exp">3</a></a>
+<span class="sectionnumber">3.4</span>&#x2003;Exercises on Chapter 3</a>
 </p>
 
 
 
 <p>
 <a href="Stochastic-processes.html#autosec-109" class="tocchapter" >
-<span class="sectionnumber" >4</span>&#x2003;Stochastic processes</a>
+<span class="sectionnumber">4</span>&#x2003;Stochastic processes</a>
 </p>
 
 
 
 <p>
 <a href="Stochastic-processes.html#autosec-111" class="tocsection" >
-<span class="sectionnumber" >4.1</span>&#x2003;Random walks</a>
+<span class="sectionnumber">4.1</span>&#x2003;Random walks</a>
 </p>
 
 
 
 <p>
 <a href="Urn-processes.html#autosec-117" class="tocsection" >
-<span class="sectionnumber" >4.2</span>&#x2003;Urn processes</a>
+<span class="sectionnumber">4.2</span>&#x2003;Urn processes</a>
 </p>
 
 
 
 <p>
 <a href="A-branching-process.html#autosec-122" class="tocsection" >
-<span class="sectionnumber" >4.3</span>&#x2003;A branching process</a>
+<span class="sectionnumber">4.3</span>&#x2003;A branching process</a>
 </p>
 
 
 
 <p>
 <a href="Other-stochastic-processes.html#autosec-126" class="tocsection" >
-<span class="sectionnumber" >4.4</span>&#x2003;Other stochastic processes</a>
+<span class="sectionnumber">4.4</span>&#x2003;Other stochastic processes</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-stoch_procs.html#autosec-129" class="tocsection" >
-<span class="sectionnumber" >4.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes.html#chap:stoch_procs">4</a></a>
+<span class="sectionnumber">4.5</span>&#x2003;Exercises on Chapter 4</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model.html#autosec-133" class="tocchapter" >
-<span class="sectionnumber" >5</span>&#x2003;The binomial model</a>
+<span class="sectionnumber">5</span>&#x2003;The binomial model</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model.html#autosec-134" class="tocsection" >
-<span class="sectionnumber" >5.1</span>&#x2003;Arbitrage in the one-period model</a>
+<span class="sectionnumber">5.1</span>&#x2003;Arbitrage in the one-period model</a>
 </p>
 
 
 
 <p>
 <a href="Hedging-in-one-period-model.html#autosec-142" class="tocsection" >
-<span class="sectionnumber" >5.2</span>&#x2003;Hedging in the one-period model</a>
+<span class="sectionnumber">5.2</span>&#x2003;Hedging in the one-period model</a>
 </p>
 
 
 
 <p>
 <a href="Types-financial-derivative.html#autosec-153" class="tocsection" >
-<span class="sectionnumber" >5.3</span>&#x2003;Types of financial derivative</a>
+<span class="sectionnumber">5.3</span>&#x2003;Types of financial derivative</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model-definition.html#autosec-155" class="tocsection" >
-<span class="sectionnumber" >5.4</span>&#x2003;The binomial model (definition)</a>
+<span class="sectionnumber">5.4</span>&#x2003;The binomial model (definition)</a>
 </p>
 
 
 
 <p>
 <a href="Portfolios-arbitrage-martingales.html#autosec-159" class="tocsection" >
-<span class="sectionnumber" >5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
+<span class="sectionnumber">5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
 </p>
 
 
 
 <p>
 <a href="Hedging.html#autosec-168" class="tocsection" >
-<span class="sectionnumber" >5.6</span>&#x2003;Hedging</a>
+<span class="sectionnumber">5.6</span>&#x2003;Hedging</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-bin_model.html#autosec-177" class="tocsection" >
-<span class="sectionnumber" >5.7</span>&#x2003;Exercises on Chapter <a href="The-binomial-model.html#chap:bin_model">5</a></a>
+<span class="sectionnumber">5.7</span>&#x2003;Exercises on Chapter 5</a>
 </p>
 
 
 
 <p>
 <a href="Convergence-random-variables.html#autosec-182" class="tocchapter" >
-<span class="sectionnumber" >6</span>&#x2003;Convergence of random variables</a>
+<span class="sectionnumber">6</span>&#x2003;Convergence of random variables</a>
 </p>
 
 
 
 <p>
 <a href="Convergence-random-variables.html#autosec-183" class="tocsection" >
-<span class="sectionnumber" >6.1</span>&#x2003;Modes of convergence</a>
+<span class="sectionnumber">6.1</span>&#x2003;Modes of convergence</a>
 </p>
 
 
 
 <p>
 <a href="The-monotone-convergence-theorem.html#autosec-189" class="tocsection" >
-<span class="sectionnumber" >6.2</span>&#x2003;The monotone convergence theorem</a>
+<span class="sectionnumber">6.2</span>&#x2003;The monotone convergence theorem</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-194" class="tocsection" >
-<span class="sectionnumber" >6.3</span>&#x2003;Exercises on Chapter <a href="Convergence-random-variables.html#chap:rv_conv">6</a></a>
+<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-193" class="tocsection" >
+<span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-199" class="tocchapter" >
-<span class="sectionnumber" >7</span>&#x2003;Stochastic processes and martingale theory</a>
+<a href="Stochastic-processes-martingale-theory.html#autosec-198" class="tocchapter" >
+<span class="sectionnumber">7</span>&#x2003;Stochastic processes and martingale theory</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-200" class="tocsection" >
-<span class="sectionnumber" >7.1</span>&#x2003;The martingale transform</a>
+<a href="Stochastic-processes-martingale-theory.html#autosec-199" class="tocsection" >
+<span class="sectionnumber">7.1</span>&#x2003;The martingale transform</a>
 </p>
 
 
 
 <p>
-<a href="Roulette.html#autosec-203" class="tocsection" >
-<span class="sectionnumber" >7.2</span>&#x2003;Roulette</a>
+<a href="Roulette.html#autosec-202" class="tocsection" >
+<span class="sectionnumber">7.2</span>&#x2003;Roulette</a>
 </p>
 
 
 
 <p>
-<a href="The-martingale-convergence-theorem.html#autosec-209" class="tocsection" >
-<span class="sectionnumber" >7.3</span>&#x2003;The martingale convergence theorem</a>
+<a href="The-martingale-convergence-theorem.html#autosec-208" class="tocsection" >
+<span class="sectionnumber">7.3</span>&#x2003;The martingale convergence theorem</a>
 </p>
 
 
 
 <p>
-<a href="Long-term-behaviour-stochastic-processes.html#autosec-217" class="tocsection" >
-<span class="sectionnumber" >7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
+<a href="Long-term-behaviour-stochastic-processes.html#autosec-216" class="tocsection" >
+<span class="sectionnumber">7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-236" class="tocsection" >
-<span class="sectionnumber" >7.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></a>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-235" class="tocsection" >
+<span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Further-theory-stochastic-processes.html#autosec-241" class="tocchapter" >
-<span class="sectionnumber" >8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
+<a href="Further-theory-stochastic-processes.html#autosec-240" class="tocchapter" >
+<span class="sectionnumber">8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Further-theory-stochastic-processes.html#autosec-242" class="tocsection" >
-<span class="sectionnumber" >8.1</span>&#x2003;The dominated convergence theorem \((\Delta )\)</a>
+<a href="Further-theory-stochastic-processes.html#autosec-241" class="tocsection" >
+<span class="sectionnumber">8.1</span>&#x2003;The dominated convergence theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-optional-stopping-theorem.html#autosec-247" class="tocsection" >
-<span class="sectionnumber" >8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
+<a href="The-optional-stopping-theorem.html#autosec-246" class="tocsection" >
+<span class="sectionnumber">8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Hitting-probabilities-random-walks.html#autosec-254" class="tocsection" >
-<span class="sectionnumber" >8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
+<a href="Hitting-probabilities-random-walks.html#autosec-253" class="tocsection" >
+<span class="sectionnumber">8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-261" class="tocsection" >
-<span class="sectionnumber" >8.4</span>&#x2003;Exercises on Chapter <a href="Further-theory-stochastic-processes.html#chap:stoch_procs_2">8</a> \((\Delta )\)</a>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-260" class="tocsection" >
+<span class="sectionnumber">8.4</span>&#x2003;Exercises on Chapter 8 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises-part-one.html#autosec-265" class="tocchapter" >
-<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises (part one)</a>
+<a href="Solutions-exercises-part-one.html#autosec-264" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Solutions to exercises (part one)</a>
 </p>
 
 
 
 <p>
-<a href="Formula-Sheet-part-one.html#autosec-282" class="tocchapter" >
-<span class="sectionnumber" >B</span>&#x2003;Formula Sheet (part one)</a>
+<a href="Formula-Sheet-part-one.html#autosec-281" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Formula Sheet (part one)</a>
 </p>
 
 
@@ -558,11 +626,11 @@ Home</a>
 
 
 
-<div class="bodycontainer" >
+<main class="bodycontainer">
 
 
 
-<section class="textbody" >
+<section class="textbody">
 
 <h1>Stochastic Processes and Financial Mathematics<br />
 (part one)</h1>
@@ -571,7 +639,7 @@ Home</a>
 
 
 
-<div class="hidden" >
+<div class="hidden">
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -580,6 +648,12 @@ Home</a>
 \(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
 
 \(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
 
 \(\newcommand \ensuremath [1]{#1}\)
 
@@ -593,6 +667,12 @@ Home</a>
 
 \(\newcommand {\addtocounter }[2]{}\)
 
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
 \(\newcommand {\cline }[1]{}\)
 
 \(\newcommand {\directlua }[1]{\text {(directlua)}}\)
@@ -605,6 +685,10 @@ Home</a>
 
 \(\def \LWRabsorbquotenumber &quot;#1 {}\)
 
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
 \(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
 
 \(\def \mathcode #1={\mathchar }\)
@@ -613,11 +697,69 @@ Home</a>
 
 \(\let \delimiter \mathchar \)
 
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
 \(\let \LWRref \ref \)
 
 \(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
 
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
 \(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
 
 \(\DeclareMathOperator {\var }{var}\)
 
@@ -691,7 +833,7 @@ Home</a>
 
 \(\def \1{\unicode {x1D7D9}}\)
 
-\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+\(\def \cadlag {c\&grave;{a}dl\&grave;{a}g}\)
 
 \(\def \p {\partial }\)
 
@@ -712,8 +854,11 @@ Home</a>
 </div>
 
 <p>
-<h4 id="autosec-218"><span class="sectionnumber" >7.4&#x2003;</span>Long term behaviour of stochastic processes</h4>
-<a id="notes_1-autopage-218"></a>
+<!--
+......     section Long term behaviour of stochastic processes ......
+-->
+<h4 id="autosec-216"><span class="sectionnumber">7.4&#x2003;</span>Long term behaviour of stochastic processes</h4>
+<a id="notes_1-autopage-216"></a>
 <a id="notes_1-autofile-34"></a>
 
 <p>
@@ -725,18 +870,16 @@ href="Stochastic-processes.html#chap:stoch_procs">4</a>.
 <p>
 One fact, from real analysis, that we will find useful is the following:
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-156"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 7.4.1</span> <a id="autoid-157" ></a ><a id="lem:Z_ev_const"></a> Let \((a_n)\) be an integer valued sequence, and suppose that \(a_n\to a\) as \(n\to
+<span class="theoremheaderplain">Lemma 7.4.1</span> <a id="autoid-157" ></a ><a id="lem:Z_ev_const"></a> Let \((a_n)\) be an integer valued sequence, and suppose that \(a_n\to a\) as \(n\to
 \infty \). Then \((a_n)\) is eventually equal to a constant: there exists \(N\in \N \) such that \(a_n=a\) for all \(n\geq N\).
 </p>
 
@@ -748,10 +891,10 @@ One fact, from real analysis, that we will find useful is the following:
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Put \(\epsilon =\frac 13\) into the definition of a convergent real sequence, and we
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Put \(\epsilon =\frac 13\) into the definition of a convergent real sequence, and we
 obtain that there exists \(N\in \N \) such that \(|a_n-a|\leq \frac 13\) for all \(n\geq N\). Hence, for \(n\geq N\) we have
 </p>
-<span class="hidden" > \(\seteqnumber{0}{7.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{4}\)</span>
 
 
 
@@ -780,8 +923,11 @@ obtain that there exists \(N\in \N \) such that \(|a_n-a|\leq \frac 13\) for all
 Since \(\frac 23&lt;1\), and \(a_n\) takes only integer values, this means that \(a_n=a_{n+1}\). Since this holds for all \(n\geq N\), we must have \(a_N=a_{N+1}=a_{N+2}=\ldots \), which means that
 \(a_n\to a_N\) as \(N\to \infty \) (and hence \(a=a_N\)). &#x2003;&#x2003;&#x220E;
 </p>
-<h5 id="autosec-220">Long term behaviour of Roulette</h5>
-<a id="notes_1-autopage-220"></a>
+<!--
+......   subsection Long term behaviour of Roulette ......
+-->
+<h5 id="autosec-218">Long term behaviour of Roulette</h5>
+<a id="notes_1-autopage-218"></a>
 
 
 
@@ -816,18 +962,16 @@ By Lemma <a href="Long-term-behaviour-stochastic-processes.html#lem:Z_ev_const">
 win (an increase) or a loss (a decrease) the only way \(W_n\) can become eventually constant is if our gambler has lost all his money i.e.&nbsp;for some (random) \(N\in \N \), for all \(n\geq N\), we have
 \(W_n=0\). Thus:
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-158"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 7.4.2</span> <a id="autoid-159" ></a >Almost surely, a roulette player will eventually lose all their money.
+<span class="theoremheaderplain">Lemma 7.4.2</span> <a id="autoid-159" ></a >Almost surely, a roulette player will eventually lose all their money.
 </p>
 
 
@@ -836,8 +980,11 @@ win (an increase) or a loss (a decrease) the only way \(W_n\) can become eventua
 </ul>
 
 </div>
-<h5 id="autosec-222">Long term behaviour of urn processes</h5>
-<a id="notes_1-autopage-222"></a>
+<!--
+......   subsection Long term behaviour of urn processes ......
+-->
+<h5 id="autosec-220">Long term behaviour of urn processes</h5>
+<a id="notes_1-autopage-220"></a>
 
 
 
@@ -853,7 +1000,7 @@ the urn contains \(n+2\) balls.
 Recall also that we write \(B_n\) for the number of red balls in the urn at time \(n\), and
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{4}\)</span>
 
 <!--
 
@@ -861,8 +1008,6 @@ Recall also that we write \(B_n\) for the number of red balls in the urn at time
                                                             Bn
                                                     Mn =                                                         (7.5)                                                       --><a id="eq:urn_Mn2"></a><!--
                                                            n+2
-
-
 -->
 
 <p>
@@ -880,18 +1025,16 @@ for the fraction of red balls in the urn at time \(n\). We have shown in Section
 [|M_n|]\leq 1\), hence \((M_n)\) is bounded in \(L^1\) and the martingale convergence theorem applies. Therefore, there exists a random variable \(M_\infty \) such that \(M_n\stackrel {a.s.}{\to
 }M_\infty \). We will show that:
 </p>
-<div class="theorembodyprop" >
+<div class="theorembodyprop">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-160"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Proposition 7.4.3</span> <a id="autoid-161" ></a ><a id="prop:urn_limit"></a> \(M_\infty \) has the uniform distribution on \([0,1]\).
+<span class="theoremheaderplain">Proposition 7.4.3</span> <a id="autoid-161" ></a ><a id="prop:urn_limit"></a> \(M_\infty \) has the uniform distribution on \([0,1]\).
 </p>
 
 
@@ -900,18 +1043,16 @@ for the fraction of red balls in the urn at time \(n\). We have shown in Section
 </ul>
 
 </div>
-<div class="theorembodyremark" >
+<div class="theorembodyremark">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-162"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Remark 7.4.4</span> <a id="autoid-163" ></a >Results like Proposition <a href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>
+<span class="theoremheaderplain">Remark 7.4.4</span> <a id="autoid-163" ></a >Results like Proposition <a href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>
 are extremely useful, in stochastic modelling. It provides us with the following ‘rule of thumb’: if \(n\) is large, then the fraction of red balls in our urn is approximately a uniform distribution on \([0,1]\).
 Therefore, we can approximate a complicated object (our urn) with a much simpler object (a uniform random variable).
 </p>
@@ -927,7 +1068,7 @@ Therefore, we can approximate a complicated object (our urn) with a much simpler
 We now aim to prove Proposition <a href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>, which means we must find out the distribution of \(M_\infty \). In order to do so,
 we will use Lemma <a href="Convergence-random-variables.html#lem:conv_modes">6.1.2</a>, which tells us that \(M_n\stackrel {d}{\to }M_\infty \), that is
 </p>
-<span class="hidden" > \(\seteqnumber{0}{7.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{5}\)</span>
 
 
 
@@ -949,22 +1090,20 @@ we will use Lemma <a href="Convergence-random-variables.html#lem:conv_modes">6.1
 \begin{align}
 \label {eq:urn_Mconvd} \P [M_n\leq x]\to \P [M_\infty \leq x]
 \end{align}
-for all \(x\). We will begin with a surprising lemma that tells us the distribution of \(B_n\). Then, using <span class="textup" >(<a
-href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mn2">7.5</a>)</span>, we will be able to find the distribution of \(M_n\), from which <span class="textup" >(<a
+for all \(x\). We will begin with a surprising lemma that tells us the distribution of \(B_n\). Then, using <span class="textup">(<a
+href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mn2">7.5</a>)</span>, we will be able to find the distribution of \(M_n\), from which <span class="textup">(<a
 href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.6</a>)</span> will then tell us the distribution of \(M_\infty \).
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-164"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 7.4.5</span> <a id="autoid-165" ></a ><a id="lem:urn_Bn_unif"></a> For all \(k=1,\ldots ,n+1\), it holds that \(\P [B_n=k]=\frac {1}{n+1}\).
+<span class="theoremheaderplain">Lemma 7.4.5</span> <a id="autoid-165" ></a ><a id="lem:urn_Bn_unif"></a> For all \(k=1,\ldots ,n+1\), it holds that \(\P [B_n=k]=\frac {1}{n+1}\).
 </p>
 
 
@@ -975,11 +1114,11 @@ href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.6</a>)</spa
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(A\) be the event that the first \(k\) balls drawn are red, and the next \(j\) balls
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(A\) be the event that the first \(k\) balls drawn are red, and the next \(j\) balls
 drawn are black. Then,
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{6}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{6}\)</span>
 
 <!--
 
@@ -987,8 +1126,6 @@ drawn are black. Then,
                                                           12      k  1  2        j
                                                  P[A] =      ...           ...       .                                                          (7.7)                         --><a id="eq:urn_rb_draws"></a><!--
                                                           23     k+1k+2k+3     j+k+1
-
-
 -->
 
 <p>
@@ -1004,12 +1141,12 @@ drawn are black. Then,
 <p>
 Here, each fraction corresponds (in order) to the probability of getting a red/black ball (as appropriate) on the corresponding draw, given the results of previous draws. For example, \(\frac 12\) is the probability
 that the first draw results in a red ball, after which the urn contains \(2\) red balls and \(1\) black ball, so \(\frac 23\) is the probability that the second draw results in a red ball, and so on. From <span
-class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:urn_rb_draws">7.7</a>)</span> we have \(\P [A]=\frac {j!k!}{(j+k+1)!}\).
+class="textup">(<a href="Long-term-behaviour-stochastic-processes.html#eq:urn_rb_draws">7.7</a>)</span> we have \(\P [A]=\frac {j!k!}{(j+k+1)!}\).
 </p>
 
 <p>
 Here is the clever part: we note that drawing \(k\) red balls and \(j\) black balls, in the first \(j+k\) draws but in a different order, would have the <i>same</i> probability. We would simply obtain the
-numerators in <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:urn_rb_draws">7.7</a>)</span> in a different order. There are \(\binom {j+k}{k}\) possible
+numerators in <span class="textup">(<a href="Long-term-behaviour-stochastic-processes.html#eq:urn_rb_draws">7.7</a>)</span> in a different order. There are \(\binom {j+k}{k}\) possible
 different orders (i.e.&nbsp;we must choose \(k\) time-points from \(j+k\) times at which to pick the red balls). Hence, the probability that we draw \(k\) red and \(j\) black in the first \(j+k\) draws is
 </p>
 
@@ -1023,13 +1160,13 @@ We set \(j=n-k\), to obtain the probability of drawing (and thus adding) \(k\) r
 </p>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span>[Of Proposition <a
-href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>.] Now that we know the distribution of \(B_n\), we can use <span class="textup" >(<a
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span>[Of Proposition <a
+href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>.] Now that we know the distribution of \(B_n\), we can use <span class="textup">(<a
 href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mn2">7.5</a>)</span> to find out the distribution of \(M_n\). Lemma <a
 href="Long-term-behaviour-stochastic-processes.html#lem:urn_Bn_unif">7.4.5</a> tells us that \(B_n\) is uniformly distribution on the set \(\{1,\ldots ,n+1\}\). Hence \(M_n\) is uniform on
 \(\{\frac {1}{n+2},\frac {2}{n+2},\ldots ,\frac {n+1}{n+2}\}\). This gives us that, for \(x\in (0,1)\),
 </p>
-<span class="hidden" > \(\seteqnumber{0}{7.}{7}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{7}\)</span>
 
 
 
@@ -1038,7 +1175,7 @@ href="Long-term-behaviour-stochastic-processes.html#lem:urn_Bn_unif">7.4.5</a> t
 
 
                                                                                                           1
-                                                                                           P[Mn ≤ x] =       × bx(n + 2)c.
+                                                                                           P[Mn ≤ x] =       × ⌊x(n + 2)⌋.
                                                                                                          n+1
 
 
@@ -1062,7 +1199,7 @@ x\). Since \(x(n+2)-1\leq \lfloor x(n+2)\rfloor \leq x(n+2)\) we obtain that
 </p>
 
 <p>
-and the sandwich rule tells us that \(\lim _{n\to \infty }\P [M_n\leq x]=x\). By <span class="textup" >(<a
+and the sandwich rule tells us that \(\lim _{n\to \infty }\P [M_n\leq x]=x\). By <span class="textup">(<a
 href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.6</a>)</span>, this means that
 </p>
 
@@ -1074,8 +1211,11 @@ href="Long-term-behaviour-stochastic-processes.html#eq:urn_Mconvd">7.6</a>)</spa
 Therefore, \(M_\infty \) has a uniform distribution on \((0,1)\). This proves Proposition <a href="Long-term-behaviour-stochastic-processes.html#prop:urn_limit">7.4.3</a>.
 &#x2003;&#x2003;&#x220E;
 </p>
-<h6 id="autosec-226">Extensions and applications of urn processes</h6>
-<a id="notes_1-autopage-226"></a>
+<!--
+......    subsubsection Extensions and applications of urn processes ......
+-->
+<h6 id="autosec-224">Extensions and applications of urn processes</h6>
+<a id="notes_1-autopage-224"></a>
 
 
 
@@ -1104,8 +1244,11 @@ learned information), and maximal safe dosage estimation in clinical trials (com
 features an example of an urn process that is the basis for modern models of evolution (successful organisms tend to have more descendants, who are themselves more likely to inherit genes that will make them
 successful).
 </p>
-<h5 id="autosec-227">Long term behaviour of Galton-Watson processes</h5>
-<a id="notes_1-autopage-227"></a>
+<!--
+......     subsection Long term behaviour of Galton-Watson processes ......
+-->
+<h5 id="autosec-225">Long term behaviour of Galton-Watson processes</h5>
+<a id="notes_1-autopage-225"></a>
 
 
 
@@ -1121,16 +1264,15 @@ Let us recall the notation from Section <a href="A-branching-process.html#sec:gw
 distribution \(G\). Define a sequence \((Z_n)\) by \(Z_0=1\) and
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{7}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{7}\)</span>
 
 <!--
 
                                                 
                                                  X n+1 + . . . + X n+1 ,   if \(Z_n&gt;0\)
                                                      1             Zn
-                                       Zn+1   =                                                                                    (7.8)                                  --><a id="eq:gw_iterative_defn"></a><!--
+                                       Zn+1   =                                                                                   (7.8)                                  --><a id="eq:gw_iterative_defn"></a><!--
                                                  0,                        if \(Z_n=0\)
-
 
 -->
 
@@ -1178,18 +1320,16 @@ exists. Since \(M_n\geq 0\), we have \(M_\infty \in [0,\infty )\).
 <p>
 For the rest of this section, we’ll assume that the offspring distribution \(G\) is not deterministic. Obviously, if \(G\) was deterministic and equal to say, \(c\), then we would simply have \(Z_n=c^n\) for all \(n\).
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-166"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 7.4.6</span> <a id="autoid-167" ></a ><a id="lem:gw_crit"></a> Suppose that \(\mu =1\). Then \(\P [Z_n\text { dies out}]=1\).
+<span class="theoremheaderplain">Lemma 7.4.6</span> <a id="autoid-167" ></a ><a id="lem:gw_crit"></a> Suppose that \(\mu =1\). Then \(\P [Z_n\text { dies out}]=1\).
 </p>
 
 
@@ -1200,23 +1340,21 @@ For the rest of this section, we’ll assume that the offspring distribution \(G
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> In this case \(M_n=Z_n\). So, we have \(Z_n\to M_\infty \) almost surely. The offspring
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> In this case \(M_n=Z_n\). So, we have \(Z_n\to M_\infty \) almost surely. The offspring
 distribution is not deterministic, so for as long as \(Z_n\neq 0\) the value of \(Z_n\) will continue to change over time. Each such change in value is of magnitude at least \(1\), hence by Lemma <a
 href="Long-term-behaviour-stochastic-processes.html#lem:Z_ev_const">7.4.1</a> the only way \(Z_n\) can converge is if \(Z_n\) is eventually zero. Therefore, since \(Z_n\) does converge, in this case we
 must have \(\P [Z_n\text { dies out}]=1\) (and \(M_\infty =0\)). &#x2003;&#x2003;&#x220E;
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-168"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 7.4.7</span> <a id="autoid-169" ></a ><a id="lem:gw_subcrit"></a> Suppose that \(\mu &lt;1\). Then \(\P [Z_n\text { dies out}]=1\).
+<span class="theoremheaderplain">Lemma 7.4.7</span> <a id="autoid-169" ></a ><a id="lem:gw_subcrit"></a> Suppose that \(\mu &lt;1\). Then \(\P [Z_n\text { dies out}]=1\).
 </p>
 
 
@@ -1227,7 +1365,7 @@ must have \(\P [Z_n\text { dies out}]=1\) (and \(M_\infty =0\)). &#x2003;&#x2003
 </div>
 
 <p>
-<span class="textsc" >Sketch of Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Recall our graphical representation of the Galton-Watson process in Section <a
+<span class="textsc">Sketch of Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Recall our graphical representation of the Galton-Watson process in Section <a
 href="A-branching-process.html#sec:gw">4.3</a>. Here’s the key idea: when \(\mu &lt;1\), on average we expect each individual to have less children than when \(\mu =1\). Therefore, if the Galton-Watson
 process dies out when \(\mu =1\) (as is the case, from Lemma <a href="Long-term-behaviour-stochastic-processes.html#lem:gw_crit">7.4.6</a>), it should also die out when \(\mu &lt;1\).
 </p>
@@ -1238,18 +1376,16 @@ find two Galton-Watson processes, \(Z_n\) and \(\wt {Z}_n\), such that \(0\leq Z
 extinct, so does \(Z_n\). This type of argument is known as a <i>coupling</i>, meaning that we use one stochastic process to control another. See exercise <a
 href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#ps:gw_subcrit"><b>7.13</b></a> for how to do it. &#x2003;&#x2003;&#x220E;
 </p>
-<div class="theorembodylemma" >
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-170"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Lemma 7.4.8</span> <a id="autoid-171" ></a ><a id="lem:gw_supercrit"></a> Suppose that \(\mu &gt;1\) and \(\sigma ^2&lt;\infty \). Then \(\P [Z_n\to
+<span class="theoremheaderplain">Lemma 7.4.8</span> <a id="autoid-171" ></a ><a id="lem:gw_supercrit"></a> Suppose that \(\mu &gt;1\) and \(\sigma ^2&lt;\infty \). Then \(\P [Z_n\to
 \infty ]&gt;0\).
 </p>
 
@@ -1261,10 +1397,10 @@ href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#ps:gw_subcrit"><b>7.13</b
 </div>
 
 <p>
-<span class="textsc" >Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The first step of the argument is to show that, for all \(n\in \N \),
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The first step of the argument is to show that, for all \(n\in \N \),
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{7.}{8}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{8}\)</span>
 
 <!--
 
@@ -1272,8 +1408,6 @@ href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#ps:gw_subcrit"><b>7.13</b
                                                        2                    σ2
                                                     E[Mn+1 ] = E[Mn2 ] +        .                                                 (7.9)                                --><a id="eq:gw_2nd_iterate"></a><!--
                                                                            µn+2
-
-
 -->
 
 <p>
@@ -1292,7 +1426,7 @@ Section <a href="A-branching-process.html#sec:gw">4.3</a>, but a bit harder beca
 </p>
 
 <p>
-By iterating <span class="textup" >(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.9</a>)</span> and noting that \(\E [M_0]=1\), we obtain that
+By iterating <span class="textup">(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.9</a>)</span> and noting that \(\E [M_0]=1\), we obtain that
 </p>
 
 <p>
@@ -1325,8 +1459,11 @@ The behaviour \(Z_n\to \infty \) is often called ‘explosion’, reflecting the
 &gt;1\) and \(\sigma ^2=\infty \) behaves in the same way as Lemma <a href="Long-term-behaviour-stochastic-processes.html#lem:gw_supercrit">7.4.8</a>, but the proof is more difficult and we
 don’t study it in this course.
 </p>
-<h6 id="autosec-231">Extensions and applications of the Galton-Watson process</h6>
-<a id="notes_1-autopage-231"></a>
+<!--
+......   subsubsection Extensions and applications of the Galton-Watson process ......
+-->
+<h6 id="autosec-229">Extensions and applications of the Galton-Watson process</h6>
+<a id="notes_1-autopage-229"></a>
 
 
 
@@ -1346,8 +1483,11 @@ banking networks.
 Branching processes are used by biologists to model population growth, and they are good models for populations that are rapidly increasing in size. (For populations that have reached a roughly constant size,
 models based on urn processes, such as that of exercise <a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#ps:urn_moran"><b>7.8</b></a>, are more effective.)
 </p>
-<h5 id="autosec-232">Long term behaviour of random walks \((\star )\)</h5>
-<a id="notes_1-autopage-232"></a>
+<!--
+......   subsection Long term behaviour of random walks              ......
+-->
+<h5 id="autosec-230">Long term behaviour of random walks \((\star )\)</h5>
+<a id="notes_1-autopage-230"></a>
 
 
 
@@ -1362,7 +1502,7 @@ contain interesting information that provides intuition for (on-syllabus) result
 Firstly, take \(S_n\) to be the simple symmetric random walk. It turns out that \(S_n\) will oscillate as \(n\to \infty \), and that the magnitude of the largest oscillations will tend to infinity as \(n\to \infty
 \) (almost surely). So, our picture of the long-term behaviour of the symmetric random walk looks like:
 </p>
-<div class="center" >
+<div class="center">
 
 <p>
 
@@ -1386,7 +1526,7 @@ Note that we draw the picture as continuous line, for convenience, but in fact t
 Next, let \(S_n\) be the asymmetric random walk, with \(p&gt;q\), so the walk drifts upwards. The asymmetric random walk also experiences oscillations growing larger and larger, but the drift upwards is strong
 enough that, in fact \(S_n\stackrel {a.s.}{\to }\infty \) as \(n\to \infty \). So, our picture of the long-term behaviour of the asymmetric random walk looks like:
 </p>
-<div class="center" >
+<div class="center">
 
 <p>
 
@@ -1410,8 +1550,11 @@ Of course, if \(q&lt;p\) then \(S_n\) would drift downwards, and then \(S_n\stac
 In both cases, it is possible to show that \(S_n\) is not bounded in \(L^1\) (even if we compensate for drift) and the martingale convergence theorem does not apply. Different techniques, which we won’t study, are
 needed here.
 </p>
-<h6 id="autosec-235">Extensions and applications of random walks</h6>
-<a id="notes_1-autopage-235"></a>
+<!--
+......    subsubsection Extensions and applications of random walks ......
+-->
+<h6 id="autosec-233">Extensions and applications of random walks</h6>
+<a id="notes_1-autopage-233"></a>
 
 
 
@@ -1437,21 +1580,21 @@ href="Brownian-motion-heat-equation.html#sec:heat">10.3</a>.
 
 </section>
 
-</div>
+</main>
 
 </div>
 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
 </p>
 
 </footer>
 
 
 
-<nav class="botnavigation" ><a href="notes_1.html" class="linkhome" >
+<nav class="botnavigation"><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 </body>
