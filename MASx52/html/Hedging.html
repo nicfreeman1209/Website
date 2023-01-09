@@ -4,21 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, May 20, 2022." />
+<meta name="description" content="MAS352/452/6052 Stochastic Processes and Financial Mathematics, Sheffield University, January 5, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <title>MASx52 — Hedging</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
-
-
 <script>
 // Lwarp MathJax emulation code
 //
 // Based on code by Davide P. Cervone.
 // Equation numbering: https://github.com/mathjax/MathJax/issues/2427
 // Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
 //
 // Modified by Brian Dunn to adjust equation numbering and add subequations.
 //
@@ -28,126 +27,195 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-     subequations: "0",
-     section: "",
-     loader: {
-         load: ['[tex]/tagFormat'],
-     },
-     startup: {
-         ready() {
-             //       These would be replaced by import commands if you wanted to make
-             //       a proper extension.
-             const Configuration = MathJax._.input.tex.Configuration.Configuration;
-             const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-             const Macro = MathJax._.input.tex.Symbol.Macro;
-             const TexError = MathJax._.input.tex.TexError.default;
-             const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-             const expandable = MathJax._.util.Options.expandable;
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
 
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-             //       Insert the replacement string into the TeX string, and check
-             //       that there haven't been too many maxro substitutions (prevents
-             //       infinite loops).
-             const useArgument = (parser, text) => {
-                  parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-                  parser.i = 0;
-                  if (++parser.macroCount > parser.configuration.options.maxMacros) {
-                      throw new TexError('MaxMacroSub1',
-                      'MathJax maximum macro substitution count exceeded; ' +
-                      'is there a recursive macro call?');
-                  }
-             }
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
 
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
 
-             //       Create the command map for \ifstar, \ifnextchar, \seteqnumber
-             new CommandMap('ifstar-ifnextchar-setequnumber', {
-                  ifstar: 'IfstarFunction',
-                  ifnextchar: 'IfnextcharFunction',
-                  seteqnumber: 'SeteqnumberFunction'
-             }, {
-                  //      This function implements an ifstar macro.
-                  IfstarFunction(parser, name) {
-                      const resultstar = parser.GetArgument(name);
-                      const resultnostar = parser.GetArgument(name);
-                      const star = parser.GetStar();                        // true if there is a *
-                      useArgument(parser, star ? resultstar : resultnostar);
-                  },
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
 
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
 
-                  //      This function implements an ifnextchar macro.
-                  IfnextcharFunction(parser, name) {
-                      let whichchar = parser.GetArgument(name);
-                      if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-                          // $ syntax highlighting
-                          whichchar = String.fromCodePoint(parseInt(whichchar));
-                      }
-                      const resultnextchar = parser.GetArgument(name);
-                      const resultnotnextchar = parser.GetArgument(name);
-                      const gotchar = (parser.GetNext() === whichchar);
-                      useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-                  },
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
 
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
 
-                  //      This function modifies the equation numbers.
-                  SeteqnumberFunction(parser, name) {
-                          //   Get the macro parameters
-                          const star = parser.GetStar();                       // true if there is a *
-                          const optBrackets = parser.GetBrackets(name);        // contents of optional brackets
-                          const newsubequations = parser.GetArgument(name);       // the subequations argument
-                          const neweqsection = parser.GetArgument(name);       // the eq section argument
-                          const neweqnumber = parser.GetArgument(name);        // the eq number argument
-                          MathJax.config.subequations=newsubequations ;        // a string with boolean meaning
-                          MathJax.config.section=neweqsection ;                // a string with numeric meaning
-                          parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-                  }
-             });
+        });
 
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
 
-             //       Create the ifstar-ifnextchar-setequnumber package
-             Configuration.create('ifstar-ifnextchar-setequnumber', {
-                  handler: {macro: ['ifstar-ifnextchar-setequnumber']}
-             });
+        MathJax.startup.defaultReady();
 
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
 
-             MathJax.startup.defaultReady();
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
 
-
-             // For forward references:
-             MathJax.startup.input[0].preFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          MathJax.config.subequations = math.inputData.recompile.subequations;
-                          MathJax.config.section = math.inputData.recompile.section;
-                  }
-             });
-             MathJax.startup.input[0].postFilters.add(({math}) => {
-                  if (math.inputData.recompile){
-                          math.inputData.recompile.subequations = MathJax.config.subequations;
-                          math.inputData.recompile.section = MathJax.config.section;
-                  }
-             });
-         }       // ready
-     },           // startup
-
-
-     tex: {
-         packages: {'[+]': ['tagFormat', 'ifstar-ifnextchar-setequnumber']},
-         tags: "ams",
-                  tagFormat: {
-                          number: function (n) {
-                               if(MathJax.config.subequations==0)
-                                      return(MathJax.config.section + n);
-                               else
-                                      return(MathJax.config.section + String.fromCharCode(96+n));
-                          },
-                  },
-     }
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
+         },
+  }
 }
 </script>
 
-
 <script
-         id="MathJax-script"
-         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
 
@@ -156,33 +224,33 @@ MathJax = {
 
 
 
-<a id="notes_1-autopage-168"></a>
-<nav class="topnavigation" ><a href="notes_1.html" class="linkhome" >
+<a id="notes_1-autopage-167"></a>
+<nav class="topnavigation"><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: May 20, 2022
+last updated: January 5, 2023
 </p>
 
 </header>
 
 
 
-<div class="bodyandsidetoc" >
-<div class="sidetoccontainer" >
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
 
 
 
-<nav class="sidetoc" >
+<nav class="sidetoc">
 
 
 
-<div class="sidetoctitle" >
+<div class="sidetoctitle">
 
 <p>
-<span class="sidetocthetitle" >Stochastic Processes and Financial Mathematics<br />
+<span class="sidetocthetitle">Stochastic Processes and Financial Mathematics<br />
 (part one)</span>
 </p>
 
@@ -193,7 +261,7 @@ Contents
 
 
 
-<div class="sidetoccontents" >
+<div class="sidetoccontents">
 
 <p>
 <a href="notes_1.html" class="linkhome" >
@@ -202,350 +270,350 @@ Home</a>
 
 <p>
 <a href="Introduction.html#autosec-4" class="tocchapter" >
-<span class="sectionnumber" >0</span>&#x2003;Introduction</a>
+<span class="sectionnumber">0</span>&#x2003;Introduction</a>
 </p>
 
 
 
 <p>
 <a href="Introduction.html#autosec-5" class="tocsection" >
-<span class="sectionnumber" >0.1</span>&#x2003;Organization</a>
+<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
 </p>
 
 
 
 <p>
 <a href="Expectation-Arbitrage.html#autosec-12" class="tocchapter" >
-<span class="sectionnumber" >1</span>&#x2003;Expectation and Arbitrage</a>
+<span class="sectionnumber">1</span>&#x2003;Expectation and Arbitrage</a>
 </p>
 
 
 
 <p>
 <a href="Expectation-Arbitrage.html#autosec-13" class="tocsection" >
-<span class="sectionnumber" >1.1</span>&#x2003;Betting on coin tosses</a>
+<span class="sectionnumber">1.1</span>&#x2003;Betting on coin tosses</a>
 </p>
 
 
 
 <p>
 <a href="The-one-period-market.html#autosec-16" class="tocsection" >
-<span class="sectionnumber" >1.2</span>&#x2003;The one-period market</a>
+<span class="sectionnumber">1.2</span>&#x2003;The one-period market</a>
 </p>
 
 
 
 <p>
 <a href="Arbitrage.html#autosec-21" class="tocsection" >
-<span class="sectionnumber" >1.3</span>&#x2003;Arbitrage</a>
+<span class="sectionnumber">1.3</span>&#x2003;Arbitrage</a>
 </p>
 
 
 
 <p>
-<a href="Modelling-discussion.html#autosec-31" class="tocsection" >
-<span class="sectionnumber" >1.4</span>&#x2003;Modelling discussion</a>
+<a href="Modelling-discussion.html#autosec-30" class="tocsection" >
+<span class="sectionnumber">1.4</span>&#x2003;Modelling discussion</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-33" class="tocsection" >
-<span class="sectionnumber" >1.5</span>&#x2003;Exercises on Chapter&nbsp;<a href="Expectation-Arbitrage.html#chap:pricing">1</a></a>
+<a href="Exercises-on-Chapter-ref-chap-pricing.html#autosec-32" class="tocsection" >
+<span class="sectionnumber">1.5</span>&#x2003;Exercises on Chapter&nbsp;1</a>
 </p>
 
 
 
 <p>
-<a href="Probability-spaces-random-variables.html#autosec-37" class="tocchapter" >
-<span class="sectionnumber" >2</span>&#x2003;Probability spaces and random variables</a>
+<a href="Probability-spaces-random-variables.html#autosec-36" class="tocchapter" >
+<span class="sectionnumber">2</span>&#x2003;Probability spaces and random variables</a>
 </p>
 
 
 
 <p>
-<a href="Probability-spaces-random-variables.html#autosec-38" class="tocsection" >
-<span class="sectionnumber" >2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
+<a href="Probability-spaces-random-variables.html#autosec-37" class="tocsection" >
+<span class="sectionnumber">2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
 </p>
 
 
 
 <p>
-<a href="Random-variables.html#autosec-48" class="tocsection" >
-<span class="sectionnumber" >2.2</span>&#x2003;Random variables</a>
+<a href="Random-variables.html#autosec-47" class="tocsection" >
+<span class="sectionnumber">2.2</span>&#x2003;Random variables</a>
 </p>
 
 
 
 <p>
 <a href="Infinite.html#autosec-62" class="tocsection" >
-<span class="sectionnumber" >2.3</span>&#x2003;Infinite \(\Omega \)</a>
+<span class="sectionnumber">2.3</span>&#x2003;Infinite \(\Omega \)</a>
 </p>
 
 
 
 <p>
 <a href="Expectation.html#autosec-68" class="tocsection" >
-<span class="sectionnumber" >2.4</span>&#x2003;Expectation</a>
+<span class="sectionnumber">2.4</span>&#x2003;Expectation</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-prob_meas.html#autosec-76" class="tocsection" >
-<span class="sectionnumber" >2.5</span>&#x2003;Exercises on Chapter <a href="Probability-spaces-random-variables.html#chap:prob_meas">2</a></a>
+<span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a>
 </p>
 
 
 
 <p>
 <a href="Conditional-expectation-martingales.html#autosec-81" class="tocchapter" >
-<span class="sectionnumber" >3</span>&#x2003;Conditional expectation and martingales</a>
+<span class="sectionnumber">3</span>&#x2003;Conditional expectation and martingales</a>
 </p>
 
 
 
 <p>
 <a href="Conditional-expectation-martingales.html#autosec-82" class="tocsection" >
-<span class="sectionnumber" >3.1</span>&#x2003;Conditional expectation</a>
+<span class="sectionnumber">3.1</span>&#x2003;Conditional expectation</a>
 </p>
 
 
 
 <p>
 <a href="Properties-conditional-expectation.html#autosec-88" class="tocsection" >
-<span class="sectionnumber" >3.2</span>&#x2003;Properties of conditional expectation</a>
+<span class="sectionnumber">3.2</span>&#x2003;Properties of conditional expectation</a>
 </p>
 
 
 
 <p>
 <a href="Martingales.html#autosec-94" class="tocsection" >
-<span class="sectionnumber" >3.3</span>&#x2003;Martingales</a>
+<span class="sectionnumber">3.3</span>&#x2003;Martingales</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-cond_exp.html#autosec-105" class="tocsection" >
-<span class="sectionnumber" >3.4</span>&#x2003;Exercises on Chapter <a href="Conditional-expectation-martingales.html#chap:cond_exp">3</a></a>
+<span class="sectionnumber">3.4</span>&#x2003;Exercises on Chapter 3</a>
 </p>
 
 
 
 <p>
 <a href="Stochastic-processes.html#autosec-109" class="tocchapter" >
-<span class="sectionnumber" >4</span>&#x2003;Stochastic processes</a>
+<span class="sectionnumber">4</span>&#x2003;Stochastic processes</a>
 </p>
 
 
 
 <p>
 <a href="Stochastic-processes.html#autosec-111" class="tocsection" >
-<span class="sectionnumber" >4.1</span>&#x2003;Random walks</a>
+<span class="sectionnumber">4.1</span>&#x2003;Random walks</a>
 </p>
 
 
 
 <p>
 <a href="Urn-processes.html#autosec-117" class="tocsection" >
-<span class="sectionnumber" >4.2</span>&#x2003;Urn processes</a>
+<span class="sectionnumber">4.2</span>&#x2003;Urn processes</a>
 </p>
 
 
 
 <p>
 <a href="A-branching-process.html#autosec-122" class="tocsection" >
-<span class="sectionnumber" >4.3</span>&#x2003;A branching process</a>
+<span class="sectionnumber">4.3</span>&#x2003;A branching process</a>
 </p>
 
 
 
 <p>
 <a href="Other-stochastic-processes.html#autosec-126" class="tocsection" >
-<span class="sectionnumber" >4.4</span>&#x2003;Other stochastic processes</a>
+<span class="sectionnumber">4.4</span>&#x2003;Other stochastic processes</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-stoch_procs.html#autosec-129" class="tocsection" >
-<span class="sectionnumber" >4.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes.html#chap:stoch_procs">4</a></a>
+<span class="sectionnumber">4.5</span>&#x2003;Exercises on Chapter 4</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model.html#autosec-133" class="tocchapter" >
-<span class="sectionnumber" >5</span>&#x2003;The binomial model</a>
+<span class="sectionnumber">5</span>&#x2003;The binomial model</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model.html#autosec-134" class="tocsection" >
-<span class="sectionnumber" >5.1</span>&#x2003;Arbitrage in the one-period model</a>
+<span class="sectionnumber">5.1</span>&#x2003;Arbitrage in the one-period model</a>
 </p>
 
 
 
 <p>
 <a href="Hedging-in-one-period-model.html#autosec-142" class="tocsection" >
-<span class="sectionnumber" >5.2</span>&#x2003;Hedging in the one-period model</a>
+<span class="sectionnumber">5.2</span>&#x2003;Hedging in the one-period model</a>
 </p>
 
 
 
 <p>
 <a href="Types-financial-derivative.html#autosec-153" class="tocsection" >
-<span class="sectionnumber" >5.3</span>&#x2003;Types of financial derivative</a>
+<span class="sectionnumber">5.3</span>&#x2003;Types of financial derivative</a>
 </p>
 
 
 
 <p>
 <a href="The-binomial-model-definition.html#autosec-155" class="tocsection" >
-<span class="sectionnumber" >5.4</span>&#x2003;The binomial model (definition)</a>
+<span class="sectionnumber">5.4</span>&#x2003;The binomial model (definition)</a>
 </p>
 
 
 
 <p>
 <a href="Portfolios-arbitrage-martingales.html#autosec-159" class="tocsection" >
-<span class="sectionnumber" >5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
+<span class="sectionnumber">5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
 </p>
 
 
 
 <p>
 <a href="Hedging.html#autosec-168" class="tocsection" >
-<span class="sectionnumber" >5.6</span>&#x2003;Hedging</a>
+<span class="sectionnumber">5.6</span>&#x2003;Hedging</a>
 </p>
 
 
 
 <p>
 <a href="Exercises-on-Chapter-ref-chap-bin_model.html#autosec-177" class="tocsection" >
-<span class="sectionnumber" >5.7</span>&#x2003;Exercises on Chapter <a href="The-binomial-model.html#chap:bin_model">5</a></a>
+<span class="sectionnumber">5.7</span>&#x2003;Exercises on Chapter 5</a>
 </p>
 
 
 
 <p>
 <a href="Convergence-random-variables.html#autosec-182" class="tocchapter" >
-<span class="sectionnumber" >6</span>&#x2003;Convergence of random variables</a>
+<span class="sectionnumber">6</span>&#x2003;Convergence of random variables</a>
 </p>
 
 
 
 <p>
 <a href="Convergence-random-variables.html#autosec-183" class="tocsection" >
-<span class="sectionnumber" >6.1</span>&#x2003;Modes of convergence</a>
+<span class="sectionnumber">6.1</span>&#x2003;Modes of convergence</a>
 </p>
 
 
 
 <p>
 <a href="The-monotone-convergence-theorem.html#autosec-189" class="tocsection" >
-<span class="sectionnumber" >6.2</span>&#x2003;The monotone convergence theorem</a>
+<span class="sectionnumber">6.2</span>&#x2003;The monotone convergence theorem</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-194" class="tocsection" >
-<span class="sectionnumber" >6.3</span>&#x2003;Exercises on Chapter <a href="Convergence-random-variables.html#chap:rv_conv">6</a></a>
+<a href="Exercises-on-Chapter-ref-chap-rv_conv.html#autosec-193" class="tocsection" >
+<span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-199" class="tocchapter" >
-<span class="sectionnumber" >7</span>&#x2003;Stochastic processes and martingale theory</a>
+<a href="Stochastic-processes-martingale-theory.html#autosec-198" class="tocchapter" >
+<span class="sectionnumber">7</span>&#x2003;Stochastic processes and martingale theory</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-200" class="tocsection" >
-<span class="sectionnumber" >7.1</span>&#x2003;The martingale transform</a>
+<a href="Stochastic-processes-martingale-theory.html#autosec-199" class="tocsection" >
+<span class="sectionnumber">7.1</span>&#x2003;The martingale transform</a>
 </p>
 
 
 
 <p>
-<a href="Roulette.html#autosec-203" class="tocsection" >
-<span class="sectionnumber" >7.2</span>&#x2003;Roulette</a>
+<a href="Roulette.html#autosec-202" class="tocsection" >
+<span class="sectionnumber">7.2</span>&#x2003;Roulette</a>
 </p>
 
 
 
 <p>
-<a href="The-martingale-convergence-theorem.html#autosec-209" class="tocsection" >
-<span class="sectionnumber" >7.3</span>&#x2003;The martingale convergence theorem</a>
+<a href="The-martingale-convergence-theorem.html#autosec-208" class="tocsection" >
+<span class="sectionnumber">7.3</span>&#x2003;The martingale convergence theorem</a>
 </p>
 
 
 
 <p>
-<a href="Long-term-behaviour-stochastic-processes.html#autosec-217" class="tocsection" >
-<span class="sectionnumber" >7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
+<a href="Long-term-behaviour-stochastic-processes.html#autosec-216" class="tocsection" >
+<span class="sectionnumber">7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-236" class="tocsection" >
-<span class="sectionnumber" >7.5</span>&#x2003;Exercises on Chapter <a href="Stochastic-processes-martingale-theory.html#chap:stoch_procs_1">7</a></a>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_1.html#autosec-235" class="tocsection" >
+<span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Further-theory-stochastic-processes.html#autosec-241" class="tocchapter" >
-<span class="sectionnumber" >8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
+<a href="Further-theory-stochastic-processes.html#autosec-240" class="tocchapter" >
+<span class="sectionnumber">8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Further-theory-stochastic-processes.html#autosec-242" class="tocsection" >
-<span class="sectionnumber" >8.1</span>&#x2003;The dominated convergence theorem \((\Delta )\)</a>
+<a href="Further-theory-stochastic-processes.html#autosec-241" class="tocsection" >
+<span class="sectionnumber">8.1</span>&#x2003;The dominated convergence theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-optional-stopping-theorem.html#autosec-247" class="tocsection" >
-<span class="sectionnumber" >8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
+<a href="The-optional-stopping-theorem.html#autosec-246" class="tocsection" >
+<span class="sectionnumber">8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Hitting-probabilities-random-walks.html#autosec-254" class="tocsection" >
-<span class="sectionnumber" >8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
+<a href="Hitting-probabilities-random-walks.html#autosec-253" class="tocsection" >
+<span class="sectionnumber">8.3</span>&#x2003;Hitting probabilities of random walks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-261" class="tocsection" >
-<span class="sectionnumber" >8.4</span>&#x2003;Exercises on Chapter <a href="Further-theory-stochastic-processes.html#chap:stoch_procs_2">8</a> \((\Delta )\)</a>
+<a href="Exercises-on-Chapter-ref-chap-stoch_procs_2.html#autosec-260" class="tocsection" >
+<span class="sectionnumber">8.4</span>&#x2003;Exercises on Chapter 8 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises-part-one.html#autosec-265" class="tocchapter" >
-<span class="sectionnumber" >A</span>&#x2003;Solutions to exercises (part one)</a>
+<a href="Solutions-exercises-part-one.html#autosec-264" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Solutions to exercises (part one)</a>
 </p>
 
 
 
 <p>
-<a href="Formula-Sheet-part-one.html#autosec-282" class="tocchapter" >
-<span class="sectionnumber" >B</span>&#x2003;Formula Sheet (part one)</a>
+<a href="Formula-Sheet-part-one.html#autosec-281" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Formula Sheet (part one)</a>
 </p>
 
 
@@ -558,11 +626,11 @@ Home</a>
 
 
 
-<div class="bodycontainer" >
+<main class="bodycontainer">
 
 
 
-<section class="textbody" >
+<section class="textbody">
 
 <h1>Stochastic Processes and Financial Mathematics<br />
 (part one)</h1>
@@ -571,7 +639,7 @@ Home</a>
 
 
 
-<div class="hidden" >
+<div class="hidden">
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -580,6 +648,12 @@ Home</a>
 \(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
 
 \(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
 
 \(\newcommand \ensuremath [1]{#1}\)
 
@@ -593,6 +667,12 @@ Home</a>
 
 \(\newcommand {\addtocounter }[2]{}\)
 
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
 \(\newcommand {\cline }[1]{}\)
 
 \(\newcommand {\directlua }[1]{\text {(directlua)}}\)
@@ -605,6 +685,10 @@ Home</a>
 
 \(\def \LWRabsorbquotenumber &quot;#1 {}\)
 
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
 \(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
 
 \(\def \mathcode #1={\mathchar }\)
@@ -613,11 +697,69 @@ Home</a>
 
 \(\let \delimiter \mathchar \)
 
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
 \(\let \LWRref \ref \)
 
 \(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
 
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
 \(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
 
 \(\DeclareMathOperator {\var }{var}\)
 
@@ -691,7 +833,7 @@ Home</a>
 
 \(\def \1{\unicode {x1D7D9}}\)
 
-\(\def \cadlag {c\‘{a}dl\‘{a}g}\)
+\(\def \cadlag {c\&grave;{a}dl\&grave;{a}g}\)
 
 \(\def \p {\partial }\)
 
@@ -712,26 +854,27 @@ Home</a>
 </div>
 
 <p>
-<h4 id="autosec-169"><span class="sectionnumber" >5.6&#x2003;</span>Hedging</h4>
-<a id="notes_1-autopage-169"></a>
+<!--
+......     section Hedging ......
+-->
+<h4 id="autosec-168"><span class="sectionnumber">5.6&#x2003;</span>Hedging</h4>
+<a id="notes_1-autopage-168"></a>
 <a id="notes_1-autofile-26"></a> <a id="sec:binom_hedge"></a>
 
 <p>
 We can adapt the derivatives from Section <a href="Types-financial-derivative.html#sec:options_1">5.3</a> to the binomial model, by simply replacing time \(1\) with time \(T\). For example, in the
 binomial model a forward contract is the obligation to buy a single unit of stock at time \(T\) for a strike price \(K\) that is agreed at time \(0\).
 </p>
-<div class="theorembodydefn" >
+<div class="theorembodydefn">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-126"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Definition 5.6.1</span> <a id="autoid-127" ></a >A <b>contingent claim</b> is a random variable of the form \(\Phi (S_T)\), where \(\Phi :\R \to \R \) is a
+<span class="theoremheaderplain">Definition 5.6.1</span> <a id="autoid-127" ></a >A <b>contingent claim</b> is a random variable of the form \(\Phi (S_T)\), where \(\Phi :\R \to \R \) is a
 deterministic function.
 </p>
 
@@ -745,19 +888,17 @@ deterministic function.
 <p>
 For a forward contract, the contingent claim would be \(\Phi (S_T)=S_T-K\).
 </p>
-<div class="theorembodydefn" >
+<div class="theorembodydefn">
 
 <ul style="list-style-type:none">
 
 
 
 <a id="autoid-128"></a>
-
 <li>
-
 <p>
-<span class="theoremheaderplain" >Definition 5.6.2</span> <a id="autoid-129" ></a >We say that a portfolio strategy \(h=(h_t)_{t=1}^T\) is a <b>replicating portfolio</b> or <b>hedging
-strategy</b> for the contingent claim \(\Phi (S_T)\) if \(V^h_T=\Phi (S_T)\).
+<span class="theoremheaderplain">Definition 5.6.2</span> <a id="autoid-129" ></a >We say that a portfolio strategy \(h=(h_t)_{t=1}^T\) is a <b>replicating portfolio</b> or <b>hedging
+strategy</b> for the contingent claim \(\Phi (S_T)\) if \(h\) is self-financing and \(V^h_T=\Phi (S_T)\).
 </p>
 
 
@@ -783,7 +924,7 @@ also complete. With this in mind, for the rest of this section we assume that
 <p>
 Lastly, as in the one-period model, our assumption that there is no arbitrage means that:
 </p>
-<div class="framed" >
+<div class="framed">
 
 <p>
 If a contingent claim \(\Phi (S_T)\) has a replicating portfolio \(h=(h_t)_{t=1}^T\), then the price of the \(\Phi (S_T)\) at time \(0\) must be equal to the value of \(h_0\).
@@ -792,7 +933,7 @@ If a contingent claim \(\Phi (S_T)\) has a replicating portfolio \(h=(h_t)_{t=1}
 
 <p>
 Now, let us end this chapter by showing how to compute prices and replicating portfolios in the binomial model. We already know how to do this in the one-period model, see Example <a
-href="Hedging-in-one-period-model.html#ex:contingent_claim_1">5.2.4</a>. We could do it in full generality (as we did in <span class="textup" >(<a
+href="Hedging-in-one-period-model.html#ex:contingent_claim_1">5.2.4</a>. We could do it in full generality (as we did in <span class="textup">(<a
 href="Hedging-in-one-period-model.html#eq:prices">5.7</a>)</span> for the one-period model) but this would involve lots of indices and look rather messy. Instead, we’ll work through a practical example
 that makes the general strategy clear.
 </p>
@@ -809,15 +950,13 @@ Let us take \(T=3\) and set
 To make the calculations easier, we’ll also take our interest rate to be \(r=0\). We’ll price a European call option with strike price \(K=80\). The contingent claim for this option, which is
 </p>
 
-<span class="hidden" > \(\seteqnumber{0}{5.}{9}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{5.}{9}\)</span>
 
 <!--
 
 
 
                                          Φ(ST ) = max(ST − K, 0).                                       (5.10)                                                                        --><a id="eq:eco_ex"></a><!--
-
-
 
 -->
 
@@ -832,14 +971,14 @@ To make the calculations easier, we’ll also take our interest rate to be \(r=0
 </p>
 
 <p>
-<b>STEP 1</b> is to work our the risk-neutral probabilities. From <span class="textup" >(<a href="The-binomial-model.html#eq:q_probs">5.3</a>)</span>, these are \(q_u=\frac
+<b>STEP 1</b> is to work our the risk-neutral probabilities. From <span class="textup">(<a href="The-binomial-model.html#eq:q_probs">5.3</a>)</span>, these are \(q_u=\frac
 {1+0-0.5}{1.5-0.5}=0.5\) and \(q_d=1-q_u=0.5\).
 </p>
 
 <p>
 <b>STEP 2</b> is to write down the tree of possible values that the stock can take during time \(t=0,1,2,3\). This looks like
 </p>
-<div class="center" >
+<div class="center">
 
 <p>
 
@@ -856,10 +995,10 @@ To make the calculations easier, we’ll also take our interest rate to be \(r=0
 </div>
 
 <p>
-We then work out, at each of the nodes corresponding to time \(T=3\), what the value of our contingent claim <span class="textup" >(<a href="Hedging.html#eq:eco_ex">5.10</a>)</span> would be if this
+We then work out, at each of the nodes corresponding to time \(T=3\), what the value of our contingent claim <span class="textup">(<a href="Hedging.html#eq:eco_ex">5.10</a>)</span> would be if this
 node were reached. We write these values in square boxes:
 </p>
-<div class="center" >
+<div class="center">
 
 <p>
 
@@ -896,7 +1035,7 @@ So, using the one-period risk-neutral valuation formula from Proposition <a href
 <p>
 We could apply the same logic to any of the nodes corresponding to time \(t=2\), and compute the value of our call option at that node:
 </p>
-<div class="center" >
+<div class="center">
 
 <p>
 
@@ -918,7 +1057,7 @@ value of our call option at the \(t=1\) nodes; take for example the node labelle
 {eq:risk_free}\) gives the value of the call option at this node as \(\frac {1}{1+0}(5\times 0.5+0\times 0.5)=2.5\). Repeating the procedure on the other \(t=1\) node, and then also on the single \(t=0\)
 node gives us
 </p>
-<div class="center" >
+<div class="center">
 
 <p>
 
@@ -941,12 +1080,12 @@ Therefore, the value (i.e.&nbsp;the price) of our call option at time \(t=0\) is
 <p>
 Although we have computed the price, we haven’t yet computed a replicating portfolio, which is <b>STEP 4</b>. We could do it by solving lots of linear equations for our one-period models, as in Example <a
 href="Hedging-in-one-period-model.html#ex:contingent_claim_1">5.2.4</a>, but since we have several steps a quicker way is to apply Proposition <a
-href="Hedging-in-one-period-model.html#prop:one_period_pricing">5.2.6</a> and use the general formula we found in <span class="textup" >(<a
+href="Hedging-in-one-period-model.html#prop:one_period_pricing">5.2.6</a> and use the general formula we found in <span class="textup">(<a
 href="Hedging-in-one-period-model.html#eq:hedge">5.8</a>)</span>.
 </p>
 
 <p>
-Starting at time \(t=0\), to replicate the contingent claim \(\wt \Phi (su)=52.5\) and \(\wt \Phi (sd)=2.5\) at time \(t=1\), equation <span class="textup" >(<a
+Starting at time \(t=0\), to replicate the contingent claim \(\wt \Phi (su)=52.5\) and \(\wt \Phi (sd)=2.5\) at time \(t=1\), equation <span class="textup">(<a
 href="Hedging-in-one-period-model.html#eq:hedge">5.8</a>)</span> tells us that we want the portfolio
 </p>
 
@@ -976,7 +1115,7 @@ We can then carry on forwards. For example, if the stock went up in between \(t=
 </p>
 
 <p>
-equal to what is now the value of our call option. We use <span class="textup" >(<a href="Hedging-in-one-period-model.html#eq:hedge">5.8</a>)</span> again to calculate the portfolio we want to hold
+equal to what is now the value of our call option. We use <span class="textup">(<a href="Hedging-in-one-period-model.html#eq:hedge">5.8</a>)</span> again to calculate the portfolio we want to hold
 during time \(1\mapsto 2\), this time with \(\wt \Phi (su)=100\) and \(\wt \Phi (sd)=5\), giving \(x_2=-42.5\) and \(y_2=\frac {95}{120}.\) You can check that the current value of the portfolio
 \((x_2,y_2)\) is \(52.5\).
 </p>
@@ -990,7 +1129,7 @@ Next, suppose the stock price falls between \(t=1\) and \(t=2\), so our next nod
 </p>
 
 <p>
-again equal to the value our of call option. For the final step, we must replicate the contingent claim \(\wt \Phi (su)=10\), \(\wt \Phi (sd)=0\), which <span class="textup" >(<a
+again equal to the value our of call option. For the final step, we must replicate the contingent claim \(\wt \Phi (su)=10\), \(\wt \Phi (sd)=0\), which <span class="textup">(<a
 href="Hedging-in-one-period-model.html#eq:hedge">5.8</a>)</span> tells us is done using \(x_3=-5\) and \(y_3=\frac {1}{6}.\) Again, you can check that the current value of this portfolio is \(5\).
 </p>
 
@@ -1007,28 +1146,28 @@ equal to the payoff from our call option.
 </p>
 
 <p>
-To sum up, using <span class="textup" >(<a href="Hedging-in-one-period-model.html#eq:hedge">5.8</a>)</span> we can work out which portfolio we would want to hold, at each possible outcome of the
+To sum up, using <span class="textup">(<a href="Hedging-in-one-period-model.html#eq:hedge">5.8</a>)</span> we can work out which portfolio we would want to hold, at each possible outcome of the
 stock changing value. At all times we would be holding a portfolio with current value equal to the current value of the call option. Therefore, this gives a self-financing portfolio strategy that replicates \(\Phi
 (S_T)\).
 </p>
 
 </section>
 
-</div>
+</main>
 
 </div>
 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated May 20, 2022
+Copyright Nic Freeman, Sheffield University, last updated January 5, 2023
 </p>
 
 </footer>
 
 
 
-<nav class="botnavigation" ><a href="notes_1.html" class="linkhome" >
+<nav class="botnavigation"><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 </body>

@@ -1,5 +1,5 @@
 pdfseparate -f %1 -l %1 %4_html.pdf notes_2-images\lateximagetemp-%%d.pdf
-pdfcrop --hires notes_2-images\lateximagetemp-%1.pdf notes_2-images\%3.pdf
+pdfcrop --hires --margins "0 1 0 0" notes_2-images\lateximagetemp-%1.pdf notes_2-images\%3.pdf
 pdftocairo -svg -noshrink notes_2-images\%3.pdf notes_2-images\%3.svg
 del notes_2-images\%3.pdf
 del notes_2-images\lateximagetemp-%1.pdf
