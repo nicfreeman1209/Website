@@ -9,7 +9,7 @@
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<title>MAS350 — Simple Functions</title>
+<title>MAS350 — Advice for revision/exams</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,7 +224,7 @@ MathJax = {
 
 
 
-<a id="notes-autopage-89"></a>
+<a id="notes-autopage-243"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
@@ -853,118 +853,130 @@ Home</a>
 
 <p>
 <!--
-......     section Simple Functions ......
+......     chapter Advice for revision/exams ......
 -->
-<h4 id="autosec-90"><span class="sectionnumber">2.5&#x2003;</span>Simple Functions</h4>
-<a id="notes-autopage-90"></a>
-<a id="notes-autofile-16"></a> <a id="sec:simple_funcs"></a>
+<h3 id="autosec-244">Chapter&nbsp;<span class="sectionnumber">A&#x2003;</span>Advice for revision/exams</h3>
+<a id="notes-autopage-244"></a>
+<a id="notes-autofile-45"></a>
+
+<a id="sec:revision"></a>
 
 <p>
-Recall the definition of indicator functions \({\1}_{A}\) where \(A \in \Sigma \). A mapping \(f:S \rightarrow \R \) is said to be simple if it takes the form
+There are two different exam papers, one for MAS350 and one for MAS451/6352. For both exams the rubric reads
 </p>
-
-<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
-
-<!--
-
-
-                                                     n
-                                                           ci 1Ai
-                                                     X
-                                                f=                                                            (2.3)                                                              --><a id="simple"></a><!--
-                                                     i=1
-
--->
+<blockquote>
 
 <p>
-
-
-\begin{equation}
-\label {simple} f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}
-\end{equation}
-
-
+<i>Candidates should attempt ALL questions. The maximum marks for the various parts of the questions are indicated. The paper will be marked out of 50.</i>
 </p>
+</blockquote>
 
 <p>
-where \(c_{1}, c_{2}, \ldots , c_{n} \in \R \) and \(A_{1}, A_{2}, \ldots , A_{n} \in \Sigma \) with \(\bigcup _{i=1}^{n}A_{i} = S\) and \(A_{i} \cap A_{j} = \emptyset \) when \(i \neq
-j\). In other words a simple function is a (finite) linear combination of indicator functions of non-overlapping sets. It follows from Theorems <a
-href="Algebra-Measurable-Functions.html#thm:meas_min_max_etc">2.4.1</a> and <a href="Algebra-Measurable-Functions.html#thm:meas_plus_etc">2.4.3</a> that every simple function is
-measurable. It is straightforward to prove that sums and scalar multiples of simple functions are themselves simple, so the set of all simple functions form a vector space.
+Within these notes, material marked with a \((\Delta )\) is examinable only for MAS451/6352, and is non-examinable for MAS350. Material marked with a \((\star )\) is non-examinable for everyone.
 </p>
-
-<p>
-We now prove a key result that shows that simple functions are powerful tools for approximating measurable functions. Recall that a mapping \(f:S \rightarrow \R \) is non-negative if \(f(x) \geq 0\) for all
-\(x \in S\), which we write for short as \(f \geq 0\). We write \(f \leq g\) when \(g-f \geq 0\). It is easy to see that a simple function of the form (<a href="Simple-Functions.html#simple">2.3</a>)
-(with \(A_{i} \neq \emptyset \) for all \(i = 1, \ldots , n\)) is non-negative if and only if \(c_{i} \geq 0~(1 \leq i \leq n)\).
-</p>
-<div class="theorembodytheorem">
 
 <ul style="list-style-type:none">
 
 
-
-<a id="autoid-79"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 2.5.1</span> <a id="autoid-80" ></a ><a id="thm:simple_approx"></a> Let \(f:S \rightarrow \R \) be measurable and non-negative. Then there exists a
-sequence \((s_{n})\) of non-negative simple functions on \(S\) with \(s_{n} \leq s_{n+1} \leq f\) for all \(\nN \) so that \((s_{n})\) converges pointwise to \(f\) as \(n \rightarrow \infty \).
-Moreover, if \(f\) is bounded then the convergence is uniform.
+• You will be asked to solve problems based on the material in these notes. There will be a broad range of difficulty amongst the questions. Some will be variations of questions in the assignments/notes, others will
+also try to test your ingenuity.
+</p>
+</li>
+<li>
+
+
+<p>
+• You may be asked to state important definitions and results (e.g.&nbsp;more than one past exam has asked for definition of a measure).
+</p>
+</li>
+<li>
+
+
+<p>
+• You will not be expected to reproduce long proofs from memory. You are expected to have followed the techniques within the proofs when they are present, and to be able to use these techniques in your own
+problem solving.
+</p>
+</li>
+<li>
+
+
+<p>
+• There are marks for attempting a suitable method, and for justifying rigorous mathematical deductions, as well as for reaching a correct conclusion.
+</p>
+</li>
+<li>
+
+
+<p>
+• If you apply an important result that has a name e.g.&nbsp;‘the Dominated Convergence Theorem’ you should mention that name, or something similar e.g.&nbsp;‘by dominated convergence’ or ‘by the DCT’.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<!--
+......    subsection Revision activities ......
+-->
+<h5 id="autosec-246">Revision activities</h5>
+<a id="notes-autopage-246"></a>
+
+
+
+<p>
+The most important activities:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. Check and mark your solutions to assignment questions.
 </p>
 
 
 </li>
+<li>
 
+
+<p>
+2. Learn the key definitions, results, and examples.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+3. Do the past exam papers, and mark your own solutions.
+</p>
+</li>
 </ul>
 
-</div>
+<p>
+Other very helpful activities:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+4. Work through, and check your solutions, to non-challenge questions in the notes.
+</p>
+</li>
+</ul>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span>
+Of course, you should have been working on these questions throughout the year, which is why they are lower priority now. You do <i>not</i> need to look at the challenge questions as part of your revision – these
+are intended only to offer a serious, time consuming challenge to strong students.
 </p>
 
 <p>
-We split this into three parts.
-</p>
-
-<p>
-Step 1 Construction of \((s_{n})\).
-</p>
-
-<p>
-Divide the interval \([0, n)\) into \(n2^{n}\) subintervals \(\{I_{j}, 1 \leq j \leq n2^{n}\}\), each of length \(\frac {1}{2^{n}}\) by taking \(I_{j} = \left [\frac {j-1}{2^{n}}, \frac
-{j}{2^{n}}\right ).\) Let \(E_{j} = f^{-1}(I_{j})\) and \(F_{n} = f^{-1}([n, \infty ))\). Then \(S = \bigcup _{j=1}^{n2^{n}}E_{j} \cup F_{n}\). We define for all \(x \in S\)
-</p>
-
-<p>
-\[ s_{n}(x) = \sum _{j=1}^{n2^{n}}\left (\frac {j-1}{2^{n}}\right ){\1}_{E_{j}}(x) + n{\1}_{F_{n}}(x).\]
-</p>
-
-<p>
-Step 2 Properties of \((s_{n})\).
-</p>
-
-<p>
-For \(x \in E_{j}, s_{n}(x) = \frac {j-1}{2^{n}}\) and \(\frac {j-1}{2^{n}} \leq f(x) &lt; \frac {j}{2^{n}}\) and so \(s_{n}(x) \leq f(x)\). For \(x \in F_{n}, s_{n}(x) = n\) and \(f(x)
-\geq n\). So we conclude that \(s_{n} \leq f\) for all \(\nN \).
-</p>
-
-<p>
-To show that \(s_{n} \leq s_{n+1}\), fix an arbitrary \(j\) and consider \(I_{j} = \left [\frac {j-1}{2^{n}}, \frac {j}{2^{n}}\right )\). For convenience, we write \(I_{j}\) as \(I\) and we observe
-that \(I = I_{1}\cup I_{2}\) where \(I_{1} = \left [\frac {2j-2}{2^{n+1}}, \frac {2j-1}{2^{n+1}}\right )\) and \(I_{2} = \left [\frac {2j-1}{2^{n+1}}, \frac {2j}{2^{n+1}}\right )\).
-Let \(E = f^{-1}(I), E_{1} = f^{-1}(I_{1})\) and \(E_{2} = f^{-1}(I_{2})\). Then \(s_{n}(x) = \frac {j-1}{2^{n}}\) for all \(x \in E, s_{n+1}(x) = \frac {j-1}{2^{n}}\) for all \(x \in
-E_{1}\), and \(s_{n+1}(x) = \frac {2j-1}{2^{n+1}}\) for all \(x \in E_{2}\). It follows that \(s_{n} \leq s_{n+1}\) for all \(x \in E\). A similar (easier) argument can be used on \(F_{n}\).
-</p>
-
-<p>
-Step 3 Convergence of \((s_{n})\).
-</p>
-
-<p>
-Fix any \(x \in S\). Since \(f(x) \in \R \) there exists \(n_{0} \in \mathbb {N}\) so that \(f(x) \leq n_{0}\). Then for each \(n &gt; n_{0}, f(x) \in I_{j}\) for some \(1 \leq j \leq n2^{n}\),
-i.e. \(\frac {j-1}{2^{n}} \leq f(x) &lt; \frac {j}{2^{n}}\). But \(s_{n}(x) = \frac {j-1}{2^{n}}\) and so \(|f(x) - s_{n}(x)| &lt; \frac {1}{2^{n}}\) and the result follows. If \(f\) is
-bounded we can find \(n_{0} \in \mathbb {N}\) so that \(f(x) \leq n_{0}\) for all \(x \in \R \). Then the argument just given yields \(|f(x) - s_{n}(x)| &lt; \frac {1}{2^{n}}\) for all \(x \in \R
-\) from which we can deduce the uniformity of the convergence. &#x2003;&#x2003;&#x220E;
+In all cases, you are welcome to come and discuss any questions/comments/typos. Please email to arrange a convenient time.
 </p>
 
 </section>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2022." />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -224,7 +224,7 @@ MathJax = {
 
 
 
-<a id="notes-autopage-213"></a>
+<a id="notes-autopage-217"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
@@ -855,8 +855,8 @@ Home</a>
 <!--
 ......     section The Central Limit Theorem () ......
 -->
-<h4 id="autosec-214"><span class="sectionnumber">5.5&#x2003;</span>The Central Limit Theorem (\(\star \))</h4>
-<a id="notes-autopage-214"></a>
+<h4 id="autosec-218"><span class="sectionnumber">5.5&#x2003;</span>The Central Limit Theorem (\(\star \))</h4>
+<a id="notes-autopage-218"></a>
 <a id="notes-autofile-39"></a> <a id="sec:clt"></a>
 
 <p>
@@ -865,13 +865,13 @@ Let \((X_{n})\) be a sequence of i.i.d. random variables having finite mean \(\m
 \rightarrow \infty \). Now consider the sequence \((Y_{n})\) of standardised random variables defined by
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{5.}{8}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{5.}{9}\)</span>
 
 <!--
 
 
                                                          Xn − µ S − nµ
-                                                  Yn =     √ = n√                                                            (5.9)                                                        --><a id="stand"></a><!--
+                                                  Yn =     √ = n√                                                              (5.10)                                                     --><a id="stand"></a><!--
                                                          σ/ n    σ n
 -->
 
@@ -900,10 +900,10 @@ standing assumption that all the \(X_{n}\)’s have a finite variance, then this
 
 
 
-<a id="autoid-188"></a>
+<a id="autoid-194"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 5.5.1 (Central Limit Theorem)</span> <a id="autoid-189" ></a ><a id="thm:CLT"></a> Let \((X_{n})\) be a sequence of i.i.d. random variables each having
+<span class="theoremheaderplain">Theorem 5.5.1 (Central Limit Theorem)</span> <a id="autoid-195" ></a ><a id="thm:CLT"></a> Let \((X_{n})\) be a sequence of i.i.d. random variables each having
 finite mean \(\mu \) and finite variance \(\sigma ^{2}\). Then the corresponding sequence \((Y_{n})\) of standardised random variables converges in distribution to the standard normal \(Z \sim N(0,1)\), i.e.
 for all \(a \in \R \)
 </p>
@@ -937,15 +937,15 @@ Now for all \(y \in \R \), let \((\alpha _{n}(y))\) be a sequence of real (or co
 \)
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{5.}{9}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{5.}{10}\)</span>
 
 <!--
 
-                                                                         n
-                                                            y + αn (y)
-                                                     
-                                               lim       1+                   = ey                                      (5.10)                                                     --><a id="anal"></a><!--
-                                              n→∞               n
+                                                                          n
+                                                             y + αn (y)
+                                                      
+                                                lim       1+                   = ey                                       (5.11)                                                   --><a id="anal"></a><!--
+                                               n→∞               n
 -->
 
 <p>
@@ -985,16 +985,11 @@ href="Characteristic-Functions-Weak-Convergence.html#remain3">5.8</a>),
 </p>
 
 <p>
-as \(n \rightarrow \infty \), for all \(u \in \R \).
+as \(n \rightarrow \infty \), for all \(u \in \R \). Lastly, we use (<a href="The-Central-Limit-Theorem.html#anal">5.10</a>) to find that
 </p>
 
 <p>
-Now we use (<a href="The-Central-Limit-Theorem.html#anal">5.10</a>) to find that
-</p>
-
-<p>
-\[\begin {aligned} \phi _{n}(u) &amp; = \left (1 - \frac {\frac {u^{2}}{2} - \theta _{n}(u)}{n}\right )^{n}\\ &amp; \rightarrow &amp; e^{-\frac {1}{2}u^{2}}~\mbox {as}~n
-\rightarrow \infty .     \end {aligned}\]
+\[\phi _{n}(u) = \left (1 - \frac {\frac {u^{2}}{2} - \theta _{n}(u)}{n}\right )^{n}\\ \rightarrow e^{-\frac {1}{2}u^{2}}~\mbox {as}~n \rightarrow \infty .\]
 </p>
 
 <p>
@@ -1003,8 +998,8 @@ The result then follows by Theorem <a href="Characteristic-Functions-Weak-Conver
 <!--
 ......    subsection Further discussion () ......
 -->
-<h5 id="autosec-216"><span class="sectionnumber">5.5.1&#x2003;</span>Further discussion (\(\star \))</h5>
-<a id="notes-autopage-216"></a>
+<h5 id="autosec-220"><span class="sectionnumber">5.5.1&#x2003;</span>Further discussion (\(\star \))</h5>
+<a id="notes-autopage-220"></a>
 
 
 
@@ -1047,24 +1042,24 @@ for all \(\epsilon &gt; 0\) then \(\frac {S_{n}}{\tau _{n}}\) converges in distr
 <p>
 The highlights of this last chapter have been the proofs of the law of large numbers and central limit theorem. There is a third result that is often grouped together with the other two as one of the key results about
 sums of i.i.d. random variables. It is called the law of the iterated logarithm and it gives bounds on the fluctuations of \(S_{n}\) for an i.i.d sequence with \(\mu = 0\) and \(\sigma = 1\). The result is quite
-remarkable. It states that
+remarkable. It states that almost surely,
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{5.}{10}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{5.}{11}\)</span>
 
 <!--
 
 
-                                                             Sn
-                                                lim sup p              = 1 a.s.                                                (5.11)                                                        --><a id="lil"></a><!--
-                                                  n→∞    2n log log(n)
+                                                                  Sn
+                                                  lim sup p                 = 1.                                                 (5.12)                                                      --><a id="lil"></a><!--
+                                                    n→∞       2n log log(n)
 -->
 
 <p>
 
 
 \begin{equation}
-\label {lil} \ds \ls \frac {S_{n}}{\sqrt {2n \log \log (n)}} = 1~\mbox {a.s.}
+\label {lil} \ds \ls \frac {S_{n}}{\sqrt {2n \log \log (n)}} = 1.
 \end{equation}
 
 
@@ -1076,11 +1071,11 @@ This gives a <i>very</i> precise description of the long-term behaviour of \(S_n
 </p>
 
 <p>
-You should be able to deduce from (<a href="The-Central-Limit-Theorem.html#lil">5.11</a>) that
+You should be able to deduce from (<a href="The-Central-Limit-Theorem.html#lil">5.11</a>) that almost surely
 </p>
 
 <p>
-\[\ds \li \frac {S_{n}}{\sqrt {2n \log \log (n)}} = -1~\mbox {a.s.}\]
+\[\ds \li \frac {S_{n}}{\sqrt {2n \log \log (n)}} = -1.\]
 </p>
 
 </section>
@@ -1092,7 +1087,7 @@ You should be able to deduce from (<a href="The-Central-Limit-Theorem.html#lil">
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
 </p>
 
 </footer>

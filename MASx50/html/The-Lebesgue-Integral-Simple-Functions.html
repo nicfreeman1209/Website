@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2022." />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -860,16 +860,12 @@ Home</a>
 <a id="notes-autofile-20"></a>
 
 <p>
-We’ll present the construction of the Lebesgue integral in three steps: Step 1: Indicator functions, Step 2: Simple Functions, Step 3: Non-negative measurable functions, Step 4: Integrable functions. The first two
+We’ll present the construction of the Lebesgue integral in four steps: Step 1: Indicator functions, Step 2: Simple Functions, Step 3: Non-negative measurable functions, Step 4: Integrable functions. The first two
 steps begin here.
 </p>
 
 <p>
 Step 1. Indicator Functions
-</p>
-
-<p>
-This is very easy and yet it is very important:
 </p>
 
 <p>
@@ -880,9 +876,9 @@ If \(f = {\1}_{A}\) where \(A \in \Sigma \)
 
 <!--
 
-                                                Z
-                                                      1A dm = m(A).                                          (3.2)                                                                     --><a id="Lebind"></a><!--
-                                                  S
+                                               Z
+                                                    1A dm = m(A).                                            (3.2)                                                                      --><a id="Lebind"></a><!--
+                                                S
 
 -->
 
@@ -909,10 +905,10 @@ href="The-Lebesgue-Integral-Simple-Functions.html#Lebind">3.2</a>) by linearity,
 
 <!--
 
-                                            Z              n
-                                                           X
-                                                  f dm =         ci m(Ai ),                                  (3.3)                                                                     --><a id="Lebsim"></a><!--
-                                             S             i=1
+                                           Z             n
+                                                         X
+                                                f dm =         ci m(Ai ),                                    (3.3)                                                                      --><a id="Lebsim"></a><!--
+                                            S            i=1
 
 -->
 
@@ -992,45 +988,35 @@ some work in each step to upgrade them. We begin this process with the next theo
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> For the first claim, let \(f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}, g = \sum
+_{j=1}^{m}d_{j}{\1}_{B_{j}}\). Since \(\bigcup _{i=1}^{n}A_{i} = \bigcup _{j=1}^{m}B_{j} = S\), we have
 </p>
-<ul style="list-style-type:none">
 
-
-<li>
-<p>
-1. Let \(f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}, g = \sum _{j=1}^{m}d_{j}{\1}_{B_{j}}\). Since \(\bigcup _{i=1}^{n}A_{i} = \bigcup _{j=1}^{m}B_{j} = S\), we have
-</p>
 <p>
 \[ f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i} \cap S} = \sum _{i=1}^{n}c_{i}{\1}_{A_{i} \cap \bigcup _{j=1}^{m}B_{j}} = \sum _{i=1}^{n}\sum _{j=1}^{m}c_{i}{\1}_{A_{i} \cap B_{j}}.\]
 </p>
+
 <p>
 Here, the last equality follows by Problem <a href="Exercises-2.html#ps:indicator_funcs"><b>2.1</b></a> part (d). It follows that
 </p>
+
 <p>
 \[ \alpha f + \beta g = \sum _{i=1}^{n}\sum _{j=1}^{m}( \alpha c_{i} + \beta d_{j}){\1}_{A_{i} \cap B_{j}}.\]
 </p>
+
 <p>
 Thus
 </p>
+
 <p>
 \[ \begin {aligned} I( \alpha f + \beta g) &amp; = \sum _{i=1}^{n}\sum _{j=1}^{m}( \alpha c_{i} + \beta d_{j})m(A_{i} \cap B_{j})\\ &amp; = \alpha \sum _{i=1}^{n}c_i\sum
 _{j=1}^{m}m(A_{i} \cap B_{j}) + \beta \sum _{j=1}^{n}d_i\sum _{i=1}^{m}m(A_{i} \cap B_{j}) \\ &amp; = \alpha \sum _{i=1}^{n}c_{i}m\left (A_{i} \cap \bigcup _{j=1}^{m}B_{j}\right
 ) + \beta \sum _{j=1}^{m}d_{j}m\left (\bigcup _{i=1}^{n}A_{i} \cap B_{j}\right )\\ &amp; = \alpha \sum _{i=1}^{n}c_{i}m(A_{i}\cap S) + \beta \sum _{j=1}^{m}d_{j}m(B_{j}\cap S)\\
-&amp; = \alpha \sum _{i=1}^{n}c_{i}m(A_{i}) + \beta \sum _{j=1}^{m}d_{j}m(B_{j})\\ &amp; = \alpha I(f) + \beta I(g).                \end {aligned} \]
+&amp; = \alpha \sum _{i=1}^{n}c_{i}m(A_{i}) + \beta \sum _{j=1}^{m}d_{j}m(B_{j})\\ &amp; = \alpha I(f) + \beta I(g).                 \end {aligned} \]
 </p>
-</li>
-<li>
-
 
 <p>
-2. By (1), \(I(g) = I(f) + I(g-f)\) but \(g-f\) is a non-negative simple function and so \(I(g-f) \geq 0\). The result follows.
-</p>
-</li>
-</ul>
-
-<p>
-&#x2003;&#x2003;&#x220E;
+For the second claim, by (1), \(I(g) = I(f) + I(g-f)\) but \(g-f\) is a non-negative simple function and so \(I(g-f) \geq 0\). The result follows. &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodydefn">
 
@@ -1068,7 +1054,7 @@ In general there is no guarantee that \(I_{A}(f)\) is defined for some function 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
 </p>
 
 </footer>

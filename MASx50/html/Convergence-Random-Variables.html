@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2022." />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -224,7 +224,7 @@ MathJax = {
 
 
 
-<a id="notes-autopage-192"></a>
+<a id="notes-autopage-193"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
@@ -855,8 +855,8 @@ Home</a>
 <!--
 ......     section Convergence of Random Variables ......
 -->
-<h4 id="autosec-193"><span class="sectionnumber">5.2&#x2003;</span>Convergence of Random Variables</h4>
-<a id="notes-autopage-193"></a>
+<h4 id="autosec-194"><span class="sectionnumber">5.2&#x2003;</span>Convergence of Random Variables</h4>
+<a id="notes-autopage-194"></a>
 <a id="notes-autofile-36"></a> <a id="sec:conv"></a>
 
 <p>
@@ -885,7 +885,7 @@ We say that \((X_{n})\) converges to \(X\)
 
 
 <p>
-• in probability if given any \(a &gt; 0\), we have \(\P [|X_{n} - X| &gt; a] \to 0\) as \(n\to \infty \),
+• in probability if given any \(a &gt; 0\), we have \(\P [|X_{n} - X| \geq a] \to 0\) as \(n\to \infty \),
 </p>
 </li>
 <li>
@@ -977,7 +977,11 @@ Happily, there are some relationships between these different modes of convergen
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The last part follows from the examples in Exercises <a
+No other relationships exist in general, other than those implied by the above results.
+</p>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The last part follows from the counterexamples in Exercises <a
 href="Exercises-5.html#ps:D_not_P"><b>5.1</b></a>-<a href="Exercises-5.html#ps:P_not_as"><b>5.3</b></a>. We’ll give proofs of parts 1-4 here.
 </p>
 
@@ -992,10 +996,10 @@ href="Exercises-5.html#ps:D_not_P"><b>5.1</b></a>-<a href="Exercises-5.html#ps:P
 
 
 
-                                                                            P[X ≤ x] = P[X ≤ x, |Xn − X| < ϵ] + P[X ≤ x, |Xn − X| ≥ ϵ]
+                                                                             P[X ≤ x] = P[X ≤ x, |Xn − X| < ϵ] + P[X ≤ x, |Xn − X| ≥ ϵ]
 
-                                                                                                                   ≥ ϵ].
-                                                                                      ≤ P[Xn ≤ x + ϵ] + P[|Xn − X|(5.3)                                                                 --><a id="eq:pd1"></a><!--
+                                                                                                                       ≥ ϵ].
+                                                                                          ≤ P[Xn ≤ x + ϵ] + P[|Xn − X|(5.3)                                                             --><a id="eq:pd1"></a><!--
 
 
 
@@ -1019,7 +1023,7 @@ Putting \(x-\epsilon \) in place of \(x\) we obtain
 
 
 
-                                                                                     P[X ≤ x − ϵ] ≤ P[Xn ≤ x] + P[|Xn − X ≥ ϵ].       (5.4)                                             --><a id="eq:pd2"></a><!--
+                                                                                      P[X ≤ x − ϵ] ≤ P[Xn ≤ x] + P[|Xn − X ≥ ϵ].      (5.4)                                             --><a id="eq:pd2"></a><!--
 
 
 
@@ -1069,7 +1073,7 @@ letting \(\epsilon \to 0\), both \(\P [X\leq x+\epsilon ]\) and \(\P [X\leq x-\e
 
 
 
-                                                                     P[X ≤ x] − P[|Xn − X| ≥ ϵ] ≤ P[Xn ≤ x] ≤ P[X ≤ x] + P[|Xn − X| ≥ ϵ].
+                                                                      P[X ≤ x] − P[|Xn − X| ≥ ϵ] ≤ P[Xn ≤ x] ≤ P[X ≤ x] + P[|Xn − X| ≥ ϵ].
 
 
 
@@ -1087,13 +1091,13 @@ Letting \(n\to \infty \) and using that \(X_n\stackrel {\P }{\to } X\), the sand
 </p>
 
 <p>
-<b>Part 2.</b> Let \(\epsilon &gt; 0\) be arbitrary and let \(A_{n} = \bigcup _{m = n}^{\infty }\{|X_{m} - X| &gt; \epsilon \}\). Then \((A_{n})\) is a decreasing sequence of events. Let \(A =
+<b>Part 2.</b> Let \(\epsilon &gt; 0\) be arbitrary and let \(A_{n} = \bigcup _{m = n}^{\infty }\{|X_{m} - X| \geq \epsilon \}\). Then \((A_{n})\) is a decreasing sequence of events. Let \(A =
 \bigcap _{n=1}^{\infty }A_{n}\). If \(\omega \in A\) then \(X_{n}(\omega )\) cannot converge to \(X(\omega )\) as \(n \rightarrow \infty \) and so \(\P [A] = 0\), because \(X_n\to X\) almost
 surely. By Theorem <a href="Probability-Measure.html#thm:monotone_events_P">4.1.1</a> part (2), \(\lim _{n \rightarrow \infty }\P [A_{n}] = \P [A] = 0\). But then by monotonicity,
 </p>
 
 <p>
-\[ \P [|X_{n} - X| &gt; \epsilon ] \leq \P [A_{n}] \rightarrow 0~\mbox {as}~n \rightarrow \infty .\]
+\[ \P [|X_{n} - X| \geq \epsilon ] \leq \P [A_{n}] \rightarrow 0~\mbox {as}~n \rightarrow \infty .\]
 </p>
 
 <p>
@@ -1106,7 +1110,7 @@ surely. By Theorem <a href="Probability-Measure.html#thm:monotone_events_P">4.1.
 
 
 
-                                        E[|X|]p ≤ E[|X|p ]                                       (5.5)                                                                            --><a id="eq:jensen_p"></a><!--
+                                        E[|X|]p ≤ E[|X|p ]                                          (5.5)                                                                         --><a id="eq:jensen_p"></a><!--
 
 -->
 
@@ -1137,7 +1141,7 @@ href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#lem:markov_in
 </p>
 
 <p>
-\[\P [|X_{n} - X| &gt; a] \leq \ds \frac {\E [|X_{n} - X|]}{a}.\]
+\[\P [|X_{n} - X| \geq a] \leq \ds \frac {\E [|X_{n} - X|]}{a}.\]
 </p>
 
 <p>
@@ -1228,8 +1232,8 @@ that \(\P [Y_n=1\text { i.o.}]=0\). Hence \(\P [Y_n=0\text { e.v.}]=1\), which i
 <a id="autoid-172"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 5.2.4</span> <a id="autoid-173" ></a ><a id="lem:sub"></a> If \(X_{n} \rightarrow X\) in probability as \(n \rightarrow \infty \) then there is a
-subsequence of \((X_{n})\) that converges to \(X\) almost surely.
+<span class="theoremheaderplain">Lemma 5.2.4</span> <a id="autoid-173" ></a ><a id="lem:P_as_sub"></a> If \(X_{n} \rightarrow X\) in probability as \(n \rightarrow \infty \) then there is
+a subsequence of \((X_{n})\) that converges to \(X\) almost surely.
 </p>
 
 
@@ -1288,6 +1292,25 @@ and so
 Hence, almost surely, there exists some \(R\in \N \) such that for all \(r\geq R\) we have \(|X_{{k_{r}}} - X| &lt; 1/r\), which implies that \(|X_{{k_{r}}} - X|\to 0\). Hence \(X_{{k_r}}\to X\)
 almost surely. &#x2003;&#x2003;&#x220E;
 </p>
+<div class="theorembodyremark">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-174"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Remark 5.2.5</span> <a id="autoid-175" ></a >A subtle point is that the subsequence of \((X_n)\) constructed by Lemma <a href="notes.html#??">??</a> is a
+deterministic subsequence, in the sense that \(r\mapsto k_r\) is a deterministic function. Of course, \(X_{k_r}\) is a random variable for each \(r\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
 
 </section>
 
@@ -1298,7 +1321,7 @@ almost surely. &#x2003;&#x2003;&#x220E;
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
 </p>
 
 </footer>
