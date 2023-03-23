@@ -541,92 +541,99 @@ Home</a>
 
 
 <p>
-<a href="Sequences-random-variables.html#autosec-188" class="tocchapter" >
+<a href="Sequences-random-variables.html#autosec-189" class="tocchapter" >
 <span class="sectionnumber">5</span>&#x2003;Sequences of random variables</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-random-variables.html#autosec-189" class="tocsection" >
+<a href="Sequences-random-variables.html#autosec-190" class="tocsection" >
 <span class="sectionnumber">5.1</span>&#x2003;The Borel-Cantelli lemmas</a>
 </p>
 
 
 
 <p>
-<a href="Convergence-Random-Variables.html#autosec-193" class="tocsection" >
+<a href="Convergence-Random-Variables.html#autosec-194" class="tocsection" >
 <span class="sectionnumber">5.2</span>&#x2003;Convergence of Random Variables</a>
 </p>
 
 
 
 <p>
-<a href="Laws-Large-Numbers.html#autosec-200" class="tocsection" >
+<a href="Laws-Large-Numbers.html#autosec-202" class="tocsection" >
 <span class="sectionnumber">5.3</span>&#x2003;Laws of Large Numbers</a>
 </p>
 
 
 
 <p>
-<a href="Characteristic-Functions-Weak-Convergence.html#autosec-206" class="tocsection" >
+<a href="Characteristic-Functions-Weak-Convergence.html#autosec-208" class="tocsection" >
 <span class="sectionnumber">5.4</span>&#x2003;Characteristic Functions and Weak Convergence (\(\star \))</a>
 </p>
 
 
 
 <p>
-<a href="The-Central-Limit-Theorem.html#autosec-214" class="tocsection" >
+<a href="The-Central-Limit-Theorem.html#autosec-218" class="tocsection" >
 <span class="sectionnumber">5.5</span>&#x2003;The Central Limit Theorem (\(\star \))</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-5.html#autosec-218" class="tocsection" >
+<a href="Exercises-5.html#autosec-222" class="tocsection" >
 <span class="sectionnumber">5.6</span>&#x2003;Exercises 5</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-221" class="tocchapter" >
+<a href="Product-Measures-Fubini-Theorem.html#autosec-227" class="tocchapter" >
 <span class="sectionnumber">6</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-222" class="tocsection" >
+<a href="Product-Measures-Fubini-Theorem.html#autosec-228" class="tocsection" >
 <span class="sectionnumber">6.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measure.html#autosec-227" class="tocsection" >
+<a href="Product-Measure.html#autosec-233" class="tocsection" >
 <span class="sectionnumber">6.2</span>&#x2003;Product Measure \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Fubini-Theorem.html#autosec-231" class="tocsection" >
+<a href="Fubini-Theorem.html#autosec-237" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-6.html#autosec-235" class="tocsection" >
+<a href="Exercises-6.html#autosec-241" class="tocsection" >
 <span class="sectionnumber">6.4</span>&#x2003;Exercises 6</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises.html#autosec-238" class="tocchapter" >
-<span class="sectionnumber">A</span>&#x2003;Solutions to exercises</a>
+<a href="Advice-revision-exams.html#autosec-244" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-248" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Solutions to exercises</a>
 </p>
 
 
@@ -873,21 +880,87 @@ Step 3. Non-negative measurable functions
 
 <!--
 
-                               Z                 that \(E = f^{-1}([c, \infty )) \in
-\Sigma \) as \(f\) is measurable (from Theorem 2.2.1, in the context of the extended real numbers). By Theorem <a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a> parts (1) and (2),
+                               Z                 \int _{S}s dm, s~\mbox {simple}, 0 \leq s \leq f\right \}.
+\end{equation}
+
+
 </p>
 
 <p>
-\[ \int _{S} f\,dm \geq \int _{S}\1_Ef\,dm \geq \int _{S}c\1_E\,dm = c\int _{S} {\1}_{E}\,dm = c m (E), \]
+With this definition, \(\int _{S}f dm \in [0, \infty ]\). We allow the possibility that this integral may be equal to \(+\infty \). The set over which we take the supremum is non-empty by Theorem <a
+href="Simple-Functions.html#thm:simple_approx">2.5.1</a>.
 </p>
 
 <p>
-and the result follows. &#x2003;&#x2003;&#x220E;
+The use of the sup makes it easy to prove some properties but hard to prove others. We’ll have to postpone a full proof of linearity until the next section, but here are some other properties that can be proved fairly
+easily.
 </p>
-<div class="theorembodydefn">
+<div class="theorembodytheorem">
 
 <ul style="list-style-type:none">
+
+
+
+<a id="autoid-87"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Theorem 3.3.1</span> <a id="autoid-88" ></a ><a id="thm:bprops"></a> If \(f, g:                       S \rightarrow \R \) are non-negative measurable functions,
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. (Monotonicity)&nbsp;If \(f \leq g\) then \(\int _{S}f dm \leq \int _{S}g dm.\)
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+2. \(\int _S\alpha f \,dm = \alpha \int _S f\,dm\) for all \(\alpha \geq 0\),
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+3. If \(A,B \in \Sigma \) with \(A \subseteq B\) then \(I_{A}(f) \leq I_{B}(f)\),
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+4. If \(A \in \Sigma \) with \(m(A) = 0\) then \(I_{A}(f) = 0\).
+</p>
+</li>
+</ul>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> For (1),
+</p>
+<span class="hidden"> \(\seteqnumber{0}{3.}{4}\)</span>
+
+
+
+<!--
+
+
+                                                                         Z                 yle-type:none">
 
 
 
@@ -915,7 +988,7 @@ and the result follows. &#x2003;&#x2003;&#x220E;
 </div>
 
 <p>
-In Problem <a href="Exercises-3.html#ps:ae_equiv"><b>3.10</b></a> you can show that this gives rise to an equivalence relation on the set of all measurable functions. You should think of ‘\(g=f\) a.e.’ as
+In Problem <a href="Exercises-3.html#ps:ae_equiv"><b>3.9</b></a> you can show that this gives rise to an equivalence relation on the set of all measurable functions. You should think of ‘\(g=f\) a.e.’ as
 saying ‘as far as measure theory is concerned, \(f\) and \(g\) are might as well be equal’.
 </p>
 <div class="theorembodycor">

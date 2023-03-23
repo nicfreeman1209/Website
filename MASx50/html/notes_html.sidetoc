@@ -50,20 +50,22 @@
 \contentsline {section}{\numberline {4.3}{\ignorespaces Discrete and Continuous Random Variables\relax }}{177}{}
 \contentsline {section}{\numberline {4.4}{\ignorespaces Independence\relax }}{180}{}
 \contentsline {section}{\numberline {4.5}{\ignorespaces Exercises 4\relax }}{185}{}
-\contentsline {chapter}{\numberline {5}{\ignorespaces Sequences of random variables\relax }}{188}{}
-\contentsline {section}{\numberline {5.1}{\ignorespaces The Borel-Cantelli lemmas\relax }}{189}{}
-\contentsline {section}{\numberline {5.2}{\ignorespaces Convergence of Random Variables\relax }}{193}{}
-\contentsline {section}{\numberline {5.3}{\ignorespaces Laws of Large Numbers\relax }}{200}{}
-\contentsline {section}{\numberline {5.4}{\ignorespaces Characteristic Functions and Weak Convergence (\(\star \))\relax }}{206}{}
-\contentsline {subsection}{\numberline {5.4.1}{\ignorespaces Characteristic Functions (\(\star \))\relax }}{207}{}
-\contentsline {subsection}{\numberline {5.4.2}{\ignorespaces Weak Convergence (\(\star \))\relax }}{210}{}
-\contentsline {section}{\numberline {5.5}{\ignorespaces The Central Limit Theorem (\(\star \))\relax }}{214}{}
-\contentsline {subsection}{\numberline {5.5.1}{\ignorespaces Further discussion (\(\star \))\relax }}{216}{}
-\contentsline {section}{\numberline {5.6}{\ignorespaces Exercises 5\relax }}{218}{}
-\contentsline {chapter}{\numberline {6}{\ignorespaces Product Measures and Fubini's Theorem \((\Delta )\)\relax }}{221}{}
-\contentsline {section}{\numberline {6.1}{\ignorespaces Dynkin's $\pi -\lambda $ Lemma \((\Delta )\)\relax }}{222}{}
-\contentsline {section}{\numberline {6.2}{\ignorespaces Product Measure \((\Delta )\)\relax }}{227}{}
-\contentsline {section}{\numberline {6.3}{\ignorespaces Fubini's Theorem \((\Delta )\)\relax }}{231}{}
-\contentsline {section}{\numberline {6.4}{\ignorespaces Exercises 6\relax }}{235}{}
-\contentsline {chapter}{\numberline {A}{\ignorespaces Solutions to exercises\relax }}{238}{}
+\contentsline {chapter}{\numberline {5}{\ignorespaces Sequences of random variables\relax }}{189}{}
+\contentsline {section}{\numberline {5.1}{\ignorespaces The Borel-Cantelli lemmas\relax }}{190}{}
+\contentsline {section}{\numberline {5.2}{\ignorespaces Convergence of Random Variables\relax }}{194}{}
+\contentsline {section}{\numberline {5.3}{\ignorespaces Laws of Large Numbers\relax }}{202}{}
+\contentsline {section}{\numberline {5.4}{\ignorespaces Characteristic Functions and Weak Convergence (\(\star \))\relax }}{208}{}
+\contentsline {subsection}{\numberline {5.4.1}{\ignorespaces Characteristic Functions (\(\star \))\relax }}{209}{}
+\contentsline {subsection}{\numberline {5.4.2}{\ignorespaces Weak Convergence (\(\star \))\relax }}{214}{}
+\contentsline {subsection}{\numberline {5.4.3}{\ignorespaces An inequality concerning characteristic functions $(\star )$\relax }}{216}{}
+\contentsline {section}{\numberline {5.5}{\ignorespaces The Central Limit Theorem (\(\star \))\relax }}{218}{}
+\contentsline {subsection}{\numberline {5.5.1}{\ignorespaces Further discussion (\(\star \))\relax }}{220}{}
+\contentsline {section}{\numberline {5.6}{\ignorespaces Exercises 5\relax }}{222}{}
+\contentsline {chapter}{\numberline {6}{\ignorespaces Product Measures and Fubini's Theorem \((\Delta )\)\relax }}{227}{}
+\contentsline {section}{\numberline {6.1}{\ignorespaces Dynkin's $\pi -\lambda $ Lemma \((\Delta )\)\relax }}{228}{}
+\contentsline {section}{\numberline {6.2}{\ignorespaces Product Measure \((\Delta )\)\relax }}{233}{}
+\contentsline {section}{\numberline {6.3}{\ignorespaces Fubini's Theorem \((\Delta )\)\relax }}{237}{}
+\contentsline {section}{\numberline {6.4}{\ignorespaces Exercises 6\relax }}{241}{}
+\contentsline {chapter}{\numberline {A}{\ignorespaces Advice for revision/exams\relax }}{244}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Solutions to exercises\relax }}{248}{}
 
