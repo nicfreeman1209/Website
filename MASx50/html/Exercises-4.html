@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2022." />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -541,92 +541,99 @@ Home</a>
 
 
 <p>
-<a href="Sequences-random-variables.html#autosec-188" class="tocchapter" >
+<a href="Sequences-random-variables.html#autosec-189" class="tocchapter" >
 <span class="sectionnumber">5</span>&#x2003;Sequences of random variables</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-random-variables.html#autosec-189" class="tocsection" >
+<a href="Sequences-random-variables.html#autosec-190" class="tocsection" >
 <span class="sectionnumber">5.1</span>&#x2003;The Borel-Cantelli lemmas</a>
 </p>
 
 
 
 <p>
-<a href="Convergence-Random-Variables.html#autosec-193" class="tocsection" >
+<a href="Convergence-Random-Variables.html#autosec-194" class="tocsection" >
 <span class="sectionnumber">5.2</span>&#x2003;Convergence of Random Variables</a>
 </p>
 
 
 
 <p>
-<a href="Laws-Large-Numbers.html#autosec-200" class="tocsection" >
+<a href="Laws-Large-Numbers.html#autosec-202" class="tocsection" >
 <span class="sectionnumber">5.3</span>&#x2003;Laws of Large Numbers</a>
 </p>
 
 
 
 <p>
-<a href="Characteristic-Functions-Weak-Convergence.html#autosec-206" class="tocsection" >
+<a href="Characteristic-Functions-Weak-Convergence.html#autosec-208" class="tocsection" >
 <span class="sectionnumber">5.4</span>&#x2003;Characteristic Functions and Weak Convergence (\(\star \))</a>
 </p>
 
 
 
 <p>
-<a href="The-Central-Limit-Theorem.html#autosec-214" class="tocsection" >
+<a href="The-Central-Limit-Theorem.html#autosec-218" class="tocsection" >
 <span class="sectionnumber">5.5</span>&#x2003;The Central Limit Theorem (\(\star \))</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-5.html#autosec-218" class="tocsection" >
+<a href="Exercises-5.html#autosec-222" class="tocsection" >
 <span class="sectionnumber">5.6</span>&#x2003;Exercises 5</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-221" class="tocchapter" >
+<a href="Product-Measures-Fubini-Theorem.html#autosec-227" class="tocchapter" >
 <span class="sectionnumber">6</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-222" class="tocsection" >
+<a href="Product-Measures-Fubini-Theorem.html#autosec-228" class="tocsection" >
 <span class="sectionnumber">6.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measure.html#autosec-227" class="tocsection" >
+<a href="Product-Measure.html#autosec-233" class="tocsection" >
 <span class="sectionnumber">6.2</span>&#x2003;Product Measure \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Fubini-Theorem.html#autosec-231" class="tocsection" >
+<a href="Fubini-Theorem.html#autosec-237" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-6.html#autosec-235" class="tocsection" >
+<a href="Exercises-6.html#autosec-241" class="tocsection" >
 <span class="sectionnumber">6.4</span>&#x2003;Exercises 6</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises.html#autosec-238" class="tocchapter" >
-<span class="sectionnumber">A</span>&#x2003;Solutions to exercises</a>
+<a href="Advice-revision-exams.html#autosec-244" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-248" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Solutions to exercises</a>
 </p>
 
 
@@ -893,7 +900,21 @@ place of measurable functions and expectation in place of the integral.
 
 
 <p>
-<b>4.4</b> <a id="ps:indep_uncor"></a> Let \(U\) be a random variable such that \(\P [U=-1]=\P [U=1]=\frac 12\) and let \(V\) be a random variable such that \(\P [V=0]=\P [V=1]=\frac 12\),
+<b>4.4</b> <a id="ps:chebychev_2"></a> Let \(X\) be a real-valued random variable defined on a probability space \((\Omega , {\cal F}, \P )\). Use the result of Exercise <a
+href="Exercises-3.html#ps:chebychev"><b>3.5</b></a> to derive the probabilistic version of Chebychev’s inequality:
+</p>
+<p>
+\[ \P \l [|X - \mu | \geq c\r ] \leq \ds \frac {\var (X)}{c^{2}},\]
+</p>
+<p>
+where \(\var (X)\) and \(\E [X] = \mu \) are both assumed to be finite.
+</p>
+</li>
+<li>
+
+
+<p>
+<b>4.5</b> <a id="ps:indep_uncor"></a> Let \(U\) be a random variable such that \(\P [U=-1]=\P [U=1]=\frac 12\) and let \(V\) be a random variable such that \(\P [V=0]=\P [V=1]=\frac 12\),
 independent of \(U\). Let \(X=UV\) and \(Y=U(1-V)\). Show that \(\E [XY]=\E [X]\E [Y]\) but that \(X\) and \(Y\) are <i>not</i> independent.
 </p>
 </li>
@@ -901,7 +922,7 @@ independent of \(U\). Let \(X=UV\) and \(Y=U(1-V)\). Show that \(\E [XY]=\E [X]\
 
 
 <p>
-<b>4.5</b> <a id="ps:indep_inf"></a>
+<b>4.6</b> <a id="ps:indep_inf"></a>
 </p>
 <ul style="list-style-type:none">
 
@@ -916,7 +937,7 @@ independent of \(U\). Let \(X=UV\) and \(Y=U(1-V)\). Show that \(\E [XY]=\E [X]\
                                                                     ∞
                                                      "        #
                                                          \          Y
-                                                 P           An =         P[An ].                                   (4.1)                                              --><a id="eq:inf_indep"></a><!--
+                                                 P           An =         P[An ].                                    (4.1)                                             --><a id="eq:inf_indep"></a><!--
                                                      n∈N            n=1
 -->
 <p>
@@ -944,7 +965,7 @@ this not a sensible idea?
 
 
 <p>
-<b>4.6</b> <a id="ps:indep_exts"></a>
+<b>4.7</b> <a id="ps:indep_exts"></a>
 </p>
 <ul style="list-style-type:none">
 
@@ -964,10 +985,16 @@ this not a sensible idea?
 </ul>
 </li>
 <li>
+<p>
+<b>4.8</b> <a id="ps:BC2_baby_version"></a> Let \(\eps &gt;0\). Let \((E_n)\) be a sequence of independent events such that \(\P [E_n]\geq \eps \) for all \(n\in \N \). Show that \(\P [\cup _{n\in
+\N } E_n]=1\).
+</p>
+</li>
+<li>
 
 
 <p>
-<b>4.7</b> <a id="ps:E_P_tail_bound"></a>
+<b>4.9</b> <a id="ps:E_P_tail_bound"></a>
 </p>
 <ul style="list-style-type:none">
 
@@ -984,7 +1011,7 @@ this not a sensible idea?
 
 
 <p>
-<span class="textnormal">(b)</span> Let \(Y\) be a non-negative random variable. Deduce that
+<span class="textnormal">(b)</span> Let \(Y\) be a non-negative random variable taking values in \(\R \). Deduce that
 </p>
 <p>
 \[ \sum _{k=1}^{\infty }\P [Y \geq k] \;\leq \; \E [Y] \;\leq \; 1 + \sum _{k=1}^{\infty }\P [Y \geq k].\]
@@ -1000,21 +1027,17 @@ this not a sensible idea?
 
 
 <p>
-<b>4.8</b> <a id="ps:chebychev_2"></a> Let \(X\) be a real-valued random variable defined on a probability space \((\Omega , {\cal F}, P)\). Use the result of Exercise <a
-href="Exercises-3.html#ps:chebychev"><b>3.5</b></a> to derive the probabilistic version of Chebychev’s inequality:
+<b>4.10</b> <a id="ps:countable_atoms"></a> Let \(X\) be a random variable. Show that there are at most countably many \(x\in \R \) such that \(\P [X=x]&gt;0\).
 </p>
 <p>
-\[ \P \l [|X - \mu | \geq c\r ] \leq \ds \frac {\var (X)}{c^{2}},\]
-</p>
-<p>
-where \(\var (X)\) and \(\E [X] = \mu \) are both assumed to be finite.
+<i>Hint: What happens to \(F_X(x)\) at \(x\) such that \(\P [X=x]&gt;0\)?</i>
 </p>
 </li>
 <li>
 
 
 <p>
-<b>4.9</b> <a id="ps:cauchy_schwarz"></a>
+<b>4.11</b> <a id="ps:cauchy_schwarz"></a>
 </p>
 <ul style="list-style-type:none">
 
@@ -1024,7 +1047,7 @@ where \(\var (X)\) and \(\E [X] = \mu \) are both assumed to be finite.
 <span class="textnormal">(a)</span> Suppose that \(X\) and \(Y\) are random variables and both \(X^{2}\) and \(Y^{2}\) are integrable. Prove the Cauchy-Schwarz inequality:
 </p>
 <p>
-\[ |\E [XY]| \leq (\E [X^{2}]^{\frac {1}{2}})(\E [Y^{2}]^{\frac {1}{2}}).\]
+\[ |\E [XY]| \leq \l (\E [X^{2}]^{\frac {1}{2}}\r )\l (\E [Y^{2}]^{\frac {1}{2}}\r ).\]
 </p>
 <p>
 <i>Hint: Consider \(g(t) = \E [(X + tY)^{2}]\) as a quadratic function of \(t \in \R \).</i>
@@ -1056,14 +1079,14 @@ where \(\var (X)\) and \(\E [X] = \mu \) are both assumed to be finite.
 
 
 <p>
-<b>4.10</b> <a id="ps:exp_moments"></a>
+<b>4.12</b> <a id="ps:exp_moments"></a> A random variable is said to have an exponential moment if \(\E [e^{a|X|}] &lt; \infty \) for some \(a &gt; 0\).
 </p>
 <ul style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Let \(X\) be a non-negative random variable and \(a &gt; 0\). Show that \(\E (e^{-aX} ) \leq 1\).
+<span class="textnormal">(a)</span> Let \(X\) be a non-negative random variable and \(a &gt; 0\). Show that \(\E [e^{-aX} ] \leq 1\).
 </p>
 
 
@@ -1072,8 +1095,7 @@ where \(\var (X)\) and \(\E [X] = \mu \) are both assumed to be finite.
 
 
 <p>
-<span class="textnormal">(b)</span> A random variable is said to have an exponential moment if \(\E (e^{a|X}) &lt; \infty \) for some \(a &gt; 0\). Show that \(X \sim N(0,1)\) has exponential
-moments for all \(a &gt; 0\).
+<span class="textnormal">(b)</span> Show that \(X \sim N(0,1)\) has exponential moments for all \(a &gt; 0\).
 </p>
 
 
@@ -1082,7 +1104,7 @@ moments for all \(a &gt; 0\).
 
 
 <p>
-<span class="textnormal">(c)</span> If \(X\) has an exponential moment, deduce that it has moments to all orders, i.e. that \(\E (|X|^{n}) &lt; \infty \) for all \(\nN \).
+<span class="textnormal">(c)</span> Let \(X\) be a random variable with an exponential moment. Show that \(\E [|X|^{n}] &lt; \infty \) for all \(\nN \).
 </p>
 </li>
 </ul>
@@ -1091,11 +1113,11 @@ moments for all \(a &gt; 0\).
 
 
 <p>
-<b>4.11</b> <a id="ps:E_int"></a> Let \(X\) be a real-valued random variable with law \(p_{X}\) defined on a probability space \((\Omega , {\cal F}, \P )\). Show that for all bounded measurable
+<b>4.13</b> <a id="ps:E_int"></a> Let \(X\) be a real-valued random variable with law \(p_{X}\) defined on a probability space \((\Omega , {\cal F}, \P )\). Show that for all bounded measurable
 functions \(f:\R \rightarrow \R \),
 </p>
 <p>
-\[ \int _{\Omega }f(X(\omega ))d\P (\omega ) = \int _{\R }f(x)dp_{X}(x).\]
+\[ \int _{\Omega }f(X(\omega ))\,d\P (\omega ) = \int _{\R }f(x)\,dp_{X}(x).\]
 </p>
 <p>
 What can you say about these integrals when \(f\) is non-negative but not necessarily bounded?
@@ -1103,9 +1125,23 @@ What can you say about these integrals when \(f\) is non-negative but not necess
 <p>
 <i>Hint: Begin with \(f\) an indicator function, then extend to simple, bounded non-negative and general bounded measurable functions.</i>
 </p>
+</li>
+</ul>
+<!--
+......    subsubsection Challenge questions ......
+-->
+<h6 id="autosec-187">Challenge questions</h6>
+<a id="notes-autopage-187"></a>
+
+
+
+<ul style="list-style-type:none">
+
+
+<li>
 <p>
-
-
+<b>4.14</b> <a id="ps:Omega_uncountable"></a> Let \(\eps &gt;0\). Let \((\Omega ,\mc {F},\P )\) be a probability space and suppose that \((E_n)_{n\in \N }\) is a sequence of independent events,
+with \(\P [E_n]\in (\eps ,1-\eps )\) for all \(n\in \N \). Show that \(\P [\omega ]=0\) for all \(\omega \in \Omega \) and, hence, deduce that \(\Omega \) is uncountable.
 </p>
 </li>
 </ul>
@@ -1119,7 +1155,7 @@ What can you say about these integrals when \(f\) is non-negative but not necess
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
 </p>
 
 </footer>

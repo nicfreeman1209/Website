@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, September 22, 2022." />
+<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -541,92 +541,99 @@ Home</a>
 
 
 <p>
-<a href="Sequences-random-variables.html#autosec-188" class="tocchapter" >
+<a href="Sequences-random-variables.html#autosec-189" class="tocchapter" >
 <span class="sectionnumber">5</span>&#x2003;Sequences of random variables</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-random-variables.html#autosec-189" class="tocsection" >
+<a href="Sequences-random-variables.html#autosec-190" class="tocsection" >
 <span class="sectionnumber">5.1</span>&#x2003;The Borel-Cantelli lemmas</a>
 </p>
 
 
 
 <p>
-<a href="Convergence-Random-Variables.html#autosec-193" class="tocsection" >
+<a href="Convergence-Random-Variables.html#autosec-194" class="tocsection" >
 <span class="sectionnumber">5.2</span>&#x2003;Convergence of Random Variables</a>
 </p>
 
 
 
 <p>
-<a href="Laws-Large-Numbers.html#autosec-200" class="tocsection" >
+<a href="Laws-Large-Numbers.html#autosec-202" class="tocsection" >
 <span class="sectionnumber">5.3</span>&#x2003;Laws of Large Numbers</a>
 </p>
 
 
 
 <p>
-<a href="Characteristic-Functions-Weak-Convergence.html#autosec-206" class="tocsection" >
+<a href="Characteristic-Functions-Weak-Convergence.html#autosec-208" class="tocsection" >
 <span class="sectionnumber">5.4</span>&#x2003;Characteristic Functions and Weak Convergence (\(\star \))</a>
 </p>
 
 
 
 <p>
-<a href="The-Central-Limit-Theorem.html#autosec-214" class="tocsection" >
+<a href="The-Central-Limit-Theorem.html#autosec-218" class="tocsection" >
 <span class="sectionnumber">5.5</span>&#x2003;The Central Limit Theorem (\(\star \))</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-5.html#autosec-218" class="tocsection" >
+<a href="Exercises-5.html#autosec-222" class="tocsection" >
 <span class="sectionnumber">5.6</span>&#x2003;Exercises 5</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-221" class="tocchapter" >
+<a href="Product-Measures-Fubini-Theorem.html#autosec-227" class="tocchapter" >
 <span class="sectionnumber">6</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-222" class="tocsection" >
+<a href="Product-Measures-Fubini-Theorem.html#autosec-228" class="tocsection" >
 <span class="sectionnumber">6.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Product-Measure.html#autosec-227" class="tocsection" >
+<a href="Product-Measure.html#autosec-233" class="tocsection" >
 <span class="sectionnumber">6.2</span>&#x2003;Product Measure \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Fubini-Theorem.html#autosec-231" class="tocsection" >
+<a href="Fubini-Theorem.html#autosec-237" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-6.html#autosec-235" class="tocsection" >
+<a href="Exercises-6.html#autosec-241" class="tocsection" >
 <span class="sectionnumber">6.4</span>&#x2003;Exercises 6</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises.html#autosec-238" class="tocchapter" >
-<span class="sectionnumber">A</span>&#x2003;Solutions to exercises</a>
+<a href="Advice-revision-exams.html#autosec-244" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-248" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Solutions to exercises</a>
 </p>
 
 
@@ -1056,9 +1063,9 @@ For example, to find \(\lambda \l ((-3, 10)\sc (-1, 4)\r )\), use (L3) and (M2) 
 <li>
 <p>
 <span class="theoremheaderplain">Remark 1.5.3</span> <a id="autoid-34" ></a ><a id="rem:borel_leb_restriction"></a> If \(I\) is a closed interval (or in fact any Borel set) in \(\R \) we can
-similarly define \(\mc {B}(I)\), the Borel \(\sigma \)-field of \(I\), to be the smallest \(\sigma \)-field containing all open intervals in \(I\). In fact, it holds that \(\mc {B}(I)=\{B\cap I\-B\in \mc
-{B}(\R )\}\). The Lebesgue measure \(\lambda _I\) on \((I, \mc {B}(I))\) is obtained by restricting the sets \(A\) in (<a href="Lebesgue-Measure.html#eq:leb">1.6</a>) to be in \(\mc {B}(I)\). It can
-be seen that for \(A\sw I\) we have \(\lambda _I(A)=\lambda (A)\). We won’t include a proof of these claims.
+similarly define \(\mc {B}(I)\), the Borel \(\sigma \)-field of \(I\), to be the smallest \(\sigma \)-field containing all open intervals in \(I\). In fact, it holds that \(\mc {B}(I)=\{B\cap I\-B\in \mc {B}(\R
+)\}\). The Lebesgue measure \(\lambda _I\) on \((I, \mc {B}(I))\) is obtained by restricting the sets \(A\) in (<a href="Lebesgue-Measure.html#eq:leb">1.6</a>) to be in \(\mc {B}(I)\). It can be seen
+that for \(A\sw I\) we have \(\lambda _I(A)=\lambda (A)\). We won’t include a proof of these claims.
 </p>
 
 
@@ -1093,7 +1100,7 @@ zero
 
 <p>
 <span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Write \(A = \{a_{1}, a_{2}, \ldots \} = \bigcup _{n=1}^{\infty }\{a_{n}\}\).
-Since \(A\) is an infinite union of point sets, it is in \({\cal B}(\R )\). Then, using (M2) and (L2)
+Since \(A\) is a countable union of singletons, it is in \({\cal B}(\R )\). Then, using (M2) and (L2)
 </p>
 
 <p>
@@ -1163,7 +1170,7 @@ We’ll tend to use (L1)-(L5) without explicitly referencing them, from now on. 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 22, 2022
+Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
 </p>
 
 </footer>
