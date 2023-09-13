@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — The Cumulative Distribution Function</title>
+<title>MAS350/61022 — The cumulative distribution function</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-171"></a>
+<a id="notes-autopage-204"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,50 +855,132 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section The Cumulative Distribution Function ......
+......     section The cumulative distribution function ......
 -->
-<h4 id="autosec-172"><span class="sectionnumber">4.2&#x2003;</span>The Cumulative Distribution Function</h4>
-<a id="notes-autopage-172"></a>
-<a id="notes-autofile-31"></a>
+<h4 id="autosec-205"><span class="sectionnumber">5.2&#x2003;</span>The cumulative distribution function</h4>
+<a id="notes-autopage-205"></a>
+<a id="notes-autofile-36"></a>
 
 <p>
 Let \(X:\Omega \rightarrow \R \) be a random variable. Its cumulative distribution function or cdf is the mapping \(F_{X}:\R \rightarrow [0, 1]\) defined for each \(x \in \R \) by
 </p>
 
 <p>
-\[F_{X}(x) = \P [X \leq x] = p_{X}((-\infty , x]).\]
+\[F_{X}(x) = \P [X \leq x].\]
 </p>
 
 <p>
-When \(X\) is clear from the context we might write \(F\) instead of \(F_X\).
+When \(X\) is clear from the context we might write \(F\) instead of \(F_X\). Note that if \(x\leq y\) then \(\{X\leq x\}\sw \{X\leq y\}\), which by monotonicity of measures implies that \(F_X(x)\leq
+F_X(y)\). That is, the function \(F_X\) is monotone increasing. It is straightforward to check that for \(x\leq y\) we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{5.}{0}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                               P[X > x] = 1 − FX (x)                       (5.1)                            --><a id="eq:cdf_above"></a><!--
+
+                                                                                           P[x < X ≤ y] = FX (y) − FX (x)                      (5.2)                           --><a id="eq:cdf_xy"></a><!--
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align}
+\label {eq:cdf_above} \P [X&gt; x] &amp;= 1-F_X(x) \\ \label {eq:cdf_xy} \P [x &lt; X \leq y]&amp;= F_X(y)-F_X(x)
+\end{align}
+and this is left for you in Exercise <a href="notes.html#??">??</a>.
 </p>
 
 <p>
-The next result gathers together some useful properties of the cdf. Recall that if \(f:\R \rightarrow \R ,\) the left limit at \(x\) is \(\lim _{y \uparrow x}f(y) = \lim _{y \rightarrow x, y &lt;
-x}f(y)\), and the right limit at \(x\) is \(\lim _{y \downarrow x}f(y) = \lim _{y \rightarrow x, y &gt; x}f(y)\). In general, left and right limits may not exist, but they do if the function \(f\) is
-monotonic increasing (or decreasing).
+Our next result gathers together some analytic properties of \(F_X\). Recall that if \(f:\R \rightarrow \R ,\) the left limit at \(x\) is \(\lim _{y \uparrow x}f(y)\), and the right limit at \(x\) is \(\lim _{y
+\downarrow x}f(y)\). In general left and right limits might not exist, but they always do if the function \(f\) is monotonic increasing (or decreasing).
 </p>
-<div class="theorembodytheorem">
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-148"></a>
+<a id="autoid-182"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 4.2.1</span> <a id="autoid-149" ></a ><a id="thm:cdf"></a> Let \(X\) be a random variable having cdf \(F\).
+<span class="theoremheaderplain">Lemma 5.2.1</span> <a id="autoid-183" ></a ><a id="l:cdf"></a> Let \(X\) be a random variable having cdf \(F\).
 </p>
 <ul style="list-style-type:none">
 
 
 <li>
 <p>
-1. \(\P [X &gt; x] = 1 - F(x)\),
+1. \(\P [X=x] = F(x) - \lim _{y \uparrow x}F(y)\)
 </p>
 
 
@@ -908,7 +989,7 @@ monotonic increasing (or decreasing).
 
 
 <p>
-2. \(\P [x &lt; X \leq y] = F(y) - F(x)\) for all \(x &lt; y\).
+2. The map \(x \rightarrow F(x)\) is right continuous: \(F(x) = \lim _{y \downarrow x}F(y)\) for all \(x \in \R \).
 </p>
 
 
@@ -917,34 +998,7 @@ monotonic increasing (or decreasing).
 
 
 <p>
-3. \(F\) is monotone increasing, i.e \(F(x) \leq F(y)\) for all \(x &lt; y\),
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-4. \(\P [X=x] = F(x) - \lim _{y \uparrow x}F(y)\),
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-5. The mapping \(x \rightarrow F(x)\) is right continuous, i.e. \(F(x) = \lim _{y \downarrow x}F(y)\), for all \(x \in \R \),
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-6. \(\lim \limits _{x \rightarrow -\infty }F(x) = 0\) and \(\lim \limits _{x \rightarrow \infty }F(x) = 1.\)
+3. \(\lim \limits _{x \rightarrow -\infty }F(x) = 0\) and \(\lim \limits _{x \rightarrow \infty }F(x) = 1.\)
 </p>
 </li>
 </ul>
@@ -957,17 +1011,13 @@ monotonic increasing (or decreasing).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Parts 1-3 are left as (easy!) exercises for you. Part 6 is Problem <a
-href="Exercises-4.html#ps:cdf_thm_bit"><b>4.1</b></a>.
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We prove the three parts in turn. For the first part, let \(x\in \R \) and let \((a_n)\) be a
+sequence of positive numbers that decreases to zero. For each \(\nN \) define \(B_n = \{x - a_{n} &lt; X \leq x\}\). Then \(B_n\in \mc {F}\) and \(B_{n+1}\sw B_n\), with \(\bigcap _n B_n=\{X =
+x\}\). By Lemma <a href="notes.html#??">??</a> and <span class="textup">(<a href="notes.html#??">??</a>)</span> we have
 </p>
 
 <p>
-Part 4: Let \((a_{n})\) be a sequence of positive numbers that decreases to zero. Let \(x \in \R \) be arbitrary and for each \(\nN \), define \(B_{n} = (x - a_{n} &lt; X \leq x)\). Then \((B_{n})\)
-decreases to the event \((X = x)\), so using part 2 and Theorem <a href="Probability-Measure.html#thm:monotone_events_P">4.1.1</a>,
-</p>
-
-<p>
-\[\P [X = x] = \lim _{n \rightarrow \infty }\P [B_{n}] = F(x) - \lim _{n \rightarrow \infty }F(x - a_{n}),\]
+\[\P [X=x]=\P \l [\bigcap _n B_n\r ] = \lim _{n \rightarrow \infty }\P [B_{n}] = F(x) - \lim _{n \rightarrow \infty }F(x - a_{n}),\]
 </p>
 
 <p>
@@ -975,12 +1025,12 @@ and the result follows.
 </p>
 
 <p>
-Part 5: Let \(x\) and \((a_{n})\) be as in (4) and for each \(\nN \) define \(A_{n} = (X &gt; x + a_{n})\). The sets \((A_{n})\) are increasing to \((X &gt; x)\), so using part 1 and Theorem <a
-href="Probability-Measure.html#thm:monotone_events_P">4.1.1</a> we find that
+For the second part, again let \(x\in \R \) and let \((a_n)\) be a sequence of positive numbers that decreases to zero. For each \(\nN \) define \(A_{n} = \{X &gt; x + a_{n}\}\). Then \(B_n\in \mc {F}\)
+and \(A_{n}\sw A_{n+1}\), with \(\bigcup _n A_n=\{X &gt; x\}\). By Lemma <a href="notes.html#??">??</a> and <span class="textup">(<a href="notes.html#??">??</a>)</span> we have
 </p>
 
 <p>
-\[ 1 - F(x) = \lim _{n \rightarrow \infty } \P [A_{n}] = 1 - \lim _{n \rightarrow \infty }F(x + a_{n}),\]
+\[ 1-F(x)=\P \l [\bigcup _n A_n\r ] = \lim _{n \rightarrow \infty } \P [A_{n}] = 1 - \lim _{n \rightarrow \infty }F(x + a_{n}),\]
 </p>
 
 <p>
@@ -992,11 +1042,11 @@ and the result follows. &#x2003;&#x2003;&#x220E;
 
 
 
-<a id="autoid-150"></a>
+<a id="autoid-184"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 4.2.2</span> <a id="autoid-151" ></a ><a id="rem:cdf_cont"></a> By combining parts 4 and 5 of Theorem <a
-href="The-Cumulative-Distribution-Function.html#thm:cdf">4.2.1</a>, we have that \(\P [X=x_0]=0\) if and only if \(F_X(x)\) is continuous at \(x=x_0\).
+<span class="theoremheaderplain">Remark 5.2.2</span> <a id="autoid-185" ></a ><a id="r:cdf_cont"></a> By combining the first two parts of Lemma <a href="notes.html#??">??</a>, we have that
+\(\P [X=x_0]=0\) if and only if \(F_X(x)\) is continuous at \(x=x_0\).
 </p>
 
 
@@ -1011,11 +1061,11 @@ href="The-Cumulative-Distribution-Function.html#thm:cdf">4.2.1</a>, we have that
 
 
 
-<a id="autoid-152"></a>
+<a id="autoid-186"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 4.2.3</span> <a id="autoid-153" ></a >(\(\star \)) It can be shown that a function \(F:\R \rightarrow \R \) is the cdf of some random variable \(X\) if and
-only if it satisfies properties 3, 5 and 6 of Theorem <a href="The-Cumulative-Distribution-Function.html#thm:cdf">4.2.1</a>.
+<span class="theoremheaderplain">Remark 5.2.3</span> <a id="autoid-187" ></a >(\(\star \)) It can be shown that a function \(F:\R \rightarrow \R \) is the cdf of some random variable \(X\) if and
+only if it is monotone increasing and satisfies properties 2 and 3 of Lemma <a href="notes.html#??">??</a>.
 </p>
 
 
@@ -1034,7 +1084,7 @@ only if it satisfies properties 3, 5 and 6 of Theorem <a href="The-Cumulative-Di
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

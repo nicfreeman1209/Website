@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Riemann Integration </title>
+<title>MAS350/61022 — Riemann integration </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-148"></a>
+<a id="notes-autopage-181"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,35 +855,86 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Riemann Integration       ......
+......     section Riemann integration       ......
 -->
-<h4 id="autosec-149"><span class="sectionnumber">3.10&#x2003;</span>Riemann Integration \((\star )\)</h4>
-<a id="notes-autopage-149"></a>
-<a id="notes-autofile-28"></a> <a id="sec:rie_leb_ints"></a>
+<h4 id="autosec-182"><span class="sectionnumber">4.10&#x2003;</span>Riemann integration \((\star )\)</h4>
+<a id="notes-autopage-182"></a>
+<a id="notes-autofile-33"></a> <a id="s:rie_leb_ints"></a>
 
 <p>
 In this section, our aim is to show that if a bounded function \(f:   [a,b] \rightarrow \R \) is Riemann integrable, then it is measurable and Lebesgue integrable. Moreover, in this case the Riemann and
-Lebesgue integrals of \(f\) are equal. We state this result formally as Theorem <a href="Riemann-Integration.html#thm:RiL">3.10.3</a>.
-</p>
-
-<p>
-Consequently, the Lebesgue integral on \(\R \) is at least as powerful as the Riemann one – when we integrate over finite intervals. In fact, we can integrate <i>many</i> more functions using Lebesgue integration
-than we could using Riemann integration. For example, with Riemann integration we could not conclude that \(\int _{[a,b]}{\1}_{\R \sc \mathbb {Q}}(x) dx = (b - a)\), but with Lebesgue integration we
-can.
+Lebesgue integrals of \(f\) are equal. We state this result formally as Theorem <a href="notes.html#??">??</a>. In this section we will prefer to say ‘\(f\) is Lebesgue integral’ rather than \(f\in \Lone \),
+simply because it makes for better grammar when we compare Riemann and Lebesgue integrability within the same sentence.
 </p>
 
 <p>
 We begin by briefly revising the Riemann integral. Note that this whole section is marked with a \((\star )\), meaning that it is off-syllabus. It will be discussed briefly in lectures.
 </p>
 <!--
-......   subsection The Riemann Integral        ......
+......   subsection The Riemann integral        ......
 -->
-<h5 id="autosec-150"><span class="sectionnumber">3.10.1&#x2003;</span>The Riemann Integral \((\star )\)</h5>
-<a id="notes-autopage-150"></a>
+<h5 id="autosec-183"><span class="sectionnumber">4.10.1&#x2003;</span>The Riemann integral \((\star )\)</h5>
+<a id="notes-autopage-183"></a>
 
 
 
@@ -909,13 +959,13 @@ and overestimate by defining
 A partition \({\cal P}^{\prime }\) is said to be a refinement of \(\cal P\) if \({\cal P} \subset {\cal P}^{\prime }\). We then have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{3.}{10}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{20}\)</span>
 
 <!--
 
 
 
-                                                      L(f, P) ≤ L(f, P ′ ),   U (f, P ′ ) ≤ U (f, P).                                              (3.11)                          --><a id="ref"></a><!--
+                                        L(f, P) ≤ L(f, P ′ ),   U (f, P ′ ) ≤ U (f, P).                                  (4.21)                                                    --><a id="ref"></a><!--
 
 -->
 
@@ -943,20 +993,20 @@ b]\) if \(L_{a,b}f = U_{a,b}f\), and we then write the common value as \(\int _{
 
 
 
-<a id="autoid-134"></a>
+<a id="autoid-168"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 3.10.1</span> <a id="autoid-135" ></a ><a id="thm:Pfind"></a> The bounded function \(f\) is Riemann integrable on \([a, b]\) if and only if for every
-\(\epsilon &gt; 0\) there exists a partition \(\cal P\) for which
+<span class="theoremheaderplain">Theorem 4.10.1</span> <a id="autoid-169" ></a ><a id="t:Pfind"></a> The bounded function \(f\) is Riemann integrable on \([a, b]\) if and only if for every
+\(\eps &gt; 0\) there exists a partition \(\cal P\) for which
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{3.}{11}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{21}\)</span>
 
 <!--
 
 
 
-                                                              U (f, P) − L(f, P) < ϵ.                                                            (3.12)                --><a id="part"></a><!--
+                                                U (f, P) − L(f, P) < ϵ.                                             (4.22)                                                     --><a id="part"></a><!--
 
 -->
 
@@ -964,7 +1014,7 @@ b]\) if \(L_{a,b}f = U_{a,b}f\), and we then write the common value as \(\int _{
 
 
 \begin{equation}
-\label {part} U(f, {\cal P}) - L(f, {\cal P}) &lt; \epsilon .
+\label {part} U(f, {\cal P}) - L(f, {\cal P}) &lt; \eps .
 \end{equation}
 
 
@@ -983,7 +1033,7 @@ b]\) if \(L_{a,b}f = U_{a,b}f\), and we then write the common value as \(\int _{
 </div>
 
 <p>
-If (<a href="Riemann-Integration.html#part">3.12</a>) holds for some \(\cal P\), it also holds for all refinements of \(\cal P\). A useful corollary is
+If <span class="textup">(<a href="Riemann-Integration.html#part">3.12</a>)</span> holds for some \(\cal P\), it also holds for all refinements of \(\cal P\). A useful corollary is:
 </p>
 <div class="theorembodycor">
 
@@ -991,10 +1041,10 @@ If (<a href="Riemann-Integration.html#part">3.12</a>) holds for some \(\cal P\),
 
 
 
-<a id="autoid-136"></a>
+<a id="autoid-170"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Corollary 3.10.2</span> <a id="autoid-137" ></a ><a id="cor:Pcor"></a> If the bounded function \(f\) is Riemann integrable on \([a, b]\), then there exists an
+<span class="theoremheaderplain">Corollary 4.10.2</span> <a id="autoid-171" ></a ><a id="cor:Pcor"></a> If the bounded function \(f\) is Riemann integrable on \([a, b]\), then there exists an
 increasing sequence \(({\cal P}_{n})\) of partitions of \([a,b]\) for which
 </p>
 
@@ -1015,30 +1065,31 @@ increasing sequence \(({\cal P}_{n})\) of partitions of \([a,b]\) for which
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> This follows from Theorem (<a
-href="Riemann-Integration.html#thm:Pfind">3.10.1</a>) by successively choosing \(\epsilon = 1, \frac {1}{2}, \frac {1}{3}, \ldots , \frac {1}{n}, \ldots .\) If the sequence \(({\cal
-P}_{n})\) is not increasing, then just replace \({\cal P}_{n}\) with \({\cal P}_{n} \cup {\cal P}_{n-1}\) and observe that this can only improve the
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> This follows from Theorem (<a href="notes.html#??">??</a>) by successively choosing
+\(\eps = 1, \frac {1}{2}, \frac {1}{3}, \ldots , \frac {1}{n}, \ldots .\) If the sequence \(({\cal P}_{n})\) is not increasing, then just replace \({\cal P}_{n}\) with \({\cal P}_{n} \cup {\cal
+P}_{n-1}\) and observe that this can only improve the inequality <span class="textup">(<a href="Riemann-Integration.html#part">3.12</a>)</span>. &#x2003;&#x2003;&#x220E;
 </p>
 
 <p>
-inequality (<a href="Riemann-Integration.html#part">3.12</a>). &#x2003;&#x2003;&#x220E;
+We can integrate <i>many</i> more functions using Lebesgue integration than we could using Riemann integration. For example, with Riemann integration we could not conclude that \(\int _{[a,b]}{\1}_{\R
+\sc \mathbb {Q}}(x) dx = (b - a)\), but with Lebesgue integration we can.
 </p>
 <!--
-......   subsection The Connection   ......
+......   subsection The connection   ......
 -->
-<h5 id="autosec-153"><span class="sectionnumber">3.10.2&#x2003;</span>The Connection \((\star )\)</h5>
-<a id="notes-autopage-153"></a>
+<h5 id="autosec-186"><span class="sectionnumber">4.10.2&#x2003;</span>The connection \((\star )\)</h5>
+<a id="notes-autopage-186"></a>
 <div class="theorembodytheorem">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-138"></a>
+<a id="autoid-172"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 3.10.3</span> <a id="autoid-139" ></a ><a id="thm:RiL"></a> If \(f:             [a, b] \rightarrow \R \) is Riemann integrable, then it is Lebesgue integrable,
-and the two integrals coincide.
+<span class="theoremheaderplain">Theorem 4.10.3</span> <a id="autoid-173" ></a ><a id="t:RiL"></a> If \(f:             [a, b] \rightarrow \R \) is Riemann integrable, then it is Lebesgue integrable, and
+the two integrals coincide.
 </p>
 
 
@@ -1073,13 +1124,13 @@ Consider the sequences \((g_{n})\) and \((h_{n})\) which correspond to the parti
 where \(U_{n}(f) = U(f, {\cal P}_{n})\) and \(L_{n}(f) = L(f, {\cal P}_{n})\). Clearly we also have for each \(\nN \),
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{3.}{12}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{22}\)</span>
 
 <!--
 
 
 
-                                                                      gn ≤ f ≤ hn .                                                           (3.13)                          --><a id="order"></a><!--
+                                                     gn ≤ f ≤ hn .                                                 (4.23)                                                     --><a id="order"></a><!--
 
 -->
 
@@ -1098,13 +1149,13 @@ Since \((g_{n})\) is increasing (by (<a href="Riemann-Integration.html#ref">3.11
 decreasing and bounded below by \(m\), so it converges pointwise to a measurable function \(h\). By (<a href="Riemann-Integration.html#order">3.13</a>) we have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{3.}{13}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{23}\)</span>
 
 <!--
 
 
 
-                                                                      g ≤ f ≤ h.                                                             (3.14)                          --><a id="order1"></a><!--
+                                                      g ≤ f ≤ h.                                                  (4.24)                                                     --><a id="order1"></a><!--
 
 -->
 
@@ -1137,7 +1188,7 @@ Hence we have
 
 <p>
 and so by Corollary 3.3.1, \(h(x) = g(x)\) (a.e.). Then by (<a href="Riemann-Integration.html#order1">3.14</a>) \(f = g\) (a.e.) and so \(f\) is measurable<sup>3</sup><a
-id="notes-autopage-154"></a> and also integrable. So \(\int _{[a, b]}f d \lambda = \int _{[a, b]}g d\lambda \), and hence we have
+id="notes-autopage-187"></a> and also integrable. So \(\int _{[a, b]}f d \lambda = \int _{[a, b]}g d\lambda \), and hence we have
 </p>
 
 <p>
@@ -1149,7 +1200,7 @@ id="notes-autopage-154"></a> and also integrable. So \(\int _{[a, b]}f d \lambda
 </p>
 <div role="note" class="footnotes">
 
-<a id="notes-autopage-155"></a>
+<a id="notes-autopage-188"></a>
 
 <p>
 <sup>3</sup>&nbsp;I’m glossing over a subtlety here. It is not true in general, that a function that is almost everywhere equal to a measurable function is measurable. It works in this case due to a special property
@@ -1162,16 +1213,17 @@ of the Borel \(\sigma \)-field known as ‘completeness’.
 <!--
 ......    subsection Discussion       ......
 -->
-<h5 id="autosec-156"><span class="sectionnumber">3.10.3&#x2003;</span>Discussion \((\star )\)</h5>
-<a id="notes-autopage-156"></a>
+<h5 id="autosec-189"><span class="sectionnumber">4.10.3&#x2003;</span>Discussion \((\star )\)</h5>
+<a id="notes-autopage-189"></a>
 
 
 
 <p>
-An important caveat is that Theorem <a href="Riemann-Integration.html#thm:RiL">3.10.3</a> only applies to bounded closed intervals. On unbounded intervals, there are examples of functions are Riemann
-integrable<sup>4</sup> but not Lebesgue integrable. One such example is \(\int _0^\infty \frac {\sin x}{x}\,dx\). The function \(\frac {\sin x}{x}\) oscillates above and below \(0\) as \(x\to \infty
-\), and the Riemann integral \(\int _0^\infty \frac {\sin x}{x}\,dx=\lim \limits _{X\to \infty }\int _0^X \frac {\sin x}{x}\,dx\) only exists because these oscillations cancel each other out. In
-Lebesgue integration this isn’t allowed to happen, and \(\frac {\sin x}{x}\) fails to be Lebesgue integrable because \(\int _0^\infty |\frac {\sin x}{x}|\,dx=\infty \).
+An important caveat is that Theorem <a href="notes.html#??">??</a> only applies to bounded closed intervals. On unbounded intervals, there are examples of functions are Riemann integrable<sup>4</sup> but
+not Lebesgue integrable. One such example is \(\int _0^\infty \frac {\sin x}{x}\,dx\). The function \(\frac {\sin x}{x}\) oscillates above and below \(0\) as \(x\to \infty \), and the Riemann
+integral \(\int _0^\infty \frac {\sin x}{x}\,dx=\lim \limits _{X\to \infty }\int _0^X \frac {\sin x}{x}\,dx\) only exists because these oscillations cancel each other out. In Lebesgue integration
+this isn’t allowed to happen, and \(\frac {\sin x}{x}\) fails to be Lebesgue integrable because \(\int _0^\infty |\frac {\sin x}{x}|\,dx=\infty \). In fact, \(\int _0^\infty (\frac {\sin
+x}{x})_-\,dx=\int _0^\infty (\frac {\sin x}{x})_+\,dx=\infty \), so \(\int _0^\infty |\frac {\sin x}{x}|\,dx\) is undefined for the Lebesgue integral.
 </p>
 
 <p>
@@ -1190,7 +1242,7 @@ arranging its terms in a different order.
 </p>
 <div role="note" class="footnotes">
 
-<a id="notes-autopage-157"></a>
+<a id="notes-autopage-190"></a>
 
 <p>
 <sup>4</sup>&nbsp;Strictly, we should say ‘improperly’ Riemann integrable.
@@ -1208,10 +1260,10 @@ arranging its terms in a different order.
 
 
 
-<a id="autoid-140"></a>
+<a id="autoid-174"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 3.10.4</span> <a id="autoid-141" ></a >Let \((a_n)\) be a real sequence.
+<span class="theoremheaderplain">Theorem 4.10.4</span> <a id="autoid-175" ></a >Let \((a_n)\) be a real sequence.
 </p>
 <ul style="list-style-type:none">
 
@@ -1242,8 +1294,8 @@ arranging its terms in a different order.
 <p>
 Imagine if we allowed something similar to case 1 was allowed to happen in integration, and let us think about integration over \(\R \). It would mean that re-ordering the \(x\)-axis values (e.g.&nbsp;swap
 \([0,1)\) with \([1,2)\) and so on) could change the value of \(\int _\R f(x)\,dx\)! This would be nonsensical, and mean that integration over \(\R \) no longer had anything to do with ‘area under the
-curve’. So we have to avoid it, and we do so by restricting to integrable functions. Only then can we find nice conditions for ‘limit’ theorems like the dominated convergence theorem. Lebesgue integration (of
-integrable functions) solves this problem; Riemann integration cannot.
+curve’. So we have to avoid it, and we do so by restricting to integrable functions. Only then can we find nice conditions for ‘limit’ theorems like the dominated convergence theorem. Lebesgue integration solves this
+problem; Riemann integration cannot.
 </p>
 
 </section>
@@ -1255,7 +1307,7 @@ integrable functions) solves this problem; Riemann integration cannot.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

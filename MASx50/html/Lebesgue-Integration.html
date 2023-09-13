@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Lebesgue Integration</title>
+<title>MAS350/61022 — Lebesgue Integration</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-98"></a>
+<a id="notes-autopage-128"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,32 +855,79 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
 ......     chapter Lebesgue Integration ......
 -->
-<h3 id="autosec-99">Chapter&nbsp;<span class="sectionnumber">3&#x2003;</span>Lebesgue Integration</h3>
-<a id="notes-autopage-99"></a>
-<a id="notes-autofile-19"></a>
+<h3 id="autosec-129">Chapter&nbsp;<span class="sectionnumber">4&#x2003;</span>Lebesgue Integration</h3>
+<a id="notes-autopage-129"></a>
+<a id="notes-autofile-24"></a>
 
-<a id="chap:lebesbgue_integration"></a>
-<!--
-......   section Introduction ......
--->
-<h4 id="autosec-100"><span class="sectionnumber">3.1&#x2003;</span>Introduction</h4>
-<a id="notes-autopage-100"></a>
-
-
-
-<a id="sec:leb_intro"></a>
+<a id="c:lebesgue_integration"></a>
 
 <p>
 The concept of integration as a technique that both acts as an inverse to the operation of differentiation and also computes areas under curves goes back to the origin of the calculus and the work of Isaac Newton
 (1643-1727) and Gottfried Leibniz (1646-1716). It was Leibniz who introduced the \(\int \cdots dx\) notation. The first rigorous attempt to understand integration as a limiting operation within the spirit of
-analysis was due to Bernhard Riemann (1826-1866). The approach to Riemann integration that is often taught (as in MAS221) was developed by Jean-Gaston Darboux (1842-1917). At the time it was developed,
-this theory seemed to be all that was needed but as the 19th century drew to a close, some problems appeared:
+analysis was due to Bernhard Riemann (1826-1866). The approach to Riemann integration that is often taught (as in MAS2004/2009) was developed soon after by Jean-Gaston Darboux (1842-1917). At the time it
+was developed, this theory seemed to be all that was needed, but as the 19th century drew to a close, some problems appeared:
 </p>
 
 <ul style="list-style-type:none">
@@ -889,36 +935,36 @@ this theory seemed to be all that was needed but as the 19th century drew to a c
 
 <li>
 <p>
-• One of the main tasks of integration is to recover a function \(f\) from its derivative \(f^{\prime }\). But some functions were discovered for which \(f^{\prime }\) existed and was bounded, but was not
-Riemann integrable.
+• One of the main tasks of integration is to recover a function \(f\) from its derivative \(f&apos;\). But some functions were discovered for which \(f&apos;\) existed and was bounded, but where \(f&apos;\)
+was not Riemann integrable.
 </p>
 </li>
 <li>
 
 
 <p>
-• Suppose \((f_{n})\) is a sequence of functions converging pointwise to \(f\). The Riemann integral could not be used to find conditions for which
+• Suppose \((f_{n})\) is a sequence of functions converging pointwise to \(f\). People wanted a useful set of conditions under which
 </p>
-<span class="hidden"> \(\seteqnumber{0}{3.}{0}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
 <!--
 
-                                     Z                   Z
-                                         f (x)dx = lim       fn (x)dx.                                (3.1)                                                                      --><a id="eq:int_conv"></a><!--
-                                                  n→∞
+                                     Z                    Z
+                                         f (x) dx = lim       fn (x) dx.                               (4.1)                                                                     --><a id="eq:int_conv"></a><!--
+                                                   n→∞
 
 -->
 <p>
 
 
 \begin{equation}
-\label {eq:int_conv} \int f(x)dx = \lim _{n \rightarrow \infty }\int f_{n}(x)dx.
+\label {eq:int_conv} \int f(x)\,dx = \lim _{n \rightarrow \infty }\int f_{n}(x)\,dx.
 \end{equation}
 
 
 </p>
 <p>
-Problem <a href="Exercises-3.html#ps:nonconv_int"><b>3.16</b></a> illustrates some of the difficulties here; it gives an example of \(f_n,f\) such that \(f_n(x)\to f(x)\) for all \(x\), but in which
-<span class="textup">(<a href="Lebesgue-Integration.html#eq:int_conv">3.1</a>)</span> fails.
+but weren’t able to find any suitable conditions. Problem <a href="Exercises-3.html#ps:nonconv_int"><b>3.16</b></a> illustrates some of the difficulties here; it gives an example of \(f_n,f\) such that
+\(f_n(x)\to f(x)\) for all \(x\), but in which <span class="textup">(<a href="Lebesgue-Integration.html#eq:int_conv">3.1</a>)</span> fails.
 </p>
 </li>
 <li>
@@ -926,33 +972,377 @@ Problem <a href="Exercises-3.html#ps:nonconv_int"><b>3.16</b></a> illustrates so
 
 <p>
 • Riemann integration was limited to computing integrals over \(\R ^{n}\) with respect to Lebesgue measure. Although it was not yet apparent, the emerging theory of probability would require the calculation of
-expectations of random variables \(X\): \(\E (X) = \int _{\Omega }X(\omega )d\P (\omega ).\)
+expectations of random variables \(X\) using the formula \(\E (X) = \int _{\Omega }X(\omega )d\P (\omega ).\) This requires a version of integration that works on a general measure space.
 </p>
 </li>
 </ul>
 
 <p>
-A new approach to integration was needed. In this chapter, we’ll study <i>Lebesgue integration</i>, which allow us to investigate \(\int _{S}f(x)dm(x)\) where \(f:S \rightarrow \R \) is a “suitable”
-measurable function defined on a general measure space \((S, \Sigma , m)\).<sup>1</sup> If we take \(m\) to be Lebesgue measure on \((\R , {\cal B}(\R ))\) we recover the familiar integral \(\int _{\R
-}f(x)dx\) but we will now be able to integrate many more functions (at least in principle) than Riemann and Darboux. If we take \(X\) to be a random variable on a probability space, we get its expectation \(\E
-(X)\).
+A new approach to integration was needed. In this chapter, we’ll study <i>Lebesgue integration</i>, which allow us to investigate \(\int _{S}f(x)\,dm(x)\) where \(f:S \rightarrow \R \) is a ‘suitable’
+measurable function defined on a general measure space \((S, \Sigma , m)\). It was developed by Henri Lebesgue (pronounced ‘Leb-eyg’) and first published in 1902.
 </p>
 
 <p>
-Notation. For simplicity we usually write \(\int _{S}fdm\) instead of \(\int _{S}f(x)dm(x)\). To simplify even further we’ll sometimes write \(I(f) = \int _{S}fdm\). Note that many authors use \(\int
-_{S}f(x)m(dx)\), with the same meaning. In French textbooks you’ll often see \(\int _S dm\;f\).
+We will see that if we take \(m\) to be Lebesgue measure on \((\R , {\cal B}(\R ))\) then we recover the familiar integral \(\int _{\R }f(x)\,dx\) but we will now be able to integrate a much bigger class of
+functions than Riemann and Darboux could. Most importantly, the Lebesgue integral solves all three of the issues discussed above.
 </p>
-<div role="note" class="footnotes">
+<!--
+......   section The Lebesgue integral for simple functions ......
+-->
+<h4 id="autosec-130"><span class="sectionnumber">4.1&#x2003;</span>The Lebesgue integral for simple functions</h4>
+<a id="notes-autopage-130"></a>
 
-<a id="notes-autopage-101"></a>
+
+
+<a id="s:leb_1_simple"></a>
 
 <p>
-<sup>1</sup>&nbsp;We may also integrate extended measurable functions, but will not develop that here.
+We’ll present the construction of the Lebesgue integral in three steps. We’ll work over a general measure space \((S,\Sigma ,m)\) for most of Chapter <a href="notes.html#??">??</a>, and we’ll integrate
+functions \(f:S\to \R \). The first step will involve simple functions. In the second step we extend to non-negative measurable functions, and the final step we extend to what are known as ‘Lebesgue integrable’
+functions.
+</p>
+<div class="theorembodydefn">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-115"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Definition 4.1.1 (Lebesgue Integral, Step 1)</span> <a id="autoid-116" ></a ><a id="d:leb_int_simple"></a> If \(A\in \Sigma \) then the integral of the indicator
+function \(\1_A\) is defined as
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{4.}{1}\)</span>
+
+<!--
+
+                                    Z
+                                            1A dm = m(A).                                   (4.2)                                                                     --><a id="eq:leb_int_indicators"></a><!--
+                                      S
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:leb_int_indicators} \int _{S}{\1}_{A}\,dm = m(A).
+\end{equation}
+
+
+</p>
+
+<p>
+More generally, if \(f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}\) is a simple function, then we define
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{4.}{2}\)</span>
+
+<!--
+
+                                     Z               n
+                                                     X
+                                            f dm =         ci m(Ai ).                               (4.3)                                                                  --><a id="eq:leb_int_simple"></a><!--
+                                        S            i=1
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:leb_int_simple} \int _{S}f\, dm = \sum _{i=1}^{n}c_{i}m(A_{i}).
+\end{equation}
+
+
+</p>
+
+<p>
+Note that \(m(A_i)\) might be infinite, so \(\int _{S}f dm \in [0, \infty ]\).
 </p>
 
 
+</li>
+
+</ul>
 
 </div>
+
+<p>
+Note that we can represent \(f\) in more than one way as a simple function. For example if \(f=\1_{[0,1]}\) then also \(f=\1_{[0,\frac 12)}+\1_{[\frac 12,1]}\). It is easy to guess that the value of <span
+class="textup">(<a href="notes.html#??">??</a>)</span> does not depend on the choice of representation. We’ll omit a formal proof of this fact. Note also that equations <span class="textup">(<a
+href="notes.html#??">??</a>)</span> and <span class="textup">(<a href="notes.html#??">??</a>)</span> are consistent with each other, in the sense that if we take \(n=1\) and \(c_1=1\) in <span
+class="textup">(<a href="notes.html#??">??</a>)</span> then we obtain <span class="textup">(<a href="notes.html#??">??</a>)</span>.
+</p>
+
+<p>
+When we work with the theory of integration we will tend to write \(\int _S f\,dm\) for the Lebesgue integral of \(f\). We will sometimes use the shorthand notation
+</p>
+
+<p>
+\[\mc {I}(f)=\int _S f\,dm,\]
+</p>
+
+<p>
+to make our proofs easier to read. For calculations it is often more helpful to write \(\int _S f(x)\,dm(x)\), which is closer to the notation you’ve used before in the case \(S=\R \). We’ll come back to this point
+after we’ve reached Step 2 of the construction.
+</p>
+
+<p>
+In each step of defining the Lebesgue integral, we’ll establish some useful properties of the integral. Because we expand the amount of functions we can integrate at each step, this will mean that we carry several
+properties with us as we go, and we do some work in each step to upgrade them. We begin this process with the next lemma.
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-117"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 4.1.2</span> <a id="autoid-118" ></a ><a id="l:leb_int_step_1_properties"></a> If \(f\) and \(g\) are simple functions then:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. Linearity: for all \(\alpha ,\beta \in \R \)
+</p>
+<p>
+\[\int _{S}(\alpha f + \beta g)\,dm = \alpha \int _{S}f\,dm + \beta \int _{S}g\,dm,\]
+</p>
+</li>
+<li>
+
+
+<p>
+2. Monotonicity:
+</p>
+<p>
+\[f\leq g \quad \ra \quad \int _{S}f\,dm \leq \int _{S}g\,dm.\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let us write \(f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}\). Note that we can assume
+without loss of generality that \(\bigcup _{i=1}^n A_i=S\) by including an extra term with \(c_{n+1}=0\) and \(A_{n+1}=S\sc (\bigcup _{i=1}^n A_i)\) into the summation. Similarly, write \(g = \sum
+_{j=1}^{m}d_{j}{\1}_{B_{j}}\) where \(\bigcup _{i=1}^n B_i=S\). By the definition of simple functions we have \(A_i\cap A_j=\emptyset \) and \(B_i\cap B_j=\emptyset \) for all \(i\neq j\).
+</p>
+
+<p>
+We have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{4.}{3}\)</span>
+
+
+
+<!--
+
+
+                                                                  n                   n
+                                                                        ci 1Ai ∩S =         ci 1Ai ∩Sm
+                                                                  X                   X
+                                                             f=                                           Bj
+                                                                                                    j=1
+                                                                  i=1                 i=1
+                                                                                       n                           n              m               m
+                                                                                                                                                n X                        m
+                                                                                                                                                                         n X
+                                                                                            ci 1Ai 1Sm                   ci 1Ai         1Bj =             ci 1Ai 1Bj =             ci 1Ai ∩Bj .
+                                                                                      X                            X              X             X                        X
+                                                                                 =                        Bj   =
+                                                                                                    j=1
+                                                                                      i=1                          i=1            j=1           i=1 j=1                  i=1 j=1
+
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i} \cap S} &amp;= \sum _{i=1}^{n}c_{i}{\1}_{A_{i} \cap \bigcup _{j=1}^{m}B_{j}} \\ &amp;= \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}\1_{\bigcup
+_{j=1}^{m}B_{j}} = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}\sum _{j=1}^m \1_{B_j} = \sum _{i=1}^{n}\sum _{j=1}^{m}c_{i}{\1}_{A_{i}}\1_{B_{j}} = \sum _{i=1}^{n}\sum
+_{j=1}^{m}c_{i}{\1}_{A_{i}\cap B_{j}}.
+\end{align*}
+
+
+</p>
+
+<p>
+Here, the first line uses \(\bigcup _{i=1}^{n}A_{i} = S\) and the second line uses the results of Exercise <a href="Exercises-2.html#ps:indicator_funcs"><b>2.1</b></a>. We can obtain a similar
+expression for \(g\), giving \(g=\sum _{i=1}^n\sum _{j=1}^m + d_j \1_{A_i\cap B_j}\). It follows that
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{4.}{3}\)</span>
+
+<!--
+
+
+                             m
+                           n X
+                                     (αci + βdj )1Ai ∩Bj .
+                           X
+               αf + βg =                                          (4.4)                                                                                                                               --><a id="eq:simple_func_linearity"></a><!--
+                           i=1 j=1
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:simple_func_linearity} \alpha f + \beta g = \sum _{i=1}^{n}\sum _{j=1}^{m}( \alpha c_{i} + \beta d_{j}){\1}_{A_{i} \cap B_{j}}.
+\end{equation}
+
+
+</p>
+
+<p>
+Thus
+</p>
+
+<p>
+\[ \begin {aligned} \mc {I}( \alpha f + \beta g) &amp; = \sum _{i=1}^{n}\sum _{j=1}^{m}( \alpha c_{i} + \beta d_{j})m(A_{i} \cap B_{j})\\ &amp; = \alpha \sum _{i=1}^{n}c_i\sum
+_{j=1}^{m}m(A_{i} \cap B_{j}) + \beta \sum _{j=1}^{n}d_i\sum _{i=1}^{m}m(A_{i} \cap B_{j}) \\ &amp; = \alpha \sum _{i=1}^{n}c_{i}m\left (A_{i} \cap \bigcup _{j=1}^{m}B_{j}\right
+) + \beta \sum _{j=1}^{m}d_{j}m\left (\bigcup _{i=1}^{n}A_{i} \cap B_{j}\right )\\ &amp; = \alpha \sum _{i=1}^{n}c_{i}m(A_{i}\cap S) + \beta \sum _{j=1}^{m}d_{j}m(B_{j}\cap S)\\
+&amp; = \alpha \sum _{i=1}^{n}c_{i}m(A_{i}) + \beta \sum _{j=1}^{m}d_{j}m(B_{j})\\ &amp; = \alpha \mc {I}(f) + \beta \mc {I}(g).                                                                  \end {aligned} \]
+</p>
+
+<p>
+This proves linearity. For monotonicity, note that by linearity we have \(\mc {I}(g) = \mc {I}(f) + \mc {I}(g-f)\). Putting \(\alpha =1\) and \(\beta =-1\) into <span class="textup">(<a
+href="notes.html#??">??</a>)</span>, we have that we have that \(g-f\) is a non-simple function. If \(f\leq g\) then \(g-f\geq 0\), which means that we can write \(g-f\) in the form \(g-f=\sum
+_{i=1}^l e_i \1_{F_i}\) where \(e_i\geq 0\), from which <span class="textup">(<a href="notes.html#??">??</a>)</span> gives that \(\mc {I}(g-f)\geq 0\). Hence \(\mc {I}(f)\leq \mc {I}(g)\),
+as required. &#x2003;&#x2003;&#x220E;
+</p>
+<!--
+......   subsection Integration over subsets ......
+-->
+<h5 id="autosec-133"><span class="sectionnumber">4.1.1&#x2003;</span>Integration over subsets</h5>
+<a id="notes-autopage-133"></a>
+
+
+
+<p>
+Integrals over the real numbers are commonly written in the form \(\int _a^b\), which denotes integration over the interval \([a,b]\sw \R \). We now introduce some notation for this, in the general case.
+</p>
+<div class="theorembodydefn">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-119"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Definition 4.1.3</span> <a id="autoid-120" ></a ><a id="d:leb_int_restriction"></a> If \(A \in \Sigma \), whenever \(\int _{S}fdm\) is defined for some \(f:S
+\rightarrow \R \) we define
+</p>
+
+<p>
+\[ \mc {I}_{A}(f) = \int _{A}f\,dm = \int _{S} {\1}_{A} f\,dm .\]
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+We call \(\mc {I}_A(f)\) the integral of \(f\) over the set \(A\). In general there is no guarantee that \(I_{A}(f)\) is defined for some function \(f\). We need \(f\) to be one of the types of functions that we
+work with in the steps used to define the integral.
+</p>
+
+<p>
+The following lemma is another property of the Lebesgue integral that we will carry with us as we build up the definition.
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-121"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 4.1.4</span> <a id="autoid-122" ></a ><a id="l:leb_int_step_1_measure"></a> Let \(f:S\to \R \) be a simple function. Then \(\nu :\Sigma \to \R \)
+by
+</p>
+
+<p>
+\[\nu (X)=\int _X f\,dm\]
+</p>
+
+<p>
+is a measure.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let us write \(f=\sum _{i=1}^n c_i \1_{A_i}\). Note that \(\1_Xf=\sum _{i=1}^n
+c_i\1_{A_i}\1_{X}=\sum _{i=1}^n c_i\1_{A_i\cap X}\), where we have used the identity \(\1_A\1_B=\1_{A\cap B}\) from Exercise <a href="Exercises-2.html#ps:indicator_funcs"><b>2.1</b></a>.
+By Definition <a href="notes.html#??">??</a> and <span class="textup">(<a href="notes.html#??">??</a>)</span> we have
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{4.}{4}\)</span>
+
+<!--
+
+                      Z             n
+                                    X
+                           f dm =         ci m(Ai ∩ X).                 (4.5)                                                                                    --><a id="eq:intXF_measure"></a><!--
+                       X            i=1
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:intXF_measure} \int _X f\,dm=\sum _{i=1}^n c_i m(A_i\cap X).
+\end{equation}
+
+
+</p>
+
+<p>
+By part (b) of Exercise <a href="Exercises-1.html#ps:conditional_measure"><b>1.5</b></a> we have that \(X\mapsto m(A_i\cap X)\) defines a measure, for all \(i\). Using part (a) of the same exercise,
+\(X\mapsto c_i m(A_i\cap X)\) also defines a measure. In Exercise <a href="notes.html#??">??</a> we showed that a finite sum of measures was also a measure, hence in fact the right hand side of <span
+class="textup">(<a href="notes.html#??">??</a>)</span> defines a measure. This completes the proof. &#x2003;&#x2003;&#x220E;
+</p>
 
 </section>
 
@@ -963,7 +1353,7 @@ _{S}f(x)m(dx)\), with the same meaning. In French textbooks you’ll often see \
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

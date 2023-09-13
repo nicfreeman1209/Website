@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Algebra of Measurable Functions</title>
+<title>MAS350/61022 — Algebra of measurable functions </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-82"></a>
+<a id="notes-autopage-111"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,108 +855,88 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Algebra of Measurable Functions ......
+......     section Algebra of measurable functions       ......
 -->
-<h4 id="autosec-83"><span class="sectionnumber">2.4&#x2003;</span>Algebra of Measurable Functions</h4>
-<a id="notes-autopage-83"></a>
-<a id="notes-autofile-15"></a>
+<h4 id="autosec-112"><span class="sectionnumber">3.4&#x2003;</span>Algebra of measurable functions \((\Delta )\)</h4>
+<a id="notes-autopage-112"></a>
+<a id="notes-autofile-20"></a> <a id="s:means_funcs_alg"></a>
 
 <p>
-Our main goals in this section is to show that, sums, products, limits etc of measurable functions are themselves measurable. Consequently, almost anything we can think of doing with measurable functions will just
-give us back more measurable functions – just like the situation we already established for measurable sets. Throughout this section, \((S,\Sigma )\) is a measurable space.
+In this section we prove Theorem <a href="notes.html#??">??</a>. That is, we will show that, sums, products, limits etc of measurable functions are themselves measurable. The proof will be split across several
+lemmas. Throughout this section, \((S,\Sigma )\) is a measurable space.
 </p>
-
-<p>
-We now introduce several pieces of notation. Let \(f\) and \(g\) be functions from \(S\) to \(\R \) and define for all \(x \in S\),
-</p>
-
-<p>
-\[ (f \vee g)(x) = \max \{f(x), g(x)\},\quad \quad (f \wedge g)(x) = \min \{f(x), g(x)\}.\]
-</p>
-
-<p>
-This is called <i>pointwise</i> definition, because we define e.g.&nbsp;\(f\vee g\) by evaluating each of the individual functions \(f\) and \(g\) at the point \(x\). Similarly, given functions \(f\) and \(g\) we
-define new functions \(f+g\), \(fg\) and \(-f\) by \((f+g)(x)=f(g)+g(x)\), \((fg)(x)=f(x)g(x)\), \((-f)(x)=-f(x)\). For \(\alpha \in \R \) we define \((\alpha f)(x)=\alpha f(x)\).
-</p>
-
-<p>
-Let \(\bf 0\) denote the zero function that maps every element of \(S\) to zero, i.e.&nbsp;\({\bf 0} = {\1}_{\emptyset }\). Then \(\bf 0\) is measurable since it is the indicator factor of a measurable set (or
-use Problem <a href="Exercises-2.html#ps:constants_meas"><b>2.3</b></a>). Define \(f_{+} = f \vee {\bf 0}\) and \(f_{-} = -f \vee {\bf 0}\). More explicitly,
-</p>
-
-<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
-
-<!--
-
-                                                                                                                          
-                                                                                                                          
-                                                                                    f (x)
-                                                                                            if f (x) ≥ 0                  0
-                                                                                                                                    if f (x) ≥ 0
-                                                                         f+ (x) =                           ,   f− (x) =                            .
-                                                                                                                           −f (x)
-                                                                                                                          
-                                                                                    0
-                                                                                            if f (x) < 0                           if f (x) < 0
-
--->
-
-<p>
-
-
-\begin{equation*}
-f_{+}(x) = \begin{cases} f(x) &amp; \text { if }f(x) \geq 0\\ 0 &amp; \text { if }f(x) &lt; 0 \end {cases},\quad \quad f_{-}(x) = \begin{cases} 0 &amp; \text { if }f(x) \geq 0\\
--f(x) &amp; \text { if }f(x) &lt; 0 \end {cases}.
-\end{equation*}
-
-
-</p>
-
-<p>
-We now consider measurability of all these functions.
-</p>
-<div class="theorembodytheorem">
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-71"></a>
+<a id="autoid-101"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 2.4.1</span> <a id="autoid-72" ></a ><a id="thm:meas_min_max_etc"></a> Let \(f,g\) be measurable functions from \(S\to \R \). Then:
+<span class="theoremheaderplain">Lemma 3.4.1</span> <a id="autoid-102" ></a ><a id="l:meas_func_min_max_constmult"></a> Let \(f,g\) be measurable functions from \(S\to \R \). Then \(f
+\vee g\) and \(f \wedge g\) are measurable.
 </p>
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-1. \(f \vee g\) and \(f \wedge g\) are measurable.
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-2. \(\alpha f\) is measurable, for any \(\alpha \in \R \).
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-3. \(f_{+}\) and \(f_{-}\) are measurable.
-</p>
-</li>
-</ul>
 
 
 </li>
@@ -967,9 +946,9 @@ We now consider measurability of all these functions.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> For part 1, note that for all \(c\in \R \) we have
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that for all \(c\in \R \) we have
 </p>
-<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{3.}{2}\)</span>
 
 
 
@@ -993,9 +972,8 @@ We now consider measurability of all these functions.
 \begin{align*}
 (f \vee g)^{-1}((c, \infty )) &amp;= f^{-1}((c, \infty )) \cup g^{-1}((c, \infty )) \\ (f \wedge g)^{-1}((c, \infty )) &amp;= f^{-1}((c, \infty )) \cap g^{-1}((c, \infty )).
 \end{align*}
-We have that \(f^{-1}((c,\infty ))\) is measurable, hence the right hand side is also measurable. By Theorem <a href="Measurable-Functions-Basic-Concepts.html#thm:meas_halfints">2.2.1</a>,
-\(f\vee g\) and \(f\wedge g\) are measurable. Part 2 is Problem <a href="Exercises-2.html#ps:add_mult_const_meas_func"><b>2.5</b></a>. Taking \(\alpha =-1\) in part 2 gives that \(-f\) is
-measurable. Given this, the rest of part 2 follows immediately from part 1. &#x2003;&#x2003;&#x220E;
+We have that \(f^{-1}((c,\infty ))\) and \(g^{-1}((c,\infty ))\) are in \(\Sigma \), hence the right hand side is in \(\Sigma \). By parts 2 and 4 of Lemma <a href="notes.html#??">??</a>, \(f\vee
+g\) and \(f\wedge g\) are measurable. &#x2003;&#x2003;&#x220E;
 </p>
 
 <p>
@@ -1008,48 +986,17 @@ f&lt;c\}=\{x\in S\- a\leq f(x)&lt;c\}\).
 
 
 
-<a id="autoid-73"></a>
+<a id="autoid-103"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 2.4.2</span> <a id="autoid-74" ></a ><a id="lem:meas_f_greater_g"></a> If \(f\) and \(g\) are measurable then \(\{f &gt; g\} \in \Sigma \).
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span>Let \(\{r_{n}, \nN \}\) be an enumeration of the rational numbers. Then
-</p>
-
-<p>
-\[ \begin {aligned} \{f &gt; g\} &amp; = \bigcup _{\nN }\{f &gt; r_{n} &gt; g\}\\ &amp; = \bigcup _{\nN }\{f &gt; r_{n}\} \cap \{g &lt; r_{n}\}\\ &amp; = \bigcup _{\nN
-}f^{-1}((r_{n}, \infty )) \cap g^{-1}((-\infty , r_{n})) \in \Sigma \end {aligned} \]
-</p>
-
-<p>
-&#x2003;&#x2003;&#x220E;
-</p>
-<div class="theorembodytheorem">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-75"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Theorem 2.4.3</span> <a id="autoid-76" ></a ><a id="thm:meas_plus_etc"></a> Let \(f,g\) be measurable functions from \(S\to \R \). Then:
+<span class="theoremheaderplain">Lemma 3.4.2</span> <a id="autoid-104" ></a ><a id="l:meas_f_greater_g"></a> Let \(f,g\) be measurable functions from \(S\to \R \). Then:
 </p>
 <ul style="list-style-type:none">
 
 
 <li>
 <p>
-1. \(f+g\) and \(fg\) are measurable.
+1. \(\{f &gt; g\} \in \Sigma \).
 </p>
 
 
@@ -1058,7 +1005,7 @@ f&lt;c\}=\{x\in S\- a\leq f(x)&lt;c\}\).
 
 
 <p>
-2. If \(G:\R \rightarrow \R \) is continuous then \(G \circ f\) is measurable, as a function from \(S\) to \(\R \).
+2. \(f+g\) and \(fg\) are measurable.
 </p>
 </li>
 </ul>
@@ -1071,105 +1018,125 @@ f&lt;c\}=\{x\in S\- a\leq f(x)&lt;c\}\).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let us first show that \(f+g\) is measurable. From Problem <a
-href="Exercises-2.html#ps:add_mult_const_meas_func"><b>2.5</b></a>, we have that \(a-g\) is measurable for all \(a \in \R \). Now
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We will use the results of Exercise <a href="notes.html#??">??</a> within this proof.
+For the first part, recall that the rational number \(\Q \) are countable, and let \(\{r_{n}, \nN \}\) be an enumeration of \(\Q \). Recall also that there is a rational number between any two distinct real
+numbers. Hence,
 </p>
+<span class="hidden"> \(\seteqnumber{0}{3.}{2}\)</span>
 
-<p>
-\[(f + g)^{-1}((a, \infty )) = \{f + g &gt; a\} = \{f &gt; a - g\} \in \Sigma , \]
-</p>
 
-<p>
-by Lemma <a href="Algebra-Measurable-Functions.html#lem:meas_f_greater_g">2.4.2</a> and this establishes the result.
-</p>
 
-<p>
-Next, we’ll prove all of part 2. We have \((G\circ f)(x)=G(f(x))\) so for any \(A\sw \R \) we have \((G \circ f)^{-1}(A) = f^{-1}(G^{-1}(A))\). Let \(A\in \mc {B}(\R )\). Since \(G\) is continuous,
-\(G^{-1}(A)\in \mc {B}(\R )\) by Corollary <a href="Examples-Measurable-Functions.html#cor:meas_cts">2.3.2</a> and Theorem <a
-href="Measurable-Functions-Basic-Concepts.html#thm:meas_borel">2.2.5</a>. Hence \(f^{-1}(G^{-1}(A))\in \Sigma \) by applying Theorem <a
-href="Measurable-Functions-Basic-Concepts.html#thm:meas_borel">2.2.5</a> to \(f\). Since \(A\) was an arbitrary Borel set, the function \((G\circ f):S\to \R \) is measurable by Theorem <a
-href="Measurable-Functions-Basic-Concepts.html#thm:meas_borel">2.2.5</a>.
-</p>
-
-<p>
-It remains to show that \(fg\) is measurable. Note that
-</p>
-
-<p>
-\[ fg = \frac {1}{4}[(f + g)^{2} - (f-g)^{2}].\]
-</p>
-
-<p>
-Using part 2 with \(G(x) = x^{2}\) we deduce that \(h^{2}\) is measurable whenever \(h\) is, and we have already shown that sums of measurable functions are measurable. The result follows.
-&#x2003;&#x2003;&#x220E;
-</p>
-
-<p>
-We can use induction to show that if \(f_{1}, f_{2}, \ldots , f_{n}\) are measurable and \(c_{1}, c_{2}, \ldots , c_{n} \in \R \) then \(f\) is also measurable where \(f = c_{1}f_{1} +
-c_{2}f_{2} + \cdots + c_{n}f_{n}\). So the set of measurable functions from \(S\) to \(\R \) forms a real vector space. Of particular interest are the simple functions which take the form \(f = \sum
-_{i=1}^{n}c_{i}{\1}_{A_{i}}\) where \(A_{i} \in \Sigma ~( 1 \leq i \leq n)\). We will learn more about this highly useful class of functions in Section <a
-href="Simple-Functions.html#sec:simple_funcs">2.5</a> and in Chapter 3 we will see that they play an important role in integration theory.
-</p>
 <!--
-......   subsection Limits of Measurable Functions ......
+
+
+                                                                                              [
+                                                                                 {f > g} =          {f > rn > g}
+                                                                                              n∈N
+                                                                                              [
+                                                                                          =         {f > rn } ∩ {g < rn }
+                                                                                              n∈N
+
+                                                                                                    f −1 ((rn , ∞)) ∩ g −1 ((−∞, rn )) ∈ Σ.
+                                                                                              [
+                                                                                          =
+                                                                                              n∈N
+
+
+
+
 -->
-<h5 id="autosec-87"><span class="sectionnumber">2.4.1&#x2003;</span>Limits of Measurable Functions</h5>
-<a id="notes-autopage-87"></a>
 
 
 
 <p>
-Let \((f_{n})\) be a bounded<sup>1</sup> sequence of functions from \(S\) to \(\R \) such that we also have the condition \(\sup _{\nN }\sup _{x \in S}|f_{n}(x)| &lt; \infty \). Define \(\inf _{\nN
-}f_{n}\) and \(\sup _{\nN }f_{n}\) pointwise, that is
+
+
+\begin{align*}
+\{f &gt; g\} &amp;= \bigcup _{\nN }\{f &gt; r_{n} &gt; g\}\\ &amp;= \bigcup _{\nN }\{f &gt; r_{n}\} \cap \{g &lt; r_{n}\}\\ &amp;= \bigcup _{\nN }f^{-1}((r_{n}, \infty )) \cap
+g^{-1}((-\infty , r_{n})) \in \Sigma .
+\end{align*}
+The right hand side is in \(\Sigma \), hence so is \(\{f&gt;g\}\).
 </p>
 
 <p>
-\[ \left (\inf _{\nN }f_{n}\right )(x) = \inf _{\nN }f_{n}(x)~~~\mbox {and}~~~\left (\sup _{\nN }f_{n}\right )(x) = \sup _{\nN }f_{n}(x)\]
+For the second part, let us first consider \(f+g\). From part (a) of Exercise <a href="notes.html#??">??</a>, we have that \(\alpha -g\) is measurable for all \(\alpha \in \R \). Hence
 </p>
 
 <p>
-for all \(x \in S\). Similarly, define \(\li f_{n}\) and \(\ls f_{n}\) pointwise,
+\[(f + g)^{-1}((\alpha , \infty )) = \{f + g &gt; \alpha \} = \{f &gt; \alpha - g\}, \]
 </p>
 
 <p>
-\[ \left (\li f_{n}\right )(x) = \li f_{n}(x)~~~\mbox {and}~~~\left (\ls f_{n}\right )(x) = \ls f_{n}(x)\]
+is a measurable set by part 1 of the present lemma, so Lemma <a href="notes.html#??">??</a> gives that \(f+g\) is measurable.
 </p>
 
 <p>
-for all \(x \in S\). Lastly, we say that the sequence \((f_{n})\) converges pointwise to \(f\) as \(n \rightarrow \infty \) if \(\lim _{n \rightarrow \infty } f_{n}(x) = f(x)\) for all \(x \in S\).
+It remains to consider \(fg\). Note that
 </p>
-<div role="note" class="footnotes">
 
-<a id="notes-autopage-88"></a>
+<span class="hidden"> \(\seteqnumber{0}{3.}{2}\)</span>
+
+<!--
+
+
+                                                1
+                                           f g = [(f + g)2 − (f − g)2 ]                                                (3.3)                                           --><a id="eq:fg_polarization"></a><!--
+                                                4
+-->
 
 <p>
-<sup>1</sup>&nbsp;We can drop the boundedness requirement if we work with functions taking values in \([-\infty , \infty ]\). See Section <a
-href="Extended-Real-Functions.html#sec:ext_real">2.6</a>.
+
+
+\begin{equation}
+fg = \frac {1}{4}[(f + g)^{2} - (f-g)^{2}] \label {eq:fg_polarization}
+\end{equation}
+
+
+</p>
+
+<p>
+From part (c) of Exercise <a href="notes.html#??">??</a> we have that a composition of measurable functions is measurable. In particular, if \(G(x)=x^2\) then \(G\circ h=h^2\) is measurable whenever \(h\)
+is measurable. We have already shown that sums of measurable functions are measurable. Part (b) of Exercise <a href="notes.html#??">??</a> tells that \(\alpha h\) is measurable whenever \(\alpha \in \R
+\) and \(h\) is measurable. Thus \(f+g\) is measurable, and \(f-g=f+(-1)\times g\) is measurable, hence so are both of these squared, hence so is the right hand side of <span class="textup">(<a
+href="notes.html#??">??</a>)</span>. This completes the proof. &#x2003;&#x2003;&#x220E;
+</p>
+<div class="theorembodyremark">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-105"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Remark 3.4.3</span> <a id="autoid-106" ></a >\((\star )\) Equation <span class="textup">(<a href="notes.html#??">??</a>)</span> is known as the
+<i>polarization identity</i> and is often useful when connecting multiplication and addition. A more general version of the same identity is used in functional analysis to connect norms with inner products.
 </p>
 
 
+</li>
+
+</ul>
 
 </div>
-
-
-
-<div class="theorembodytheorem">
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-77"></a>
+<a id="autoid-107"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 2.4.4</span> <a id="autoid-78" ></a ><a id="thm:meas_lim"></a> Let \((f_n)\) be a sequence of measurable functions. Then:
+<span class="theoremheaderplain">Lemma 3.4.4</span> <a id="autoid-108" ></a ><a id="l:meas_funcs_lims"></a> For each \(n\in \N \) let \(f_n:S\to \R \) be a measurable function. Then,
+providing that all of the following are real valued:
 </p>
 <ul style="list-style-type:none">
 
 
 <li>
 <p>
-1. \(\inf _{\nN }f_{n}\) and \(\sup _{\nN }f_{n}\) are measurable.
+1. \(\inf _{n}f_{n}\) and \(\sup _{n}f_{n}\) are measurable.
 </p>
 
 
@@ -1178,7 +1145,7 @@ href="Extended-Real-Functions.html#sec:ext_real">2.6</a>.
 
 
 <p>
-2. \(\li f_{n}\) and \(\ls f_{n}\) are both measurable.
+2. \(\liminf _n f_{n}\) and \(\limsup _n f_{n}\) are measurable.
 </p>
 
 
@@ -1200,975 +1167,52 @@ href="Extended-Real-Functions.html#sec:ext_real">2.6</a>.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> For all \(c \in \R \),
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> For part 1, note that for all \(c \in \R \),
 </p>
-<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{3.}{3}\)</span>
 
 
 
 <!--
 
 
-                                                                                   −1                e
-//
-// Based on code by Davide P. Cervone.
-// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
-// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
-// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
-//
-// Modified by Brian Dunn to adjust equation numbering and add subequations.
-//
-// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
-// subequations? is 0 usually, 1 if inside subequations.
-// section is a string printed as-is, or empty.
-// number is auto-incremented by MathJax between equations.
-//
-MathJax = {
-  subequations: "0",
-  section: "",
-  loader: {
-    load: ['[tex]/tagformat', '[tex]/textmacros'],
-  },
-  startup: {
-    ready() {
-      // These would be replaced by import commands if you wanted to make
-      // a proper extension.
-      const Configuration = MathJax._.input.tex.Configuration.Configuration;
-      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-      const Macro = MathJax._.input.tex.Symbol.Macro;
-      const TexError = MathJax._.input.tex.TexError.default;
-      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-      const expandable = MathJax._.util.Options.expandable;
+                                                                                   −1
+                                                                                                                                            fn−1 ([c, ∞)),
+                                                                                                                     \                \
+                                                                           inf fn         ([c, ∞))= {∀n, fn ≥ c} =       {fn ≥ c} =
+                                                                           n∈N
+                                                                                                                     n∈N              n∈N
+                                                                                 !−1
+                                                                                                                                            fn−1 ((c, ∞)).
+                                                                                                                     [                [
+                                                                        sup fn            ((c, ∞))= {∃n, fn > c} =       {fn > c}=
+                                                                        n∈N                                          n∈N              n∈N
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
 
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
-         },
-  }
-}
-</script>
-
-<script
-    id="MathJax-script"
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
-></script>
-
-
-</head>
-<body>
-
-
-
-<a id="notes-autopage-89"></a>
-<nav class="topnavigation"><a href="notes.html" class="linkhome" >
-Home</a></nav>
-
-<header>
-
-<p>
-MAS350 Probability with Measure
-</p>
-
-</header>
-
-
-
-<div class="bodyandsidetoc">
-<div class="sidetoccontainer">
-
-
-
-<nav class="sidetoc">
-
-
-
-<div class="sidetoctitle">
-
-<p>
-<span class="sidetocthetitle">Probability with Measure</span>
-</p>
-
-<p>
-Contents
-</p>
-</div>
-
-
-
-<div class="sidetoccontents">
-
-<p>
-<a href="notes.html" class="linkhome" >
-Home</a>
-</p>
-
-<p>
-<a href="Introduction.html#autosec-5" class="tocchapter" >
-<span class="sectionnumber">0</span>&#x2003;Introduction</a>
-</p>
-
-
-
-<p>
-<a href="Introduction.html#autosec-6" class="tocsection" >
-<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
-</p>
-
-
-
-<p>
-<a href="Preliminaries.html#autosec-13" class="tocsection" >
-<span class="sectionnumber">0.2</span>&#x2003;Preliminaries</a>
-</p>
-
-
-
-<p>
-<a href="Measure-Spaces.html#autosec-16" class="tocchapter" >
-<span class="sectionnumber">1</span>&#x2003;Measure Spaces</a>
-</p>
-
-
-
-<p>
-<a href="Measure-Spaces.html#autosec-17" class="tocsection" >
-<span class="sectionnumber">1.1</span>&#x2003;What is measure theory?</a>
-</p>
-
-
-
-<p>
-<a href="Sigma-Fields.html#autosec-20" class="tocsection" >
-<span class="sectionnumber">1.2</span>&#x2003;Sigma Fields</a>
-</p>
-
-
-
-<p>
-<a href="Measure.html#autosec-31" class="tocsection" >
-<span class="sectionnumber">1.3</span>&#x2003;Measure</a>
-</p>
-
-
-
-<p>
-<a href="The-Borel-field.html#autosec-37" class="tocsection" >
-<span class="sectionnumber">1.4</span>&#x2003;The Borel \(\sigma \)-field</a>
-</p>
-
-
-
-<p>
-<a href="Lebesgue-Measure.html#autosec-42" class="tocsection" >
-<span class="sectionnumber">1.5</span>&#x2003;Lebesgue Measure</a>
-</p>
-
-
-
-<p>
-<a href="An-example-non-measurable-set.html#autosec-49" class="tocsection" >
-<span class="sectionnumber">1.6</span>&#x2003;An example of a non-measurable set \((\star )\)</a>
-</p>
-
-
-
-<p>
-<a href="Measure-limits.html#autosec-53" class="tocsection" >
-<span class="sectionnumber">1.7</span>&#x2003;Measure and limits</a>
-</p>
-
-
-
-<p>
-<a href="Product-Measures.html#autosec-57" class="tocsection" >
-<span class="sectionnumber">1.8</span>&#x2003;Product Measures</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-1.html#autosec-62" class="tocsection" >
-<span class="sectionnumber">1.9</span>&#x2003;Exercises 1</a>
-</p>
-
-
-
-<p>
-<a href="Measurable-Functions.html#autosec-66" class="tocchapter" >
-<span class="sectionnumber">2</span>&#x2003;Measurable Functions</a>
-</p>
-
-
-
-<p>
-<a href="Measurable-Functions.html#autosec-67" class="tocsection" >
-<span class="sectionnumber">2.1</span>&#x2003;Liminf and Limsup</a>
-</p>
-
-
-
-<p>
-<a href="Measurable-Functions-Basic-Concepts.html#autosec-70" class="tocsection" >
-<span class="sectionnumber">2.2</span>&#x2003;Measurable Functions - Basic Concepts</a>
-</p>
-
-
-
-<p>
-<a href="Examples-Measurable-Functions.html#autosec-78" class="tocsection" >
-<span class="sectionnumber">2.3</span>&#x2003;Examples of Measurable Functions</a>
-</p>
-
-
-
-<p>
-<a href="Algebra-Measurable-Functions.html#autosec-83" class="tocsection" >
-<span class="sectionnumber">2.4</span>&#x2003;Algebra of Measurable Functions</a>
-</p>
-
-
-
-<p>
-<a href="Simple-Functions.html#autosec-90" class="tocsection" >
-<span class="sectionnumber">2.5</span>&#x2003;Simple Functions</a>
-</p>
-
-
-
-<p>
-<a href="Extended-Real-Functions.html#autosec-93" class="tocsection" >
-<span class="sectionnumber">2.6</span>&#x2003;Extended Real Functions</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-2.html#autosec-95" class="tocsection" >
-<span class="sectionnumber">2.7</span>&#x2003;Exercises 2</a>
-</p>
-
-
-
-<p>
-<a href="Lebesgue-Integration.html#autosec-99" class="tocchapter" >
-<span class="sectionnumber">3</span>&#x2003;Lebesgue Integration</a>
-</p>
-
-
-
-<p>
-<a href="Lebesgue-Integration.html#autosec-100" class="tocsection" >
-<span class="sectionnumber">3.1</span>&#x2003;Introduction</a>
-</p>
-
-
-
-<p>
-<a href="The-Lebesgue-Integral-Simple-Functions.html#autosec-103" class="tocsection" >
-<span class="sectionnumber">3.2</span>&#x2003;The Lebesgue Integral for Simple Functions</a>
-</p>
-
-
-
-<p>
-<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#autosec-108" class="tocsection" >
-<span class="sectionnumber">3.3</span>&#x2003;The Lebesgue Integral for Non-negative Measurable Functions</a>
-</p>
-
-
-
-<p>
-<a href="The-Monotone-Convergence-Theorem.html#autosec-119" class="tocsection" >
-<span class="sectionnumber">3.4</span>&#x2003;The Monotone Convergence Theorem</a>
-</p>
-
-
-
-<p>
-<a href="Fatou-Lemma.html#autosec-124" class="tocsection" >
-<span class="sectionnumber">3.5</span>&#x2003;Fatou’s Lemma</a>
-</p>
-
-
-
-<p>
-<a href="Lebesgue-Integrability.html#autosec-127" class="tocsection" >
-<span class="sectionnumber">3.6</span>&#x2003;Lebesgue Integrability</a>
-</p>
-
-
-
-<p>
-<a href="The-Dominated-Convergence-Theorem.html#autosec-133" class="tocsection" >
-<span class="sectionnumber">3.7</span>&#x2003;The Dominated Convergence Theorem</a>
-</p>
-
-
-
-<p>
-<a href="Calculations-with-Lebesgue-Integral.html#autosec-137" class="tocsection" >
-<span class="sectionnumber">3.8</span>&#x2003;Calculations with the Lebesgue Integral</a>
-</p>
-
-
-
-<p>
-<a href="Fubini-Theorem-Function-Spaces.html#autosec-144" class="tocsection" >
-<span class="sectionnumber">3.9</span>&#x2003;Fubini’s Theorem and Function Spaces \((\star )\)</a>
-</p>
-
-
-
-<p>
-<a href="Riemann-Integration.html#autosec-149" class="tocsection" >
-<span class="sectionnumber">3.10</span>&#x2003;Riemann Integration \((\star )\)</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-3.html#autosec-159" class="tocsection" >
-<span class="sectionnumber">3.11</span>&#x2003;Exercises 3</a>
-</p>
-
-
-
-<p>
-<a href="Probability-Measure.html#autosec-167" class="tocchapter" >
-<span class="sectionnumber">4</span>&#x2003;Probability and Measure</a>
-</p>
-
-
-
-<p>
-<a href="Probability-Measure.html#autosec-169" class="tocsection" >
-<span class="sectionnumber">4.1</span>&#x2003;Probability as Measure</a>
-</p>
-
-
-
-<p>
-<a href="The-Cumulative-Distribution-Function.html#autosec-172" class="tocsection" >
-<span class="sectionnumber">4.2</span>&#x2003;The Cumulative Distribution Function</a>
-</p>
-
-
-
-<p>
-<a href="Discrete-Continuous-Random-Variables.html#autosec-177" class="tocsection" >
-<span class="sectionnumber">4.3</span>&#x2003;Discrete and Continuous Random Variables</a>
-</p>
-
-
-
-<p>
-<a href="Independence.html#autosec-180" class="tocsection" >
-<span class="sectionnumber">4.4</span>&#x2003;Independence</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-4.html#autosec-185" class="tocsection" >
-<span class="sectionnumber">4.5</span>&#x2003;Exercises 4</a>
-</p>
-
-
-
-<p>
-<a href="Sequences-random-variables.html#autosec-189" class="tocchapter" >
-<span class="sectionnumber">5</span>&#x2003;Sequences of random variables</a>
-</p>
-
-
-
-<p>
-<a href="Sequences-random-variables.html#autosec-190" class="tocsection" >
-<span class="sectionnumber">5.1</span>&#x2003;The Borel-Cantelli lemmas</a>
-</p>
-
-
-
-<p>
-<a href="Convergence-Random-Variables.html#autosec-194" class="tocsection" >
-<span class="sectionnumber">5.2</span>&#x2003;Convergence of Random Variables</a>
-</p>
-
-
-
-<p>
-<a href="Laws-Large-Numbers.html#autosec-202" class="tocsection" >
-<span class="sectionnumber">5.3</span>&#x2003;Laws of Large Numbers</a>
-</p>
-
-
-
-<p>
-<a href="Characteristic-Functions-Weak-Convergence.html#autosec-208" class="tocsection" >
-<span class="sectionnumber">5.4</span>&#x2003;Characteristic Functions and Weak Convergence (\(\star \))</a>
-</p>
-
-
-
-<p>
-<a href="The-Central-Limit-Theorem.html#autosec-218" class="tocsection" >
-<span class="sectionnumber">5.5</span>&#x2003;The Central Limit Theorem (\(\star \))</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-5.html#autosec-222" class="tocsection" >
-<span class="sectionnumber">5.6</span>&#x2003;Exercises 5</a>
-</p>
-
-
-
-<p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-227" class="tocchapter" >
-<span class="sectionnumber">6</span>&#x2003;Product Measures and Fubini’s Theorem \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Product-Measures-Fubini-Theorem.html#autosec-228" class="tocsection" >
-<span class="sectionnumber">6.1</span>&#x2003;Dynkin’s \(\pi -\lambda \) Lemma \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Product-Measure.html#autosec-233" class="tocsection" >
-<span class="sectionnumber">6.2</span>&#x2003;Product Measure \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Fubini-Theorem.html#autosec-237" class="tocsection" >
-<span class="sectionnumber">6.3</span>&#x2003;Fubini’s Theorem \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-6.html#autosec-241" class="tocsection" >
-<span class="sectionnumber">6.4</span>&#x2003;Exercises 6</a>
-</p>
-
-
-
-<p>
-<a href="Advice-revision-exams.html#autosec-244" class="tocchapter" >
-<span class="sectionnumber">A</span>&#x2003;Advice for revision/exams</a>
-</p>
-
-
-
-<p>
-<a href="Solutions-exercises.html#autosec-248" class="tocchapter" >
-<span class="sectionnumber">B</span>&#x2003;Solutions to exercises</a>
-</p>
-
-
-
-</div>
-
-</nav>
-
-</div>
-
-
-
-<main class="bodycontainer">
-
-
-
-<section class="textbody">
-
-<h1>Probability with Measure</h1>
-
-<!--MathJax customizations:-->
-
-
-
-<div class="hidden">
-
-\(\newcommand{\footnotename}{footnote}\)
-
-\(\def \LWRfootnote {1}\)
-
-\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
-
-\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
-
-\(\let \LWRorighspace \hspace \)
-
-\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
-
-\(\newcommand {\mathnormal }[1]{{#1}}\)
-
-\(\newcommand \ensuremath [1]{#1}\)
-
-\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
-
-\(\newcommand {\setlength }[2]{}\)
-
-\(\newcommand {\addtolength }[2]{}\)
-
-\(\newcommand {\setcounter }[2]{}\)
-
-\(\newcommand {\addtocounter }[2]{}\)
-
-\(\newcommand {\arabic }[1]{}\)
-
-\(\newcommand {\number }[1]{}\)
-
-\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
-
-\(\newcommand {\cline }[1]{}\)
-
-\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
-
-\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
-
-\(\newcommand {\protect }{}\)
-
-\(\def \LWRabsorbnumber #1 {}\)
-
-\(\def \LWRabsorbquotenumber &quot;#1 {}\)
-
-\(\newcommand {\LWRabsorboption }[1][]{}\)
-
-\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
-
-\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
-
-\(\def \mathcode #1={\mathchar }\)
-
-\(\let \delcode \mathcode \)
-
-\(\let \delimiter \mathchar \)
-
-\(\def \oe {\unicode {x0153}}\)
-
-\(\def \OE {\unicode {x0152}}\)
-
-\(\def \ae {\unicode {x00E6}}\)
-
-\(\def \AE {\unicode {x00C6}}\)
-
-\(\def \aa {\unicode {x00E5}}\)
-
-\(\def \AA {\unicode {x00C5}}\)
-
-\(\def \o {\unicode {x00F8}}\)
-
-\(\def \O {\unicode {x00D8}}\)
-
-\(\def \l {\unicode {x0142}}\)
-
-\(\def \L {\unicode {x0141}}\)
-
-\(\def \ss {\unicode {x00DF}}\)
-
-\(\def \SS {\unicode {x1E9E}}\)
-
-\(\def \dag {\unicode {x2020}}\)
-
-\(\def \ddag {\unicode {x2021}}\)
-
-\(\def \P {\unicode {x00B6}}\)
-
-\(\def \copyright {\unicode {x00A9}}\)
-
-\(\def \pounds {\unicode {x00A3}}\)
-
-\(\let \LWRref \ref \)
-
-\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
-
-\( \newcommand {\multicolumn }[3]{#3}\)
-
-\(\require {textcomp}\)
-
-\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
-
-\(\let \Hat \hat \)
-
-\(\let \Check \check \)
-
-\(\let \Tilde \tilde \)
-
-\(\let \Acute \acute \)
-
-\(\let \Grave \grave \)
-
-\(\let \Dot \dot \)
-
-\(\let \Ddot \ddot \)
-
-\(\let \Breve \breve \)
-
-\(\let \Bar \bar \)
-
-\(\let \Vec \vec \)
-
-\(\DeclareMathOperator {\var }{var}\)
-
-\(\DeclareMathOperator {\cov }{cov}\)
-
-\(\newcommand {\nN }{n \in \mathbb {N}}\)
-
-\(\newcommand {\Br }{{\cal B}(\R )}\)
-
-\(\newcommand {\F }{{\cal F}}\)
-
-\(\newcommand {\ds }{\displaystyle }\)
-
-\(\newcommand {\st }{\stackrel {d}{=}}\)
-
-\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
-
-\(\newcommand {\la }{\langle }\)
-
-\(\newcommand {\ra }{\rangle }\)
-
-\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
-
-\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
-
-\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
-
-\(\def \to {\rightarrow }\)
-
-\(\def \iff {\Leftrightarrow }\)
-
-\(\def \sw {\subseteq }\)
-
-\(\def \mc {\mathcal }\)
-
-\(\def \mb {\mathbb }\)
-
-\(\def \sc {\setminus }\)
-
-\(\def \v {\textbf }\)
-
-\(\def \E {\mb {E}}\)
-
-\(\def \P {\mb {P}}\)
-
-\(\def \R {\mb {R}}\)
-
-\(\def \C {\mb {C}}\)
-
-\(\def \N {\mb {N}}\)
-
-\(\def \Q {\mb {Q}}\)
-
-\(\def \Z {\mb {Z}}\)
-
-\(\def \B {\mb {B}}\)
-
-\(\def \~{\sim }\)
-
-\(\def \-{\,;\,}\)
-
-\(\def \qed {$\blacksquare $}\)
-
-\(\def \1{\unicode {x1D7D9}}\)
-
-\(\def \cadlag {c\&grave;{a}dl\&grave;{a}g}\)
-
-\(\def \p {\partial }\)
-
-\(\def \l {\left }\)
-
-\(\def \r {\right }\)
-
-\(\def \Om {\Omega }\)
-
-\(\def \om {\omega }\)
-
-</div>
-
-<p>
-<!--
-......     section Simple Functions ......
--->
-<h4 id="autosec-90"><span class="sectionnumber">2.5&#x2003;</span>Simple Functions</h4>
-<a id="notes-autopage-90"></a>
-<a id="notes-autofile-16"></a> <a id="sec:simple_funcs"></a>
-
-<p>
-Recall the definition of indicator functions \({\1}_{A}\) where \(A \in \Sigma \). A mapping \(f:S \rightarrow \R \) is said to be simple if it takes the form
-</p>
-
-<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
-
-<!--
-
-
-                                                     n
-                                                           ci 1Ai
-                                                     X
-                                                f=                                                            (2.3)                                                              --><a id="simple"></a><!--
-                                                     i=1
 
 -->
 
+
+
 <p>
 
 
-\begin{equation}
-\label {simple} f = \sum _{i=1}^{n}c_{i}{\1}_{A_{i}}
-\end{equation}
-
-
+\begin{alignat*} {3}
+\l (\inf _{\nN }f_{n}\r )^{-1}([c,\infty ))&amp;&amp;=\l \{\forall n,\; f_{n} \geq c\r \} &amp;= \bigcap _{\nN }\{f_{n} \geq c\} &amp;= \bigcap _{\nN }f_n^{-1}([c,\infty )), \\
+\l (\sup _{\nN }f_{n}\r )^{-1}((c,\infty ))&amp;&amp;=\l \{\exists n,\; f_{n} &gt; c\r \} &amp;= \bigcup _{\nN }\{f_{n} &gt; c\} &amp;= \bigcup _{\nN }f_n^{-1}((c,\infty )).
+\end{alignat*}
+In both cases the right hand is in \(\Sigma \), hence so is the left hand side. By Lemma <a href="notes.html#??">??</a>, both \(\inf _n f_n\) and \(\sup _n f_n\) are measurable.
 </p>
 
 <p>
-where \(c_{1}, c_{2}, \ldots , c_{n} \in \R \) and \(A_{1}, A_{2}, \ldots , A_{n} \in \Sigma \) with \(\bigcup _{i=1}^{n}A_{i} = S\) and \(A_{i} \cap A_{j} = \emptyset \) when \(i \neq
-j\). In other words a simple function is a (finite) linear combination of indicator functions of non-overlapping sets. It follows from Theorems <a
-href="Algebra-Measurable-Functions.html#thm:meas_min_max_etc">2.4.1</a> and <a href="Algebra-Measurable-Functions.html#thm:meas_plus_etc">2.4.3</a> that every simple function is
-measurable. It is straightforward to prove that sums and scalar multiples of simple functions are themselves simple, so the set of all simple functions form a vector space.
+For part 2, recall from Section <a href="notes.html#??">??</a> that \(\liminf _n f_{n} = \sup _{n}\inf _{k \geq n}f_{k}\) and \(\limsup _n f_{n} = \inf _{n}\sup _{k \geq n}f_{k}\). By
+several applications of part 1, we have that \(\liminf _n f_n\) and \(\limsup _n f_n\) are measurable.
 </p>
 
 <p>
-We now prove a key result that shows that simple functions are powerful tools for approximating measurable functions. Recall that a mapping \(f:S \rightarrow \R \) is non-negative if \(f(x) \geq 0\) for all
-\(x \in S\), which we write for short as \(f \geq 0\). We write \(f \leq g\) when \(g-f \geq 0\). It is easy to see that a simple function of the form (<a href="Simple-Functions.html#simple">2.3</a>)
-(with \(A_{i} \neq \emptyset \) for all \(i = 1, \ldots , n\)) is non-negative if and only if \(c_{i} \geq 0~(1 \leq i \leq n)\).
-</p>
-<div class="theorembodytheorem">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-79"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Theorem 2.5.1</span> <a id="autoid-80" ></a ><a id="thm:simple_approx"></a> Let \(f:S \rightarrow \R \) be measurable and non-negative. Then there exists a
-sequence \((s_{n})\) of non-negative simple functions on \(S\) with \(s_{n} \leq s_{n+1} \leq f\) for all \(\nN \) so that \((s_{n})\) converges pointwise to \(f\) as \(n \rightarrow \infty \).
-Moreover, if \(f\) is bounded then the convergence is uniform.
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span>
-</p>
-
-<p>
-We split this into three parts.
-</p>
-
-<p>
-Step 1 Construction of \((s_{n})\).
-</p>
-
-<p>
-Divide the interval \([0, n)\) into \(n2^{n}\) subintervals \(\{I_{j}, 1 \leq j \leq n2^{n}\}\), each of length \(\frac {1}{2^{n}}\) by taking \(I_{j} = \left [\frac {j-1}{2^{n}}, \frac
-{j}{2^{n}}\right ).\) Let \(E_{j} = f^{-1}(I_{j})\) and \(F_{n} = f^{-1}([n, \infty ))\). Then \(S = \bigcup _{j=1}^{n2^{n}}E_{j} \cup F_{n}\). We define for all \(x \in S\)
-</p>
-
-<p>
-\[ s_{n}(x) = \sum _{j=1}^{n2^{n}}\left (\frac {j-1}{2^{n}}\right ){\1}_{E_{j}}(x) + n{\1}_{F_{n}}(x).\]
-</p>
-
-<p>
-Step 2 Properties of \((s_{n})\).
-</p>
-
-<p>
-For \(x \in E_{j}, s_{n}(x) = \frac {j-1}{2^{n}}\) and \(\frac {j-1}{2^{n}} \leq f(x) &lt; \frac {j}{2^{n}}\) and so \(s_{n}(x) \leq f(x)\). For \(x \in F_{n}, s_{n}(x) = n\) and \(f(x)
-\geq n\). So we conclude that \(s_{n} \leq f\) for all \(\nN \).
-</p>
-
-<p>
-To show that \(s_{n} \leq s_{n+1}\), fix an arbitrary \(j\) and consider \(I_{j} = \left [\frac {j-1}{2^{n}}, \frac {j}{2^{n}}\right )\). For convenience, we write \(I_{j}\) as \(I\) and we observe
-that \(I = I_{1}\cup I_{2}\) where \(I_{1} = \left [\frac {2j-2}{2^{n+1}}, \frac {2j-1}{2^{n+1}}\right )\) and \(I_{2} = \left [\frac {2j-1}{2^{n+1}}, \frac {2j}{2^{n+1}}\right )\).
-Let \(E = f^{-1}(I), E_{1} = f^{-1}(I_{1})\) and \(E_{2} = f^{-1}(I_{2})\). Then \(s_{n}(x) = \frac {j-1}{2^{n}}\) for all \(x \in E, s_{n+1}(x) = \frac {j-1}{2^{n}}\) for all \(x \in
-E_{1}\), and \(s_{n+1}(x) = \frac {2j-1}{2^{n+1}}\) for all \(x \in E_{2}\). It follows that \(s_{n} \leq s_{n+1}\) for all \(x \in E\). A similar (easier) argument can be used on \(F_{n}\).
-</p>
-
-<p>
-Step 3 Convergence of \((s_{n})\).
-</p>
-
-<p>
-Fix any \(x \in S\). Since \(f(x) \in \R \) there exists \(n_{0} \in \mathbb {N}\) so that \(f(x) \leq n_{0}\). Then for each \(n &gt; n_{0}, f(x) \in I_{j}\) for some \(1 \leq j \leq n2^{n}\),
-i.e. \(\frac {j-1}{2^{n}} \leq f(x) &lt; \frac {j}{2^{n}}\). But \(s_{n}(x) = \frac {j-1}{2^{n}}\) and so \(|f(x) - s_{n}(x)| &lt; \frac {1}{2^{n}}\) and the result follows. If \(f\) is
-bounded we can find \(n_{0} \in \mathbb {N}\) so that \(f(x) \leq n_{0}\) for all \(x \in \R \). Then the argument just given yields \(|f(x) - s_{n}(x)| &lt; \frac {1}{2^{n}}\) for all \(x \in \R
-\) from which we can deduce the uniformity of the convergence. &#x2003;&#x2003;&#x220E;
+For part 3, if \(f_n\to f\) pointwise then by Lemma <a href="notes.html#??">??</a> we have \(f(x) = \liminf _n f_{n}(x)\) for all \(x \in S\), so \(f\) is measurable by part 2.
+&#x2003;&#x2003;&#x220E;
 </p>
 
 </section>
@@ -2180,7 +1224,7 @@ bounded we can find \(n_{0} \in \mathbb {N}\) so that \(f(x) \leq n_{0}\) for al
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Measurable Functions</title>
+<title>MAS350/61022 — Measurable Functions</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-65"></a>
+<a id="notes-autopage-91"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,126 +855,137 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
 ......     chapter Measurable Functions ......
 -->
-<h3 id="autosec-66">Chapter&nbsp;<span class="sectionnumber">2&#x2003;</span>Measurable Functions</h3>
-<a id="notes-autopage-66"></a>
-<a id="notes-autofile-12"></a>
+<h3 id="autosec-92">Chapter&nbsp;<span class="sectionnumber">3&#x2003;</span>Measurable Functions</h3>
+<a id="notes-autopage-92"></a>
+<a id="notes-autofile-17"></a>
 
-<a id="chap:measurable_funcs"></a>
+<a id="c:measurable_funcs"></a>
 
 <p>
-We now restrict ourselves to studying a particular kind of function, known as a <i>measurable</i> function. For measure theory, this is an important step, because it allows us to exclude some very strangely
-behaved examples (in the style of Section <a href="An-example-non-measurable-set.html#sec:non_meas_set">1.6</a>) that would disrupt our theory.
+In this chapter we restrict ourselves to studying a particular kind of function, known as a measurable function. For measure theory, this is an important step, because it allows us to exclude some very strangely
+behaved examples that would disrupt our theory.
 </p>
 
 <p>
-We will see in Chapter <a href="Probability-Measure.html#chap:prob_with_meas">4</a> that measurable functions also play a huge role in probability theory, where they provide a mechanism for identifying
-which random variables depend on which information.
-</p>
-<!--
-......   section Liminf and Limsup ......
--->
-<h4 id="autosec-67"><span class="sectionnumber">2.1&#x2003;</span>Liminf and Limsup</h4>
-<a id="notes-autopage-67"></a>
-
-
-
-<p>
-This section introduces some important tools from analysis which there wasn’t time to cover in MAS221. Let \((a_{n})\) be a sequence of real numbers. It may or may not converge. For example the sequence
-whose \(n\)th term is \((-1)^{n}\) fails to converge but it does have two convergent subsequences corresponding to \(a_{2n-1} = -1\) and \(a_{2n} = 1\). This is a very special case of a general phenomenon
-that we’ll now describe.
+More specifically, in Section <a href="notes.html#??">??</a> we saw the existence subsets of \(\R \) that were not measurable, with respect to Lebesgue measure. These sets had no meaningful concept of
+‘length’. It is clear that integration is closely connected to length, for example integrating the indicator function
 </p>
 
-<p>
-Assume that the sequence \((a_{n})\) is bounded, i.e. there exists \(K &gt; 0\) so that \(|a_{n}| \leq K\) for all \(\nN \). Define a new sequence \((b_{n})\) by \(b_{n} = \inf _{k \geq n}a_{k}\). Then
-you can check that \((b_{n})\) is monotonic increasing and bounded above (by \(K\)). Hence it converges to a limit.
-</p>
-
-<p>
-In fact, we are fine if \((a_n)\) is not bounded. In this case \(b_n\) is still monotone increasing, but we now have the extra possibilities that \(b_n\to \infty \) or \(b_n\to -\infty \). In fact, we might even
-have \(b_n=\pm \infty \) for some or all finite \(n\).
-</p>
-
-<p>
-We define \(\li a_{n} = \lim _{n \rightarrow \infty }b_{n}\), where \(b_n=\inf _{k\geq n}a_k\). We call this the limit inferior or liminf of the sequence \((a_{n})\). So we have
-</p>
-
-<span class="hidden"> \(\seteqnumber{0}{2.}{0}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{3.}{0}\)</span>
 
 <!--
 
-
-
-                           lim inf an = lim inf ak = sup inf ak .                      (2.1)                                                                                              --><a id="li"></a><!--
-                           n→∞         n→∞ k≥n        n∈N k≥n
+                                                                                                             
+                                                                                                             
+                                                                                                             1
+                                                                                                                  if x ∈ A
+                                                                                                   1A (x) = 
+                                                                                                             0
+                                                                                                                  if x ∈
+                                                                                                                        /A
 
 -->
 
 <p>
 
 
-\begin{equation}
-\label {li} \li a_{n} = \lim _{n \rightarrow \infty } \inf _{k \geq n}a_{k} = \sup _{\nN }\inf _{k \geq n}a_{k}.
-\end{equation}
+\begin{equation*}
+\1_A(x)= \begin{cases} 1 &amp; \text { if }x\in A \\ 0 &amp; \text { if }x\notin A \\ \end {cases}
+\end{equation*}
 
 
 </p>
 
 <p>
-Similarly the sequence \((c_{n})\) where \(c_{n} = \sup _{k \geq n}a_{k}\) is monotonic decreasing and bounded below. So it also converges to a limit which we call the limit superior or limsup for short. We
-denote \(\ls a_{n} = \lim _{n \rightarrow \infty }c_{n}\). Then we have
+in the case \(A=[a,b]\) using a naive ‘area under the curve’ approach gives \(\int _\R \1_A(x)\,dx=b-a=\lambda (A)\). If \(A\) is non-measurable then integrating the function \(\1_A\) would be dangerously
+close to trying to measure the length of \(A\), which we know we cannot do. We conclude that, just as with sets, we need a similar concept of a measurable <i>function</i>.
 </p>
-
-<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
-
 <!--
-
-
-
-                     lim sup an = lim sup ak = inf sup ak .                    (2.2)                                                                                                --><a id="prop:ls"></a><!--
-                      n→∞           n→∞ k≥n        n∈N k≥n
-
+......   section Overview ......
 -->
+<h4 id="autosec-93"><span class="sectionnumber">3.1&#x2003;</span>Overview</h4>
+<a id="notes-autopage-93"></a>
+
+
+
+<a id="s:meas_funcs_overview"></a>
 
 <p>
-
-
-\begin{equation}
-\label {prop:ls} \ls a_{n} = \lim _{n \rightarrow \infty } \sup _{k \geq n}a_{k} = \inf _{\nN }\sup _{k \geq n}a_{k}.
-\end{equation}
-
-
+In this section, we deal with functions \(f:S\to \R \), where \((S,\Sigma )\) is a measurable space. The key definition is the following.
 </p>
-
-<p>
-Clearly we have \(\li a_{n} \leq \ls a_{n}\). In Problem <a href="Exercises-2.html#ps:lils"><b>2.2</b></a>, you can investigate some other properties of \(\limsup \) and \(\liminf \). It can be
-shown that the smallest limit of any convergent subsequence of \((a_{n})\) is \(\li a_{n}\), and the largest limit is \(\ls a_{n}\). The next theorem is very useful:
-</p>
-<div class="theorembodytheorem">
+<div class="theorembodydefn">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-53"></a>
+<a id="autoid-75"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 2.1.1</span> <a id="autoid-54" ></a ><a id="thm:lils"></a> A bounded sequence of real numbers \((a_{n})\) converges to a limit if and only if \(\li
-a_{n} = \ls a_{n}\). In this case we have
-</p>
-
-<p>
-\[ \lim _{n \rightarrow \infty } a_{n} = \li a_{n} = \ls a_{n}.\]
-</p>
-
-<p>
-
-
+<span class="theoremheaderplain">Definition 3.1.1</span> <a id="autoid-76" ></a ><a id="d:meas_func"></a> We say that \(f:S\to \R \) is <em>measurable</em> if \(f^{-1}(A)\in \Sigma \)
+whenever \(A\in \mc {B}(\R )\).
 </p>
 
 
@@ -986,42 +996,305 @@ a_{n} = \ls a_{n}\). In this case we have
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> If \((a_{n})\) converges to a limit, then all of its subsequences also converge to the same
-limit and it follows that \(\lim _{n \rightarrow \infty } a_{n} = \li a_{n} = \ls a_{n}\). Conversely suppose that we don’t know that \((a_{n})\) converges but we do know that \(\li a_{n} = \ls
-a_{n}\). Then for all \(\nN \),
+We will sometimes wish to restrict to the case \(S=\R \), in which case we would normally take \(\Sigma =\mc {B}(\R )\) as the Borel sets. In this case, measurable functions \(f:\R \to \R \) are often known
+as <em>Borel measurable</em>.
 </p>
 
 <p>
-\[ 0 \leq a_{n} - \inf _{k \geq n}a_{k} \leq \sup _{k \geq n}a_{k} - \inf _{k \geq n}a_{k}.\]
+We can’t yet explain exactly why Definition <a href="notes.html#??">??</a> is a sensible class of functions to be interested in. This will become clear in Section <a href="notes.html#??">??</a> when we
+begin to construct the Lebesgue integral. Note that the \(\sigma \)-field \(\Sigma \) is the key object in Definition <a href="notes.html#??">??</a>. If we were to use a different \(\sigma \)-field \(\Sigma \)
+on the same set \(S\), then we might change whether \(f:S\to \R \) was measurable.
+</p>
+<div class="theorembodyexample">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-77"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Example 3.1.2</span> <a id="autoid-78" ></a ><a id="ex:meas_indicators"></a> Let \(f:S\to \R \) and let \(X\in \Sigma \). Then \(\1_X\) is measurable. To
+see this let us write \(f=\1_X\) and note that \(f(x)\) takes the values \(0\) if \(x\in X\) and \(1\) if \(x\notin X\). Therefore we have
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{0}\)</span>
+
+<!--
+
+                                                                                                    
+                                                                                                    ∅           / A and 1 ∈
+                                                                                                            if 0 ∈         /A
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    S
+                                                                                                           if 0 ∈ A and 1 ∈ A
+                                                                                       f −1 (A) =
+                                                                                                                 / A and 1 ∈ A
+                                                                                                            if 0 ∈
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                     A
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                     S\A    if 0 ∈ A and 1 ∈
+                                                                                                                           / A.
+                                                                                                    
+                                                                                                    
+
+-->
+
+<p>
+
+
+\begin{equation*}
+f^{-1}(A)= \begin{cases} \emptyset &amp; \text { if } 0\notin A\text { and }1\notin A \\ S &amp; \text { if } 0\in A\text { and }1\in A \\ A &amp; \text { if } 0\notin A\text {
+and }1\in A \\ S\sc A &amp; \text { if } 0\in A\text { and }1\notin A. \end {cases}
+\end{equation*}
+
+
 </p>
 
 <p>
-But
+In all cases we have that \(f^{-1}(A)\in \Sigma \).
 </p>
 
 <p>
-\[\lim _{n \rightarrow \infty }\left (\sup _{k \geq n}a_{k} - \inf _{k \geq n}a_{k}\right ) = \ls a_{n} - \li a_{n} = 0\]
+A interesting special case is provided the indicator function \(\1_\Q \) of the rational numbers, defined from \(\R \to \R \). This function is discontinuous at all points, because between any pair of rationals there
+is an irrational number, and vice versa. Since \(\Q \in \mc {B}(\R )\), the function \(\1_\Q \) is Borel measurable.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyexample">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-79"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Example 3.1.3</span> <a id="autoid-80" ></a >\((\star )\) It is possible to construct non-measurable functions, for example if we take \((S,\Sigma )=(\R ,\mc
+{B}(\R )\) and define \(f:\R \to \R \) by \(f(x)=\1_{\mathscr {V}}(x)\) where \(\mathscr {V}\) is the non-measurable set constructed in Section <a href="notes.html#??">??</a>. Then
+\(f^{-1}(\{1\})=\mathscr {V}\notin \mc {B}(\R )\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+It is usually impossible to use Definition <a href="notes.html#??">??</a> to check directly that some function \(f\) is measurable, because \(\mc {B}(\R )\) is too big to check \(f^{-1}(A)\) for all \(A\in
+\mc {B}(\R )\). In fact it is sufficient to check a much smaller class of subsets, for example using the following result.
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-81"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 3.1.4</span> <a id="autoid-82" ></a ><a id="l:meas_func_reductions"></a> Let \(f:S\to \R \). Then the following statements are equivalent.
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+1. \(f\) is measurable.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+2. \(f^{-1}((a,\infty ))\in \Sigma \) for all \(a\in \R \).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+3. \(f^{-1}([a,\infty ))\in \Sigma \) for all \(a\in \R \).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+4. \(f^{-1}((-\infty ,a))\in \Sigma \) for all \(a\in \R \).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+5. \(f^{-1}((-\infty ,a])\in \Sigma \) for all \(a\in \R \).
+</p>
+</li>
+</ul>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> It is immediate that part 1 \(\ra \) all of the other parts. We will show here that parts 2,
+3, 4 and 5 are all equivalent to each other. Proof that these (all) imply part 1 can be found in Section <a href="notes.html#??">??</a>, which is marked with a \((\Delta )\) for independent study.
 </p>
 
 <p>
-and so
+Note first that part 2 \(\iff \) part 5, as \(f^{-1}(A)^{c} = f^{-1}(A^{c})\) and \(\Sigma \) is closed under taking complements. The fact that part 3 \(\iff \) part 4 is proved similarly. To see that part 2
+\(\ra \) part 3 we use that \([a, \infty ) = \bigcap _{n=1}^{\infty }(a-1/n, \infty )\) and so
 </p>
 
 <p>
-\[\lim _{n \rightarrow \infty } \left (a_{n} - \inf _{k \geq n}a_{k}\right ) = 0\]
+\[ f^{-1}([a, \infty )) = \bigcap _{n=1}^{\infty }f^{-1}((a-1/n, \infty ))\]
 </p>
 
 <p>
-by the sandwich rule. But since
+and the result follows since \(\Sigma \) is closed under countable intersections. Similarly, to see that part 3 \(\ra \) part 2 we use that
 </p>
 
 <p>
-\[ a_{n} = \left (a_{n} - \inf _{k \geq n}a_{k}\right ) + \inf _{k \geq n}a_{k},\]
+\[ f^{-1}((a, \infty )) = \bigcup _{n=1}^{\infty }f^{-1}([a+1/n, \infty ))\]
 </p>
 
 <p>
-and \(\lim _{n \rightarrow \infty } \inf _{k \geq n}a_{k} = \li a_{n}\), we can use the algebra of limits to deduce that \((a_{n})\) converges to the common value of \(\li a_{n}\) and \(\ls
-a_{n}\). &#x2003;&#x2003;&#x220E;
+and the fact that \(\Sigma \) is closed under countable unions. We thus have part part 5 \(\iff \) part 2 \(\iff \) part 3 \(\iff \) part 4. &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+There is nothing special about half-open intervals in Lemma <a href="notes.html#??">??</a>. Lots of other types of subset of \(\R \) will do and we will encounter a few more within this course, such as in
+Exercise <a href="Exercises-2.html#ps:open_int_meas"><b>2.4</b></a>, or Lemma <a href="notes.html#??">??</a> within the independent reading.
+</p>
+
+<p>
+Lemma <a href="notes.html#??">??</a> provides a direct way of showing that functions are measurable, but an indirect way is often easier: we can use measurable functions to construct more measurable
+functions. In fact, nearly everything that combines measurable functions together will create more measurable functions – much like the situation we already established for measurable sets. There are also
+similarities to the algebra of limits from real analysis, which gives the next theorem its name.
+</p>
+
+<p>
+Recall the ‘pointwise’ notation for functions that we introduced in Section <a href="notes.html#??">??</a> e.g.&nbsp;\(f+g\) means the function with values \((f+g)(x)=f(x)+g(x)\).
+</p>
+<div class="theorembodytheorem">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-83"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Theorem 3.1.5 (Algebra of measurable functions)</span> <a id="autoid-84" ></a ><a id="t:alg_meas_funcs"></a> Let \(f,g:S\to \R \) be measurable and let
+\(\alpha \in \R \). The following functions are measurable:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{0}\)</span>
+
+<!--
+
+
+
+                                      f + g,        f g,   αf,       1/f,      f ∨ g,      f ∧ g.                             (3.1)                                          --><a id="eq:pointwise_1"></a><!--
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:pointwise_1} f+g, \qquad fg, \qquad \alpha f, \qquad 1/f, \qquad f\vee g, \qquad f\wedge g.
+\end{equation}
+
+
+</p>
+
+<p>
+In the case of \(1/f\) we must assume \(f(x)\neq 0\) for all \(x\in S\).
+</p>
+
+<p>
+If \(f_n:S\to \R \) for all \(\nN \) then the following functions are measurable:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{1}\)</span>
+
+<!--
+
+
+
+                                  inf fn       sup fn      lim inf fn ,     lim sup fn ,     lim fn                           (3.2)                                          --><a id="eq:pointwise_2"></a><!--
+                                  n             n           n→∞              n→∞            n→∞
+
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:pointwise_2} \inf _n f_n \qquad \sup _n f_n \qquad \liminf _{n\to \infty }f_n, \qquad \limsup _{n\to \infty } f_n, \qquad \lim _{n\to \infty } f_n
+\end{equation}
+
+
+</p>
+
+<p>
+In the case of \(\lim _{n} f_n\) we must assume that the limit exists (pointwise).
+</p>
+
+<p>
+If \(G:\R \to \R \) is Borel measurable then \(G\circ f\), defined by \((G\circ f)(x)=G(f(x))\), is measurable.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The proof is in Section <a href="notes.html#??">??</a>, which is marked with a
+\((\Delta )\) for independent study. &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+The functions in <span class="textup">(<a href="notes.html#??">??</a>)</span> are defined pointwise, as introduced in Section <a href="notes.html#??">??</a>. The functions in <span
+class="textup">(<a href="notes.html#??">??</a>)</span> are also defined pointwise, for example \((\inf _n f_n)(x)=\inf _n f_n(x)\), and similarly for the others. Note that in the case of \(\lim \), the
+function \((\lim _n f_n)(x)= \lim _n f_n(x)\) is only defined if the limit exists for all \(x\). Strictly, at this point we treat only real valued functions so we should require that the \(\inf \)s, \(\sup \)s, and
+so on are not \(\pm \infty \), but we will remove this restriction in Section <a href="notes.html#??">??</a>.
 </p>
 
 </section>
@@ -1033,7 +1306,7 @@ a_{n}\). &#x2003;&#x2003;&#x220E;
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

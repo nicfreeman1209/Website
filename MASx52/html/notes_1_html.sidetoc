@@ -10,7 +10,7 @@
 \contentsline {section}{\numberline {1.3}{\ignorespaces Arbitrage\relax }}{21}{}
 \contentsline {subsection}{Expectation versus arbitrage}{26}{}
 \contentsline {section}{\numberline {1.4}{\ignorespaces Modelling discussion\relax }}{30}{}
-\contentsline {section}{\numberline {1.5}{\ignorespaces Exercises on Chapter~\ref {chap:pricing}\relax }}{32}{}
+\contentsline {section}{\numberline {1.5}{\ignorespaces Exercises on Chapter~\ref {c:pricing}\relax }}{32}{}
 \contentsline {chapter}{\numberline {2}{\ignorespaces Probability spaces and random variables\relax }}{36}{}
 \contentsline {section}{\numberline {2.1}{\ignorespaces Probability measures and \(\sigma \)-fields\relax }}{37}{}
 \contentsline {section}{\numberline {2.2}{\ignorespaces Random variables\relax }}{47}{}
@@ -25,23 +25,23 @@
 \contentsline {section}{\numberline {2.4}{\ignorespaces Expectation\relax }}{68}{}
 \contentsline {subsection}{Indicator functions}{70}{}
 \contentsline {subsection}{\(L^p\) spaces}{72}{}
-\contentsline {section}{\numberline {2.5}{\ignorespaces Exercises on Chapter \ref {chap:prob_meas}\relax }}{76}{}
+\contentsline {section}{\numberline {2.5}{\ignorespaces Exercises on Chapter \ref {c:prob_meas}\relax }}{76}{}
 \contentsline {chapter}{\numberline {3}{\ignorespaces Conditional expectation and martingales\relax }}{81}{}
 \contentsline {section}{\numberline {3.1}{\ignorespaces Conditional expectation\relax }}{82}{}
 \contentsline {subsection}{Relationship to the naive definition $(\star )$}{85}{}
 \contentsline {section}{\numberline {3.2}{\ignorespaces Properties of conditional expectation\relax }}{88}{}
 \contentsline {subsection}{Conditional expectation as an estimator}{91}{}
 \contentsline {section}{\numberline {3.3}{\ignorespaces Martingales\relax }}{94}{}
-\contentsline {section}{\numberline {3.4}{\ignorespaces Exercises on Chapter \ref {chap:cond_exp}\relax }}{105}{}
+\contentsline {section}{\numberline {3.4}{\ignorespaces Exercises on Chapter \ref {c:cond_exp}\relax }}{105}{}
 \contentsline {chapter}{\numberline {4}{\ignorespaces Stochastic processes\relax }}{109}{}
 \contentsline {section}{\numberline {4.1}{\ignorespaces Random walks\relax }}{111}{}
-\contentsline {subsection}{Symmetric random walk}{112}{}
-\contentsline {subsection}{Asymmetric random walk}{114}{}
+\contentsline {subsection}{Simple symmetric random walk}{112}{}
+\contentsline {subsection}{Simple asymmetric random walk}{114}{}
 \contentsline {section}{\numberline {4.2}{\ignorespaces Urn processes\relax }}{117}{}
 \contentsline {subsection}{On fairness}{119}{}
 \contentsline {section}{\numberline {4.3}{\ignorespaces A branching process\relax }}{122}{}
 \contentsline {section}{\numberline {4.4}{\ignorespaces Other stochastic processes\relax }}{126}{}
-\contentsline {section}{\numberline {4.5}{\ignorespaces Exercises on Chapter \ref {chap:stoch_procs}\relax }}{129}{}
+\contentsline {section}{\numberline {4.5}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs}\relax }}{129}{}
 \contentsline {chapter}{\numberline {5}{\ignorespaces The binomial model\relax }}{133}{}
 \contentsline {section}{\numberline {5.1}{\ignorespaces Arbitrage in the one-period model\relax }}{134}{}
 \contentsline {subsection}{Expectation regained}{139}{}
@@ -50,11 +50,11 @@
 \contentsline {section}{\numberline {5.4}{\ignorespaces The binomial model (definition)\relax }}{155}{}
 \contentsline {section}{\numberline {5.5}{\ignorespaces Portfolios, arbitrage and martingales\relax }}{159}{}
 \contentsline {section}{\numberline {5.6}{\ignorespaces Hedging\relax }}{168}{}
-\contentsline {section}{\numberline {5.7}{\ignorespaces Exercises on Chapter \ref {chap:bin_model}\relax }}{177}{}
+\contentsline {section}{\numberline {5.7}{\ignorespaces Exercises on Chapter \ref {c:bin_model}\relax }}{177}{}
 \contentsline {chapter}{\numberline {6}{\ignorespaces Convergence of random variables\relax }}{182}{}
 \contentsline {section}{\numberline {6.1}{\ignorespaces Modes of convergence\relax }}{183}{}
 \contentsline {section}{\numberline {6.2}{\ignorespaces The monotone convergence theorem\relax }}{189}{}
-\contentsline {section}{\numberline {6.3}{\ignorespaces Exercises on Chapter \ref {chap:rv_conv}\relax }}{193}{}
+\contentsline {section}{\numberline {6.3}{\ignorespaces Exercises on Chapter \ref {c:rv_conv}\relax }}{193}{}
 \contentsline {chapter}{\numberline {7}{\ignorespaces Stochastic processes and martingale theory\relax }}{198}{}
 \contentsline {section}{\numberline {7.1}{\ignorespaces The martingale transform\relax }}{199}{}
 \contentsline {section}{\numberline {7.2}{\ignorespaces Roulette\relax }}{202}{}
@@ -67,14 +67,22 @@
 \contentsline {subsubsection}{Extensions and applications of the Galton-Watson process}{229}{}
 \contentsline {subsection}{Long term behaviour of random walks \((\star )\)}{230}{}
 \contentsline {subsubsection}{Extensions and applications of random walks}{233}{}
-\contentsline {section}{\numberline {7.5}{\ignorespaces Exercises on Chapter \ref {chap:stoch_procs_1}\relax }}{235}{}
+\contentsline {section}{\numberline {7.5}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_1}\relax }}{235}{}
 \contentsline {chapter}{\numberline {8}{\ignorespaces Further theory of stochastic processes \((\Delta )\)\relax }}{240}{}
 \contentsline {section}{\numberline {8.1}{\ignorespaces The dominated convergence theorem \((\Delta )\)\relax }}{241}{}
 \contentsline {section}{\numberline {8.2}{\ignorespaces The optional stopping theorem \((\Delta )\)\relax }}{246}{}
-\contentsline {section}{\numberline {8.3}{\ignorespaces Hitting probabilities of random walks \((\Delta )\)\relax }}{253}{}
-\contentsline {subsection}{Asymmetric random walk \((\Delta )\)}{254}{}
-\contentsline {subsection}{Symmetric random walk \((\Delta )\)}{257}{}
-\contentsline {section}{\numberline {8.4}{\ignorespaces Exercises on Chapter \ref {chap:stoch_procs_2} \((\Delta )\)\relax }}{260}{}
-\contentsline {chapter}{\numberline {A}{\ignorespaces Solutions to exercises (part one)\relax }}{264}{}
-\contentsline {chapter}{\numberline {B}{\ignorespaces Formula Sheet (part one)\relax }}{281}{}
+\contentsline {section}{\numberline {8.3}{\ignorespaces The stopped \(\sigma \)-field \((\Delta )\)\relax }}{253}{}
+\contentsline {section}{\numberline {8.4}{\ignorespaces The strong Markov property \((\Delta )\)\relax }}{257}{}
+\contentsline {section}{\numberline {8.5}{\ignorespaces Kolmogorov's 0-1 law \((\star )\)\relax }}{260}{}
+\contentsline {section}{\numberline {8.6}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_2} \((\Delta )\)\relax }}{264}{}
+\contentsline {chapter}{\numberline {9}{\ignorespaces Simple random walks \((\Delta )\)\relax }}{268}{}
+\contentsline {section}{\numberline {9.1}{\ignorespaces Exit probabilities \((\Delta )\)\relax }}{270}{}
+\contentsline {section}{\numberline {9.2}{\ignorespaces Stirling's Approximation \((\Delta )\)\relax }}{274}{}
+\contentsline {section}{\numberline {9.3}{\ignorespaces Long term behaviour: symmetric case \((\Delta )\)\relax }}{277}{}
+\contentsline {subsection}{How long does the simple symmetric random walk take to reach $1$?}{281}{}
+\contentsline {section}{\numberline {9.4}{\ignorespaces Long term behaviour: asymmetric case \((\Delta )\)\relax }}{286}{}
+\contentsline {section}{\numberline {9.5}{\ignorespaces In higher dimensions \((\star )\)\relax }}{292}{}
+\contentsline {section}{\numberline {9.6}{\ignorespaces Exercises on Chapter \ref {c:rws} \((\Delta )\)\relax }}{296}{}
+\contentsline {chapter}{\numberline {A}{\ignorespaces Solutions to exercises (part one)\relax }}{300}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Formula Sheet (part one)\relax }}{302}{}
 

@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Sequences of random variables</title>
+<title>MAS350/61022 — Sequences of Random Variables</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-188"></a>
+<a id="notes-autopage-242"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,17 +855,73 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     chapter Sequences of random variables ......
+......     chapter Sequences of Random Variables ......
 -->
-<h3 id="autosec-189">Chapter&nbsp;<span class="sectionnumber">5&#x2003;</span>Sequences of random variables</h3>
-<a id="notes-autopage-189"></a>
-<a id="notes-autofile-35"></a>
+<h3 id="autosec-243">Chapter&nbsp;<span class="sectionnumber">7&#x2003;</span>Sequences of Random Variables</h3>
+<a id="notes-autopage-243"></a>
+<a id="notes-autofile-44"></a>
 
-<a id="chap:rv_sequences"></a>
+<a id="c:rv_sequences"></a>
 
 <p>
 In this section we think about sequences of random variables, and about taking limits of random variables. As with real numbers, sequences and limits are our main tool for justifying the use of approximations.
@@ -876,17 +931,17 @@ theory underpins much of stochastic modelling.
 <!--
 ......    section The Borel-Cantelli lemmas ......
 -->
-<h4 id="autosec-190"><span class="sectionnumber">5.1&#x2003;</span>The Borel-Cantelli lemmas</h4>
-<a id="notes-autopage-190"></a>
+<h4 id="autosec-244"><span class="sectionnumber">7.1&#x2003;</span>The Borel-Cantelli lemmas</h4>
+<a id="notes-autopage-244"></a>
 
 
 
-<a id="sec:borel-cantelli"></a>
+<a id="s:borel-cantelli"></a>
 
 <p>
 The Borel-Cantelli lemmas are a tool for understanding the tail behaviour of a sequence \((E_n)\) of events. The key definitions are
 </p>
-<span class="hidden"> \(\seteqnumber{0}{5.}{0}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
 
 
 
@@ -927,13 +982,13 @@ and \(\{E_n\text { e.v.}\}\) is the event that, after some point, all remaining 
 Note that by straightforward set algebra,
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{5.}{0}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
 
 <!--
 
 
 
-                             Ω \ {En i.o.} = {Ω \ En e.v.}.                             (5.1)                                                                                        --><a id="evio"></a><!--
+                             Ω \ {En i.o.} = {Ω \ En e.v.}.                             (7.1)                                                                                        --><a id="evio"></a><!--
 
 -->
 
@@ -961,10 +1016,10 @@ The Borel-Cantelli lemmas, respectively, give conditions under which the probabi
 
 
 
-<a id="autoid-162"></a>
+<a id="autoid-210"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 5.1.1 (First Borel-Cantelli Lemma)</span> <a id="autoid-163" ></a ><a id="lem:bc1"></a> Let \((E_n)_{n\in \N }\) be a sequence of events and suppose
+<span class="theoremheaderplain">Lemma 7.1.1 (First Borel-Cantelli Lemma)</span> <a id="autoid-211" ></a ><a id="l:bc1"></a> Let \((E_n)_{n\in \N }\) be a sequence of events and suppose
 \(\sum _{n=1}^\infty \P [E_n]&lt;\infty \). Then \(\P [E_n\text { i.o.}]=0\).
 </p>
 
@@ -984,14 +1039,13 @@ The Borel-Cantelli lemmas, respectively, give conditions under which the probabi
 </p>
 
 <p>
-Here, the first step follows by applying Theorem <a href="Probability-Measure.html#thm:monotone_events_P">4.1.1</a> to the decreasing sequence of events \((B_N)\) where \(B_N=\bigcup _{n\geq N}
-E_n\). The second stop follows by Lemma <a href="Measure-limits.html#lem:union_bound_inf">1.7.2</a> and the fact that limits preserve weak inequalities. The final step follows because \(\sum
-_{n=1}^\infty \P [E_n]&lt;\infty \). &#x2003;&#x2003;&#x220E;
+Here, the first step follows by applying Lemma <a href="notes.html#??">??</a> to the decreasing sequence of events \((B_N)\) where \(B_N=\bigcup _{n\geq N} E_n\). The second stop follows by Lemma <a
+href="notes.html#??">??</a> and the fact that limits preserve weak inequalities. The final step follows because \(\sum _{n=1}^\infty \P [E_n]&lt;\infty \). &#x2003;&#x2003;&#x220E;
 </p>
 
 <p>
 For example, suppose that \((X_n)\) are random variables that take the values \(0\) and \(1\), and that \(\P [X_n=1]=\frac {1}{n^2}\) for all \(n\). Then \(\sum _n\P [X_n=1]=\sum _n\frac
-{1}{n^2}&lt;\infty \) so, by Lemma <a href="Sequences-random-variables.html#lem:bc1">5.1.1</a>, \(\P [X_n=1\text { i.o.}]=0\), which by <span class="textup">(<a
+{1}{n^2}&lt;\infty \) so, by Lemma <a href="notes.html#??">??</a>, \(\P [X_n=1\text { i.o.}]=0\), which by <span class="textup">(<a
 href="Sequences-random-variables.html#evio">5.1</a>)</span> means that \(\P [X_n=0\text { e.v.}]=1\). So, almost surely, beyond some (randomly<b>•</b> located) point in our sequence \((X_n)\),
 we will see only zeros. Note that we did not require the \((X_n)\) to be independent.
 </p>
@@ -1001,11 +1055,11 @@ we will see only zeros. Note that we did not require the \((X_n)\) to be indepen
 
 
 
-<a id="autoid-164"></a>
+<a id="autoid-212"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 5.1.2 (Second Borel-Cantelli Lemma)</span> <a id="autoid-165" ></a ><a id="lem:bc2"></a> Let \((E_n)_{n\in \N }\) be a sequence of independent events
-and suppose that \(\sum _{n=1}^\infty \P [E_n]=\infty \). Then \(\P [E_n\text { i.o.}]=1\).
+<span class="theoremheaderplain">Lemma 7.1.2 (Second Borel-Cantelli Lemma)</span> <a id="autoid-213" ></a ><a id="l:bc2"></a> Let \((E_n)_{n\in \N }\) be a sequence of independent events and
+suppose that \(\sum _{n=1}^\infty \P [E_n]=\infty \). Then \(\P [E_n\text { i.o.}]=1\).
 </p>
 
 
@@ -1020,14 +1074,14 @@ and suppose that \(\sum _{n=1}^\infty \P [E_n]=\infty \). Then \(\P [E_n\text { 
 which by <span class="textup">(<a href="Sequences-random-variables.html#evio">5.1</a>)</span> implies our stated result. Note that
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{5.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
 
 <!--
 
                                                       
                                   [ \         ∞
                                               X    \
-                 P[Enc e.v.] = P     Enc  ≤   P   Enc                               (5.2)                                                                                 --><a id="eq:Encleq"></a><!--
+                 P[Enc e.v.] = P     Enc  ≤   P   Enc                               (7.2)                                                                                 --><a id="eq:Encleq"></a><!--
                                    N n≥N         N =1    n≥N
 
 -->
@@ -1043,10 +1097,10 @@ which by <span class="textup">(<a href="Sequences-random-variables.html#evio">5.
 </p>
 
 <p>
-by Lemma <a href="Measure-limits.html#lem:union_bound_inf">1.7.2</a>. Moreover, since the \((E_n)\) are independent, so are the \((E^c_n)\), so
+by Lemma <a href="notes.html#??">??</a>. Moreover, since the \((E_n)\) are independent, so are the \((E^c_n)\), so
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{5.}{2}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{2}\)</span>
 
 <!--
 
@@ -1056,7 +1110,7 @@ by Lemma <a href="Measure-limits.html#lem:union_bound_inf">1.7.2</a>. Moreover, 
                                                                                                                                        e−P[En ] = exp −
                                                                           \             Y                 Y                      Y                        X
                                                                     P        Enc  =         P[Enc ] =         (1 − P[En ]) ≤                                  P[En ] = 0.
-                                                                        n≥N             n=N               n=N                    n=N                      n=N
+                                                                       n≥N              n=N               n=N                    n=N                      n=N
 
 -->
 
@@ -1079,8 +1133,8 @@ fourth step is immediate and the final step holds because \(\sum _n\P [E_n]=\inf
 
 <p>
 For example, suppose that \((X_n)\) are i.i.d.&nbsp;random variables such that \(\P [X_n=1]=\frac {1}{2}\) and \(\P [X_n=-1]=\frac {1}{2}\). Then \(\sum _n\P [X_n=1]=\infty \) and, by Lemma <a
-href="Sequences-random-variables.html#lem:bc2">5.1.2</a>, \(\P [X_n=1\text { i.o.}]=1\). By symmetry, we have also \(\P \l [X_n=0\text { i.o.}\r ]=1\). So, if we look along our sequence, almost
-surely we will see infinitely many \(1\)s and infinitely many \(0\)s.
+href="notes.html#??">??</a>, \(\P [X_n=1\text { i.o.}]=1\). By symmetry, we have also \(\P \l [X_n=0\text { i.o.}\r ]=1\). So, if we look along our sequence, almost surely we will see infinitely
+many \(1\)s and infinitely many \(0\)s.
 </p>
 
 <p>
@@ -1104,7 +1158,7 @@ Recall that this fact follows from the integral test for convergence of series.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

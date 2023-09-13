@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Discrete and Continuous Random Variables</title>
+<title>MAS350/61022 — Discrete and continuous random variables</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-176"></a>
+<a id="notes-autopage-209"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,15 +855,71 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Discrete and Continuous Random Variables ......
+......     section Discrete and continuous random variables ......
 -->
-<h4 id="autosec-177"><span class="sectionnumber">4.3&#x2003;</span>Discrete and Continuous Random Variables</h4>
-<a id="notes-autopage-177"></a>
-<a id="notes-autofile-32"></a>
+<h4 id="autosec-210"><span class="sectionnumber">5.3&#x2003;</span>Discrete and continuous random variables</h4>
+<a id="notes-autopage-210"></a>
+<a id="notes-autofile-37"></a>
 
 <p>
 You will probably recall that many useful random variables are found in two special cases. Formally, we say that a random variable \(X\) is a:
@@ -889,27 +944,39 @@ You will probably recall that many useful random variables are found in two spec
 </ul>
 
 <p>
-Note that if \(F_X\) is continuous at \(x\) then \(\P (X=x) = 0\) Remark <a href="The-Cumulative-Distribution-Function.html#rem:cdf_cont">4.2.2</a>. In particular, this applies to all \(x\in \R \) for
-continuous random variables. Many random random variables are neither discrete nor continuous.
+Note that if \(F_X\) is continuous at \(x\) then \(\P [X=x]=0\) by Remark <a href="notes.html#??">??</a>. In particular, this applies to all \(x\in \R \) for continuous random variables.
+</p>
+
+<p>
+Many random random variables are neither discrete nor continuous. They occur in rather mundane ways. For example, suppose that we toss a fair coin, on heads we set \(X=1\) and on tails we set \(X=U\) where
+\(U\) is a uniform random variable on \([0,1]\). The c.d.f.&nbsp;of \(X\) is then
+</p>
+
+<p>
+\[F_X(x)=\begin {cases} 0 &amp; \text { for }x&lt;0 \\ \frac {x}{2} &amp; \text { for }x\in [0,1) \\ 1 &amp; \text { for }x&gt;1.                            \end {cases}\]
+</p>
+
+<p>
+Thus \(X\) is neither discrete nor continuous. Random variables of this nature after often said to have a <em>mixed</em> type, particularly in statistics, because we have used a combination of discrete random
+variables (the coin toss) and continuous random variables to construct them.
 </p>
 
 <p>
 We now point out a technicality that is often forgotten in less rigorous courses: a continuous random variable does not need to have a probability density function! Strictly speaking, those that do have a special
-name; we say \(X\) is a
+name; we say \(X\) is an
 </p>
 <ul style="list-style-type:none">
 
 
 <li>
 <p>
-3. absolutely continuous random variable if there exists an integrable function \(f_{X}:\R \rightarrow \R \) so that \(F_{X}(x) = \int _{-\infty }^{x}f_{X}(y)dy\) for all \(x \in \R \).
+3. absolutely continuous random variable if there exists a measurable function \(f_{X}:\R \rightarrow [0,\infty )\) such that \(F_{X}(x) = \int _{-\infty }^{x}f_{X}(y)dy\) for all \(x \in \R \).
 </p>
 </li>
 </ul>
 
 <p>
-The function \(f_{X}\) is called the probability density function or pdf of \(X\). Clearly \(f_{X} \geq 0\) (a.e.) and by Theorem <a href="The-Cumulative-Distribution-Function.html#thm:cdf">4.2.1</a>
-(6) we have \(\int _{-\infty }^{\infty }f_{X}(y)dy = 1\).
+The function \(f_{X}\) is called the probability density function or p.d.f.&nbsp;of \(X\). Since \(\P [X\in \R ]=1\) we have \(\int _{-\infty }^{\infty }f_{X}(y)dy = 1\).
 </p>
 <div class="theorembodylemma">
 
@@ -917,10 +984,10 @@ The function \(f_{X}\) is called the probability density function or pdf of \(X\
 
 
 
-<a id="autoid-154"></a>
+<a id="autoid-188"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 4.3.1</span> <a id="autoid-155" ></a >Every absolutely continuous random variable is a continuous random variable.
+<span class="theoremheaderplain">Lemma 5.3.1</span> <a id="autoid-189" ></a >Every absolutely continuous random variable is a continuous random variable.
 </p>
 
 
@@ -941,20 +1008,14 @@ The function \(f_{X}\) is called the probability density function or pdf of \(X\
 <p>
 We want to prove this is a continuous function of \(x\), for which we’ll use the dominated convergence theorem and the definition of continuity in terms of sequences. Let \((x_n)\sw \R \) be any sequence such
 that \(x_n\to x\). Note that \(|\1_{(y\leq x_n)}f_X(y)|\leq |f_X(y)|\) with \(\int _\R |f_X(y)|\,dy=\P [X\in \R ]=1&lt;\infty \). If \(y\neq x\) then we have \(\1_{(y\leq x_n)}\to
-\1_{(y\leq x)}\) which means that \(\1_{(y\leq x_n)}f_X(y)\to \1_{(y\leq x)}f_X(y)\) for almost all \(y\in \R \). Hence by the dominated convergence theorem we have
+\1_{(y\leq x)}\) which means that \(\1_{(y\leq x_n)}f_X(y)\to \1_{(y\leq x)}f_X(y)\) for almost all \(y\in \R \). Hence by the dominated convergence theorem we have \(\int _{-\infty
+}^{x_n}f_{X}(y)\,dy\to \int _{-\infty }^{x}f_{X}(y)\,dy\) as \(n\to \infty \), as required. &#x2003;&#x2003;&#x220E;
 </p>
 
 <p>
-\[\int _{-\infty }^{x_n}f_{X}(y)\,dy\to \int _{-\infty }^{x}f_{X}(y)\,dy\]
-</p>
-
-<p>
-as \(n\to \infty \), as required. &#x2003;&#x2003;&#x220E;
-</p>
-
-<p>
-We have already seen the example of the Gaussian random variable that is absolutely continuous. Most useful continuous random variables are absolutely continuous; other examples that you may have encountered
-previously include the uniform, exponential, Student \(t\), gamma and beta distributions. Typical examples of discrete random variables are the binomial, geometric and Poisson distributions.
+It is rare to come across examples of continuous random variables that are not absolutely continuous, but they do exist. For practical purposes most useful continuous random variables are absolutely continuous;
+examples that you may have encountered previously include the uniform, exponential, normal, Student \(t\), gamma and beta distributions. Typical examples of discrete random variables are the binomial,
+geometric and Poisson distributions.
 </p>
 
 </section>
@@ -966,7 +1027,7 @@ previously include the uniform, exponential, Student \(t\), gamma and beta distr
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

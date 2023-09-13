@@ -1,67 +1,67 @@
-\contentsline {chapter}{\numberline {9}{\ignorespaces The transition to continuous time\relax }}{5}{}
-\contentsline {chapter}{\numberline {10}{\ignorespaces Brownian motion\relax }}{11}{}
-\contentsline {section}{\numberline {10.1}{\ignorespaces The limit of random walks\relax }}{12}{}
-\contentsline {section}{\numberline {10.2}{\ignorespaces Brownian motion (definition)\relax }}{18}{}
-\contentsline {section}{\numberline {10.3}{\ignorespaces Brownian motion and the heat equation\relax }}{25}{}
-\contentsline {section}{\numberline {10.4}{\ignorespaces Properties of Brownian motion\relax }}{31}{}
-\contentsline {subsubsection}{Symmetry}{32}{}
-\contentsline {subsubsection}{Non-differentiability}{34}{}
-\contentsline {subsubsection}{Relationship to martingales}{36}{}
-\contentsline {section}{\numberline {10.5}{\ignorespaces Exercises on Chapter \ref {chap:bm}\relax }}{40}{}
-\contentsline {chapter}{\numberline {11}{\ignorespaces Stochastic integration\relax }}{44}{}
-\contentsline {section}{\numberline {11.1}{\ignorespaces Introduction to Ito calculus\relax }}{45}{}
-\contentsline {section}{\numberline {11.2}{\ignorespaces Ito integrals\relax }}{50}{}
-\contentsline {subsection}{Comparing Ito integration to classical integration}{52}{}
-\contentsline {section}{\numberline {11.3}{\ignorespaces Existence of Ito integrals \((\star )\)\relax }}{54}{}
-\contentsline {section}{\numberline {11.4}{\ignorespaces Ito processes\relax }}{59}{}
-\contentsline {subsection}{Equating coefficients}{64}{}
-\contentsline {section}{\numberline {11.5}{\ignorespaces Exercises on Chapter \ref {chap:ito}\relax }}{67}{}
-\contentsline {chapter}{\numberline {12}{\ignorespaces Stochastic differential equations\relax }}{71}{}
-\contentsline {section}{\numberline {12.1}{\ignorespaces Ito's formula\relax }}{75}{}
+\contentsline {chapter}{\numberline {10}{\ignorespaces The transition to continuous time\relax }}{5}{}
+\contentsline {chapter}{\numberline {11}{\ignorespaces Brownian motion\relax }}{12}{}
+\contentsline {section}{\numberline {11.1}{\ignorespaces The limit of random walks\relax }}{13}{}
+\contentsline {section}{\numberline {11.2}{\ignorespaces Brownian motion (definition)\relax }}{19}{}
+\contentsline {section}{\numberline {11.3}{\ignorespaces Brownian motion and the heat equation $(\star )$\relax }}{26}{}
+\contentsline {section}{\numberline {11.4}{\ignorespaces Properties of Brownian motion\relax }}{32}{}
+\contentsline {subsubsection}{Symmetry}{33}{}
+\contentsline {subsubsection}{Non-differentiability}{35}{}
+\contentsline {subsubsection}{Relationship to martingales}{37}{}
+\contentsline {section}{\numberline {11.5}{\ignorespaces Exercises on Chapter \ref {c:bm}\relax }}{41}{}
+\contentsline {chapter}{\numberline {12}{\ignorespaces Stochastic integration\relax }}{45}{}
+\contentsline {section}{\numberline {12.1}{\ignorespaces Introduction to Ito calculus\relax }}{46}{}
+\contentsline {section}{\numberline {12.2}{\ignorespaces Ito integrals\relax }}{51}{}
+\contentsline {subsection}{Comparing Ito integration to classical integration}{53}{}
+\contentsline {section}{\numberline {12.3}{\ignorespaces Existence of Ito integrals \((\star )\)\relax }}{55}{}
+\contentsline {section}{\numberline {12.4}{\ignorespaces Ito processes\relax }}{60}{}
+\contentsline {section}{\numberline {12.5}{\ignorespaces Exercises on Chapter \ref {c:ito}\relax }}{67}{}
+\contentsline {chapter}{\numberline {13}{\ignorespaces Stochastic differential equations\relax }}{71}{}
+\contentsline {section}{\numberline {13.1}{\ignorespaces Ito's formula\relax }}{75}{}
 \contentsline {subsection}{Sketch proof of Ito's formula \((\star )\)}{80}{}
-\contentsline {section}{\numberline {12.2}{\ignorespaces Geometric Brownian motion\relax }}{82}{}
-\contentsline {section}{\numberline {12.3}{\ignorespaces Stochastic exponentials and martingale representation\relax }}{85}{}
-\contentsline {subsection}{The martingale representation theorem \((\star )\)}{88}{}
-\contentsline {section}{\numberline {12.4}{\ignorespaces Exercises on Chapter \ref {chap:sdes}\relax }}{91}{}
-\contentsline {chapter}{\numberline {13}{\ignorespaces Connections between SDEs and PDEs\relax }}{96}{}
-\contentsline {section}{\numberline {13.1}{\ignorespaces The Feynman-Kac formula\relax }}{97}{}
-\contentsline {section}{\numberline {13.2}{\ignorespaces The Markov property\relax }}{105}{}
-\contentsline {section}{\numberline {13.3}{\ignorespaces Exercises on Chapter \ref {chap:fk}\relax }}{108}{}
-\contentsline {chapter}{\numberline {14}{\ignorespaces The Black-Scholes model\relax }}{112}{}
-\contentsline {section}{\numberline {14.1}{\ignorespaces The Black-Scholes market\relax }}{113}{}
-\contentsline {section}{\numberline {14.2}{\ignorespaces Completeness\relax }}{121}{}
-\contentsline {section}{\numberline {14.3}{\ignorespaces The Black-Scholes equation\relax }}{128}{}
-\contentsline {section}{\numberline {14.4}{\ignorespaces Martingales and `the risk-neutral world'\relax }}{134}{}
-\contentsline {section}{\numberline {14.5}{\ignorespaces The Black-Scholes formula\relax }}{138}{}
-\contentsline {section}{\numberline {14.6}{\ignorespaces Exercises on Chapter \ref {chap:bs}\relax }}{141}{}
-\contentsline {chapter}{\numberline {15}{\ignorespaces Application and extension of the Black-Scholes model\relax }}{147}{}
-\contentsline {section}{\numberline {15.1}{\ignorespaces Transaction costs and parity relations\relax }}{148}{}
-\contentsline {section}{\numberline {15.2}{\ignorespaces The Greeks\relax }}{152}{}
-\contentsline {section}{\numberline {15.3}{\ignorespaces Delta and Gamma Hedging\relax }}{155}{}
-\contentsline {section}{\numberline {15.4}{\ignorespaces Exercises on Chapter \ref {chap:bs_extensions}\relax }}{162}{}
-\contentsline {section}{\numberline {15.5}{\ignorespaces Further extensions \((\star )\)\relax }}{169}{}
-\contentsline {subsection}{Time inhomogeneity \((\star )\)}{170}{}
-\contentsline {subsection}{American and Exotic options \((\star )\)}{171}{}
-\contentsline {subsection}{Discontinuous stock prices and heavy tails \((\star )\)}{174}{}
-\contentsline {subsection}{Volatility \((\star )\)}{177}{}
-\contentsline {subsubsection}{Historical volatility \((\star )\)}{178}{}
-\contentsline {subsubsection}{Implied volatility and the volatility smile \((\star )\)}{180}{}
-\contentsline {subsection}{Incomplete markets \((\star )\)}{182}{}
-\contentsline {chapter}{\numberline {16}{\ignorespaces The financial crisis of 2007/08 \((\star )\)\relax }}{184}{}
-\contentsline {subsubsection}{Availability of credit during 2000-07}{186}{}
-\contentsline {subsubsection}{Deregulation of lending}{187}{}
-\contentsline {subsubsection}{The housing boom}{188}{}
-\contentsline {subsubsection}{The end of the housing boom}{189}{}
-\contentsline {subsubsection}{Outcomes}{190}{}
-\contentsline {subsubsection}{The role of financial derivatives}{192}{}
-\contentsline {subsubsection}{Further reading}{193}{}
-\contentsline {chapter}{\numberline {17}{\ignorespaces Financial networks \((\Delta )\)\relax }}{195}{}
-\contentsline {section}{\numberline {17.1}{\ignorespaces Graphs and random graphs \((\Delta )\)\relax }}{196}{}
-\contentsline {section}{\numberline {17.2}{\ignorespaces The Gai-Kapadia model of debt contagion \((\Delta )\)\relax }}{202}{}
-\contentsline {section}{\numberline {17.3}{\ignorespaces Approximating contagion by a Galton-Watson process \((\Delta )\)\relax }}{209}{}
-\contentsline {section}{\numberline {17.4}{\ignorespaces Modelling discussion on financial networks \((\Delta )\)\relax }}{211}{}
-\contentsline {section}{\numberline {17.5}{\ignorespaces Exercises on Chapter \ref {chap:fin_net}\relax }}{214}{}
-\contentsline {chapter}{\numberline {C}{\ignorespaces Solutions to exercises (book two)\relax }}{222}{}
-\contentsline {chapter}{\numberline {D}{\ignorespaces Advice for revision/exams\relax }}{235}{}
-\contentsline {chapter}{\numberline {E}{\ignorespaces Formula sheet (part two)\relax }}{239}{}
+\contentsline {section}{\numberline {13.2}{\ignorespaces Geometric Brownian motion\relax }}{82}{}
+\contentsline {section}{\numberline {13.3}{\ignorespaces The Ornstein–Uhlenbeck process \((\Delta )\)\relax }}{85}{}
+\contentsline {section}{\numberline {13.4}{\ignorespaces Stochastic exponentials and martingale representation\relax }}{87}{}
+\contentsline {subsection}{The martingale representation theorem \((\star )\)}{90}{}
+\contentsline {section}{\numberline {13.5}{\ignorespaces Exercises on Chapter \ref {c:sdes}\relax }}{93}{}
+\contentsline {chapter}{\numberline {14}{\ignorespaces Stochastic processes in continuous time\relax }}{98}{}
+\contentsline {section}{\numberline {14.1}{\ignorespaces The Feynman-Kac formula\relax }}{99}{}
+\contentsline {section}{\numberline {14.2}{\ignorespaces The Markov property\relax }}{107}{}
+\contentsline {section}{\numberline {14.3}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_3}\relax }}{111}{}
+\contentsline {chapter}{\numberline {15}{\ignorespaces The Black-Scholes model\relax }}{115}{}
+\contentsline {section}{\numberline {15.1}{\ignorespaces The Black-Scholes market\relax }}{116}{}
+\contentsline {section}{\numberline {15.2}{\ignorespaces Completeness\relax }}{124}{}
+\contentsline {section}{\numberline {15.3}{\ignorespaces The Black-Scholes equation\relax }}{131}{}
+\contentsline {section}{\numberline {15.4}{\ignorespaces Martingales and `the risk-neutral world'\relax }}{137}{}
+\contentsline {section}{\numberline {15.5}{\ignorespaces The Black-Scholes formula\relax }}{141}{}
+\contentsline {section}{\numberline {15.6}{\ignorespaces Exercises on Chapter \ref {c:bs}\relax }}{144}{}
+\contentsline {chapter}{\numberline {16}{\ignorespaces Application and extension of the Black-Scholes model\relax }}{150}{}
+\contentsline {section}{\numberline {16.1}{\ignorespaces Transaction costs and parity relations\relax }}{151}{}
+\contentsline {section}{\numberline {16.2}{\ignorespaces The Greeks\relax }}{155}{}
+\contentsline {section}{\numberline {16.3}{\ignorespaces Delta and Gamma Hedging\relax }}{158}{}
+\contentsline {section}{\numberline {16.4}{\ignorespaces Exercises on Chapter \ref {c:bs_extensions}\relax }}{165}{}
+\contentsline {chapter}{\numberline {17}{\ignorespaces Further topics on Black-Scholes model \((\star )\)\relax }}{172}{}
+\contentsline {section}{\numberline {17.1}{\ignorespaces Time inhomogeneity \((\star )\)\relax }}{173}{}
+\contentsline {section}{\numberline {17.2}{\ignorespaces American and Exotic options \((\star )\)\relax }}{175}{}
+\contentsline {section}{\numberline {17.3}{\ignorespaces Discontinuous stock prices and heavy tails \((\star )\)\relax }}{179}{}
+\contentsline {section}{\numberline {17.4}{\ignorespaces Volatility \((\star )\)\relax }}{183}{}
+\contentsline {subsection}{Historical volatility \((\star )\)}{184}{}
+\contentsline {subsection}{Implied volatility and the volatility smile \((\star )\)}{186}{}
+\contentsline {section}{\numberline {17.5}{\ignorespaces Incomplete markets \((\star )\)\relax }}{189}{}
+\contentsline {chapter}{\numberline {18}{\ignorespaces The financial crisis of 2007/8 \((\star )\)\relax }}{191}{}
+\contentsline {subsubsection}{Availability of credit during 2000-07}{193}{}
+\contentsline {subsubsection}{Deregulation of lending}{194}{}
+\contentsline {subsubsection}{The housing boom}{195}{}
+\contentsline {subsubsection}{The end of the housing boom}{196}{}
+\contentsline {subsubsection}{Outcomes}{197}{}
+\contentsline {subsubsection}{The role of financial derivatives}{199}{}
+\contentsline {subsubsection}{Further reading}{200}{}
+\contentsline {chapter}{\numberline {19}{\ignorespaces Financial networks \((\Delta )\)\relax }}{202}{}
+\contentsline {section}{\numberline {19.1}{\ignorespaces Graphs and random graphs \((\Delta )\)\relax }}{203}{}
+\contentsline {section}{\numberline {19.2}{\ignorespaces The Gai-Kapadia model of debt contagion \((\Delta )\)\relax }}{209}{}
+\contentsline {section}{\numberline {19.3}{\ignorespaces Approximating contagion by a Galton-Watson process \((\Delta )\)\relax }}{216}{}
+\contentsline {section}{\numberline {19.4}{\ignorespaces Modelling discussion on financial networks \((\Delta )\)\relax }}{218}{}
+\contentsline {section}{\numberline {19.5}{\ignorespaces Exercises on Chapter \ref {c:fin_net} \((\Delta )\)\relax }}{221}{}
+\contentsline {chapter}{\numberline {C}{\ignorespaces Solutions to exercises (part two)\relax }}{229}{}
+\contentsline {chapter}{\numberline {D}{\ignorespaces Advice for revision/exams\relax }}{242}{}
+\contentsline {chapter}{\numberline {E}{\ignorespaces Formula sheet (part two)\relax }}{246}{}
 

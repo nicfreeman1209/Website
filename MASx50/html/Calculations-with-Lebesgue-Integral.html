@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Calculations with the Lebesgue Integral</title>
+<title>MAS350/61022 — Calculations with the Lebesgue integral</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-136"></a>
+<a id="notes-autopage-165"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,24 +855,107 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Calculations with the Lebesgue Integral ......
+......     section Calculations with the Lebesgue integral ......
 -->
-<h4 id="autosec-137"><span class="sectionnumber">3.8&#x2003;</span>Calculations with the Lebesgue Integral</h4>
-<a id="notes-autopage-137"></a>
-<a id="notes-autofile-26"></a> <a id="sec:int_calcs"></a>
+<h4 id="autosec-166"><span class="sectionnumber">4.7&#x2003;</span>Calculations with the Lebesgue integral</h4>
+<a id="notes-autopage-166"></a>
+<a id="notes-autofile-30"></a> <a id="s:leb_int_calcs"></a>
 
 <p>
-Now lets look at a few examples of using the major results of Chapter <a href="Lebesgue-Integration.html#chap:lebesbgue_integration">3</a> to integrate particular functions. We’ll begin with the testing
-for integrability and using the monotone convergence theorem, before moving on to the bounded and dominated convergence theorems.
+From now on, we’ll often write \(\int _S f(x)\,dm(x)\) in place of \(\int _S f\,dm\). This notation has the advantage that we can write an expression like \(\int _S e^{-x^2}\,d\lambda (x)\) without
+having to specify the function \(f(x)=e^{-x^2}\) in advance. We follow common convention and write \(\int \ldots dx\) for integration with respect to Lebesgue measure, which we would formally write as
+\(\int \ldots d\lambda (x)\). We’ll allow ourselves to do this in cases where its clear from the context that we mean to integrate with respect to Lebesgue measure.
+</p>
+<div class="theorembodyremark">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-155"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Remark 4.7.1</span> <a id="autoid-156" ></a >\((\star )\) In some countries (e.g.&nbsp;France) it is common to write \(\int _S dm\,f\) instead of \(\int _S
+f\,dm\). We won’t use that notation within this course. The notation \(\int _S f(x) m(dx)\) in place of \(\int _S f(x) dm(x)\) is also widely used.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+We will show in Theorem <a href="notes.html#??">??</a> that, if \(f:[a,b]\to \R \) is Riemann integrable, over a closed bounded interval \([a,b]\sw \R \), then \(f\) is also Lebesgue integrable, and in
+this case the value of the two integrals is equal. Consequently, you may use all the facts you already know about Riemann integration on \(\R \) to evaluate integrals of the form \(\int _{[a,b]} f(x)\,dx\),
+which we would normally write as \(\int _a^b f(x)\,dx\). This includes integration by substitution, by parts, the Fundamental Theorem of Calculus, and so on. A word of warning is necessary: such results only
+apply on <em>bounded</em> intervals \([a,b]\) and in general are not true on unbounded intervals.
 </p>
 
 <p>
-From now on, we’ll often adopt a piece of common notation and write \(\int \ldots dx\) for integration with respect to Lebesgue measure, which formally we would write as \(\int \ldots \lambda (dx)\).
-We’ll allow ourselves to do this in cases where its clear from the context that we mean to integrate with respect to Lebesgue measure.
+The Lebesgue integral also gives us the MCT and DCT, for when we need limits and integrals to interact. In this section we look at a few examples of using the major results of Chapter <a
+href="notes.html#??">??</a> to integrate particular functions. We’ll begin with the testing for \(\Lone \) and using the monotone convergence theorem, before moving on to the dominated convergence theorem.
 </p>
 <div class="theorembodyexample">
 
@@ -881,10 +963,10 @@ We’ll allow ourselves to do this in cases where its clear from the context tha
 
 
 
-<a id="autoid-123"></a>
+<a id="autoid-157"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 3.8.1</span> <a id="autoid-124" ></a ><a id="ex:poly_int"></a> We aim show that \(f(x) = x^{-\alpha }\) is integrable on \([1, \infty )\) for
+<span class="theoremheaderplain">Example 4.7.2</span> <a id="autoid-158" ></a ><a id="ex:poly_int"></a> We aim show that \(f(x) = x^{-\alpha }\) is in \(\Lone \) on \([1, \infty )\) for
 \(\alpha &gt; 1\).
 </p>
 
@@ -921,17 +1003,17 @@ By the monotone convergence theorem,
 
 
 
-<a id="autoid-125"></a>
+<a id="autoid-159"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 3.8.2</span> <a id="autoid-126" ></a ><a id="ex:gamma_int"></a> We aim to show that \(f(x) = x^{\alpha }e^{-x}\) is integrable on \([0, \infty )\)
-for \(\alpha &gt; 0\).
+<span class="theoremheaderplain">Example 4.7.3</span> <a id="autoid-160" ></a ><a id="ex:gamma_int"></a> We aim to show that \(f(x) = x^{\alpha }e^{-x}\) is in \(\Lone \) on \([0, \infty
+)\) for \(\alpha &gt; 0\).
 </p>
 
 <p>
 The key idea here is that \(e^{-x}\) tends to zero very quickly as \(x\to \infty \), and we can use this fast convergence to overpower the ‘opposing’ fact that \(x^\alpha \to \infty \). Recall that for any \(M
-\geq 0\) we have \(\lim _{x \rightarrow \infty }x^{M}e^{-x} = 0\), so that given any \(\epsilon &gt; 0\) there exists \(R &gt; 0\) so that \(x &gt; R \Rightarrow x^{M}e^{-x} &lt; \epsilon \),
-and choose \(M\) so that \(M - \alpha &gt; 1\). Now write
+\geq 0\) we have \(\lim _{x \rightarrow \infty }x^{M}e^{-x} = 0\), so that given any \(\eps &gt; 0\) there exists \(R &gt; 0\) so that \(x &gt; R \Rightarrow x^{M}e^{-x} &lt; \eps \), and
+choose \(M\) so that \(M - \alpha &gt; 1\). Now write
 </p>
 
 <p>
@@ -939,50 +1021,16 @@ and choose \(M\) so that \(M - \alpha &gt; 1\). Now write
 </p>
 
 <p>
-By part 2 of Theorem <a href="Lebesgue-Integrability.html#thm:basicsli">3.6.2</a> here, the sum of two integrable functions is an integrable function, so we’ll aim to prove that both terms on the right
-hand side are integrable. The first term on the right clearly is, because it is bounded on \([0,R]\) and zero elsewhere. For the second term we use that fact that for all \(x &gt; R\),
+By part (b) of Exercise <a href="notes.html#??">??</a> the sum of two \(\Lone \) functions is in \(\Lone \), so we’ll aim to prove that both terms on the right hand side are in \(\Lone \). The first term on
+the right clearly is, because it is bounded on \([0,R]\) and zero elsewhere. For the second term we use that fact that for all \(x &gt; R\),
 </p>
 
 <p>
-\[ x^{\alpha }e^{-x} = x^{M}e^{-x}.x^{\alpha - M} &lt; \epsilon x^{\alpha - M},\]
+\[ x^{\alpha }e^{-x} = x^{M}e^{-x}.x^{\alpha - M} &lt; \eps x^{\alpha - M},\]
 </p>
 
 <p>
-and which is thus integrable by Example <a href="Calculations-with-Lebesgue-Integral.html#ex:poly_int">3.8.1</a>. So the result follows by Lemma <a
-href="Lebesgue-Integrability.html#lem:dom_int">3.6.3</a>.
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-<div class="theorembodyremark">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-127"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Remark 3.8.3</span> <a id="autoid-128" ></a >Let \(I\sw \R \) be an interval and recall \((I,\mc {B}(I),\lambda _I)\) from Remark <a
-href="Lebesgue-Measure.html#rem:borel_leb_restriction">1.5.3</a>, which are the restriction of the Borel sets and Lebesgue measure to the interval \(I\). A similar restriction applies for integrals, that is if
-\(f:\R \to \R \) then \(\int _\R \1_{I}(x)f(x)\,d\lambda (x)=\int _I f(x)\,d\lambda _I(x)\), or in more standard notation if \(I=[a,b]\) (for example) then
-</p>
-
-<p>
-\[\int _a^b f(x)\,dx=\int _\R \1_{[a,b]}(x)f(x)\,dx.\]
-</p>
-
-<p>
-We often treat this result as so obvious that we use it for free, and you may do so within this course. We’ll do so in the next example.
-</p>
-
-<p>
-Strictly, it does requires a proof, which can be done by first proving the result explicitly for simple functions, then applying the monotone convergence theorem to extend to non-negative measurable functions, and
-lastly transferring to integrable functions. As can be seen from the proof, there is nothing special about intervals here: in fact \(I\) can be be any Borel set.
+and which is thus in \(\Lone \) by Example <a href="Calculations-with-Lebesgue-Integral.html#ex:poly_int">3.8.1</a>. So the result follows by Lemma <a href="notes.html#??">??</a>.
 </p>
 
 
@@ -997,10 +1045,10 @@ lastly transferring to integrable functions. As can be seen from the proof, ther
 
 
 
-<a id="autoid-129"></a>
+<a id="autoid-161"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 3.8.4</span> We want to calculate
+<span class="theoremheaderplain">Example 4.7.4</span> We want to calculate
 </p>
 
 <p>
@@ -1009,16 +1057,16 @@ lastly transferring to integrable functions. As can be seen from the proof, ther
 
 <p>
 We’ll work in the measure space \(([0,1], {\cal B}([0, 1]), \lambda )\) and consider the sequence of functions \((f_{n})\) where \(f_{n}(x) = \frac {nx^{2}}{nx + 5}\) for all \(x \in [0,1], \nN \).
-Each \(f_{n}\) is continuous, hence measurable by Corollary <a href="Examples-Measurable-Functions.html#cor:meas_cts">2.3.2</a>. It is straightforward to check that \(\limn f_{n}(x) = x\) for all \(x
-\in [0,1]\) and that \(|f_{n}(x)| \leq 1\) for all \(\nN , x \in [0,1]\). So in this case, we can take \(K = 1\), and apply the Bounded Convergence Theorem to deduce that \(f(x) = x\) is integrable, and
+Each \(f_{n}\) is continuous, hence also measurable by Lemma <a href="notes.html#??">??</a>. It is straightforward to check that \(\limn f_{n}(x) = x\) for all \(x \in [0,1]\) and that \(|f_{n}(x)|
+\leq 1\) for all \(\nN , x \in [0,1]\). So in this case, we can take \(K = 1\), and apply the DCT with dominating function \(g=1\) to deduce that \(f(x) = x\) is in \(\Lone \), and
 </p>
 
 <p>
-\[ \limn \int _{[0,1]}\frac {nx^{2}}{nx + 5}\,dx = \int _{[0,1]}x \,dx\]
+\[ \limn \int _{[0,1]}\frac {nx^{2}}{nx + 5}\,dx = \int _{[0,1]}x \,dx.\]
 </p>
 
 <p>
-and we finish by evaluating \(\int _{[0,1]}x\, dx = \left [\frac {x^{2}}{2}\right ]_{0}^{1} = \frac {1}{2}.\)
+We finish by evaluating \(\int _{[0,1]}x\, dx = \left [\frac {x^{2}}{2}\right ]_{0}^{1} = \frac {1}{2}.\)
 </p>
 
 
@@ -1033,12 +1081,12 @@ and we finish by evaluating \(\int _{[0,1]}x\, dx = \left [\frac {x^{2}}{2}\righ
 
 
 
-<a id="autoid-130"></a>
+<a id="autoid-162"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 3.8.5</span> <a id="autoid-131" ></a ><a id="ex:series"></a> Summation of series is a special case of Lebesgue integration. Suppose that we are interested
+<span class="theoremheaderplain">Example 4.7.5</span> <a id="autoid-163" ></a ><a id="ex:series"></a> Summation of series is a special case of Lebesgue integration. Suppose that we are interested
 in \(\sum _{n=1}^{\infty }a_{n}\), where \(a_{n} \geq 0\) for all \(\nN \). We consider the sequence \((a_{n})\) as a function \(a:{\mathbb N} \rightarrow [0, \infty )\). We work with the measure
-space \(({\mathbb N}, {\mathcal P}({\mathbb N}), m)\) where \(m\) is counting measure. Then every sequence \((a_{n})\) gives rise to a non–negative measurable function \(a\) and
+space \(({\mathbb N}, {\mathcal P}({\mathbb N}), m)\) where \(m\) is counting measure. Then every sequence \((a_{n})\) gives rise to a non-negative measurable function \(a\) and
 </p>
 
 <p>
@@ -1047,12 +1095,12 @@ space \(({\mathbb N}, {\mathcal P}({\mathbb N}), m)\) where \(m\) is counting me
 
 <p>
 which is for you to show in Problem <a href="Exercises-3.html#ps:series_int"><b>3.6</b></a>. The same formula holds for general \((a_n)\sw \R \) provided that \(\sum _n |a_n|&lt;\infty \)
-i.e.&nbsp;that \(a\) is integrable.
+i.e.&nbsp;that \(a\in \Lone (\N )\).
 </p>
 
 <p>
-The monotone and dominated converge theorems now provide tools for working with <i>sequences of series</i>. For example, suppose that for each \(m\in \N \) we have a sequence \((a_m(n))_{n\in \N }\),
-given by
+In this context the monotone and dominated converge theorems provide tools for working with <i>sequences of series</i>. For example, suppose that for each \(m\in \N \) we have a sequence \((a_m(n))_{n\in
+\N }\), given by
 </p>
 
 <p>
@@ -1061,8 +1109,8 @@ given by
 
 <p>
 We can’t easily compute the value of \(\sum _{n\in \N } a_m(n)\) for any given \(m\). But we can note that \(a_m(n)\to \frac {1}{n^3}\) as \(m\to \infty \), for all \(n\), and that \(|a_m(n)|\leq
-g(n)=\frac {1}{n^3}+\frac {1}{n^2}\). We know from analysis that \(\sum _n \frac {1}{n^3}\) and \(\sum _n \frac {1}{n^2}\) are both finite, so \(g\) is integrable – which in this setting is just the
-claim that \(\sum _n g(n)&lt;\infty \). So the Dominated Convergence Theorem applies, and we obtain
+g(n)=\frac {1}{n^3}+\frac {1}{n^2}\). We know from analysis that \(\sum _n \frac {1}{n^3}\) and \(\sum _n \frac {1}{n^2}\) are both finite, so \(g\in \Lone (\N ,\mc {P}(\N ),m)\) – which in
+this setting is just the claim that \(\sum _n g(n)&lt;\infty \). So the Dominated Convergence Theorem applies, and we obtain
 </p>
 
 <p>
@@ -1090,7 +1138,7 @@ claim that \(\sum _n g(n)&lt;\infty \). So the Dominated Convergence Theorem app
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

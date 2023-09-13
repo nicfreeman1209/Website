@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Lebesgue Measure</title>
+<title>MAS350/61022 — Lebesgue measure</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-41"></a>
+<a id="notes-autopage-40"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,15 +855,71 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Lebesgue Measure ......
+......     section Lebesgue measure ......
 -->
-<h4 id="autosec-42"><span class="sectionnumber">1.5&#x2003;</span>Lebesgue Measure</h4>
-<a id="notes-autopage-42"></a>
-<a id="notes-autofile-7"></a> <a id="sec:leb_meas"></a>
+<h4 id="autosec-41"><span class="sectionnumber">1.5&#x2003;</span>Lebesgue measure</h4>
+<a id="notes-autopage-41"></a>
+<a id="notes-autofile-7"></a> <a id="s:leb_meas"></a>
 
 <p>
 The measure that precisely captures the notion of length is called Lebesgue measure in honour of the French mathematician Henri Lebesgue (1875-1941), who founded the modern theory of integration. We will
@@ -875,14 +930,14 @@ denote it by \(\lambda \). First we need a definition.
 Let \(A \in {\cal B}(\R )\) be arbitrary. A covering of A is a finite or countable collection of open intervals \(\{(a_{n}, b_{n}), \nN \}\) so that
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{1.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{1.}{5}\)</span>
 
 <!--
 
 
                                                                                                      ∞
                                                                                                      [
-                                                                                                A⊆         (an , bn ).                                                 (1.5)--><a id="eq:covering"></a><!--
+                                                                                                A⊆         (an , bn ).                                                 (1.6)--><a id="eq:covering"></a><!--
                                                                                                      n=1
 
 -->
@@ -902,21 +957,21 @@ Let \(A \in {\cal B}(\R )\) be arbitrary. A covering of A is a finite or countab
 
 
 
-<a id="autoid-29"></a>
+<a id="autoid-27"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 1.5.1</span> <a id="autoid-30" ></a ><a id="def:leb_meas"></a> Let \({\cal C}_{A}\) be the set of all coverings of the set \(A\in \mc {B}(\R )\). The
+<span class="theoremheaderplain">Definition 1.5.1</span> <a id="autoid-28" ></a ><a id="def:leb_meas"></a> Let \({\cal C}_{A}\) be the set of all coverings of the set \(A\in \mc {B}(\R )\). The
 <i>Lebesgue measure</i> \(\lambda \) on \((\R , {\cal B}(\R ))\) is defined by the formula:
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{1.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{1.}{6}\)</span>
 
 <!--
 
 
                                                                                                              ∞
                                                                                                              X
-                                                                                               λ(A) = inf          (bn − an ),                                                     (1.6)--><a id="eq:leb"></a><!--
+                                                                                               λ(A) = inf          (bn − an ),                                                     (1.7)--><a id="eq:leb"></a><!--
                                                                                                         CA
                                                                                                              n=1
 
@@ -944,12 +999,9 @@ where the \(\inf \) is taken over all possible coverings of \(A\), with notation
 </div>
 
 <p>
-It would take a long time to prove that \(\lambda \) really is a measure, and it wouldn’t help us understand \(\lambda \) any better if we did it, so we’ll omit that from the course. For the proof, see the standard
-text books e.g.&nbsp;Cohn, Schilling or Tao.
-</p>
-
-<p>
-Let’s check that the Definition <a href="Lebesgue-Measure.html#def:leb_meas">1.5.1</a> agrees with some of our intuitive ideas about length.
+It would take a long time to prove that \(\lambda \) really is a measure, and it wouldn’t help us understand \(\lambda \) any better if we did it, so we’ll omit that from the course. You can find a proof in any
+standard text book on measure theory e.g.&nbsp;Cohn, Schilling or Tao. Instead, let’s check that the Definition <a href="Lebesgue-Measure.html#def:leb_meas">1.5.1</a> agrees with some of our intuitive
+ideas about length.
 </p>
 
 <ul style="list-style-type:none">
@@ -964,8 +1016,8 @@ Let’s check that the Definition <a href="Lebesgue-Measure.html#def:leb_meas">1
 
 
 <p>
-(L2) If \(A = \{a\}\) then \(\lambda (\{a\})=0\). To see this, choose any \(\epsilon &gt; 0\). Then \((a - \epsilon /2, a + \epsilon /2)\) is a cover of \(a\) and so \(\lambda (\{a\}) \leq (a +
-\epsilon /2) - (a - \epsilon /2) = \epsilon \). But \(\epsilon \) is arbitrary and so we conclude that \(\lambda (\{a\}) = 0\).
+(L2) If \(A = \{a\}\) then \(\lambda (\{a\})=0\). To see this, choose any \(\eps &gt; 0\). Then \((a - \eps /2, a + \eps /2)\) is a cover of \(a\) and so \(\lambda (\{a\}) \leq (a + \eps /2) - (a
+- \eps /2) = \eps \). But \(\eps \) is arbitrary and so we conclude that \(\lambda (\{a\}) = 0\).
 </p>
 </li>
 <li>
@@ -1007,17 +1059,13 @@ class="textup">(<a href="Lebesgue-Measure.html#eq:leb">1.6</a>)</span>, because 
 
 
 
-<a id="autoid-31"></a>
+<a id="autoid-29"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 1.5.2</span> <a id="autoid-32" ></a >In simple practical examples on Lebesgue measure, it is almost always best not to try to use (<a
-href="Lebesgue-Measure.html#eq:leb">1.6</a>) directly, but to just apply the properties listed above.
+<span class="theoremheaderplain">Example 1.5.2</span> <a id="autoid-30" ></a >In simple practical examples on Lebesgue measure, it is best not to try to use (<a
+href="Lebesgue-Measure.html#eq:leb">1.6</a>) directly, but to just apply the properties listed above. For example, to find \(\lambda \l ((-3, 10)\sc (-1, 4)\r )\), use (L3) and (M2) to obtain
 </p>
-
-<p>
-For example, to find \(\lambda \l ((-3, 10)\sc (-1, 4)\r )\), use (L3) and (M2) to obtain
-</p>
-<span class="hidden"> \(\seteqnumber{0}{1.}{6}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{1.}{7}\)</span>
 
 
 
@@ -1025,11 +1073,11 @@ For example, to find \(\lambda \l ((-3, 10)\sc (-1, 4)\r )\), use (L3) and (M2) 
 
 
 
-                                                                            λ ((−3, 10) \ (−1, 4)) = λ ((−3, −1] ∪ [4, 10))
+                                                                                 λ ((−3, 10) \ (−1, 4)) = λ ((−3, −1] ∪ [4, 10))
 
-                                                                                                  = λ((−3, −1]) + λ([4, 10))
+                                                                                                       = λ((−3, −1]) + λ([4, 10))
 
-                                                                                                  = ((−1) − (−3)) + (10 − 4) = 8
+                                                                                                       = ((−1) − (−3)) + (10 − 4) = 8.
 
 
 
@@ -1041,7 +1089,7 @@ For example, to find \(\lambda \l ((-3, 10)\sc (-1, 4)\r )\), use (L3) and (M2) 
 
 
 \begin{align*}
-\lambda \l ((-3, 10)\sc (-1, 4)\r ) &amp; = \lambda \l ((-3, -1]\cup [4, 10)\r )\\ &amp; = \lambda ((-3, -1])+\lambda ([4, 10))\\ &amp; = ((-1)-(-3))+(10-4) = 8
+\lambda \l ((-3, 10)\sc (-1, 4)\r ) &amp; = \lambda \l ((-3, -1]\cup [4, 10)\r )\\ &amp; = \lambda ((-3, -1])+\lambda ([4, 10))\\ &amp; = ((-1)-(-3))+(10-4) = 8.
 \end{align*}
 
 
@@ -1053,31 +1101,9 @@ For example, to find \(\lambda \l ((-3, 10)\sc (-1, 4)\r )\), use (L3) and (M2) 
 </ul>
 
 </div>
-<div class="theorembodyremark">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-33"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Remark 1.5.3</span> <a id="autoid-34" ></a ><a id="rem:borel_leb_restriction"></a> If \(I\) is a closed interval (or in fact any Borel set) in \(\R \) we can
-similarly define \(\mc {B}(I)\), the Borel \(\sigma \)-field of \(I\), to be the smallest \(\sigma \)-field containing all open intervals in \(I\). In fact, it holds that \(\mc {B}(I)=\{B\cap I\-B\in \mc {B}(\R
-)\}\). The Lebesgue measure \(\lambda _I\) on \((I, \mc {B}(I))\) is obtained by restricting the sets \(A\) in (<a href="Lebesgue-Measure.html#eq:leb">1.6</a>) to be in \(\mc {B}(I)\). It can be seen
-that for \(A\sw I\) we have \(\lambda _I(A)=\lambda (A)\). We won’t include a proof of these claims.
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
 
 <p>
-Sets of measure zero play an important role in measure theory, and in probability. We’ll explore this in future sections. For now, here are some interesting examples of quite “large” sets that have Lebesgue measure
-zero
+It is possible for a set to be quite ‘large’ and still have Lebesgue measure zero. The next two lemmas give examples of such sets.
 </p>
 <div class="theorembodylemma">
 
@@ -1085,10 +1111,10 @@ zero
 
 
 
-<a id="autoid-35"></a>
+<a id="autoid-31"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 1.5.4</span> <a id="autoid-36" ></a >Let \(A \subset \R \) be countable. Then \(\lambda (A)=0\).
+<span class="theoremheaderplain">Lemma 1.5.3</span> <a id="autoid-32" ></a >Let \(A \subset \R \) be countable. Then \(\lambda (A)=0\).
 </p>
 
 
@@ -1099,8 +1125,8 @@ zero
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Write \(A = \{a_{1}, a_{2}, \ldots \} = \bigcup _{n=1}^{\infty }\{a_{n}\}\).
-Since \(A\) is a countable union of singletons, it is in \({\cal B}(\R )\). Then, using (M2) and (L2)
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Since \(A\) is countable we may write \(A = \{a_{1}, a_{2}, \ldots \} = \bigcup
+_{n=1}^{\infty }\{a_{n}\}\). Since \(A\) is a countable union of singletons, it is in \({\cal B}(\R )\). Then, using (M2) and (L2)
 </p>
 
 <p>
@@ -1129,7 +1155,8 @@ Further, for any \(A\in \mc {B}(\R )\) we have \(\lambda (A\cap \Q )\leq \lambda
 </p>
 
 <p>
-so the only contribution to length of sets of real numbers comes from the irrational numbers. Hence also \(\lambda (\mathbb {I})=\lambda (\R \cap \mathbb {I})=\lambda (\R )=\infty \) by (L4).
+so the only contribution to length of sets of real numbers comes from the irrational numbers. Hence also for all \(n\), \(\lambda (\mathbb {I})\geq \lambda (\mathbb {I}\cap [-n,n])=\lambda
+([-n,n])=2n\), and letting \(n\to \infty \) gives that \(\lambda (\mathbb {I})=\infty \).
 </p>
 <div class="theorembodylemma">
 
@@ -1137,10 +1164,10 @@ so the only contribution to length of sets of real numbers comes from the irrati
 
 
 
-<a id="autoid-37"></a>
+<a id="autoid-33"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 1.5.5</span> <a id="autoid-38" ></a ><a id="lem:cantor_zero_meas"></a> The Cantor Set has Lebesgue measure zero.
+<span class="theoremheaderplain">Lemma 1.5.4</span> <a id="autoid-34" ></a ><a id="l:cantor_zero_meas"></a> The Cantor Set has Lebesgue measure zero.
 </p>
 
 
@@ -1160,6 +1187,27 @@ have \(0\leq \lambda (C)\leq \lambda (C_n)=(\frac 23)^n\). Letting \(n\to \infty
 <p>
 We’ll tend to use (L1)-(L5) without explicitly referencing them, from now on. Hopefully, by this point, you’re happy to trust that Lebesgue measure matches your intuitive concept of length within \(\R \).
 </p>
+<div class="theorembodyremark">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-35"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Remark 1.5.5</span> <a id="autoid-36" ></a ><a id="r:borel_leb_restriction"></a> If \(I\) is a closed interval (or in fact any Borel set) in \(\R \) we can similarly
+define \(\mc {B}(I)\), the Borel \(\sigma \)-field of \(I\), to be the smallest \(\sigma \)-field containing all open intervals in \(I\). In fact, it holds that \(\mc {B}(I)=\{B\cap I\-B\in \mc {B}(\R )\}\).
+The Lebesgue measure \(\lambda _I\) on \((I, \mc {B}(I))\) is obtained by restricting the sets \(A\) in (<a href="Lebesgue-Measure.html#eq:leb">1.6</a>) to be in \(\mc {B}(I)\). It can be seen that for
+\(A\sw I\) we have \(\lambda _I(A)=\lambda (A)\). We won’t include a proof of these claims.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
 
 </section>
 
@@ -1170,7 +1218,7 @@ We’ll tend to use (L1)-(L5) without explicitly referencing them, from now on. 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>
