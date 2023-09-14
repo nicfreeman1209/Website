@@ -221,7 +221,7 @@ MathJax = {
 
 
 
-<a id="notes_2-autopage-86"></a>
+<a id="notes_2-autopage-89"></a>
 <nav class="topnavigation"><a href="notes_2.html" class="linkhome" >
 Home</a></nav>
 
@@ -867,21 +867,21 @@ Home</a>
 <!--
 ......     section Stochastic exponentials and martingale representation ......
 -->
-<h4 id="autosec-87"><span class="sectionnumber">13.4&#x2003;</span>Stochastic exponentials and martingale representation</h4>
-<a id="notes_2-autopage-87"></a>
+<h4 id="autosec-90"><span class="sectionnumber">13.4&#x2003;</span>Stochastic exponentials and martingale representation</h4>
+<a id="notes_2-autopage-90"></a>
 <a id="notes_2-autofile-15"></a> <a id="s:stoch_exp"></a>
 
 <p>
 In this section we look at a close relative of the SDE <span class="textup">(<a href="Geometric-Brownian-motion.html#eq:gbm">13.8</a>)</span> for geometric Brownian motion. In particular, we look at
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{13.}{10}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{13.}{11}\)</span>
 
 <!--
 
 
 
-                                                               dXt = σt Xt dBt                                                                          (13.11)                 --><a id="eq:stoch_exp"></a><!--
+                                                dXt = σt Xt dBt                                                               (13.12)                                           --><a id="eq:stoch_exp"></a><!--
 
 -->
 
@@ -908,7 +908,7 @@ then go back and check is really a solution.
 <p>
 From Ito’s formula we have
 </p>
-<span class="hidden"> \(\seteqnumber{0}{13.}{11}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{13.}{12}\)</span>
 
 
 
@@ -947,14 +947,14 @@ This gives us
 and hence
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{13.}{11}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{13.}{12}\)</span>
 
 <!--
 
 
                                                          t              1       t
                                                     Z                      Z            
-                                      Xt = X0 exp            σu dBu −               σu2 du .                                        (13.12)                                --><a id="eq:stoch_exp_pre"></a><!--
+                                      Xt = X0 exp            σu dBu −               σu2 du .                                        (13.13)                                --><a id="eq:stoch_exp_pre"></a><!--
                                                      0                  2   0
 
 -->
@@ -979,10 +979,10 @@ href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp">13.11
 
 
 
-<a id="autoid-69"></a>
+<a id="autoid-71"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 13.4.1</span> <a id="autoid-70" ></a >If \(\sigma \) is a deterministic constant, then <span class="textup">(<a
+<span class="theoremheaderplain">Remark 13.4.1</span> <a id="autoid-72" ></a >If \(\sigma \) is a deterministic constant, then <span class="textup">(<a
 href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp_pre">13.12</a>)</span> becomes precisely <span class="textup">(<a
 href="Geometric-Brownian-motion.html#eq:gbm_soln">13.9</a>)</span> with \(\alpha =0\); as we would expect since this is also how <span class="textup">(<a
 href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp">13.11</a>)</span> is connected too <span class="textup">(<a
@@ -1005,10 +1005,10 @@ In view of <span class="textup">(<a href="Stochastic-exponentials-martingale-rep
 
 
 
-<a id="autoid-71"></a>
+<a id="autoid-73"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 13.4.2</span> <a id="autoid-72" ></a >The <i>stochastic exponential</i> of the process \(\sigma _t\) is
+<span class="theoremheaderplain">Definition 13.4.2</span> <a id="autoid-74" ></a >The <i>stochastic exponential</i> of the process \(\sigma _t\) is
 </p>
 
 <p>
@@ -1032,12 +1032,12 @@ Of course, we have shown that \(\mc {E}_\sigma (t)\) solves <span class="textup"
 noting that \(\mc {E}_\sigma (0)=1\) we thus have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{13.}{12}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{13.}{13}\)</span>
 
 <!--
 
                                                            Z   t
-                                            Eσ (t) = 1 +           σu Eσ (u) dBu .                        (13.13)                                     --><a id="eq:stoch_exp_int"></a><!--
+                                            Eσ (t) = 1 +           σu Eσ (u) dBu .                        (13.14)                                     --><a id="eq:stoch_exp_int"></a><!--
                                                            0
 
 -->
@@ -1058,8 +1058,8 @@ We record this equation here because we’ll need it in the next section.
 <!--
 ......   subsection The martingale representation theorem               ......
 -->
-<h5 id="autosec-90">The martingale representation theorem \((\star )\)</h5>
-<a id="notes_2-autopage-90"></a>
+<h5 id="autosec-93">The martingale representation theorem \((\star )\)</h5>
+<a id="notes_2-autopage-93"></a>
 
 
 
@@ -1087,10 +1087,10 @@ for some stochastic process \(h\). Here, we follow common convention in denoting
 
 
 
-<a id="autoid-73"></a>
+<a id="autoid-75"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 13.4.3 (Martingale Representation Theorem)</span> <a id="autoid-74" ></a ><a id="t:mart_repr"></a> Let \(M_t\in \mc {H}^2\) be a continuous
+<span class="theoremheaderplain">Theorem 13.4.3 (Martingale Representation Theorem)</span> <a id="autoid-76" ></a ><a id="t:mart_repr"></a> Let \(M_t\in \mc {H}^2\) be a continuous
 martingale. Fix \(T\in (0,\infty )\). Then there exists a stochastic process \(h_t\in \mc {H}^2\) such that
 </p>
 

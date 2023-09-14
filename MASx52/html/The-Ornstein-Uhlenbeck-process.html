@@ -865,18 +865,214 @@ Home</a>
 
 <p>
 <!--
-......     section The Ornstein--Uhlenbeck process       ......
+......     section The Ornstein--Uhlenbeck process        ......
 -->
 <h4 id="autosec-85"><span class="sectionnumber">13.3&#x2003;</span>The Ornstein–Uhlenbeck process \((\Delta )\)</h4>
 <a id="notes_2-autopage-85"></a>
 <a id="notes_2-autofile-14"></a> <a id="s:ou_proc"></a>
 
 <p>
-**
+The Ornstein-Uhlenbeck<sup>3</sup> process is another example of an Ito process that can be described using a particular SDE. It is often known as the OU process, for short. In this case the equation is
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{13.}{10}\)</span>
+
+<!--
+
+
+
+                                                        dXt = θ(µ − Xt ) dt + σdBt .                                                   --><a id="eq:ou_proc"></a><!--
+
+-->
+
+<p>
+
+
+\begin{equation*}
+\label {eq:ou_proc} dX_t = \theta (\mu -X_t)\,dt + \sigma dB_t.
+\end{equation*}
+
+
 </p>
 
 <p>
-** interest rates and the Vasicek model
+The parameters here are \(\mu \in \R \), \(\theta &gt;0\) and \(\sigma &gt;0\).
+</p>
+
+<p>
+We’ll start our analysis of the OU process by calculating \(\E [X_t]\), in similar style to Exercises <a href="Exercises-on-Chapter-ref-c-sdes.html#ps:sde_Evar_ode"><b>13.7</b></a>-<a
+href="Exercises-on-Chapter-ref-c-sdes.html#ps:sde_Evar_ode_2"><b>13.9</b></a>. Writing equation <a href="notes_2.html#??">??</a> in integral form, we have \(X_t-X_0=\int _0^t(\mu
+-X_s)\,ds + \int _0^t \sigma dB_s\). Taking expectations and noting that Ito integrals are zero mean martingales, we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{13.}{10}\)</span>
+
+
+
+<!--
+
+
+                                                                                                       Z       t                     Z    t           
+                                                                                 E[Xt ] − E[X0 ] = E                (µ − Xs ) ds + E             σ dBs
+                                                                                                            0                            0
+                                                                                                   Z   t
+                                                                                               =           (µ − E[Xs ]) ds + 0.
+                                                                                                   0
+
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\E [X_t]-\E [X_0] &amp;=\E \l [\int _0^t(\mu -X_s)\,ds\r ]+\E \l [\int _0^t \sigma \, dB_s\r ] \\ &amp;=\int _0^t(\mu -\E [X_s])\,ds + 0.
+\end{align*}
+Writing \(f(t)=\E [X_t]\) and using the fundamental theorem of calculus, we obtain that \(f&apos;(t)=\mu -f(s)\). The (unique) solution of this ordinary differential equation is \(f(t)=\mu + (f(0)-\mu
+)e^{-t}\). Noting that \(e^{-t}\to 0\) as \(t\to \infty \), we obtain that \(\E [X_t]\to \mu \) as \(t\to \infty \).
+</p>
+
+<p>
+The most important feature of the OU process is a property known as <em>mean reversion</em>. This language is best understood if we take \(X_0=\mu \), in which case from our analysis above we have \(\E
+[X_t]=\mu \) for all \(t\). Let us examine <span class="textup">(<a href="notes_2.html#??">??</a>)</span> closely in this case. If the process satisfies \(X_t&gt;\mu \) then we have \(\theta (\mu
+-X_t)&lt;0\), which is a drift downwards, meaning that (on average) the process \(X_t\) will tend to become closer to its mean value \(\mu \) in the near future. Similarly, if \(X_t&lt;\mu \) then we have
+\(\theta (\mu -X_t)&gt;0\), which is a drift upwards, meaning that (on average) the process \(X_t\) will tend to become closer to its mean value \(\mu \) in the near future. In both cases, the drift is towards
+the average value \(\mu \).
+</p>
+
+<p>
+At the same time, the \(\sigma dB_t\) term constantly pushes \(X_t\) upwards and downwards in random directions. Coupled with drift, these two forces create a balance where \((X_t)\) randomly oscillates
+around own its mean value \(\mu \). The further away it goes, the stronger the drift term tries to bring it back. This picture is usually described as mean reversion. Here’s a sample path of \((X_t)\), with \(\mu
+=1\), \(\sigma =\frac 14\) and \(\theta =3\), showing random oscillations around the mean value \(1\).
+</p>
+<div class="center">
+
+<p>
+
+
+<a href="ou_proc.png" target="_blank" ><img
+      src="ou_proc.png"
+      style="
+      width:347pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+
+<p>
+We can solve <span class="textup">(<a href="notes_2.html#??">??</a>)</span>, at least to an extent, to obtain a useful formula for \((X_t)\). First, is we substitute \(Y_t=X_t-\mu \) and apply Ito’s
+formula to <span class="textup">(<a href="notes_2.html#??">??</a>)</span>, we obtain \(dY_t=-\theta Y_t d_t+\sigma dB_t\) (this calculation is left for you). Next, set \(Z_t=e^{\theta t}Y_t\) to
+obtain
+</p>
+<span class="hidden"> \(\seteqnumber{0}{13.}{10}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                                    1
+                                                                                                                              
+                                                                                       dZt = θeθt Yt + eθt (−θYt ) + (0)(σ)2       dt + (eθt )(σ) dBt
+                                                                                                                    2
+                                                                                          = 0 dt + σeθt dBt .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+dZ_t &amp;= \l (\theta e^{\theta t}Y_t + e^{\theta t}(-\theta Y_t) + \frac {1}{2}(0)(\sigma )^2\r )\,dt + (e^{\theta t})(\sigma )\,dB_t \\ &amp;=0\,dt + \sigma e^{\theta
+t}\,dB_t.
+\end{align*}
+In integral form we have \(Z_t-Z_0=\int _0^t \sigma e^{\theta t}\,dB_t\), and using that \(Z_t=e^{\theta t}(X_t-\mu )\) gives us
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{13.}{10}\)</span>
+
+<!--
+
+                                                              Z   t
+                                     Xt = e−θt (Xt − µ) + σ           e−θ(t−s) dBs .                                 (13.11)                                        --><a id="eq:ou_solution"></a><!--
+                                                              0
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:ou_solution} X_t=e^{-\theta t}(X_t-\mu ) + \sigma \int _0^t e^{-\theta (t-s)}\,dB_s.
+\end{equation}
+
+
+</p>
+
+<p>
+This is not quite an explicit formula, but it is still a useful representation of the OU process.
+</p>
+<div role="note" class="footnotes">
+
+<a id="notes_2-autopage-87"></a>
+
+<p>
+<sup>3</sup>&nbsp;Pronounced Awn-stein Oo-len-beck.
+</p>
+
+
+
+</div>
+
+
+
+<div class="theorembodyremark">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-69"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Remark 13.3.1</span> <a id="autoid-70" ></a >Those of you studying time series may recognize a similarity between the AR(1) process and the OU process. More
+specifically, the OU process is a continuous time version of AR(1).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<!--
+......    subsection Modelling interest rates ......
+-->
+<h5 id="autosec-88">Modelling interest rates</h5>
+<a id="notes_2-autopage-88"></a>
+
+
+
+<p>
+The Ornstein-Uhlenbeck process is often thought of as a model for interest rates, because of the mean reversion property. In this context it is often referred to as the Vasicek model. We won’t discuss the reasons
+why interest rates display mean reversion here, save for noting that in many countries the central bank has a mandate to target a particular inflation rate (which in the UK is \(2\%\) per year). They have various
+tools available to try and achieve this, including increasing or decreasing the supply of money available.
+</p>
+
+<p>
+The OU process is not an ideal model for interest rates, because it can take negative values whereas real interest rates essentially never become negative. For the OU process this may happen (even if it is very
+unlikely in some cases) for all choices of the model parameters. Various models have been introduced to avoid this problem, such as the Cox–Ingersoll–Ross model defined by \(dX_t=\theta (\mu -X_t)\,dt+\sigma
+\sqrt {X_t}\,dB_t\), for which it is known that \(\P [\text {for all }t, X_t&gt;0]=1\) under the condition \(2\theta \mu &gt;\sigma ^2\). (We won’t be able to prove that fact within our course.)
 </p>
 
 </section>
