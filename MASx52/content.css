@@ -12,9 +12,10 @@ body {
     background-color: #f7f5f0;
 }
 
-.coursepic {
-	max-width: 60%;
-	max-height: 150px;
+.tradingview-widget-container {
+	max-width: 60%;		
+	max-height: 275;
+	margin-bottom: 45px
 }
 
 @media (max-width: 800px) { 
@@ -32,6 +33,11 @@ body {
 		margin: 10px 10px 10px 10px;
 	}
 
+	.tradingview-widget-container {
+		max-width: 95%;		
+		max-height: 200px;
+		margin-bottom: 40px
+	}
 }
 
 a {
