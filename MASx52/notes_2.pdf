@@ -26676,7 +26676,7 @@ stream
       </dc:title>
       <dc:date>
         <rdf:Seq>
-          <rdf:li>2023-09-14T11:00:07+01:00</rdf:li>
+          <rdf:li>2023-09-14T12:01:19+01:00</rdf:li>
         </rdf:Seq>
       </dc:date>
       <dc:type>
@@ -26691,12 +26691,12 @@ stream
         </rdf:Seq>
       </dc:creator>
       <dc:source>notes_2.tex</dc:source>
-      <xmp:CreateDate>2023-09-14T11:00:07+01:00</xmp:CreateDate>
-      <xmp:ModifyDate>2023-09-14T11:00:07+01:00</xmp:ModifyDate>
-      <xmp:MetadataDate>2023-09-14T11:00:07+01:00</xmp:MetadataDate>
+      <xmp:CreateDate>2023-09-14T12:01:19+01:00</xmp:CreateDate>
+      <xmp:ModifyDate>2023-09-14T12:01:19+01:00</xmp:ModifyDate>
+      <xmp:MetadataDate>2023-09-14T12:01:19+01:00</xmp:MetadataDate>
       <xmp:CreatorTool>LaTeX with hyperref</xmp:CreatorTool>
       <xmpMM:DocumentID>uuid:0059b6ce-4c95-4900-aea3-39b182bbb188</xmpMM:DocumentID>
-      <xmpMM:InstanceID>uuid:413efd18-d182-4b67-aefd-7a390a395fd1</xmpMM:InstanceID>
+      <xmpMM:InstanceID>uuid:00054139-b67f-42bb-bbb6-2b67f7fd18d1</xmpMM:InstanceID>
       <xmpMM:VersionID>1</xmpMM:VersionID>
       <xmpMM:RenditionClass>default</xmpMM:RenditionClass>
       <prism:complianceProfile>three</prism:complianceProfile>
@@ -32078,8 +32078,8 @@ endobj
 1990 0 obj
 <<
 /Title(\376\377\000S\000t\000o\000c\000h\000a\000s\000t\000i\000c\000\040\000P\000r\000o\000c\000e\000s\000s\000e\000s\000\040\000a\000n\000d\000\040\000F\000i\000n\000a\000n\000c\000i\000a\000l\000\040\000M\000a\000t\000h\000e\000m\000a\000t\000i\000c\000s\000\040\000\040\000\050\000p\000a\000r\000t\000\040\000t\000w\000o\000\051)/Subject()/Creator(LaTeX with hyperref)/Producer(MiKTeX-pdfTeX 4.15.0 (1.40.25))
-/CreationDate (D:20230914110007+01'00')
-/ModDate (D:20230914110007+01'00')
+/CreationDate (D:20230914120119+01'00')
+/ModDate (D:20230914120119+01'00')
 /Trapped /False
 /PTEX.Fullbanner (This is MiKTeX-pdfTeX 4.15.0 (1.40.25))
 >>
@@ -34081,7 +34081,7 @@ trailer
 << /Size 1991
 /Root 1989 0 R
 /Info 1990 0 R
-/ID [<9113E63A3FE8CADE166B25CB1106EC1B> <9113E63A3FE8CADE166B25CB1106EC1B>] >>
+/ID [<6B9B8379609B9565D86D8489ABFD0C9E> <6B9B8379609B9565D86D8489ABFD0C9E>] >>
 startxref
 3759836
 %%EOF
