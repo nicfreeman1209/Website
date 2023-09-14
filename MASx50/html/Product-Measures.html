@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Product Measures</title>
+<title>MAS350/61022 — Product measures</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-56"></a>
+<a id="notes-autopage-59"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,15 +855,71 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Product Measures ......
+......     section Product measures ......
 -->
-<h4 id="autosec-57"><span class="sectionnumber">1.8&#x2003;</span>Product Measures</h4>
-<a id="notes-autopage-57"></a>
-<a id="notes-autofile-10"></a> <a id="sec:prod_meas_350"></a>
+<h4 id="autosec-60"><span class="sectionnumber">1.9&#x2003;</span>Product measures</h4>
+<a id="notes-autopage-60"></a>
+<a id="notes-autofile-11"></a> <a id="s:prod_meas"></a>
 
 <p>
 We calculate areas of rectangles by multiplying products of lengths of their sides. This suggests trying to formulate a theory of products of measures. Let \((S_{1}, \Sigma _{1}, m_{1})\) and \((S_{2}, \Sigma
@@ -877,8 +932,7 @@ _{2}, m_{2})\) be two measure spaces. Form the Cartesian product \(S_{1} \times 
 
 <p>
 but it turns out that \(\Sigma _{1} \times \Sigma _{2}\) is not a \(\sigma \)-field in general e.g.&nbsp;take \(\Sigma _{1} = \Sigma _{2} = \R \) and note that \(((0,1) \times (0, 1))^{c}\) is not a
-rectangle. Instead the object we want is \(\Sigma _{1} \otimes \Sigma _{2}\), which is defined to be the smallest \(\sigma \)-field containing all the sets in \(\Sigma _{1} \times \Sigma _{2}\). We state
-but do not prove:
+rectangle. Instead the object we want is \(\Sigma _{1} \otimes \Sigma _{2}\), which is defined to be the smallest \(\sigma \)-field containing all the sets in \(\Sigma _{1} \times \Sigma _{2}\).
 </p>
 <div class="theorembodytheorem">
 
@@ -886,20 +940,20 @@ but do not prove:
 
 
 
-<a id="autoid-47"></a>
+<a id="autoid-49"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 1.8.1</span> <a id="autoid-48" ></a >There exists a measure \(m_{1} \times m_{2}\) on \((S_{1} \times S_{2}, \Sigma _{1} \otimes \Sigma
-_{2})\) such that
+<span class="theoremheaderplain">Theorem 1.9.1</span> <a id="autoid-50" ></a ><a id="t:product_meas"></a> There exists a measure \(m_{1} \times m_{2}\) on \((S_{1} \times S_{2}, \Sigma
+_{1} \otimes \Sigma _{2})\) such that
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{1.}{8}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{1.}{9}\)</span>
 
 <!--
 
 
 
-                    (m1 × m2 )(A × B) = m1 (A)m2 (B)           (1.9)                                                                                  --><a id="eq:prod_meas"></a><!--
+                 (m1 × m2 )(A × B) = m1 (A)m2 (B)             (1.10)                                                                                   --><a id="eq:prod_meas"></a><!--
 
 -->
 
@@ -929,10 +983,10 @@ for all \(A \in \Sigma _{1}, B \in \Sigma _{2}\).
 
 
 
-<a id="autoid-49"></a>
+<a id="autoid-51"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 1.8.2</span> <a id="autoid-50" ></a >The measure \(m_{1} \times m_{2}\) is called the product measure of \(m_{1}\) and \(m_{2}\).
+<span class="theoremheaderplain">Definition 1.9.2</span> <a id="autoid-52" ></a >The measure \(m_{1} \times m_{2}\) is called the product measure of \(m_{1}\) and \(m_{2}\).
 </p>
 
 
@@ -943,8 +997,8 @@ for all \(A \in \Sigma _{1}, B \in \Sigma _{2}\).
 </div>
 
 <p>
-For example, consider \(\R ^{2} = \R \times \R \). We equip it with the Borel \(\sigma \)-field, \({\cal B}(\R ^{2}) = {\cal B}(\R ) \otimes {\cal B}(\R )\). Then the product Lebesgue measure
-\(\lambda _{2} = \lambda \times \lambda \) has the property that
+We won’t include a proof of Theorem <a href="notes.html#??">??</a> within this course. For example, consider \(\R ^{2} = \R \times \R \). We equip it with the Borel \(\sigma \)-field, \({\cal B}(\R
+^{2}) = {\cal B}(\R ) \otimes {\cal B}(\R )\). Then the product Lebesgue measure \(\lambda _{2} = \lambda \times \lambda \) has the property that
 </p>
 
 <p>
@@ -961,10 +1015,10 @@ _3=\lambda \times \lambda \times \lambda \) is how we define volume, in three di
 
 
 
-<a id="autoid-51"></a>
+<a id="autoid-53"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 1.8.3</span> <a id="autoid-52" ></a >After thinking about \(\lambda \times \lambda \times \lambda \), we might ask if, given measures \(m_1,m_2,m_3\),
+<span class="theoremheaderplain">Remark 1.9.3</span> <a id="autoid-54" ></a >After thinking about \(\lambda \times \lambda \times \lambda \), we might ask if, given measures \(m_1,m_2,m_3\),
 we have \((m_1\times m_2)\times m_3=m_1\times (m_2\times m_3)\). It is true, but we won’t prove it. Consequently we write both these as simply \(m_1\times m_2\times m_3\), without any ambiguity.
 </p>
 
@@ -1004,7 +1058,7 @@ might be able to see why.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

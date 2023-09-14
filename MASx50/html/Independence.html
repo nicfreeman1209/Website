@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Independence</title>
+<title>MAS350/61022 — Independence</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-179"></a>
+<a id="notes-autopage-212"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,15 +855,71 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
 ......     section Independence ......
 -->
-<h4 id="autosec-180"><span class="sectionnumber">4.4&#x2003;</span>Independence</h4>
-<a id="notes-autopage-180"></a>
-<a id="notes-autofile-33"></a> <a id="sec:indep"></a>
+<h4 id="autosec-213"><span class="sectionnumber">5.4&#x2003;</span>Independence</h4>
+<a id="notes-autopage-213"></a>
+<a id="notes-autofile-38"></a> <a id="s:indep"></a>
 
 <p>
 In this subsection we consider the meaning of independence for <i>infinite sequences</i> of events and random variables. A useful heuristic is ‘independence means multiply’. Recall that two events \(A_{1}, A_{2}
@@ -889,10 +944,10 @@ extended from the finite case by considering all finite subsets of the sequence.
 
 
 
-<a id="autoid-156"></a>
+<a id="autoid-190"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 4.4.1</span> <a id="autoid-157" ></a >We say that the events in the sequence \((A_{n})\) are independent if the finite set \(\{A_{i_{1}}, A_{i_{2}},
+<span class="theoremheaderplain">Definition 5.4.1</span> <a id="autoid-191" ></a >We say that the events in the sequence \((A_{n})\) are independent if the finite set \(\{A_{i_{1}}, A_{i_{2}},
 \ldots , A_{i_{m}}\}\) is independent for all finite subsets \(\{i_{1}, i_{2}, \ldots , i_{m}\}\) of the natural numbers, i.e.
 </p>
 
@@ -929,10 +984,9 @@ for all \(A_{i_{1}}, A_{i_{2}}, \ldots , A_{i_{m}} \in {\cal B}(\R )\) and for a
 
 <p>
 We often want to consider random variables in \(\R ^d\), where \(d\in \N \). Let us consider the case \(d=2\). A random variable in \(\R ^2\) \(Z = (X,Y)\) is a measurable function from \((\Omega , {\cal
-F})\) to \((\R ^{2}, {\cal B}(\R ^{2}))\) where \({\cal B}(\R ^{2})\) is the product \(\sigma \)-field introduced in Section <a href="Product-Measures.html#sec:prod_meas_350">1.8</a>. The law of
-\(Z\) is \(p_{Z} = \P \circ Z^{-1}\), so that \(p_Z(A)=\P [Z\in A]\) where \(A\in \mc {B}(\R ^2)\). The joint law of \(X\) and \(Y\) is \(p_{Z}(A \times B) = \P [X \in A, Y \in B]\) for \(A, B
-\in {\cal B}(\R )\), and the <i>marginal laws</i> of \(X\) and \(Y\) are \(p_X(A)=\P [X\in A]\) and \(p_Y(B)=\P [Y\in B]\). From the definitions above, we have that \(X\) and \(Y\) are independent if
-and only if
+F})\) to \((\R ^{2}, {\cal B}(\R ^{2}))\) where \({\cal B}(\R ^{2})\) is the product \(\sigma \)-field introduced in Section <a href="notes.html#??">??</a>. The law of \(Z\) is the function
+\(p_Z(A)=\P [Z\in A]\) where \(A\in \mc {B}(\R ^2)\). The joint law of \(X\) and \(Y\) is \(p_{Z}(A \times B) = \P [X \in A, Y \in B]\) for \(A, B \in {\cal B}(\R )\), and the <i>marginal
+laws</i> of \(X\) and \(Y\) are \(p_X(A)=\P [X\in A]\) and \(p_Y(B)=\P [Y\in B]\). From the definitions above, we have that \(X\) and \(Y\) are independent if and only if
 </p>
 
 <p>
@@ -948,10 +1002,10 @@ i.e.&nbsp;if the joint law factorises as the product of the two marginals. The s
 
 
 
-<a id="autoid-158"></a>
+<a id="autoid-192"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 4.4.2</span> <a id="autoid-159" ></a ><a id="thm:indep_E"></a> Let \(X\) and \(Y\) be random variables.
+<span class="theoremheaderplain">Theorem 5.4.2</span> <a id="autoid-193" ></a ><a id="t:indep_E"></a> Let \(X\) and \(Y\) be random variables.
 </p>
 <ul style="list-style-type:none">
 
@@ -967,7 +1021,7 @@ i.e.&nbsp;if the joint law factorises as the product of the two marginals. The s
 
 
 <p>
-2. If \(X\) and \(Y\) are independent and integrable then \(\E [XY] = \E [X]\E [Y].\)
+2. If \(X,Y\in \Lone \) with \(XY\in \Lone \) then \(\E [XY] = \E [X]\E [Y].\)
 </p>
 
 
@@ -1008,16 +1062,20 @@ i.e.&nbsp;if the joint law factorises as the product of the two marginals. The s
 
 <p>
 <span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The first part is left for you in Exercise <a
-href="Exercises-4.html#ps:indep_exts"><b>4.7</b></a>. For the second part,
+href="Exercises-4.html#ps:indep_exts"><b>4.7</b></a>.
 </p>
 
 <p>
-\[ \E [XY] = \int _{\R ^{2}}xyp_{Z}(dx, dy) = \left (\int _{\R }xp_{X}(dx)\right )\left (\int _{\R }yp_{Y}(dy)\right ) = \E [X]\E [Y]\]
+\((\star )\) The proof of the second and third parts uses the result of a tricky exercise and also Fubini’s theorem, so we will view them as off-syllabus but we will cover them within lectures. For the second part,
+</p>
+
+<p>
+\[ \E [XY] = \int _{\R ^{2}}xy\,p_{Z}(dx, dy) = \left (\int _{\R }x\,p_{X}(dx)\right )\left (\int _{\R }y\,p_{Y}(dy)\right ) = \E [X]\E [Y]\]
 </p>
 
 <p>
 Here, the first equality is the two-dimensional version of Problem <a href="Exercises-4.html#ps:E_int"><b>4.13</b></a>, and we have used Fubini’s theorem (from Section <a
-href="Fubini-Theorem-Function-Spaces.html#sec:fubini_350">3.9.1</a>) in the second equality to write the integral over \(\R ^{2}\) as a repeated integral.
+href="notes.html#??">??</a>) in the second equality to write the integral over \(\R ^{2}\) as a repeated integral.
 </p>
 
 <p>
@@ -1025,25 +1083,11 @@ For the final part, recall that bounded random variables are integrable, so comb
 {B}(\R )\) and set \(f=\1_A\) and \(g=\1_B\). Then we have \(\E [f(X)g(Y)]=\P [X\in A,Y\in B]\) and \(\E [f(X)]=\P [X\in A]\), \(\E [g(Y)]=\P [Y\in B]\), so (b) gives \(\P [X\in A,Y\in B]=\P
 [X\in A]\P [Y\in B]\). &#x2003;&#x2003;&#x220E;
 </p>
-<div class="theorembodyremark">
 
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-160"></a>
-<li>
 <p>
-<span class="theoremheaderplain">Remark 4.4.3</span> <a id="autoid-161" ></a >Regarding part 1 of Theorem <a href="Independence.html#thm:indep_E">4.4.2</a>, note that <em>dependent</em>
-random variables \(X\) and \(Y\) can also satisfy \(\E [XY]=\E [X]\E [Y]\). See Exercise <a href="Exercises-4.html#ps:indep_uncor"><b>4.5</b></a> for an example of this.
+Regarding part 2 of Theorem <a href="notes.html#??">??</a>, note that <em>dependent</em> random variables \(X\) and \(Y\) can also satisfy \(\E [XY]=\E [X]\E [Y]\). See Exercise <a
+href="notes.html#??">??</a> for an example of this.
 </p>
-
-
-</li>
-
-</ul>
-
-</div>
 
 </section>
 
@@ -1054,7 +1098,7 @@ random variables \(X\) and \(Y\) can also satisfy \(\E [XY]=\E [X]\E [Y]\). See 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

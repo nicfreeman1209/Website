@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — The Monotone Convergence Theorem</title>
+<title>MAS350/61022 — The monotone convergence theorem</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-118"></a>
+<a id="notes-autopage-145"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,27 +855,85 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......      section The Monotone Convergence Theorem ......
+......     section The monotone convergence theorem ......
 -->
-<h4 id="autosec-119"><span class="sectionnumber">3.4&#x2003;</span>The Monotone Convergence Theorem</h4>
-<a id="notes-autopage-119"></a>
-<a id="notes-autofile-22"></a>
+<h4 id="autosec-146"><span class="sectionnumber">4.3&#x2003;</span>The monotone convergence theorem</h4>
+<a id="notes-autopage-146"></a>
+<a id="notes-autofile-26"></a> <a id="s:mct"></a>
 
 <p>
-We haven’t yet proved that \(\int _{S}(f + g)dm = \int _{S}f dm + \int _{S}g dm\). Nor have we extended the integral beyond non-negative measurable functions. Before we can do either of these, we need
-to establish the monotone convergence theorem. This is the first of two important results that show the superiority of Lebesgue integration over Riemann integration, in that Lebesgue integration interacts nicely
-with limits.
+It is helpful to work with non-negative measurable functions for a bit longer, before we take the final step of defining the Lebesgue integral. We continue to work over a general measure space \((S,\Sigma ,m)\).
 </p>
 
 <p>
-We say that a sequence \((f_{n})\) be of measurable functions is <i>monotone increasing</i> if \(f_{n} \leq f_{n+1}\) for all \(\nN \). Note that in this case the pointwise limit \(f = \lim _{n \rightarrow
-\infty }f_{n}\) automatically exists, is non-negative and also measurable (by Theorem <a href="Algebra-Measurable-Functions.html#thm:meas_lim">2.4.4</a>), and \(f\) may take values in \([0, \infty
-]\). Similarly, we say that \((f_n)\) is <i>monotone decreasing</i> if \(f_n\geq f_{n+1}\). We say that \(f_n(x)\to f(x)\) <i>almost everywhere</i> if \(\{x\in \R \-f_n(x)\nrightarrow f(x)\}\) is a
-null set.
+In this section we will see interaction between integrals and limits for the first time. In particular we establish a set of conditions under which, for the Lebesgue integral, we can deduce that \(\int _S f_n\,dm \to
+\int _S f\,dm\). This marks a key step in our development of the Lebesgue integral. It is the first point at which we see Lebesgue integration do something that Riemann integration cannot.
+</p>
+
+<p>
+We say that a sequence \((f_{n})\) of functions is <em>monotone increasing</em> if \(f_{n} \leq f_{n+1}\) for all \(\nN \). Note that in this case by Lemma <a href="notes.html#??">??</a> the pointwise
+limit \(f = \lim _{n \rightarrow \infty }f_{n}\) automatically exists, is non-negative and measurable, and may take values in \([0, \infty ]\). Similarly, we say that \((f_n)\) is <em>monotone
+decreasing</em> if \(f_n\geq f_{n+1}\) for all \(n\).
 </p>
 <div class="theorembodytheorem">
 
@@ -884,18 +941,18 @@ null set.
 
 
 
-<a id="autoid-103"></a>
+<a id="autoid-135"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 3.4.1 (Monotone Convergence Theorem)</span> <a id="autoid-104" ></a ><a id="thm:mct"></a> Let \(f_n,f\) be functions from \(S\) to \(\R \). Suppose
-that \(f_n\) is measurable and:
+<span class="theoremheaderplain">Theorem 4.3.1 (Monotone Convergence Theorem)</span> <a id="autoid-136" ></a ><a id="t:mct"></a> Let \(f_n,f\) be measurable functions from \(S\) to
+\([0,\infty )\). Suppose that:
 </p>
 <ul style="list-style-type:none">
 
 
 <li>
 <p>
-1. \((f_{n})\) is a monotone increasing, and each \(f_n\) is non-negative.
+1. for all \(n\in \N \) we have \(f_n\leq f_{n+1}\),
 </p>
 
 
@@ -904,7 +961,7 @@ that \(f_n\) is measurable and:
 
 
 <p>
-2. \(f_n(x)\to f(x)\) almost everywhere.
+2. \(f_n\to f\) almost everywhere.
 </p>
 </li>
 </ul>
@@ -913,8 +970,24 @@ that \(f_n\) is measurable and:
 Then
 </p>
 
+<span class="hidden"> \(\seteqnumber{0}{4.}{6}\)</span>
+
+<!--
+
+                                                     Z                 Z
+                                                             fn dm →           f dm                                        (4.7)                                              --><a id="eq:mct_eq"></a><!--
+                                                         S                 S
+
+-->
+
 <p>
-\[\int _S f_n\,dm\to \int _S f\,dm\]
+
+
+\begin{equation}
+\label {eq:mct_eq} \int _S f_n\,dm\to \int _S f\,dm
+\end{equation}
+
+
 </p>
 
 <p>
@@ -929,117 +1002,31 @@ as \(n\to \infty \).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Since \((f_n)\) is increasing, \(\hat {f}(x)=\lim _{n\to \infty } f(x)\) exists for all
-\(x\in \R \). We have \(f(x)=\hat {f}(x)\) almost everywhere by our second assumption, which by Corollary <a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#cor:ae_ints_equal">3.3.8</a> means that \(\int _s f\,dm=\int _S \hat {f}\,dm\). Hence, in fact we may assume (without
-loss of generality, by using \(\hat {f}\) in place of \(f\)) that \(f_n(x)\to f(x)\) for <i>all</i> \(x\). Thus \(f\) is measurable by Theorem <a
-href="Algebra-Measurable-Functions.html#thm:meas_lim">2.4.4</a>.
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Since \((f_n)\) is increasing, \(f^*(x)=\lim _{n\to \infty } f(x)\) exists for all
+\(x\in \R \). By Lemma <a href="notes.html#??">??</a> we have that \(f^*\) is measurable. We have \(f\eqae f^*\) by our second assumption, which by Lemma <a href="notes.html#??">??</a>
+means that \(\int _s f\,dm=\int _S f^*\,dm\). Hence we may assume, without loss of generality by using \(f^*\) in place of \(f\), that \(f_n\to f\) pointwise.
 </p>
 
 <p>
-As \(f = \sup _{\nN }f_{n}\), by monotonicity (Theorem <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a>(1)), we have
+We now aim to prove <span class="textup">(<a href="notes.html#??">??</a>)</span>. Since \((f_n)\) is increasing and pointwise convergent to \(f\), we have \(f = \sup _{n}f_{n}\). We have
+\(f_1\leq f_2\leq \ldots \leq f\), so by monotonicity from Lemma <a href="notes.html#??">??</a> we have
 </p>
 
 <p>
-\[\int _{S}f_{1} dm \leq \int _{S}f_{2} dm \leq \cdots \leq \int _{S}f dm.\]
+\[\int _{S}f_{1}\,dm \leq \int _{S}f_{2}\,dm \leq \cdots \leq \int _{S}f\,dm.\]
 </p>
 
 <p>
-Hence by monotonicity of the integrals, \(\lim _{n \rightarrow \infty }\int _{S} f_{n}dm\) exists (as an extended real number) and
+Hence \(n\mapsto \int _S f_n\,dm\) defines an increasing sequence that, by Lemma <a href="notes.html#??">??</a>, has a limit in \([0,\infty ]\) and
 </p>
 
-<p>
-\[ \lim _{n \rightarrow \infty }\int _{S} f_{n}dm \leq \int _{S}f dm.\]
-</p>
-
-<p>
-We must now prove the reverse inequality. To simplify notation, let \(a = \lim _{n \rightarrow \infty }\int _{S} f_{n}dm\). So we need to show that \(a \geq \int _{S} f dm\). Let \(s\) be a simple
-function with \(0 \leq s \leq f\) and choose \(c \in \R \) with \(0 &lt; c &lt; 1\). Our plan is to show that \(a\geq c\int _S s\,dm\) and then take a sup over \(c\) and \(s\).
-</p>
-
-<p>
-For each \(\nN \), let \(E_{n} = \{x \in S; f_{n}(x) \geq c s(x)\}\), and note that \(E_{n} \in \Sigma \) for all \(\nN \) by Proposition 2.3.3. Since \((f_{n})\) is increasing, it follows that \(E_{n}
-\subseteq E_{n+1}\) for all \(\nN \).
-</p>
-
-<p>
-We also have \(\bigcup _{n=1}^{\infty }E_{n} = S\). To verify this last identity, note that if \(x \in S\) with \(s(x) = 0\) then \(x \in E_{n}\) for all \(\nN \) and if \(x \in S\) with \(s(x) \neq 0\)
-then \(f(x) \geq s(x) &gt; c s(x)\) and so for some \(n, f_{n}(x) \geq cs(x)\), as \(f_{n}(x) \rightarrow f(x)\) as \(n \rightarrow \infty \), i.e. \(x \in E_{n}\).
-</p>
-
-<p>
-By Theorem <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a>(3) and (1), we have
-</p>
-
-<p>
-\[ a = \lim _{n \rightarrow \infty }\int _{S} f_{n}dm \geq \int _{S} f_{n}dm \geq \int _{E_{n}} f_{n}dm \geq \int _{E_{n}} c s dm.\]
-</p>
-
-<p>
-As this is true for all \(\nN \), we find that
-</p>
-
-<p>
-\[ a \geq \lim _{n \rightarrow \infty } \int _{E_{n}} c s dm.\]
-</p>
-
-<p>
-But by Corollary <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#cor:premct">3.3.7</a> (since \((E_{n})\) is increasing), and Theorem <a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a>(2),
-</p>
-
-<p>
-\[\lim _{n \rightarrow \infty } \int _{E_{n}} c s dm = \int _{S} c s dm = c\int _{S}s dm,\]
-</p>
-
-<p>
-and so we deduce that
-</p>
-
-<p>
-\[ a \geq c \int _{S}s dm.\]
-</p>
-
-<p>
-But \(0 &lt; c &lt; 1\) is arbitrary so taking e.g. \(c = 1 - 1/k\) with \(k =2, 3, 4, \ldots \) and letting \(k \rightarrow \infty \), we find that
-</p>
-
-<p>
-\[ a \geq \int _{S}s dm.\]
-</p>
-
-<p>
-But the simple function \(s\) for which \(0 \leq s \leq f\) was also arbitrary, so now take the supremum over all such \(s\) and apply <span class="textup">(<a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#Lebgen1">3.4</a>)</span> to get
-</p>
-
-<p>
-\[ a \geq \int _{S}f dm,\]
-</p>
-
-<p>
-and the proof is complete. &#x2003;&#x2003;&#x220E;.
-</p>
-<div class="theorembodycor">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-105"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Corollary 3.4.2</span> <a id="autoid-106" ></a ><a id="cor:simpappr"></a> Let \(f:S \rightarrow \R \) be measurable and non-negative. There exists an
-increasing sequence of simple functions \((s_{n})\) converging pointwise to \(f\) so that
-</p>
-
-<span class="hidden"> \(\seteqnumber{0}{3.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{7}\)</span>
 
 <!--
 
-                                                     Z             Z
-                                               lim       sn dm =       f dm.                                        (3.6)                                      --><a id="eq:simple_approx"></a><!--
-                                              n→∞ S                S
+                                                     Z                 Z
+                                              lim            fn dm ≤        f dm.                                  (4.8)                                                  --><a id="eq:mct_eq_half"></a><!--
+                                              n→∞ S                     S
 
 -->
 
@@ -1047,48 +1034,139 @@ increasing sequence of simple functions \((s_{n})\) converging pointwise to \(f\
 
 
 \begin{equation}
-\label {eq:simple_approx} \lim _{n \rightarrow \infty } \int _{S}s_{n} dm = \int _{S}f dm.
+\label {eq:mct_eq_half} \lim _{n \rightarrow \infty }\int _{S} f_{n}\,dm \leq \int _{S}f\,dm.
 \end{equation}
 
 
 </p>
 
 <p>
-
-
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Apply Theorem <a
-href="The-Monotone-Convergence-Theorem.html#thm:mct">3.4.1</a> to the sequence \((s_{n})\) constructed in Theorem <a href="Simple-Functions.html#thm:simple_approx">2.5.1</a>.
-&#x2003;&#x2003;&#x220E;
+In order to establish <span class="textup">(<a href="notes.html#??">??</a>)</span> we must also prove the reverse inequality. To simplify notation, let us write \(a = \lim _{n}\int _{S} f_{n}dm\). So,
+we need to show that \(a \geq \int _{S} f dm\). Let \(s\) be a simple function with \(0 \leq s \leq f\) and choose \(c \in \R \) with \(0 &lt; c &lt; 1\). Our plan is to show that \(a\geq c\int _S
+s\,dm\) and then take a sup over \(c\) and \(s\).
 </p>
 
 <p>
-We’ll look at examples of calculating integrals, using tools like the monotone convergence theorem, in Section <a href="Calculations-with-Lebesgue-Integral.html#sec:int_calcs">3.8</a>. For now we have
-a more pressing need to finish developing the Lebesgue integral, which we continue with in the next two sections.
+For each \(\nN \), let
 </p>
-<div class="theorembodytheorem">
+
+<p>
+\[E_{n} = \{x \in S; f_{n}(x) \geq c s(x)\}.\]
+</p>
+
+<p>
+Note that \(E_{n} \in \Sigma \) because by Theorem <a href="notes.html#??">??</a> the function \(f_n-cs\) is measurable, and \(E_n=(f_n-cs)^{-1}([0,\infty ))\). We claim that
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{4.}{8}\)</span>
+
+<!--
+
+
+                                                                                            ∞
+                                                                                            [
+                                     En ⊆ En+1 for all n ∈ N                and                  En = S.                    (4.9)                                             --><a id="eq:mct_En"></a><!--
+                                                                                           n=1
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:mct_En} E_n\sw E_{n+1}\text { for all }n\in \N \qquad \text { and }\qquad \bigcup _{n=1}^{\infty }E_{n} = S.
+\end{equation}
+
+
+</p>
+
+<p>
+The first claim in <span class="textup">(<a href="notes.html#??">??</a>)</span> follows because \((f_{n})\) is increasing. To prove the second claim in <span class="textup">(<a
+href="notes.html#??">??</a>)</span>, note first that if \(x\in S\) with \(s(x) = 0\) then \(x \in E_{n}\) for all \(n\in \N \). If \(x\in S\) with \(s(x) \neq 0\) then \(f(x) \geq s(x) &gt; c
+s(x)\), and since \(f_n(x)\) is monotone increasing to \(f(x)\) we must therefore have \(N\in \N \) such that \(f_n(x)\geq c s(x)\) for all \(n\geq N\). For such \(n\) we have \(x\in E_n\).
+</p>
+
+<p>
+By parts 1 and 2 of Lemma <a href="notes.html#??">??</a> we have
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{4.}{9}\)</span>
+
+<!--
+
+                                              Z                 Z                 Z
+                                         a≥        fn dm ≥            fn dm ≥              cs dm.                          (4.10)                                             --><a id="eq:mct_cs"></a><!--
+                                               S                 En                   En
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:mct_cs} a \geq \int _{S} f_{n}\,dm \geq \int _{E_{n}} f_{n}\,dm \geq \int _{E_{n}} c s\, dm.
+\end{equation}
+
+
+</p>
+
+<p>
+The function \(s\) is simple, and it is easily checked that this means \(cs\) is also simple. Hence by Lemma <a href="notes.html#??">??</a> \(\nu (X)=\int _ X cs\,dm\) defines a measure. By <span
+class="textup">(<a href="notes.html#??">??</a>)</span> and Lemma <a href="notes.html#??">??</a> we have \(\nu (E_n)\to \nu (S)\), that is \(\int _{E_n} cs\,dm \to \int _S cs\,dm\) as
+\(n\to \infty \). Letting \(n\to \infty \) in <span class="textup">(<a href="notes.html#??">??</a>)</span> thus gives
+</p>
+
+<p>
+\[a\geq \int _S cs\,dm.\]
+</p>
+
+<p>
+Lemma <a href="notes.html#??">??</a> gives \(\int _S cs\,dm=c\int _S s\,dm\), hence
+</p>
+
+<p>
+\[a\geq c\int _S s\,dm.\]
+</p>
+
+<p>
+This holds for any \(c\in (0,1)\) and any simple function \(s\) with \(0\leq s\leq f\). Letting \(c\uparrow 1\), and using that limits preserve weak inequalites, gives
+</p>
+
+<p>
+\[ a \geq \int _{S}s\, dm.\]
+</p>
+
+<p>
+Taking a supremum over all simple functions \(s\) with \(0\leq s\leq f\) and using Definition <a href="notes.html#??">??</a> gives that
+</p>
+
+<p>
+\[ a \geq \int _{S}f\, dm.\]
+</p>
+
+<p>
+This provides the reverse inequality to <span class="textup">(<a href="notes.html#??">??</a>)</span> and completes the proof. &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+We will look at examples of calculating integrals, using tools like the monotone convergence theorem, in Section <a href="notes.html#??">??</a>. For now we press onwards with developing the Lebesgue
+integral, and upgrade the linearity property to cover non-negative measurable functions. Theorem <a href="notes.html#??">??</a> (which have not used until now!) turns out to be crucial here.
+</p>
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-107"></a>
+<a id="autoid-137"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 3.4.3</span> <a id="autoid-108" ></a >Let \(f,g:S \rightarrow \R \) be measurable and non-negative. Then
+<span class="theoremheaderplain">Lemma 4.3.2</span> <a id="autoid-138" ></a ><a id="l:leb_int_step_2_linearity"></a> Let \(f,g:S \rightarrow [0,\infty )\) be measurable. Then for all
+\(\alpha ,\beta \in [0,\infty )\) we have
 </p>
 
 <p>
-\[ \int _{S}(f + g) dm = \int _{S}f dm + \int _{S} g dm.\]
+\[\int _{S}\alpha f + \beta g\,dm = \alpha \int _{S}f\,dm + \beta \int _{S} g\,dm.\]
 </p>
 
 <p>
@@ -1104,18 +1182,14 @@ a more pressing need to finish developing the Lebesgue integral, which we contin
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> By Theorem <a href="Simple-Functions.html#thm:simple_approx">2.5.1</a> we can
-find an increasing sequence of simple functions \((s_{n})\) that converges pointwise to \(f\) and an increasing sequence of simple functions \((t_{n})\) that converges pointwise to \(g\). Hence \((s_{n} +
-t_{n})\) is an increasing sequence of simple functions that converges pointwise to \(f + g\). So by Theorem <a href="The-Monotone-Convergence-Theorem.html#thm:mct">3.4.1</a> and Theorem <a
-href="The-Lebesgue-Integral-Simple-Functions.html#thm:Ls1">3.2.2</a>(1),
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> By Theorem <a href="notes.html#??">??</a> we can find an increasing sequence of
+simple functions \((s_{n})\) that converges pointwise to \(f\) and an increasing sequence of simple functions \((t_{n})\) that converges pointwise to \(g\). Exercise <a href="notes.html#??">??</a> gives
+that \(\alpha s_n+\beta t_n\) is a simple function, and it is clear that \(\alpha s_n+\beta t_n\) is an increasing sequence of functions that converges pointwise to \(\alpha f + \beta g\).
 </p>
 
 <p>
-\[\begin {aligned} \int _{S}(f + g) dm &amp; = \lim _{n \rightarrow \infty }\int _{S}(s_{n} + t_{n})dm \\ &amp; = \lim _{n \rightarrow \infty }\int _{S}s_{n} dm + \lim _{n
-\rightarrow \infty }\int _{S}t_{n}dm \\ &amp; = \int _{S}f dm + \int _{S} g dm.\end {aligned}\]
-</p>
-
-<p>
+By Lemma <a href="notes.html#??">??</a> part 2 we have \(\int _S \alpha s_n + \beta t_n\,dm = \alpha \int _S s_n\,dm + \beta \int _S t_n\,dm.\) Letting \(n\to \infty \) and using
+Theorem <a href="notes.html#??">??</a> to take the limit of all of the integral terms, we obtain that \(\int _S \alpha f + \beta g\,dm = \alpha \int _S f\,dm + \beta \int _S g\,dm\) as required.
 &#x2003;&#x2003;&#x220E;
 </p>
 
@@ -1128,7 +1202,7 @@ href="The-Lebesgue-Integral-Simple-Functions.html#thm:Ls1">3.2.2</a>(1),
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

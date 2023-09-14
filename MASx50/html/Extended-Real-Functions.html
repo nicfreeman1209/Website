@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Extended Real Functions</title>
+<title>MAS350/61022 — Extended real functions</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-92"></a>
+<a id="notes-autopage-121"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,25 +855,98 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Extended Real Functions ......
+......     section Extended real functions ......
 -->
-<h4 id="autosec-93"><span class="sectionnumber">2.6&#x2003;</span>Extended Real Functions</h4>
-<a id="notes-autopage-93"></a>
-<a id="notes-autofile-17"></a> <a id="sec:ext_real"></a>
+<h4 id="autosec-122"><span class="sectionnumber">3.6&#x2003;</span>Extended real functions</h4>
+<a id="notes-autopage-122"></a>
+<a id="notes-autofile-22"></a> <a id="s:ext_real"></a>
 
 <p>
-Let \((S, \Sigma , m)\) be a measure space. An extended function on \(S\) is a mapping \(f:S \rightarrow \R ^{*}\) where \(\R ^{*} = \{-\infty \} \cup \R \cup \{\infty \}\) is the extended real
-number line. Theorem <a href="Measurable-Functions-Basic-Concepts.html#thm:meas_halfints">2.2.1</a> extends easily to this context and we have \(f^{-1}((a, \infty ]) \in \Sigma \) for all \(a
-\in \R \), if and only if \(f^{-1}([a, \infty ]) \in \Sigma \) for all \(a \in \R \), if and only if \(f^{-1}([-\infty ,a)) \in \Sigma \) for all \(a \in \R \), if and only if \(f^{-1}([-\infty , a])
-\in \Sigma \) for all \(a \in \R \). We then say that \(f\) is measurable if it satisfies any one (and hence all) of these conditions. Now suppose that \((f_{n})\) is a sequence of measurable functions from \(S\)
-to \([0, \infty )\). If the functions are not bounded, then there may exist a set \(A \in \Sigma \) with \(m(A) &gt; 0\) so that \(\liminf _{n \rightarrow \infty }f_{n}(x) = \infty \) for all \(x \in
-A\). Then we may regard \(\liminf _{n \rightarrow \infty }f_{n}\) as an extended measurable function in the sense just given. This will be used implicitly in the integration theory that we’ll describe in the
-next chapter.
+Let \((S, \Sigma , m)\) be a measure space. An <em>extended real function</em> on \(S\) is a mapping \(f:S \rightarrow \ov {\R }\), which might take the values \(\pm \infty \). We introduced
+extensions of the Borel \(\sigma \)-field and Lebesgue measure to \(\ov {\R }\) in Section <a href="notes.html#??">??</a>. Using these extensions, all of theory that we have developed in this Chapter can
+also be made to work for extended real functions. In that context, in Lemma <a href="notes.html#??">??</a> we would use half-open intervals that contained \(\pm \infty \) e.g.&nbsp;\((a,\infty ]\)
+instead of \((a,\infty )\), but everything else works essentially the same.
 </p>
+<div class="theorembodyremark">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-113"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Remark 3.6.1</span> <a id="autoid-114" ></a >\((\star )\) To extend Section <a href="notes.html#??">??</a> to extended real functions we would need to use
+continuity and open sets involving \(\pm \infty \). This happens naturally when treating \(\ov {\R }\) as a metric space (as in Exercise <a href="notes.html#??">??</a>), but this course does not assume
+knowledge of metric spaces and such arguments are outside of what we can cover here.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
 
 </section>
 
@@ -885,7 +957,7 @@ next chapter.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

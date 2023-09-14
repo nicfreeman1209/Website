@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Sigma Fields</title>
+<title>MAS350/61022 — Sigma fields</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -231,7 +228,7 @@ Home</a></nav>
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,13 +855,69 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Sigma Fields ......
+......     section Sigma fields ......
 -->
-<h4 id="autosec-20"><span class="sectionnumber">1.2&#x2003;</span>Sigma Fields</h4>
+<h4 id="autosec-20"><span class="sectionnumber">1.2&#x2003;</span>Sigma fields</h4>
 <a id="notes-autopage-20"></a>
 <a id="notes-autofile-4"></a> We need to be more ambitious that just measuring the length of intervals of \(\R \). More generally, we want to work with a function \(m\) such that the map \(A\mapsto
 m(A)\) corresponds to our intuitive idea of measuring how ‘big’ the object \(A\) is. Length is one example of this, ‘weight’ and ‘volume’ are other examples. The function \(m\) will be known as <p>
@@ -877,8 +932,7 @@ more difficult to express in words.
 
 <p>
 However, there is a caveat. In many cases, particularly if the set \(S\) is very large (such as \(\R \) itself, which is uncountable) we will not be able to measure the size of <i>every</i> subset of \(S\). The reasons
-for this caveat are difficult, and we will come to them in Section <a href="An-example-non-measurable-set.html#sec:non_meas_set">1.6</a>. Instead, we do the next best thing. We specify precisely
-<i>which</i> subsets of \(S\) we are going to measure.
+for this caveat are difficult, and we will come to them in Section <a href="notes.html#??">??</a>. Instead, we do the next best thing. We specify precisely <i>which</i> subsets of \(S\) we are going to measure.
 </p>
 <div class="theorembodydefn">
 
@@ -956,7 +1010,7 @@ complement of \(\emptyset \) is \(\emptyset ^c=S\sc \emptyset =S\), so this mean
 <p>
 Property (S3) is a bit more subtle. Firstly note that if we can measure \(A\) and \(B\) then it is reasonable (again, think flour) to want to measure their union \(A\cup B\). Similarly, if we can measure
 \(A_1,\ldots ,A_n\) then it is reasonable to want to measure their union \(\cup _{i=1}^nA_n\). However, we can’t stop here. We need our theory of measure to handle infinite objects, like the interval \([0,2]\)
-which contains infinitely many elements (even though only has length 2!). For this reason we also allow countable unions, of the form \(\cup _{n=1}^\infty \ldots \) in (S3).
+which contains infinitely many elements (even though it only has length 2!). For this reason we also allow countable unions, of the form \(\cup _{n=1}^\infty \ldots \) in (S3).
 </p>
 <div class="theorembodyremark">
 
@@ -968,7 +1022,7 @@ which contains infinitely many elements (even though only has length 2!). For th
 <li>
 <p>
 <span class="theoremheaderplain">Remark 1.2.3</span> <a id="autoid-8" ></a >We cannot ‘upgrade’ to allowing <i>uncountable</i> unions in (S3). Doing so would, unfortunately, break our entire theory
-of measure, for a reason that we cannot easily see, yet. We will discuss this point further in Section <a href="An-example-non-measurable-set.html#sec:non_meas_set">1.6</a>.
+of measure, for a reason that we cannot easily see, yet. We will discuss this point further in Section <a href="notes.html#??">??</a>.
 </p>
 
 
@@ -986,8 +1040,8 @@ of measure, for a reason that we cannot easily see, yet. We will discuss this po
 <a id="autoid-9"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 1.2.4</span> <a id="autoid-10" ></a >The term ‘\(\sigma \)-algebra’ is used by some books, with the same meaning as ‘\(\sigma \)-field’. I prefer \(\sigma
-\)-field, you may use either.
+<span class="theoremheaderplain">Remark 1.2.4</span> <a id="autoid-10" ></a >The term <em>\(\sigma \)-algebra</em> is used by some books, with the same meaning as \(\sigma \)-field. I prefer
+\(\sigma \)-field, you may use either.
 </p>
 
 
@@ -1052,7 +1106,7 @@ measurable space.
 </div>
 
 <p>
-Given a set \(S\), there are typically are typically many possible choices of \(\Sigma \). The choice of \(\Sigma \) is determined by what it is that we want to measure.
+Given a set \(S\), there are typically many possible choices of \(\Sigma \). The choice of \(\Sigma \) is determined by what it is that we want to measure.
 </p>
 <!--
 ......   subsection Examples of -fields ......
@@ -1110,7 +1164,7 @@ done as follows.
 <a id="autoid-13"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 1.2.6</span> <a id="autoid-14" ></a ><a id="lem:sigma_intersect"></a> Let \(I\) be any set and for each \(i\in I\) let \(\Sigma _i\) be a \(\sigma
+<span class="theoremheaderplain">Lemma 1.2.6</span> <a id="autoid-14" ></a ><a id="l:sigma_intersect"></a> Let \(I\) be any set and for each \(i\in I\) let \(\Sigma _i\) be a \(\sigma
 \)-field on \(S\). Then
 </p>
 
@@ -1173,8 +1227,8 @@ A_j\in \cap _i \Sigma _i\). &#x2003;&#x2003;&#x220E;
 <a id="autoid-15"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 1.2.7</span> <a id="autoid-16" ></a >Thanks to Lemma <a href="Sigma-Fields.html#lem:sigma_intersect">1.2.6</a> we can construct a \(\sigma
-\)-field by making a statement along the lines of
+<span class="theoremheaderplain">Example 1.2.7</span> <a id="autoid-16" ></a >Thanks to Lemma <a href="notes.html#??">??</a> we can construct a \(\sigma \)-field by making a statement along
+the lines of
 </p>
 <blockquote>
 
@@ -1186,9 +1240,9 @@ A_j\in \cap _i \Sigma _i\). &#x2003;&#x2003;&#x220E;
 <p>
 By this statement we mean: let \(\Sigma \) be intersection of all the \(\sigma \)-fields on \(\R \) that contain all of the open intervals, in the style of equation <span class="textup">(<a
 href="Sigma-Fields.html#eq:sigma_intersect">1.2</a>)</span>. We know that at least one \(\sigma \)-field exists with this property, namely \(\mc {P}(\R )\). Therefore Lemma <a
-href="Sigma-Fields.html#lem:sigma_intersect">1.2.6</a> applies, and tells that \(\Sigma \) is indeed a \(\sigma \)-field. The \(\sigma \)-field resulting from this example is very special. It is known as the
-Borel \(\sigma \)-field on \(\R \), and it is much smaller than \(\mc {P}(\R )\). We will introduce it formally in Definition <a href="The-Borel-field.html#def:borel_field">1.4.2</a>, and study it in
-Section <a href="The-Borel-field.html#sec:borel_field">1.4</a>.
+href="notes.html#??">??</a> applies, and tells that \(\Sigma \) is indeed a \(\sigma \)-field. The \(\sigma \)-field resulting from this example is very special. It is known as the Borel \(\sigma \)-field on
+\(\R \), and it is much smaller than \(\mc {P}(\R )\). We will introduce it formally in Definition <a href="The-Borel-field.html#def:borel_field">1.4.2</a>, and study it in Section <a
+href="notes.html#??">??</a>.
 </p>
 
 
@@ -1207,7 +1261,7 @@ Section <a href="The-Borel-field.html#sec:borel_field">1.4</a>.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

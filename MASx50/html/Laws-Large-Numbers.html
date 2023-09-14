@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Laws of Large Numbers</title>
+<title>MAS350/61022 — Laws of large numbers</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-201"></a>
+<a id="notes-autopage-255"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,18 +855,75 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Laws of Large Numbers ......
+......     section Laws of large numbers ......
 -->
-<h4 id="autosec-202"><span class="sectionnumber">5.3&#x2003;</span>Laws of Large Numbers</h4>
-<a id="notes-autopage-202"></a>
-<a id="notes-autofile-37"></a>
+<h4 id="autosec-256"><span class="sectionnumber">7.3&#x2003;</span>Laws of large numbers</h4>
+<a id="notes-autopage-256"></a>
+<a id="notes-autofile-46"></a> <a id="s:lln"></a>
 
 <p>
-Let \((X_{n})\) be a sequence of random variables all defined on the same probability space, that have the following properties,
+Let \((X_{n})\) be a sequence of random variables all defined on the same probability space. We say that the sequence \((X_n)\) is <i>i.i.d.</i>, short for <i>independent and identically distributed</i>, if it has
+the following properties:
 </p>
 <ul style="list-style-type:none">
 
@@ -883,35 +939,57 @@ Let \((X_{n})\) be a sequence of random variables all defined on the same probab
 
 
 <p>
-• they are identically distributed i.e.&nbsp;\(p_{X_{n}} = p_{X_{m}}\) for all \(n \neq m\). In other words, for all \(A \in {\cal B}(\R )\),
+• they are identically distributed, which means that for all \(A \in {\cal B}(\R )\),
 </p>
 <p>
 \[ \P [X_{1} \in A] = \P [X_{2} \in A] = \cdots = \P [X_{n} \in A] = \cdots \]
 </p>
 <p>
-
-
+or equivalently that \(p_{X_{n}} = p_{X_{m}}\) for all \(n \neq m\).
 </p>
 </li>
 </ul>
 
 <p>
-Such a sequence is said to be ‘i.i.d.’. Sequences of this type are very important in modelling (consider the steps of a random walk) and also statistics (consider a sequence of idealised experiments carried out under
-identical conditions).
+Sequences of this type are very important. From a practical point of view they correspond to a random trial repeated multiple times, which is a common occurrence in experimental science, but also in statistics
+(think of e.g.&nbsp;survey responses). They are also theoretically important, because the large amount of independence involved makes these sequences easier to study. There are many examples of limit theorems in
+probability that were proved first for i.i.d.&nbsp;sequences and later extended to more complicated situations. We will study two examples of this in Sections <a href="notes.html#??">??</a>-<a
+href="notes.html#??">??</a>.
 </p>
 
 <p>
-We are interested in the empirical mean
+In this section we are interested in the empirical arithmetic mean
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{5}\)</span>
+
+<!--
+
+
+                                        X1 + X2 + · · · + Xn
+                                 Xn =                        ,                              (7.6)                                                                            --><a id="eq:sample_mean"></a><!--
+                                                n
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:sample_mean} \overline {X_{n}} = \frac {X_{1} + X_{2} + \cdots + X_{n}}{n},
+\end{equation}
+
+
 </p>
 
 <p>
-\[ \overline {X_{n}} = \frac {1}{n}(X_{1} + X_{2} + \cdots + X_{n}),\]
+which in statistics is often known as the sample mean. The standard notation \(\overline {X_n}\) is rather lazy, strictly \(\overline {(\;\cdot \;)}\) is a function whose arguments are the sequence
+\(X=(X_n)\) and the natural number \(n\), with value given by <span class="textup">(<a href="notes.html#??">??</a>)</span>.
 </p>
 
 <p>
-which in statistics is often known as the sample mean. If \(X_{n}\) is integrable for some (and hence all) \(\nN \), with \(\mu =\E [X_n]\), then by linearity \(\overline {X_{n}}\) is integrable and \(\E
-[\overline {X_{n}}] = \mu \). It is extremely important to learn about the asymptotic behaviour of \(\overline {X_{n}}\) as \(n \rightarrow \infty \). Two key results are the weak law of large numbers
-(WLLN) and the strong law of large numbers (SLLN). The strong law implies the weak law, but it is much trickier to prove. We will include a full proof of the weak law and a partial proof of the strong law.
+If \(X_{n}\in \mc {L}^1\) for some (and hence all) \(\nN \), with \(\mu =\E [X_n]\), then by linearity \(\overline {X_{n}}\in \mc {L}^1\) and \(\E [\overline {X_{n}}] = \mu \). It is natural to
+expect that for the large \(n\) the value of \(\overline {X}_n\) is typically close to \(\mu \), because some of the \(X_i\) will fall above \(\mu \), others below, and to some extent they will balance each other
+out. The following two famous results make this idea precise.
 </p>
 <div class="theorembodytheorem">
 
@@ -919,11 +997,11 @@ which in statistics is often known as the sample mean. If \(X_{n}\) is integrabl
 
 
 
-<a id="autoid-176"></a>
+<a id="autoid-224"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 5.3.1 (WLLN)</span> <a id="autoid-177" ></a ><a id="thm:wlln"></a> Let \((X_{n})\) be a sequence of integrable i.i.d.&nbsp;random variables with \(\E
-(X_{n}) = \mu \) for all \(\nN \). Suppose also that \(\E [X_{n}^{2}] &lt; \infty \) for all \(\nN \). Then \(\overline {X_{n}} \rightarrow \mu \) in probability as \(n \rightarrow \infty \).
+<span class="theoremheaderplain">Theorem 7.3.1 (Weak Law of Large Numbers)</span> <a id="autoid-225" ></a ><a id="t:wlln"></a> Let \((X_{n})\) be a sequence of i.i.d.&nbsp;random variables
+with \(\E [X_{n}] = \mu \) for all \(\nN \). Suppose that \(\E [X_n^{2}] &lt; \infty \) for all \(\nN \). Then \(\overline {X_{n}} \rightarrow \mu \) in probability as \(n \rightarrow \infty \).
 </p>
 
 
@@ -934,19 +1012,28 @@ which in statistics is often known as the sample mean. If \(X_{n}\) is integrabl
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(\sigma ^{2} = \var (X_{n})\) for all \(\nN \). Since the \((X_n)\) are
-independent, it follows that \(\var (\overline {X_n})=\frac {\sigma ^2}{n}\). Then by Chebychev’s inequality, for all \(a &gt; 0\),
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> By the Cauchy-Schwarz inequality (Exercise <a
+href="Exercises-4.html#ps:cauchy_schwarz"><b>4.11</b></a>) \(\E [|X_nX_m|]\leq (\E [X_n^2]\E [X_m^2]^{1/2}&lt;\infty \), so \(X_nX_m\in \Lone \). Also by this exercise we have \(\var
+(X_n)&lt;\infty \), so let us write \(\sigma ^{2} = \var (X_{n})\).
 </p>
-<span class="hidden"> \(\seteqnumber{0}{5.}{5}\)</span>
+
+<p>
+Since the \((X_n)\) are independent by Theorem <a href="notes.html#??">??</a> we have \(\E [X_nX_m]=\E [X_n]\E [X_m]=0\), so \(\cov (X_n,X_m)=\E [X_nX_m]-\E [X_n]\E [X_m]=0\). We may
+therefore calculate
+</p>
+<span class="hidden"> \(\seteqnumber{0}{7.}{6}\)</span>
 
 
 
 <!--
 
 
-                                                                                     h            i   var(Xn )   σ2
-                                                                                   P |Xn − µ| > a ≤            =
-                                                                                                         a2      na2
+                                                                                                              
+                                                                                     n
+                                                                                 1 X            X                    nσ 2     σ2
+                                                                      var(Xn ) = 2  var(Xi ) +      cov(Xi , Xj ) = 2 + 0 =    .
+                                                                                n   i=1         i̸=j
+                                                                                                                      n       n
 
 
 
@@ -958,9 +1045,10 @@ independent, it follows that \(\var (\overline {X_n})=\frac {\sigma ^2}{n}\). Th
 
 
 \begin{align*}
-\P \l [|\overline {X_{n}} - \mu | &gt; a\r ] \leq \frac {\var (\overline {X_{n}})}{a^{2}} = \frac {\sigma ^{2}}{na^{2}}
+\var (\overline {X_n})= \frac {1}{n^2}\l (\sum _{i=1}^n \var (X_i)+\sum _{i\neq j}\cov (X_i,X_j)\r )=\frac {n\sigma ^2}{n^2}+0=\frac {\sigma ^2}{n}.
 \end{align*}
-which tends to zero as \(n\to \infty \). &#x2003;&#x2003;&#x220E;
+Hence, by Chebychev’s inequality (Exercise <a href="notes.html#??">??</a>) for all \(a &gt; 0\) we have that \(\P [|\overline {X_{n}} - \mu | &gt; a] \leq \frac {\var (\overline
+{X_{n}})}{a^{2}} = \frac {\sigma ^{2}}{na^{2}}\) which tends to zero as \(n\to \infty \). &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodytheorem">
 
@@ -968,11 +1056,11 @@ which tends to zero as \(n\to \infty \). &#x2003;&#x2003;&#x220E;
 
 
 
-<a id="autoid-178"></a>
+<a id="autoid-226"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 5.3.2 (SLLN)</span> <a id="autoid-179" ></a ><a id="thm:slln"></a> Let \((X_{n})\) be a sequence of integrable i.i.d.&nbsp;random variables with \(\E
-(X_{n}) = \mu \) for all \(\nN \). Then \(\overline {X_{n}} \rightarrow \mu \) almost surely as \(n \rightarrow \infty \).
+<span class="theoremheaderplain">Theorem 7.3.2 (Strong Law of Large Numbers)</span> <a id="autoid-227" ></a ><a id="t:slln"></a> Let \((X_{n})\) be a sequence of i.i.d.&nbsp;random variables
+\(X_n\in \Lone \) and with \(\E [X_{n}] = \mu \) for all \(\nN \). Then \(\overline {X_{n}} \rightarrow \mu \) almost surely as \(n \rightarrow \infty \).
 </p>
 
 
@@ -983,39 +1071,25 @@ which tends to zero as \(n\to \infty \). &#x2003;&#x2003;&#x220E;
 </div>
 
 <p>
-The full proof of the SLLN is too long for this course. You can find it in e.g.&nbsp;Rosenthal on pages 47-49. We’ll give the proof in a special case, by making an assumption on the fourth moments of the sequence
-\((X_{n})\), and then remark on the general case.
-</p>
-<div class="theorembodyassumption">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-180"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Assumption 5.3.3</span> <a id="autoid-181" ></a ><a id="ass:4slln"></a> \(\E [(X_{n} - \mu )^{4}] = b &lt; \infty \) for all \(\nN \).
+By Lemma <a href="notes.html#??">??</a> the strong law implies the weak law, but the strong law is much harder to prove. We won’t give a full proof in this course. Instead, we will give a proof in the special
+case that \(\E [X_n^4]&lt;\infty \).
 </p>
 
-
-</li>
-
-</ul>
-
-</div>
-
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span>[Of Theorem <a href="Laws-Large-Numbers.html#thm:slln">5.3.2</a> under Assumption
-<a href="Laws-Large-Numbers.html#ass:4slln">5.3.3</a>.] Without loss of generality we may assume that \(\mu =0\). To see this, instead of \(X_{n}\) we would consider \(Y_{n} = X_{n}- \mu \).
+<span class="textsc">Proof of Theorem <a href="notes.html#??">??</a>, assuming that \(\E [X_n^4]&lt;\infty \):</span><span style="width:5.38533pt;
+display:inline-block"><!----></span> Without loss of generality we may assume that \(\mu =0\). The general case can be obtained from this special case by considering \(X&apos;_{n} = X_{n}- \mu \).
 </p>
 
 <p>
 Let \(S_{n} = X_{1} + X_{2} + \cdots + X_{n}\) so that \(S_{n} = n\overline {X_{n}}\) for all \(\nN \). Consider \(\E [S_{n}^{4}]\). It contains many terms of the form \(\E
-[X_{j}X_{k}X_{l}X_{m}]\) with distinct indices and these all vanish by independence, because \(\E [X_j]=\E [X_k]=\E [X_l]=\E [X_m]=0\). A similar argument disposes of terms of the form \(\E
-[X_{j}X_{k}^{3}]\) and \(\E [X_{j}X_{k}X_{l}^{2}]\), where \(j,k,l\) are distinct. The only terms with non-vanishing expectation are \(n\) terms of the form \(X_{i}^{4}\) and \({n \choose 2}{4
-\choose 2} = 3n(n-1)\) terms of the form \(X_{i}^{2}X_{j}^{2}\) with \(i \neq j\). By Theorem <a href="Independence.html#thm:indep_E">4.4.2</a>, \(X_{i}^{2}\) and \(X_{j}^{2}\) are
-independent for \(i \neq j\) and so by Theorem <a href="Independence.html#thm:indep_E">4.4.2</a>
+[X_{j}X_{k}X_{l}X_{m}]\). By the same argument as we used in the proof of Theorem <a href="notes.html#??">??</a>, based on the Cauchy-Schwarz inequality, \(X_jX_kX_lX_m\in \mc {L}^1\) for all
+\(j,k,l,m\). If \(j,k,l\) and \(m\) are all distinct then by Theorem <a href="notes.html#??">??</a> we have \(\E [X_jX_kX_lX_m]=\E [X_j]\E [X_k]\E [X_l]\E [X_m]\), which is zero because \(\E
+[X_j]=\E [X_k]=\E [X_l]=\E [X_m]=0\). A similar argument disposes of terms of the form \(\E [X_{j}X_{k}^{3}]\) and \(\E [X_{j}X_{k}X_{l}^{2}]\), where \(j,k,l\) are distinct.
+</p>
+
+<p>
+The only terms with non-vanishing expectation are \(n\) terms of the form \(X_{i}^{4}\) and \({n \choose 2}{4 \choose 2} = 3n(n-1)\) terms of the form \(X_{i}^{2}X_{j}^{2}\) with \(i \neq j\). By
+part 1 of Theorem <a href="notes.html#??">??</a>, \(X_{i}^{2}\) and \(X_{j}^{2}\) are independent for \(i \neq j\) and so by part 2 Theorem <a href="notes.html#??">??</a>
 </p>
 
 <p>
@@ -1023,21 +1097,21 @@ independent for \(i \neq j\) and so by Theorem <a href="Independence.html#thm:in
 </p>
 
 <p>
-Putting all this together,
+Putting all this together and writing \(b=\E [X_n^4]\),
 </p>
-<span class="hidden"> \(\seteqnumber{0}{5.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{6}\)</span>
 
 
 
 <!--
 
 
-                                                                                                 n
-                                                                                                 X                 X
-                                                                                     E[Sn4 ] =         E[Xi4 ] +          E[Xi2 Xj2 ]
-                                                                                                 i=1               i̸=j
+                                                                                                    n
+                                                                                                    X                 X
+                                                                                        E[Sn4 ] =         E[Xi4 ] +          E[Xi2 Xj2 ]
+                                                                                                    i=1               i̸=j
 
-                                                                                           = nb + 3n(n − 1)σ 4 ≤ Kn2 ,
+                                                                                              = nb + 3n(n − 1)σ 4 ≤ Kn2 ,
 
 
 
@@ -1051,9 +1125,9 @@ Putting all this together,
 \begin{align*}
 \E [S_{n}^{4}] &amp; = \sum _{i=1}^{n}\E [X_{i}^{4}] + \sum _{i \neq j}\E [X_{i}^{2}X_{j}^{2}]\\ &amp; = nb + 3n(n-1)\sigma ^{4} \leq K n^{2},
 \end{align*}
-where \(K = b + 3\sigma ^{4}\). For all \(a &gt; 0\), by Markov’s inequality (Lemma 3.3.1)
+where \(K = nb+ 3\sigma ^{4}\). For all \(a &gt; 0\), by Markov’s inequality (Lemma <a href="notes.html#??">??</a>)
 </p>
-<span class="hidden"> \(\seteqnumber{0}{5.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{6}\)</span>
 
 
 
@@ -1061,11 +1135,11 @@ where \(K = b + 3\sigma ^{4}\). For all \(a &gt; 0\), by Markov’s inequality (
 
 
 
-                                                                                                                   E[Sn4 ]   Kn2    K
-                                                                           P[|Xn | > a] = P[Sn4 > a4 n4 ] ≤         4  4
-                                                                                                                           ≤  4 4
-                                                                                                                                  = 4 2.
-                                                                                                                   a n       a n   a n
+                                                                                                                      E[Sn4 ]   Kn2    K
+                                                                              P[|Xn | > a] = P[Sn4 > a4 n4 ] ≤         4  4
+                                                                                                                              ≤  4 4
+                                                                                                                                     = 4 2.
+                                                                                                                      a n       a n   a n
 
 
 
@@ -1077,7 +1151,7 @@ where \(K = b + 3\sigma ^{4}\). For all \(a &gt; 0\), by Markov’s inequality (
 
 
 \begin{align*}
-\P [|\overline {X_{n}}| &gt; a] = \P [S_{n}^{4} &gt; a^{4}n^{4}] \leq \frac {\E [S_{n}^{4}]}{a^{4}n^{4}} \leq \ds \frac {Kn^{2}}{a^{4}n^{4}} = \ds \frac {K}{a^{4}n^{2}}.
+\P [|\overline {X_{n}}| &gt; a] = \P [S_{n}^{4} &gt; a^{4}n^{4}] \leq \frac {\E [S_{n}^{4}]}{a^{4}n^{4}} \leq \ds \frac {Kn^{2}}{a^{4}n^{4}} = \frac {K}{a^{4}n^{2}}.
 \end{align*}
 Recall that \(\sum _{n=1}^{\infty }\frac {1}{n^{2}} &lt; \infty \). Hence, by the first Borel-Cantelli lemma, \(\P [|\overline {X_{n}}| &gt; a\;\text {i.o.}] = 0\) and so \(\P [|\overline
 {X_{n}}| \leq a\;\text {e.v.}] = 1\). It follows that \(\overline {X_{n}} \rightarrow 0\) a.s.&nbsp;as required. &#x2003;&#x2003;&#x220E;
@@ -1088,12 +1162,13 @@ Recall that \(\sum _{n=1}^{\infty }\frac {1}{n^{2}} &lt; \infty \). Hence, by th
 
 
 
-<a id="autoid-182"></a>
+<a id="autoid-228"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 5.3.4</span> <a id="autoid-183" ></a >(\(\star \)) The proof, in the general case without Assumption 4.1, uses a truncation argument, based on \(Y_{n} =
-X_{n}{\1}_{\{X_{n} \leq n\}}\). Then \(Y_{n} \leq n\) for all \(n\) and so \(\E [Y_{n}^{k}] \leq n^{k}\) for all \(k\). If \(X_{n} \geq 0\) for all \(n\), \(\E [Y_{n}] \rightarrow \mu \) by
-monotone convergence. Roughly speaking the argument is to prove a SLLN for the \(\overline {Y_{n}}\)s, and then transfer this to the \(\overline {X_{n}}\)s. It requires much more work.
+<span class="theoremheaderplain">Remark 7.3.3</span> <a id="autoid-229" ></a >(\(\star \)) The proof, in the general case without Assumption 4.1, uses a ‘truncation argument’ based on \(Y_{n} =
+X_{n}{\1}_{\{X_{n} \leq n\}}\). Note that \(Y_{n} \leq n\) for all \(n\) and so \(\E [Y_{n}^{k}] \leq n^{k}\) for all \(k\). If \(X_{n} \geq 0\) for all \(n\), \(\E [Y_{n}] \rightarrow \mu \) by
+monotone convergence. Roughly speaking the argument is to prove a SLLN for the \(\overline {Y_{n}}\), then transfer this to the \(\overline {X_{n}}\)s. It requires much more work. You can find it in
+e.g.&nbsp;**.
 </p>
 
 
@@ -1102,12 +1177,6 @@ monotone convergence. Roughly speaking the argument is to prove a SLLN for the \
 </ul>
 
 </div>
-
-<p>
-If \(\E (X_{n}^{2}) &lt; \infty \) then (by Problem <a href="Exercises-4.html#ps:cauchy_schwarz"><b>4.11</b></a>) \(\var (X_{n}) = \sigma ^{2} &lt; \infty \) for some (and hence all) \(\nN
-\). It follows by elementary properties of the variance that \(\var (\overline {X_{n}}) = \frac {\sigma ^{2}}{n}\). This is known as the empirical variance or sample variance. The Central Limit Theorem
-investigates this quantity, as we will see in Section <a href="The-Central-Limit-Theorem.html#sec:clt">5.5</a>.
-</p>
 
 </section>
 
@@ -1118,7 +1187,7 @@ investigates this quantity, as we will see in Section <a href="The-Central-Limit
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

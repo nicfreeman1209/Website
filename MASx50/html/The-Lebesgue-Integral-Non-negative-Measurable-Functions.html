@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — The Lebesgue Integral for Non-negative Measurable Functions</title>
+<title>MAS350/61022 — The Lebesgue integral for non-negative measurable functions</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-107"></a>
+<a id="notes-autopage-136"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,62 +855,139 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section The Lebesgue Integral for Non-negative Measurable Functions ......
+......     section The Lebesgue integral for non-negative measurable functions ......
 -->
-<h4 id="autosec-108"><span class="sectionnumber">3.3&#x2003;</span>The Lebesgue Integral for Non-negative Measurable Functions</h4>
-<a id="notes-autopage-108"></a>
-<a id="notes-autofile-21"></a> <a id="sec:leb_2"></a>
+<h4 id="autosec-137"><span class="sectionnumber">4.2&#x2003;</span>The Lebesgue integral for non-negative measurable functions</h4>
+<a id="notes-autopage-137"></a>
+<a id="notes-autofile-25"></a> <a id="s:leb_2_nonneg"></a>
 
 <p>
-We haven’t done any analysis yet and at some stage we need to make integrals interact nicely with limits! If \(f\) is measurable and non-negative, it may seem attractive to try to take advantage of Theorem 2.4.1
-and define “\(\int _{S}fdm = \lim _{n \rightarrow \infty }\int _{S}s_{n}dm\)”. But there are many different choices of simple functions that we could take to make an approximating sequence, and this
-risks making the limiting integral depend on that choice, which is undesirable. Lebesgue’s key idea was to use the weaker notion of the supremum to ‘approximate \(f\) from below’ as follows:
+We continue to work over a general measure space \((S,\Sigma ,m)\). When \(f:S\to \R \) is measurable and non-negative, it is tempting to try and take advantage of Theorem <a
+href="notes.html#??">??</a> by defining “\(\int _{S}fdm = \lim _{n \rightarrow \infty }\int _{S}s_{n}dm\)”, where \((s_n)\) is increasing sequence of simple functions, converging pointwise to \(f\).
+There is a problem with this idea: many different choices of simple functions could be used for \(s_n\), which risks making the limiting integral depend on that choice. We’d need to show that didn’t happen – which
+it doesn’t, but proving that turns out to be very difficult. Lebesgue’s key idea was to work around the problem, using the weaker notion of the supremum to ‘approximate \(f\) from below’ as follows.
 </p>
 
 <p>
-Step 3. Non-negative measurable functions
+We say that function \(f:S\to \R \) is non-negative if \(f\geq 0\). Equivalently, if \(f:S\to [0,\infty )\). In this section we focus on non-negative measurable functions.
+</p>
+<div class="theorembodydefn">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-123"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Definition 4.2.1 (Lebesgue Integral, Step 2)</span> <a id="autoid-124" ></a ><a id="d:leb_int_nonneg"></a> Let \(f:S\to [0,\infty )\) be measurable. The
+integral of \(f\) is defined as
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{3.}{3}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{5}\)</span>
 
 <!--
 
-                               Z                 \int _{S}s dm, s~\mbox {simple}, 0 \leq s \leq f\right \}.
+
+      Z                 s \leq f\right \}.
 \end{equation}
 
 
 </p>
 
 <p>
-With this definition, \(\int _{S}f dm \in [0, \infty ]\). We allow the possibility that this integral may be equal to \(+\infty \). The set over which we take the supremum is non-empty by Theorem <a
-href="Simple-Functions.html#thm:simple_approx">2.5.1</a>.
+With this definition \(\int _S f\,dm\in [0,\infty ]\).
 </p>
 
+
+</li>
+
+</ul>
+
+</div>
+
 <p>
-The use of the sup makes it easy to prove some properties but hard to prove others. We’ll have to postpone a full proof of linearity until the next section, but here are some other properties that can be proved fairly
-easily.
+We would like to upgrade the monotonicity and linearity properties from Lemma <a href="notes.html#??">??</a>. The use of the sup makes it easy to prove some properties but hard to prove others, so we’ll
+only make partial progress for now. In particular, we’ll have to postpone the upgrade of linearity until the next section.
 </p>
-<div class="theorembodytheorem">
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-87"></a>
+<a id="autoid-125"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 3.3.1</span> <a id="autoid-88" ></a ><a id="thm:bprops"></a> If \(f, g:                       S \rightarrow \R \) are non-negative measurable functions,
+<span class="theoremheaderplain">Lemma 4.2.2</span> <a id="autoid-126" ></a ><a id="l:leb_int_step_2_monotonicity"></a> Let \(f, g:           S \rightarrow [0,\infty )\) be measurable
+functions.
 </p>
 <ul style="list-style-type:none">
 
 
 <li>
 <p>
-1. (Monotonicity)&nbsp;If \(f \leq g\) then \(\int _{S}f dm \leq \int _{S}g dm.\)
+1. If \(f \leq g\) then \(\int _{S}f dm \leq \int _{S}g dm.\)
 </p>
 
 
@@ -920,25 +996,7 @@ easily.
 
 
 <p>
-2. \(\int _S\alpha f \,dm = \alpha \int _S f\,dm\) for all \(\alpha \geq 0\),
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-3. If \(A,B \in \Sigma \) with \(A \subseteq B\) then \(I_{A}(f) \leq I_{B}(f)\),
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-4. If \(A \in \Sigma \) with \(m(A) = 0\) then \(I_{A}(f) = 0\).
+2. If \(A,B \in \Sigma \) with \(A \subseteq B\) then \(\int _A f\,dm \leq \int _B f\,dm\).
 </p>
 </li>
 </ul>
@@ -951,118 +1009,44 @@ easily.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> For (1),
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> For part 1, if \(f\leq g\) then any simple function \(s\) with \(s\leq f\) also satisfies
+\(s\leq g\). Hence
 </p>
-<span class="hidden"> \(\seteqnumber{0}{3.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{6}\)</span>
 
 
 
 <!--
 
 
-                                                                         Z                 yle-type:none">
-
-
-
-<a id="autoid-91"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Definition 3.3.3</span> <a id="autoid-92" ></a >Let \(f,g:          S \rightarrow \R \) be measurable. We say that \(f = g\) almost everywhere, and write this for short as
-\(f = g\) a.e., if
-</p>
-
-<p>
-\[m(\{x \in S; f(x) \neq g(x)\} = 0.\]
-</p>
-
-<p>
-
-
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-In Problem <a href="Exercises-3.html#ps:ae_equiv"><b>3.9</b></a> you can show that this gives rise to an equivalence relation on the set of all measurable functions. You should think of ‘\(g=f\) a.e.’ as
-saying ‘as far as measure theory is concerned, \(f\) and \(g\) are might as well be equal’.
-</p>
-<div class="theorembodycor">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-93"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Corollary 3.3.4</span> <a id="autoid-94" ></a ><a id="cor:mezero"></a> If \(f\) is a non-negative measurable function and \(\int _{S}f dm = 0\) then \(f = 0\)
-(a.e.)
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(A = \{x \in S; f(x) \neq 0\}\) and for each \(\nN , A_{n} = \{x \in S; f(x)
-\geq 1/n\}\). Since \(A = \bigcup _{n=1}^{\infty }A_{n}\), we have \(m(A) \leq \sum _{n=1}^{\infty }m(A_{n})\) by Theorem 1.5.2, and its sufficient to show that \(m(A_{n}) = 0\) for all \(\nN \).
-But by Markov’s inequality \(m(A_{n}) \leq n \int _{S}f dm = 0.\) &#x2003;&#x2003;&#x220E;
+                                                                            Z                 ion can be deduced from Lemma <a href="notes.html#??">??</a>. For now, it is a useful tool within our development of integration,
+because it allows us to control how often some function \(f\) takes large values.
 </p>
 <!--
-......   subsection Integration as a measure ......
+......   subsection Almost everywhere equality ......
 -->
-<h5 id="autosec-113"><span class="sectionnumber">3.3.1&#x2003;</span>Integration as a measure</h5>
-<a id="notes-autopage-113"></a>
+<h5 id="autosec-141"><span class="sectionnumber">4.2.1&#x2003;</span>Almost everywhere equality</h5>
+<a id="notes-autopage-141"></a>
 
 
+
+<a id="s:ae"></a>
 
 <p>
-Integrals of non-negative measurable functions give us a way of constructing measures. More precisely, it gives us a way of taking an existing measure \(m\) and generating a large family of new measures from \(m\).
-In turn, knowing that integrals (or non-negative simple functions) are measure will allow us to deduce some more properties about integrals.
+In Section <a href="notes.html#??">??</a> we introduce the concept of convergence almost everywhere. The idea behind \(\toae \) was that we can allow pointwise convergence to fail on a null set, and from
+the point of measure theory that will tend not to matter. We will see this in practice within the next section, but first let us note that we can also apply ‘almost everywhere’ to the concept of equality, as follows.
 </p>
-<div class="theorembodytheorem">
+<div class="theorembodydefn">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-95"></a>
+<a id="autoid-129"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 3.3.5</span> <a id="autoid-96" ></a ><a id="thm:fmeas"></a> If \(f:                 S \rightarrow \R \) is a non-negative measurable function, then the map
-\(I_A:\Sigma \to [0, \infty ]\) given by
-</p>
-
-<span class="hidden"> \(\seteqnumber{0}{3.}{4}\)</span>
-
-<!--
-
-                                                                      Z
-                                                          IA (f ) =       f dm                                                (3.5)                                               --><a id="eq:IAf"></a><!--
-                                                                      A
-
--->
-
-<p>
-
-
-\begin{equation}
-\label {eq:IAf} I_{A}(f)=\int _{A}f dm
-\end{equation}
-
-
-</p>
-
-<p>
-is a measure.
+<span class="theoremheaderplain">Definition 4.2.4</span> <a id="autoid-130" ></a >Let \(f,g:        S \rightarrow \R \) be measurable. We say that \(f = g\) almost everywhere if \(f(x)=g(x)\) for
+almost all \(x\in S\).
 </p>
 
 
@@ -1073,145 +1057,21 @@ is a measure.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We must check properties (M1) and (M2) of Definition <a
-href="Measure.html#def:measure">1.3.1</a>. We have \(\int _{\emptyset }f dm = 0\) by Theorem <a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a> part (4), which establishes (M1). It remains to check (M2) i.e.&nbsp;that \(I_{A}(f) = \sum
-_{n=1}^{\infty }I_{A_{n}}(f)\) whenever we have a disjoint union \(A = \bigcup _{n=1}^{\infty }A_{n}\).
+We will often abbreviate \(f=g\) almost everywhere to \(f \eqae g\). In symbols, \(f \eqae g\) means that \(m(\{x \in S; f(x) \neq g(x)\} = 0.\) In Problem <a
+href="Exercises-3.html#ps:ae_equiv"><b>3.9</b></a> you can show that \(\eqae \) is an equivalence relation on the set of measurable functions from \(S\) to \(\R \). You should think of \(f\eqae g\) as
+saying ‘as far as measure theory is concerned, \(f\) and \(g\) might as well be equal’.
 </p>
-
-<p>
-First, assume that \(f = {\1}_{B}\) for some \(B \in \Sigma \). Then by (<a href="The-Lebesgue-Integral-Simple-Functions.html#Lebind">3.2</a>)
-</p>
-
-<p>
-\[ \begin {aligned} I_{A}(f) = m(B \cap A) &amp; = m\left (B \cap \bigcup _{n=1}^{\infty }A_{n}\right )\\ &amp; = \sum _{n=1}^{\infty }m(B \cap A_{n}) = \sum _{n=1}^{\infty
-}I_{A_{n}}(f), \end {aligned} \]
-</p>
-
-<p>
-so the result holds in this case. You can then use linearity to show that it is true for non-negative simple functions.
-</p>
-
-<p>
-Now let \(f\) be measurable and non-negative. Then by definition of the supremum, for any \(\epsilon &gt; 0\) there exists a simple function \(s\) with \(0 \leq s \leq f\) so that \(I_{A}(f) \leq
-I_{A}(s) + \epsilon \). The result holds for simple functions and so by monotonicity we have
-</p>
-
-<p>
-\[ I_{A}(s) = \sum _{n=1}^{\infty }I_{A_{n}}(s) \leq \sum _{n=1}^{\infty }I_{A_{n}}(f).\]
-</p>
-
-<p>
-Combining this with the earlier inequality we find that
-</p>
-
-<p>
-\[I_{A}(f) \leq \sum _{n=1}^{\infty }I_{A_{n}}(f) + \epsilon .\]
-</p>
-
-<p>
-But \(\epsilon \) was arbitrary and so we conclude that
-</p>
-
-<p>
-\[ I_{A}(f) \leq \sum _{n=1}^{\infty }I_{A_{n}}(f).\]
-</p>
-
-<p>
-The second half of the proof will aim to establish the opposite inequality. First let \(A_{1}, A_{2} \in \Sigma \) be disjoint. Given any \(\epsilon &gt; 0\) we can, as above, find simple functions \(s_{1},
-s_{2}\) with \(0 \leq s_{j} \leq f\), so that \(I_{A_{j}}(s_{j}) \geq I_{A_{j}}(f) - \epsilon /2\) for \(j = 1,2\). Let \(s = s_{1} \vee s_{2} = \max \{s_{1}, s_{2}\}\). Then \(s\) is simple
-(check this), \(0 \leq s \leq f\) and \(s_{1} \leq s, s_{2} \leq s\). So by monotonicity, \(I_{A_{j}}(s) \geq I_{A_{j}}(f) - \epsilon /2\) for \(j=1,2\). Add these two inequalities to find that
-</p>
-
-<p>
-\[ I_{A_{1}}(s) + I_{A_{2}}(s) \geq I_{A_{1}}(f) + I_{A_{2}}(f) - \epsilon .\]
-</p>
-
-<p>
-But the result is true for simple functions and so we have
-</p>
-
-<p>
-\[ I_{A_{1} \cup A_{2}}(s) \geq I_{A_{1}}(f) + I_{A_{2}}(f) - \epsilon .\]
-</p>
-
-<p>
-By the definition (<a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#Lebgen1">3.4</a>), \(I_{A_{1} \cup A_{2}}(f) \geq I_{A_{1} \cup A_{2}}(s)\) and so we have that
-</p>
-
-<p>
-\[ I_{A_{1} \cup A_{2}}(f) \geq I_{A_{1}}(f) + I_{A_{2}}(f) - \epsilon .\]
-</p>
-
-<p>
-But \(\epsilon \) was arbitrary and so we conclude that \(I_{A_{1} \cup A_{2}}(f) \geq I_{A_{1}}(f) + I_{A_{2}}(f),\) which is the required inequality for unions of two disjoint sets. By induction we
-have
-</p>
-
-<p>
-\[ I_{A_{1} \cup A_{2} \cup \cdots \cup A_{n}}(f) \geq \sum _{i=1}^{n}I_{A_{i}}(f),\]
-</p>
-
-<p>
-for any \(n \geq 2\). But as \(A_{1} \cup A_{2} \cup \cdots \cup A_{n} \subseteq A\) we can use Theorem <a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a> (3) to find that
-</p>
-
-<p>
-\[ I_{A}(f) \geq \sum _{i=1}^{n}I_{A_{i}}(f).\]
-</p>
-
-<p>
-Now take the limit as \(n \rightarrow \infty \) to deduce that \(I_{A}(f) \geq \sum _{i=1}^{\infty }I_{A_{i}}(f),\) as was required. &#x2003;&#x2003;&#x220E;
-</p>
-<div class="theorembodyexample">
+<div class="theorembodylemma">
 
 <ul style="list-style-type:none">
 
 
 
-<a id="autoid-97"></a>
+<a id="autoid-131"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 3.3.6</span> <a id="autoid-98" ></a >The Gaussian measure on \(\R \) is obtained in this way by taking \(f=\phi \) where \(\phi :\R \to \R \) is given by
-\(\phi (x) = \frac {1}{\sqrt {2\pi }}e^{-x^2/2}\) and taking \(m\) as Lebesgue measure. We note an explicit connection with probability theory:
-</p>
-
-<p>
-\[I_A(\phi )=\int _A \frac {1}{2\pi }e^{-x^2/2}\,dx\]
-</p>
-
-<p>
-which you should recognize as equal to \(\P [Z\in A]\) where \(Z\sim N(0,1)\). Thus \(A\mapsto I_A(f)\) is the law of a standard normal random variable. (Recall that normal random variables are also
-known as Gaussian random variables.)
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-<div class="theorembodycor">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-99"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Corollary 3.3.7</span> <a id="autoid-100" ></a ><a id="cor:premct"></a> Let \(f:S \rightarrow \R \) be a non-negative measurable function and \((E_{n})\) be
-a sequence of sets in \(\Sigma \) with \(E_{n} \subseteq E_{n+1}\) for all \(\nN \). Set \(E = \bigcup _{n=1}^{\infty }E_{n}\), Then
-</p>
-
-<p>
-\[ \int _{E}f dm = \lim _{n \rightarrow \infty } \int _{E_{n}}f dm.              \]
-</p>
-
-<p>
-
-
+<span class="theoremheaderplain">Lemma 4.2.5</span> <a id="autoid-132" ></a ><a id="l:int0_=0_nonneg"></a> Let \(f:S\to [0,\infty )\) be measurable. If \(\int _{S}f\,dm = 0\) then \(f
+\eqae 0\).
 </p>
 
 
@@ -1222,45 +1082,53 @@ a sequence of sets in \(\Sigma \) with \(E_{n} \subseteq E_{n+1}\) for all \(\nN
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> By Theorem <a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:fmeas">3.3.5</a> the map \(A\mapsto I_A(f)\) in <span class="textup">(<a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#eq:IAf">3.5</a>)</span> is a measure, so we can apply Theorem <a href="Measure-limits.html#thm:monotone_meas">1.7.1</a>
-to this measure and the increasing sequence of sets \((E_n)\). This gives the required result. &#x2003;&#x2003;&#x220E;
-</p>
-<div class="theorembodycor">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-101"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Corollary 3.3.8</span> <a id="autoid-102" ></a ><a id="cor:ae_ints_equal"></a> If \(f\) and \(g\) are non-negative measurable functions and \(f = g\) almost
-everywhere then \(\int _S f\,dm=\int _sg\,dm\).
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(A_{1} = \{x \in S\- f(x) = g(x)\}\) and \(A_{2} = \{x \in S\- f(x) \neq
-g(x)\}\). Noting that \(A_2=\{x\in S\-f(x)&gt;g(x)\}\cup \{x\in S\-f(x)&lt;g(x)\}\) we have from Lemma <a href="Algebra-Measurable-Functions.html#lem:meas_f_greater_g">2.4.2</a> that
-\(A_2\in \Sigma \). Since \(A_1=S\sc A_2\) we also have \(A_1\in \Sigma \). Hence \(A_{1}, A_{2} \in \Sigma \) with \(A_{1} \cup A_{2} = S, A_{1} \cap A_{2} = \emptyset \) and \(m(A_{2}) =
-0\). So by Theorem <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:bprops">3.3.1</a> part (4), \(\int _{A_{2}}f dm = \int _{A_{2}}g dm = 0\). But \(\int
-_{A_{1}}f dm = \int _{A_{1}}g dm\) as \(f = g\) on \(A_{1}\) and so by Theorem <a href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#thm:fmeas">3.3.5</a>,
-</p>
-
-<p>
-\[\begin {aligned} \int _{S}f dm &amp; = \int _{A_{1}}f dm + \int _{A_{2}}f dm \\ &amp; = \int _{A_{1}}g dm + \int _{A_{2}}g dm = \int _{S}g dm.\end {aligned}\]
-</p>
-
-<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Suppose that \(\int _S f\,dm=0\). Let \(A = \{x \in S; f(x) \neq 0\}\) and for each
+\(\nN , A_{n} = \{x \in S; f(x) \geq 1/n\}\). Note that \(A = \bigcup _{n=1}^{\infty }A_{n}\). By Lemma <a href="notes.html#??">??</a> we have we have \(m(A) \leq \sum _{n=1}^{\infty
+}m(A_{n})\), hence it is sufficient to show that \(m(A_{n}) = 0\) for all \(\nN \). By Lemma <a href="notes.html#??">??</a> we have \(m(A_{n}) \leq n \int _{S}f dm = 0\), which completes the proof.
 &#x2003;&#x2003;&#x220E;
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-133"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 4.2.6</span> <a id="autoid-134" ></a ><a id="l:int_ae_nonneg"></a> Let \(f,g:S\to [0,\infty )\) be measurable. If \(f\eqae g\) then \(\int _S
+f\,dm=\int _S g\,dm\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let us write \(E=\{x\in S\-f(x)\neq g(x)\}\) and note that \(m(E)=0\). Let \(s=\sum
+_{i=1}^n c_i \1_{A_i}\) be a simple function such that \(0\leq s\leq f\). We claim that \(s^*=\sum _{i=1}^n c_i \1_{A_i\sc E}\) is a simple function: this follows because we have \(A_i,E\in \Sigma
+\) so \(A_i\sc E\in \Sigma \), and disjointness of the \(A_i\) implies disjointness of the \(A_i\sc E\). By definition of \(E\) we have
+</p>
+
+<p>
+\[ s^*(x) \;=\; \begin {cases} 0 &amp; \text { if }x\in E \\ f(x) &amp; \text { if }x\in S\sc E \end {cases} \;=\; \begin {cases} 0 &amp; \text { if }x\in E \\ g(x) &amp; \text {
+if }x\in S\sc E \end {cases} \;\leq \; g(x).\]
+</p>
+
+<p>
+Hence \(s^*\) is a simple function such that \(0\leq s^*\leq g\). Using that \(m(E)=0\), from <span class="textup">(<a href="notes.html#??">??</a>)</span> we can deduce that \(\int _S s\,dm=\int
+_S s&apos;\, dm\), which by <span class="textup">(<a href="notes.html#??">??</a>)</span> implies that \(\int _S f\,dm \leq \int _S g\,dm\).
+</p>
+
+<p>
+We can apply the same argument with the roles of \(f\) and \(g\) swapped to deduce that \(\int _S g\,dm\leq \int _S f\,dm\), hence in fact they are equal. &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+We can apply the same idea to inequalities too. For example, we say that \(f\leq g\) almost everywhere if \(m(\{x\in \S - f(x)\leq g(x)\})=0\).
 </p>
 
 </section>
@@ -1272,7 +1140,7 @@ _{A_{1}}f dm = \int _{A_{1}}g dm\) as \(f = g\) on \(A_{1}\) and so by Theorem <
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

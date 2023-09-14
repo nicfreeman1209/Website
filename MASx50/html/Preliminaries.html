@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Preliminaries</title>
+<title>MAS350/61022 — Preliminaries</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -231,7 +228,7 @@ Home</a></nav>
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,6 +855,62 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
@@ -864,10 +919,10 @@ Home</a>
 -->
 <h4 id="autosec-13"><span class="sectionnumber">0.2&#x2003;</span>Preliminaries</h4>
 <a id="notes-autopage-13"></a>
-<a id="notes-autofile-2"></a>
+<a id="notes-autofile-2"></a> <a id="s:prep"></a>
 
 <p>
-This section contains lots of definitions, from earlier courses, that we will use in MAS350. Most of the material here should be familiar to you. There may be one or two minor extensions of ideas you have seen before.
+This section contains lots of definitions, mostly from earlier courses, that we will use later on. It should be familiar to you but there may be one or two minor extensions of ideas you have seen before.
 </p>
 
 <ul style="list-style-type:none">
@@ -878,51 +933,43 @@ This section contains lots of definitions, from earlier courses, that we will us
 1. Set Theory.
 </p>
 <p>
-Let \(S\) be a set and \(A,B,C, \ldots \) be subsets.
+Let \(S\) be a set, with subsets \(A,B\) and \(A_n\).
 </p>
 <p>
-\(A^{c}\) is the complement of \(A\) in \(S\) so that
+Complement: \(A^{c} = \{x \in S; x \notin A\}.\)
 </p>
 <p>
-\[ A^{c} = \{x \in S; x \notin A\}.\]
+Union: \(A \cup B = \{x \in S; x \in A~\mbox {or}~x \in B\}\).
 </p>
 <p>
-Union \(A \cup B = \{x \in S; x \in A~\mbox {or}~x \in B\}\).
+Intersection: \(A \cap B = \{x \in S; x \in A~\mbox {and}~x \in B\}\).
 </p>
 <p>
-Intersection \(A \cap B = \{x \in S; x \in A~\mbox {and}~x \in B\}\).
+Set theoretic difference: \(A \sc B = A \cap B^{c}\).
 </p>
 <p>
-Set theoretic difference: \(A - B = A \cap B^{c}\).
+Finite unions and intersections: \(\bigcup _{i=1}^{n} A_{i} = A_{1} \cup A_{2} \cup \ldots \cup A_{n}\) and \(\bigcap _{i=1}^{n} A_{i} = A_{1} \cap A_{2} \cap \ldots \cap A_{n}.\)
 </p>
 <p>
-We have finite and infinite unions and intersections so if \(A_{1}, A_{2}, \ldots , A_{n}\) are subsets of \(S\).
+More generally, if \(I\) is some set and \(A_i\sw S\) for all \(i\in I\) then we define
 </p>
 <p>
-\[\begin {aligned} \bigcup _{i=1}^{n} A_{i} &amp;= A_{1} \cup A_{2} \cup \ldots \cup A_{n}.\\ \bigcap _{i=1}^{n} A_{i} &amp;= A_{1} \cap A_{2} \cap \ldots \cap A_{n}.                                     \end
-{aligned}\]
+\[ \bigcup _{i\in I} A_i=\{x \- x\in A_i\text { for some }i\in I\} \qquad \bigcap _{i\in I} A_i=\{x \- x\in A_i\text { for all }i\in I\}.                                \]
 </p>
 <p>
-We will also need infinite unions and intersections. So let \((A_{n})\) be a sequence of subsets in \(S\).
+Countable unions and intersections are precisely the case \(I=\N \), usually written as \(\bigcup _{i=1}^{\infty } A_{i}\) and \(\bigcup _{i=1}^{\infty } A_{i}\).
 </p>
 <p>
-Let \(x \in S\). We say that \(x \in \bigcup _{i=1}^{\infty } A_{i}\) if \(x \in A_{i}\) for at least one value of \(i\). We say that \(x \in \bigcap _{i=1}^{\infty } A_{i}\) if \(x \in A_{i}\) for
-all values of \(i\).
+De Morgan’s laws state that:
 </p>
 <p>
-Note that de Morgan’s laws of set algebra hold in this context:
+\[ S\sc \left (\bigcap _{i\in I} A_{i}\right ) = \bigcup _{i\in I} S\sc A_{i},\]
 </p>
 <p>
-\[ \left (\bigcap _{i=1}^{\infty } A_{i}\right )^{c} = \bigcup _{i=1}^{\infty } A_{i}^{c}.\]
+\[ S\sc \left (\bigcup _{i\in I} A_{i}\right ) = \bigcap _{i\in I} S\sc A_{i}.\]
 </p>
 <p>
-\[ \left (\bigcup _{i=1}^{\infty } A_{i}\right )^{c} = \bigcap _{i=1}^{\infty } A_{i}^{c}.\]
-</p>
-<p>
-The Cartesian product \(S \times T\) of sets \(S\) and \(T\) is
-</p>
-<p>
-\[ S \times T = \{(s,t); s \in s, t \in T\}.\]
+The Cartesian product of sets \(S\) and \(T\) is the set \(S \times T = \{(s,t)\- s \in s, t \in T\}.\)
 </p>
 </li>
 <li>
@@ -942,8 +989,6 @@ The Cartesian product \(S \times T\) of sets \(S\) and \(T\) is
 
 </li>
 <li>
-
-
 <p>
 • Non-negative integers \(\Z _{+} = \N \cup \{0\} = \{0,1, 2,3, \ldots \}\).
 </p>
@@ -1004,7 +1049,7 @@ Suppose that \(S_{1}\) and \(S_{2}\) are two sets and that \(f:S_{1} \rightarrow
 \[ f(A) = \{y \in S_{2}; y = f(x)~\mbox {for some}~x \in S_{1}\}.\]
 </p>
 <p>
-If \(B \subseteq S_{2}\) the inverse image of \(B\) under \(f\) is the set \(f^{-1}(B) \subseteq S_{1}\) defined by
+If \(B \subseteq S_{2}\) the inverse image or <em>pre-image</em> of \(B\) under \(f\) is the set \(f^{-1}(B) \subseteq S_{1}\) defined by
 </p>
 <p>
 \[ f^{-1}(B) = \{x \in S_{1} ; f(x) \in B\}.\]
@@ -1017,8 +1062,10 @@ Key properties are, with \(A, A_{1}, A_{2} \subseteq S_{1}\) and \(B, B_{1}, B_{
 </p>
 <p>
 \[\begin {aligned} f^{-1}(B_{1} \cup B_{2}) &amp;= f^{-1}(B_{1}) \cup f^{-1}(B_{2}),\\ f^{-1}(B_{1} \cap B_{2}) &amp;= f^{-1}(B_{1}) \cap f^{-1}(B_{2}),\\ f^{-1}(A^{c}) &amp;=
-f^{-1}(A)^{c},\\ f(A_{1} \cup A_{2}) &amp;= f(A_{1}) \cup f(A_{2}),\\ f(A_{1} \cap A_{2}) &amp;\subseteq f(A_{1}) \cap f(A_{2}),\\ f(f^{-1}(B)) &amp;\subseteq B~~\\ (f\circ
-g)^{-1}(A) &amp;= g^{-1}(f^{-1}(A)) \\ A &amp;\subseteq f^{-1}(f(A)),\\ A \subseteq B \quad \Rightarrow \quad f^{-1}(A) &amp;\subseteq f^{-1}(B).\\ \end {aligned}\]
+f^{-1}(A)^{c},\\ f(A_{1} \cup A_{2}) &amp;= f(A_{1}) \cup f(A_{2}),\\ f(A_{1} \cap A_{2}) &amp;\subseteq f(A_{1}) \cap f(A_{2}),\\ \end {aligned}\]
+</p>
+<p>
+Note also that if \(A\sw B\) then \(f(A)\sw f(B)\) and \(f^{-1}(A)\sw f^{-1}(B)\).
 </p>
 </li>
 <li>
@@ -1028,32 +1075,55 @@ g)^{-1}(A) &amp;= g^{-1}(f^{-1}(A)) \\ A &amp;\subseteq f^{-1}(f(A)),\\ A \subse
 4. Extended Real Numbers
 </p>
 <p>
-We will often find it convenient to work with \(\infty \) and \(-\infty \). These are <i>not</i> real numbers, but we find it convenient to treat them a bit like real numbers. To do so we specify the extra
-arithmetic rules, for all \(x\in \R \),
+We will often find it convenient to work with \(\infty \) and \(-\infty \). These are <i>not</i> real numbers, but we find it convenient to treat them a bit like real numbers. To do so we specify some extra
+arithmetic rules:
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+• for all \(x\in \R \) we have \(\infty + x = x + \infty = \infty ,\)
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+• for \(x&gt;0\) we have \(x\times \infty = \infty \times x = \infty \),
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+• for all \(x\in \R \) we have \(\frac {x}{\infty } = 0\) and \(\frac {\infty }{x}=\infty ,\)
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+• \(\infty \times (-1) = -\infty \) and \((-\infty )\times (-1)=\infty .\)
+</p>
+</li>
+</ul>
+<p>
+Combining these rules and using the usual properties of real arithmetic (e.g.&nbsp;\(a\times b=b\times a\)) allows us to deduce further properties, for example for \(x&lt;0\) we have \(x\times \infty =
+(-1)\times (-x) \times \infty = (-1)\times \infty = -\infty \). Any arithmetic expressions involving \(\pm \infty \) that are not specified by the above rules are undefined. In particular, \(\infty -
+\infty \), \(0\times \infty \) and \(\frac {\infty }{\infty }\) are undefined.
 </p>
 <p>
-\[ \infty + x = x + \infty = \infty ,\]
-</p>
-<p>
-\[ x - \infty = -\infty + x = -\infty ,\]
-</p>
-<p>
-\[ \infty .    x = x.\infty = \infty ~\mbox {for}~x &gt; 0,\]
-</p>
-<p>
-\[ \infty .    x = x.\infty = -\infty ~\mbox {for}~x &lt; 0,\]
-</p>
-<p>
-\[ \infty .0 = 0.\infty = 0.\]
-</p>
-<p>
-Note that \(\infty - \infty \), \(\infty .\infty \) and \(\frac {\infty }{\infty }\) are undefined. We also specify that, for all \(x\in \R \),
+We write \(\ov {\R } = \{-\infty \} \cup \R \cup \{\infty \}\), which is known as the <i>extended</i> real numbers. We also specify that, for all \(x\in \R \),
 </p>
 <p>
 \[-\infty &lt; x &lt; \infty .\]
-</p>
-<p>
-We write \(\R ^{*} = \{-\infty \} \cup \R \cup \{\infty \}\), which is known as the <i>extended</i> real numbers.
 </p>
 </li>
 <li>
@@ -1068,8 +1138,8 @@ We write \(\R ^{*} = \{-\infty \} \cup \R \cup \{\infty \}\), which is known as 
 <li>
 <p>
 • sup and inf. If \(A\) is a bounded set of real numbers, we write \(\sup (A)\) and \(\inf (A)\) for the real numbers that are their least upper bounds and greatest lower bounds (respectively.) If \(A\) fails to be
-bounded above, we write \(\sup (A) = \infty \) and if \(A\) fails to be bounded below we write \(\inf (A) = - \infty \). Note that \(\inf (A) = -\sup (-A)\) where \(-A = \{-x; x \in A\}\). If \(f:
-S \rightarrow \R \) is a mapping, we write \(\sup _{x \in S}f(x)= \sup \{f(x); x \in S\}\). A very useful inequality is
+bounded above, we write \(\sup (A) = \infty \) and if \(A\) fails to be bounded below we write \(\inf (A) = - \infty \). Note that \(\inf (A) = -\sup (-A)\) where \(-A = \{-x \- x \in A\}\). If
+\(f:    S \rightarrow \R \) is a mapping, we write \(\sup _{x \in S}f(x)= \sup \{f(x); x \in S\}\). A very useful inequality is
 </p>
 <p>
 \[ \sup _{x \in S}|f(x) + g(x)| \leq \sup _{x \in S}|f(x)| + \sup _{x \in S}|g(x)|.\]
@@ -1079,8 +1149,8 @@ S \rightarrow \R \) is a mapping, we write \(\sup _{x \in S}f(x)= \sup \{f(x); x
 
 
 <p>
-• Sequences and Limits. Let \((a_{n}) = (a_{1}, a_{2}, a_{3}, \ldots )\) be a sequence of real numbers. It converges to the real number \(a\) if given any \(\epsilon &gt; 0\) there exists a natural
-number \(N\) so that whenever \(n &gt; N\) we have \(|a - a_{n}| &lt; \epsilon \). We then write \(a = \lim _{n \rightarrow \infty }a_{n}\).
+• Sequences and Limits. Let \((a_{n}) = (a_{1}, a_{2}, a_{3}, \ldots )\) be a sequence of real numbers. It converges to the real number \(a\) if given any \(\eps &gt; 0\) there exists a natural number
+\(N\) so that whenever \(n &gt; N\) we have \(|a - a_{n}| &lt; \eps \). We then write \(a = \lim _{n \rightarrow \infty }a_{n}\).
 </p>
 <p>
 A sequence \((a_{n})\) which is monotonic increasing (i.e. \(a_{n} \leq a_{n+1}\) for all \(\nN \)) and bounded above (i.e. there exists \(K &gt; 0\) so that \(a_{n} \leq K\) for all \(\nN \)) converges to
@@ -1091,7 +1161,7 @@ A sequence \((a_{n})\) which is monotonic decreasing (i.e. \(a_{n+1} \leq a_{n}\
 \(\inf _{\nN }a_{n}\).
 </p>
 <p>
-A subsequence of a sequence \((a_{n})\) is itself a sequence of the form \((a_{n_{k}})\) where \(n_{k_{1}} &lt; n_{k_{2}}\) when \(k_{1} &lt; k_{2}\).
+A subsequence of a sequence \((a_{n})\) is itself a sequence of the form \((a_{r_n})\) where \(r_{n}&lt;r_{n+1}\) for all \(n\in \N \).
 </p>
 </li>
 <li>
@@ -1106,8 +1176,8 @@ A subsequence of a sequence \((a_{n})\) is itself a sequence of the form \((a_{n
 
 
 <p>
-• Continuity. A function \(f:\R \rightarrow \R \) is continuous at \(a \in \R \) if given any \(\epsilon &gt; 0\) there exists \(\delta &gt; 0\) so that \(|x - a| &lt; \delta \Rightarrow |f(x)
--f(a)| &lt; \epsilon \). Equivalently \(f\) is continuous at \(a\) if given any sequence \((a_{n})\) that converges to \(a\), the sequence \((f(a_{n}))\) converges to \(f(a)\).
+• Continuity. A function \(f:\R \rightarrow \R \) is continuous at \(a \in \R \) if given any \(\eps &gt; 0\) there exists \(\de &gt; 0\) so that \(|x - a| &lt; \de \Rightarrow |f(x) -f(a)| &lt;
+\eps \). Equivalently \(f\) is continuous at \(a\) if given any sequence \((a_{n})\) that converges to \(a\), the sequence \((f(a_{n}))\) converges to \(f(a)\).
 </p>
 <p>
 \(f\) is a continuous function if it is continuous at every \(a \in \R \).
@@ -1130,7 +1200,7 @@ A subsequence of a sequence \((a_{n})\) is itself a sequence of the form \((a_{n
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

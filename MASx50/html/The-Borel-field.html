@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — The Borel -field</title>
+<title>MAS350/61022 — The Borel -field</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -231,7 +228,7 @@ Home</a></nav>
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,6 +855,62 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
@@ -864,11 +919,11 @@ Home</a>
 -->
 <h4 id="autosec-37"><span class="sectionnumber">1.4&#x2003;</span>The Borel \(\sigma \)-field</h4>
 <a id="notes-autopage-37"></a>
-<a id="notes-autofile-6"></a> <a id="sec:borel_field"></a>
+<a id="notes-autofile-6"></a> <a id="s:borel_field"></a>
 
 <p>
 In this section introduce another example of a measure space, which will represent the notion of measuring the ‘length’ of subsets of \(\R \). For an interval \([a,b]\) it is clear that the length should be \(b-a\),
-but as we saw in Section <a href="Measure-Spaces.html#sec:intro">1.1</a> for more complicated subsets of \(\R \) the situation is not so clear.
+but as we saw in Section <a href="notes.html#??">??</a> for more complicated subsets of \(\R \) the situation is not so clear.
 </p>
 <div class="theorembodyexample">
 
@@ -881,8 +936,8 @@ but as we saw in Section <a href="Measure-Spaces.html#sec:intro">1.1</a> for mor
 <p>
 <span class="theoremheaderplain">Example 1.4.1</span> <a id="autoid-24" ></a >Consider, for example, the irrational numbers \(\mathbb {I}\) and the rational numbers \(\Q \). Both \(\mathbb {I}\)
 and \(\Q \) are found throughout \(\R \), but they are both full of tiny holes. Can we find a meaningful way to decide what is the ‘length’ of \(\mathbb {I}\) and \(\Q \)? In fact, we will see that we can – to
-come in Section <a href="Lebesgue-Measure.html#sec:leb_meas">1.5</a>. But in Section <a href="An-example-non-measurable-set.html#sec:non_meas_set">1.6</a> we will also show that it is possible
-to construct subsets of \(\R \) for which there is <i>no</i> meaningful idea of length.
+come in Section <a href="notes.html#??">??</a>. But in Section <a href="notes.html#??">??</a> we will also show that it is possible to construct subsets of \(\R \) for which there is <i>no</i> meaningful
+idea of length.
 </p>
 
 
@@ -894,8 +949,8 @@ to construct subsets of \(\R \) for which there is <i>no</i> meaningful idea of 
 
 <p>
 In this section we take \(S=\R \). The first question is: which \(\sigma \)-field should we use? The power set \({\cal P}(\R )\) is too big, for reasons that we will make clear in Section <a
-href="An-example-non-measurable-set.html#sec:non_meas_set">1.6</a>. However, for practical purposes we do need our \(\sigma \)-field to contain all open and closed intervals, and also unions,
-intersections and complements of these. This provides a starting point.
+href="notes.html#??">??</a>. However, for practical purposes we do need our \(\sigma \)-field to contain all open and closed intervals, and also unions, intersections and complements of these. This provides a
+starting point.
 </p>
 <div class="theorembodydefn">
 
@@ -927,28 +982,8 @@ of Borel sets.
 
 <p>
 As a general rule, all ‘sensible’ subsets of \(\R \) are Borel sets. We might hope to find some sort of formula for a general element of \(\mc {B}(\R )\), but this is not possible. Unless you deliberately set out to
-find a non-Borel subset of \(\R \) you will never come across one – and even when you look for them it is hard work to find them, as we will see in Section <a
-href="An-example-non-measurable-set.html#sec:non_meas_set">1.6</a>.
+find a non-Borel subset of \(\R \) you will never come across one – and even when you look for them it is hard work to find them, as we will see in Section <a href="notes.html#??">??</a>.
 </p>
-<div class="theorembodyremark">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-27"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Remark 1.4.3</span> <a id="autoid-28" ></a >(\(\star \)) The Borel \(\sigma \)-field \({\cal B}(S)\) can be defined on any set \(S\) for which there are subsets
-that can be called ‘open’ in a sensible way. In particular this works for all metric spaces. The most general type of \(S\) for which you can form \({\cal B}(S)\) is a topological space.
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
 
 </section>
 
@@ -959,7 +994,7 @@ that can be called ‘open’ in a sensible way. In particular this works for al
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

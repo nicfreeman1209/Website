@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — The Dominated Convergence Theorem</title>
+<title>MAS350/61022 — The dominated convergence theorem</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-132"></a>
+<a id="notes-autopage-159"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,18 +855,103 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section The Dominated Convergence Theorem ......
+......     section The dominated convergence theorem ......
 -->
-<h4 id="autosec-133"><span class="sectionnumber">3.7&#x2003;</span>The Dominated Convergence Theorem</h4>
-<a id="notes-autopage-133"></a>
-<a id="notes-autofile-25"></a>
+<h4 id="autosec-160"><span class="sectionnumber">4.6&#x2003;</span>The dominated convergence theorem</h4>
+<a id="notes-autopage-160"></a>
+<a id="notes-autofile-29"></a> <a id="s:dct"></a>
 
 <p>
-We now present the last of our convergence theorems, the famous Lebesgue dominated convergence theorem - an extremely powerful tool in both the theory and applications of modern analysis:
+We continue to work over a general measure space \((S,\Sigma ,m)\). Let \(f,g:S\to \R \) be measurable. We say that \(g\) <em>dominates</em> \(f\) if \(|f|\leq |g|\) almost everywhere. This concept is
+naturally connected to \(\Lone \) via the following lemma.
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-149"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 4.6.1</span> <a id="autoid-150" ></a ><a id="l:dom_int"></a> Let \(g\in \Lone \) and suppose that \(f:S\to \R \) is measurable with \(|f|\leq |g|\)
+almost everywhere. Then \(f\in \Lone \).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> By part 1 of Lemma <a href="notes.html#??">??</a> we have \(\int _S |f|\,dm\leq
+\int _S|g|\,dm\), which completes the proof. (Exercise: Why don’t we use Theorem <a href="notes.html#??">??</a> here?) &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+We now present the second of our convergence theorems, the famous Lebesgue dominated convergence theorem - an extremely powerful tool in both the theory and applications of modern analysis.
 </p>
 <div class="theorembodytheorem">
 
@@ -875,10 +959,10 @@ We now present the last of our convergence theorems, the famous Lebesgue dominat
 
 
 
-<a id="autoid-119"></a>
+<a id="autoid-151"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 3.7.1 (Dominated Convergence Theorem)</span> <a id="autoid-120" ></a ><a id="thm:DCT"></a> Let \(f_n,f\) be functions from \(S\) to \(\R \). Suppose
+<span class="theoremheaderplain">Theorem 4.6.2 (Dominated Convergence Theorem)</span> <a id="autoid-152" ></a ><a id="t:dct"></a> Let \(f_n,f\) be functions from \(S\) to \(\R \). Suppose
 that \(f_n\) is measurable and:
 </p>
 <ul style="list-style-type:none">
@@ -886,7 +970,7 @@ that \(f_n\) is measurable and:
 
 <li>
 <p>
-1. There is an integrable function \(g:S \rightarrow \R \) so that \(|f_{n}| \leq g\) for all \(\nN \).
+1. There is a function \(g\in \Lone \) such that \(|f_{n}| \leq |g|\) almost everywhere.
 </p>
 
 
@@ -895,13 +979,13 @@ that \(f_n\) is measurable and:
 
 
 <p>
-2. \(f_n(x)\to f(x)\) almost everywhere.
+2. \(f_n\to f\) almost everywhere.
 </p>
 </li>
 </ul>
 
 <p>
-Then \(f\) is integrable and
+Then \(f\in \Lone \) and
 </p>
 
 <p>
@@ -920,32 +1004,95 @@ as \(n\to \infty \).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> For the same reason as in the proof of Theorem <a
-href="The-Monotone-Convergence-Theorem.html#thm:mct">3.4.1</a>, we may assume that in fact \(f_n(x)\to f(x)\) for all \(x\). Thus \(f\) is measurable by Theorem <a
-href="Algebra-Measurable-Functions.html#thm:meas_lim">2.4.4</a>. Note that we didn’t assume explicitly that \(f_{n}\) is integrable - because this fact follows immediately from the first assumption and
-Lemma <a href="Lebesgue-Integrability.html#lem:dom_int">3.6.3</a>.
+The monotone convergence theorem is the basis of the interaction of Lebesgue integrals with limits, but it has the disadvantage that it only applies to monotone sequences of functions. The dominated convergence
+theorem does not require monotonicity but does require that all functions involved are dominated by some \(g\in \Lone \). For this reason \(g\) is often known as a <i>dominating function</i> for the \((f_n)\).
+The monotone and dominated convergence theorems are often known for short as the MCT and DCT. The proof of the DCT appears in Section <a href="notes.html#??">??</a>. This completes our development
+of the Lebesgue integral.
 </p>
 
 <p>
-Since \(f_{n}(x)\to f(x)\) almost everywhere, \(|f_{n}(x)|\to |f(x)|\) almost everywhere. By Fatou’s lemma (Theorem <a href="Fatou-Lemma.html#thm:Fatou">3.5.1</a>) and monotonicity (Theorem
-<a href="Lebesgue-Integrability.html#thm:basicsli">3.6.2</a> part (3)), we have
+We’re now in a position to use Lebesgue integration for doing calculations with integrals. We’ll do so in Section <a href="notes.html#??">??</a>, which will include examples of both the MCT and DCT.
 </p>
-<span class="hidden"> \(\seteqnumber{0}{3.}{7}\)</span>
+<!--
+......   subsection Proof of the DCT        ......
+-->
+<h5 id="autosec-163"><span class="sectionnumber">4.6.1&#x2003;</span>Proof of the DCT \((\star )\)</h5>
+<a id="notes-autopage-163"></a>
+
+
+
+<a id="s:dct_proof"></a>
+
+<p>
+The proof of the DCT is off-syllabus, although we might cover it in lectures if we have time. We’ll begin with a famous lemma before we give the main proof. It is called Fatou’s lemma after the French
+mathematician and astronomer Pierre Fatou (1878-1929). It tells us how \(\liminf \) and \(\int \) interact. Understanding this is they key step for moving from monotone seqences of functions; non-monotone
+sequences of functions might not have pointwise limits but they do always have pointwise \(\liminf \)s.
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-153"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 4.6.3 (Fatou’s Lemma)</span> <a id="autoid-154" ></a ><a id="l:fatou"></a> If \((f_{n})\) is a sequence of non-negative measurable functions from \(S\)
+to \(\R \) then
+</p>
+
+<p>
+\[ \li \int _{S}f_{n}\,dm \geq \int _{S}\li f_{n}\,dm \]
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Define \(g_{n} = \inf _{k \geq n}f_{k}\). Then \((g_{n})\) is an increasing sequence
+which converges to \(\li f_{n}\). Now as \(f_{l} \geq \inf _{k \geq n}f_{k}\) for all \(l \geq n\), Lemma <a href="notes.html#??">??</a>(1)) we have that for all \(l \geq n\)
+</p>
+
+<p>
+\[ \int _{S} f_{l}\, dm \geq \int _{S} \inf _{k \geq n}f_{k}\, dm,\]
+</p>
+
+<p>
+and so
+</p>
+
+<p>
+\[\inf _{l \geq n}\int _{S} f_{l}\, dm \geq \int _{S} \inf _{k \geq n}f_{k}\, dm.\]
+</p>
+
+<p>
+Take limits on both sides of this last inequality and then apply the monotone convergence theorem (on the right hand side) to obtain
+</p>
+<span class="hidden"> \(\seteqnumber{0}{4.}{15}\)</span>
 
 
 
 <!--
 
 
-                                                                                                               Z                Z
-                                                                                                                     |f |dm =           lim inf |fn |dm
-                                                                                                                S               S n→∞
-                                                                                                                                            Z
-                                                                                                                           ≤ lim inf             |fn |dm
-                                                                                                                                n→∞          S
-                                                                                                                                Z
-                                                                                                                           ≤            gdm < ∞,
-                                                                                                                                    S
+                                                                                                                                      Z                           Z
+                                                                                                                        lim inf            fn dm ≥ lim                    inf fk dm
+                                                                                                                         n→∞           S                   n→∞ S k≥n
+                                                                                                                                                           Z
+                                                                                                                                                   =            lim inf fk dm
+                                                                                                                                                                n→∞ k≥n
+                                                                                                                                                           ZS
+                                                                                                                                                   =            lim inf fn dm
+                                                                                                                                                            S n→∞
 
 
 
@@ -958,31 +1105,126 @@ Since \(f_{n}(x)\to f(x)\) almost everywhere, \(|f_{n}(x)|\to |f(x)|\) almost ev
 
 
 \begin{align*}
-\int _{S}|f| dm &amp; = \int _{S} \li |f_{n}| dm \\ &amp; \leq \li \int _{S}|f_{n}| dm \\ &amp; \leq \int _{S} g dm &lt; \infty ,
+\li \int _{S}f_{n}\,dm &amp; \geq \lim _{n \rightarrow \infty } \int _{S} \inf _{k \geq n}f_{k}\, dm \\ &amp; = \int _{S}\lim _{n \rightarrow \infty } \inf _{k \geq n}f_{k}\, dm
+\\ &amp; = \int _{S}\li f_{n}\,dm
 \end{align*}
-and so \(f\) is integrable.
+as required. &#x2003;&#x2003;&#x220E;
 </p>
 
 <p>
-Also for all \(\nN , g + f_{n} \geq 0\) so by Fatou’s lemma again,
+Note that we do not require \((f_{n})\) to be a bounded sequence, so \(\li f_{n}\) should be interpreted as an extended measurable function, as discussed at the end of Chapter 2. The corresponding result for
+\(\limsup \), in which case the inequality is reversed, is known as the <i>reverse Fatou lemma</i> and can be found as Exercise <a href="Exercises-3.html#ps:rev_fatou"><b>3.13</b></a>.
 </p>
 
 <p>
-\[ \int _{S} \li (g + f_{n}) dm \leq \li \int _{S}(g + f_{n}) dm.                           \]
+<span class="textsc">Proof of Theorem <a href="notes.html#??">??</a>:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that we didn’t assume explicitly
+that \(f_{n}\in \Lone \), because this fact follows immediately from the first assumption and Lemma <a href="notes.html#??">??</a>. For the same reason as in the proof of Theorem <a
+href="notes.html#??">??</a>, we may assume without loss of generality that \(f_n\to f\) pointwise and that \(|f_n|\leq |g|\) pointwise. Thus \(f\) is measurable by Theorem <a
+href="notes.html#??">??</a>. We may further assume without loss of generality that \(|f_n|\leq g\), by using \(|g|\) in place of \(g\) and noting that \(g\in \Lone \iff |g|\in \Lone \).
 </p>
 
 <p>
-But \(\li (g + f_{n}) = g + \lim _{n \rightarrow \infty }f_{n} = g+f\) and (using Theorem <a href="Lebesgue-Integrability.html#thm:basicsli">3.6.2</a>(2)) \(\li \int _{S}(g + f_{n}) dm
-= \int _{S}g dm + \li \int _{S}f_{n}dm \). We then conclude that
+Since \(f_{n}\to f\) pointwise, \(|f_{n}|\to |f|\) pointwise. By Fatou’s lemma (Lemma <a href="notes.html#??">??</a>) and monotonicity from Theorem <a href="notes.html#??">??</a>, we have
 </p>
+<span class="hidden"> \(\seteqnumber{0}{4.}{15}\)</span>
 
-<span class="hidden"> \(\seteqnumber{0}{3.}{7}\)</span>
+
 
 <!--
 
-                                                               Z                        Z
-                                                                       f dm ≤ lim inf        fn dm.                                                         (3.8)          --><a id="eq:dct_1"></a><!--
-                                                                   S              n→∞   S
+
+                                                                                                                              Z                    Z
+                                                                                                                                  |f | dm =                lim inf |fn | dm
+                                                                                                                              S                    S n→∞
+                                                                                                                                                                 Z
+                                                                                                                                               ≤ lim inf                 |fn | dm
+                                                                                                                                                   n→∞            S
+                                                                                                                                                   Z
+                                                                                                                                               ≤           g dm < ∞,
+                                                                                                                                                       S
+
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\int _{S}|f| \,dm &amp; = \int _{S} \li |f_{n}|\,dm \\ &amp; \leq \li \int _{S}|f_{n}| \,dm \\ &amp; \leq \int _{S} g \,dm &lt; \infty ,
+\end{align*}
+so \(f\in \Lone \).
+</p>
+
+<p>
+For all \(\nN \), since \(|f_n|\leq g\) we have \(g + f_{n} \geq 0\), so by Fatou’s lemma
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{4.}{15}\)</span>
+
+<!--
+
+                                                       Z                                              Z
+                                                            lim inf (g + fn ) dm ≤ lim inf                    (g + fn ) dm.                                                                            (4.16)   --><a id="eq:dct_fatou_1"></a><!--
+                                                         S n→∞                               n→∞       S
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:dct_fatou_1} \int _{S} \li (g + f_{n}) \,dm \leq \li \int _{S}(g + f_{n}) \,dm.
+\end{equation}
+
+
+</p>
+
+<p>
+As pointwise limits we have \(\liminf _n (g + f_{n}) = g + \lim _{n}f_{n} = g+f\) so by linearity from Theorem <a href="notes.html#??">??</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{4.}{16}\)</span>
+
+
+
+<!--
+
+
+                                                                                            Z                                     Z                                        Z              Z
+                                                                                                  lim inf (g + fn ) dm =                  g + lim inf fn dm =                    g dm +       lim inf fn dm,
+                                                                                             S n→∞                                            n→∞                                         S n→∞
+                                                                                                      Z                           ZS                             Z           S
+
+                                                                                            lim inf           (g + fn ) dm =              g dm + lim inf                 fn dm
+                                                                                             n→∞          S                        S               n→∞               S
+
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\int _{S} \li (g + f_{n}) \,dm &amp;= \int _S g + \li f_n\,dm = \int _S g\,dm + \int _S \li f_n\, dm, \\ \li \int _{S}(g + f_{n}) \,dm &amp;= \int _{S}g \,dm + \li \int _{S}f_{n}
+\,dm
+\end{align*}
+Putting these two equations in <span class="textup">(<a href="notes.html#??">??</a>)</span> gives that
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{4.}{16}\)</span>
+
+<!--
+
+                                          Z                          Z
+                                                  f dm ≤ lim inf         fn dm.                                                               (4.17)                                                                  --><a id="eq:dct_1"></a><!--
+                                              S             n→∞      S
 
 -->
 
@@ -997,24 +1239,24 @@ But \(\li (g + f_{n}) = g + \lim _{n \rightarrow \infty }f_{n} = g+f\) and (usin
 </p>
 
 <p>
-Repeat this argument with \(g + f_{n}\) replaced by \(g - f_{n}\) which is also non-negative for all \(\nN \). We then find that
+Next, we repeat the argument with \(g + f_{n}\) replaced by \(g - f_{n}\). Note that \(|f_n|\leq g\) gives that \(g-f_n\) is also non-negative for all \(\nN \). The result of doing so is
 </p>
 
 <p>
-\[ -\int _{S} f dm \leq \li \left (-\int _{S}f_{n}dm\right ) = -\ls \int _{S}f_{n}dm, \]
+\[ -\int _{S} f dm \leq \li \left (-\int _{S}f_{n}dm\right )\]
 </p>
 
 <p>
-and so
+which from Lemma <a href="notes.html#??">??</a> rearranges to
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{3.}{8}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{17}\)</span>
 
 <!--
 
-                                                               Z                        Z
-                                                                       f dm ≥ lim sup            fn dm                                                      (3.9)          --><a id="eq:dct_2"></a><!--
-                                                               S                  n→∞       S
+                                          Z                          Z
+                                                  f dm ≥ lim sup             fn dm                                                            (4.18)                                                                  --><a id="eq:dct_2"></a><!--
+                                          S                    n→∞       S
 
 -->
 
@@ -1033,13 +1275,13 @@ Combining <span class="textup">(<a href="The-Dominated-Convergence-Theorem.html#
 href="The-Dominated-Convergence-Theorem.html#eq:dct_2">3.9</a>)</span> we see that
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{3.}{9}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{18}\)</span>
 
 <!--
 
-                                                           Z                 Z                           Z
-                                                 lim sup       fn dm ≤            f dm ≤ lim inf             fn dm                                         (3.10)          --><a id="eq:dct_3"></a><!--
-                                                  n→∞      S                  S                 n→∞      S
+                                      Z                 Z                            Z
+                            lim sup       fn dm ≤              f dm ≤ lim inf            fn dm.                                               (4.19)                                                                  --><a id="eq:dct_3"></a><!--
+                             n→∞      S                    S                 n→∞     S
 
 -->
 
@@ -1047,41 +1289,16 @@ href="The-Dominated-Convergence-Theorem.html#eq:dct_2">3.9</a>)</span> we see th
 
 
 \begin{equation}
-\label {eq:dct_3} \ls \int _{S}f_{n}dm \leq \int _{S} f dm \leq \li \int _{S}f_{n}dm
+\label {eq:dct_3} \ls \int _{S}f_{n}dm \leq \int _{S} f dm \leq \li \int _{S}f_{n}dm.
 \end{equation}
 
 
 </p>
 
 <p>
-but we always have \(\li \int _{S}f_{n}dm \leq \ls \int _{S}f_{n}dm\) and so \(\li \int _{S}f_{n}dm = \ls \int _{S}f_{n}dm\). Then by Theorem 2.1.1 \(\lim _{n \rightarrow \infty }\int
-_{S}f_{n}dm\) exists, and from <span class="textup">(<a href="The-Dominated-Convergence-Theorem.html#eq:dct_3">3.10</a>)</span> we deduce that \(\int _{S} f dm = \lim _{n \rightarrow
-\infty }\int _{S} f_{n}dm.\) &#x2003;&#x2003;&#x220E;
-</p>
-<div class="theorembodycor">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-121"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Corollary 3.7.2 (Bounded Convergence Theorem)</span> <a id="autoid-122" ></a >Let \((S, \Sigma , m)\) be a finite measure space. For all \(n\in \N \), let
-\(f_n:S\to \R \) be measurable and converging pointwise as \(n\to \infty \) to \(f:S\to \R \). Suppose that there exists \(K&lt;\infty \) such that \(|f_n(x)|\leq K\) for all \(n\in \N ,x\in S\).
-Then \(f\) is integrable and \(\int _S\,dm f_n\to \int _S f\,dm\).
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Set \(g(x)=K\) for all \(x\), note that \(\int _S K\,dm=Km(S)&lt;\infty \) and apply
-Theorem <a href="The-Dominated-Convergence-Theorem.html#thm:DCT">3.7.1</a>. &#x2003;&#x2003;&#x220E;
+Recall that \(\liminf _n a_n\leq \limsup _n a_n\) for any sequence, so in fact all three terms in <span class="textup">(<a
+href="The-Dominated-Convergence-Theorem.html#eq:dct_3">3.10</a>)</span> are equal. It now follows from Lemma <a href="notes.html#??">??</a> that \(\int _{S} f dm = \lim _{n}\int _{S}
+f_{n}dm.\) &#x2003;&#x2003;&#x220E;
 </p>
 
 </section>
@@ -1093,7 +1310,7 @@ Theorem <a href="The-Dominated-Convergence-Theorem.html#thm:DCT">3.7.1</a>. &#x2
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>

@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350 Probability with Measure, Sheffield University, March 23, 2023." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350 — Convergence of Random Variables</title>
+<title>MAS350/61022 — Convergence of random variables</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -224,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-193"></a>
+<a id="notes-autopage-247"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-MAS350 Probability with Measure
+last updated: September 13, 2023
 </p>
 
 </header>
@@ -810,6 +807,8 @@ Home</a>
 
 \(\def \iff {\Leftrightarrow }\)
 
+\(\def \ra {\Rightarrow }\)
+
 \(\def \sw {\subseteq }\)
 
 \(\def \mc {\mathcal }\)
@@ -856,15 +855,71 @@ Home</a>
 
 \(\def \om {\omega }\)
 
+\(\def \eps {\epsilon }\)
+
+\(\def \de {\delta }\)
+
+\(\def \ov {\overline }\)
+
+\(\def \sr {\stackrel }\)
+
+\(\def \Lp {\mc {L}^p}\)
+
+\(\def \Lq {\mc {L}^p}\)
+
+\(\def \Lone {\mc {L}^1}\)
+
+\(\def \Ltwo {\mc {L}^2}\)
+
+\(\def \toae {\sr {\rm a.e.}{\to }}\)
+
+\(\def \toas {\sr {\rm a.s.}{\to }}\)
+
+\(\def \top {\sr {\mb {\P }}{\to }}\)
+
+\(\def \tod {\sr {\rm d}{\to }}\)
+
+\(\def \toLp {\sr {\Lp }{\to }}\)
+
+\(\def \toLq {\sr {\Lq }{\to }}\)
+
+\(\def \eqae {\sr {\rm a.e.}{=}}\)
+
+\(\def \eqas {\sr {\rm a.s.}{=}}\)
+
+\(\def \eqd {\sr {\rm d}{=}}\)
+
+\(\def \Sa {(S1)}\)
+
+\(\def \Sb {(S2)}\)
+
+\(\def \Sc {(S3)}\)
+
+\(\def \Scp {(S3&apos;)}\)
+
+\(\def \Ma {(M1)}\)
+
+\(\def \Mb {(M2)}\)
+
+\(\def \La {(L1)}\)
+
+\(\def \Lb {(L2)}\)
+
+\(\def \Lc {(L3)}\)
+
+\(\def \Ld {(L4)}\)
+
+\(\def \Le {(L5)}\)
+
 </div>
 
 <p>
 <!--
-......     section Convergence of Random Variables ......
+......     section Convergence of random variables ......
 -->
-<h4 id="autosec-194"><span class="sectionnumber">5.2&#x2003;</span>Convergence of Random Variables</h4>
-<a id="notes-autopage-194"></a>
-<a id="notes-autofile-36"></a> <a id="sec:conv"></a>
+<h4 id="autosec-248"><span class="sectionnumber">7.2&#x2003;</span>Convergence of random variables</h4>
+<a id="notes-autopage-248"></a>
+<a id="notes-autofile-45"></a> <a id="s:conv"></a>
 
 <p>
 Let \((X_{n})\) be a sequence of random variables, all of which are defined on the same probability space \((\Omega , {\cal F}, \P )\). There are various different ways in which we can examine the
@@ -877,7 +932,8 @@ much more complicated objects; they take many different values with different pr
 </p>
 
 <p>
-We say that \((X_{n})\) converges to \(X\)
+We have already mentioned almost sure convergence of random variables in Section <a href="notes.html#??">??</a>. We recall this and introduce three new modes of convergence here. We say that \((X_{n})\)
+converges to \(X\)
 </p>
 
 <ul style="list-style-type:none">
@@ -899,14 +955,14 @@ We say that \((X_{n})\) converges to \(X\)
 
 
 <p>
-• almost surely if \(\P [X_{n}(\omega ) \to X(\omega ),\text { as }n\to \infty ]=1\),
+• almost surely if \(\P [X_{n} \to X,\text { as }n\to \infty ]=1\),
 </p>
 </li>
 <li>
 
 
 <p>
-• in \(L^p\) if \(\E [|X_{n} - X|^{p}] \to 0\) as \(n\to \infty \).
+• in \(\Lp \) if \(\E [|X_{n} - X|^{p}] \to 0\) as \(n\to \infty \).
 </p>
 <p>
 
@@ -917,12 +973,12 @@ We say that \((X_{n})\) converges to \(X\)
 
 <p>
 When \((X_{n})\) converges to \(X\) almost surely we sometimes write \(X_{n} \rightarrow X\) a.s.&nbsp;as \(n \rightarrow \infty \). We may also write the type of convergence above the arrow
-e.g.&nbsp;\(X_n\stackrel {L^2}{\to }X\) or \(X_n\stackrel {a.s.}{\to }X\).
+e.g.&nbsp;\(X_n\stackrel {\Ltwo }{\to }X\) or \(X_n\stackrel {a.s.}{\to }X\).
 </p>
 
 <p>
-For \(L^p\) convergence we are usually only interested in the cases \(p=1\) and \(p=2\). The case \(p=2\) is sometimes known as convergence in <i>mean square</i>. For reasons that are outside of the scope of
-this course, \(L^p\) convergence is only defined for \(p\in [1,\infty )\).
+For \(\Lp \) convergence we are usually only interested in the cases \(p=1\) and \(p=2\). The case \(p=2\) is sometimes known as convergence in <i>mean square</i>. For reasons that are explained in Section <a
+href="notes.html#??">??</a>, convergence in \(\Lp \) is only defined for \(p\in [1,\infty )\).
 </p>
 
 <p>
@@ -934,17 +990,17 @@ Happily, there are some relationships between these different modes of convergen
 
 
 
-<a id="autoid-166"></a>
+<a id="autoid-214"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 5.2.1</span> <a id="autoid-167" ></a ><a id="lem:conv_modes"></a> Let \(X_n,X\) be random variables.
+<span class="theoremheaderplain">Lemma 7.2.1</span> <a id="autoid-215" ></a ><a id="l:conv_modes"></a> Let \(X_n,X\) be random variables.
 </p>
 <ul style="list-style-type:none">
 
 
 <li>
 <p>
-1. If \(X_n\stackrel {\P }{\to } X\) then \(X_n\stackrel {d}{\to } X\).
+1. If \(X_n\top X\) then \(X_n\tod X\).
 </p>
 
 
@@ -953,7 +1009,7 @@ Happily, there are some relationships between these different modes of convergen
 
 
 <p>
-2. If \(X_n\stackrel {a.s.}{\to } X\) then \(X_n\stackrel {\P }{\to } X\).
+2. If \(X_n\toas X\) then \(X_n\top X\).
 </p>
 
 
@@ -962,7 +1018,7 @@ Happily, there are some relationships between these different modes of convergen
 
 
 <p>
-3. If \(X_n\stackrel {L^p}{\to } X\) then \(X_n\stackrel {\P }{\to } X\).
+3. If \(X_n\toLp X\) then \(X_n\top X\).
 </p>
 
 
@@ -971,10 +1027,14 @@ Happily, there are some relationships between these different modes of convergen
 
 
 <p>
-4. Let \(1\leq p&lt; q\). If \(X_n\stackrel {L^q}{\to } X\) then \(X_n\stackrel {L^p}{\to } X\).
+4. Let \(1\leq p&lt; q\). If \(X_n\toLq X\) then \(X_n\toLp X\).
 </p>
 </li>
 </ul>
+
+<p>
+No other relationships exist in general, other than those implied by the above results.
+</p>
 
 
 </li>
@@ -984,18 +1044,14 @@ Happily, there are some relationships between these different modes of convergen
 </div>
 
 <p>
-No other relationships exist in general, other than those implied by the above results.
-</p>
-
-<p>
 <span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The last part follows from the counterexamples in Exercises <a
 href="Exercises-5.html#ps:D_not_P"><b>5.1</b></a>-<a href="Exercises-5.html#ps:P_not_as"><b>5.3</b></a>. We’ll give proofs of parts 1-4 here.
 </p>
 
 <p>
-<b>Part 1.</b> Let \(x\in \R \) be such that \(\P [X=x]=0\) and let \(\epsilon &gt;0\). We have
+<b>Part 1.</b> Let \(x\in \R \) be such that \(\P [X=x]=0\) and let \(\eps &gt;0\). We have
 </p>
-<span class="hidden"> \(\seteqnumber{0}{5.}{2}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{2}\)</span>
 
 
 
@@ -1003,10 +1059,10 @@ href="Exercises-5.html#ps:D_not_P"><b>5.1</b></a>-<a href="Exercises-5.html#ps:P
 
 
 
-                                                                             P[X ≤ x] = P[X ≤ x, |Xn − X| < ϵ] + P[X ≤ x, |Xn − X| ≥ ϵ]
+                                                                              P[X ≤ x] = P[X ≤ x, |Xn − X| < ϵ] + P[X ≤ x, |Xn − X| ≥ ϵ]
 
-                                                                                                                       ≥ ϵ].
-                                                                                          ≤ P[Xn ≤ x + ϵ] + P[|Xn − X|(5.3)                                                             --><a id="eq:pd1"></a><!--
+                                                                                                                        ≥ ϵ].
+                                                                                           ≤ P[Xn ≤ x + ϵ] + P[|Xn − X|(7.3)                                                        --><a id="eq:pd1"></a><!--
 
 
 
@@ -1018,11 +1074,11 @@ href="Exercises-5.html#ps:D_not_P"><b>5.1</b></a>-<a href="Exercises-5.html#ps:P
 
 
 \begin{align}
-\P [X\leq x] &amp;=\P [X\leq x, |X_n-X|&lt;\epsilon ]+\P [X\leq x, |X_n-X|\geq \epsilon ]\notag \\ &amp;\leq \P [X_n\leq x+\epsilon ]+\P [|X_n-X|\geq \epsilon ].\label {eq:pd1}
+\P [X\leq x] &amp;=\P [X\leq x, |X_n-X|&lt;\eps ]+\P [X\leq x, |X_n-X|\geq \eps ]\notag \\ &amp;\leq \P [X_n\leq x+\eps ]+\P [|X_n-X|\geq \eps ].\label {eq:pd1}
 \end{align}
-Putting \(x-\epsilon \) in place of \(x\) we obtain
+Putting \(x-\eps \) in place of \(x\) we obtain
 </p>
-<span class="hidden"> \(\seteqnumber{0}{5.}{3}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{3}\)</span>
 
 
 
@@ -1030,7 +1086,7 @@ Putting \(x-\epsilon \) in place of \(x\) we obtain
 
 
 
-                                                                                      P[X ≤ x − ϵ] ≤ P[Xn ≤ x] + P[|Xn − X ≥ ϵ].      (5.4)                                             --><a id="eq:pd2"></a><!--
+                                                                                          P[X ≤ x − ϵ] ≤ P[Xn ≤ x] + P[|Xn − X ≥ ϵ].   (7.4)                                        --><a id="eq:pd2"></a><!--
 
 
 
@@ -1042,12 +1098,12 @@ Putting \(x-\epsilon \) in place of \(x\) we obtain
 
 
 \begin{align}
-\P [X\leq x-\epsilon ] &amp;\leq \P [X_n\leq x]+\P [|X_n-X\geq \epsilon ].\label {eq:pd2}
+\P [X\leq x-\eps ] &amp;\leq \P [X_n\leq x]+\P [|X_n-X\geq \eps ].\label {eq:pd2}
 \end{align}
 Combining <span class="textup">(<a href="Convergence-Random-Variables.html#eq:pd1">5.3</a>)</span> and <span class="textup">(<a
 href="Convergence-Random-Variables.html#eq:pd2">5.4</a>)</span> leads to
 </p>
-<span class="hidden"> \(\seteqnumber{0}{5.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{4}\)</span>
 
 
 
@@ -1055,7 +1111,7 @@ href="Convergence-Random-Variables.html#eq:pd2">5.4</a>)</span> leads to
 
 
 
-                                                                  P[X ≤ x − ϵ] − P[|Xn − X| ≥ ϵ] ≤ P[Xn ≤ x] ≤ P[X ≤ x + ϵ] + P[|Xn − X| ≥ ϵ].
+                                                                   P[X ≤ x − ϵ] − P[|Xn − X| ≥ ϵ] ≤ P[Xn ≤ x] ≤ P[X ≤ x + ϵ] + P[|Xn − X| ≥ ϵ].
 
 
 
@@ -1067,12 +1123,12 @@ href="Convergence-Random-Variables.html#eq:pd2">5.4</a>)</span> leads to
 
 
 \begin{align*}
-\P [X\leq x-\epsilon ]-\P [|X_n-X|\geq \epsilon ] \;\leq \; \P [X_n\leq x] \;\leq \; \P [X\leq x+\epsilon ]+\P [|X_n-X|\geq \epsilon ].
+\P [X\leq x-\eps ]-\P [|X_n-X|\geq \eps ] \;\leq \; \P [X_n\leq x] \;\leq \; \P [X\leq x+\eps ]+\P [|X_n-X|\geq \eps ].
 \end{align*}
-By Remark <a href="The-Cumulative-Distribution-Function.html#rem:cdf_cont">4.2.2</a> and the fact that \(\P [X=x]=0\) we have that \(y\mapsto \P [X\leq y]\) is continuous at \(y=x\). Hence,
-letting \(\epsilon \to 0\), both \(\P [X\leq x+\epsilon ]\) and \(\P [X\leq x-\epsilon ]\) converge to \(\P [X\leq x]\). Since limits preserve weak inequalities this gives
+By Remark <a href="notes.html#??">??</a> and the fact that \(\P [X=x]=0\) we have that \(y\mapsto \P [X\leq y]\) is continuous at \(y=x\). Hence, letting \(\eps \to 0\), both \(\P [X\leq x+\eps
+]\) and \(\P [X\leq x-\eps ]\) converge to \(\P [X\leq x]\). Since limits preserve weak inequalities this gives
 </p>
-<span class="hidden"> \(\seteqnumber{0}{5.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{4}\)</span>
 
 
 
@@ -1080,7 +1136,7 @@ letting \(\epsilon \to 0\), both \(\P [X\leq x+\epsilon ]\) and \(\P [X\leq x-\e
 
 
 
-                                                                      P[X ≤ x] − P[|Xn − X| ≥ ϵ] ≤ P[Xn ≤ x] ≤ P[X ≤ x] + P[|Xn − X| ≥ ϵ].
+                                                                       P[X ≤ x] − P[|Xn − X| ≥ ϵ] ≤ P[Xn ≤ x] ≤ P[X ≤ x] + P[|Xn − X| ≥ ϵ].
 
 
 
@@ -1092,32 +1148,33 @@ letting \(\epsilon \to 0\), both \(\P [X\leq x+\epsilon ]\) and \(\P [X\leq x-\e
 
 
 \begin{align*}
-\P [X\leq x]-\P [|X_n-X|\geq \epsilon ] \;\leq \; \P [X_n\leq x] \;\leq \; \P [X\leq x]+\P [|X_n-X|\geq \epsilon ].
+\P [X\leq x]-\P [|X_n-X|\geq \eps ] \;\leq \; \P [X_n\leq x] \;\leq \; \P [X\leq x]+\P [|X_n-X|\geq \eps ].
 \end{align*}
 Letting \(n\to \infty \) and using that \(X_n\stackrel {\P }{\to } X\), the sandwich rule gives \(\P [X_n\leq x]\to \P [X\leq x]\).
 </p>
 
 <p>
-<b>Part 2.</b> Let \(\epsilon &gt; 0\) be arbitrary and let \(A_{n} = \bigcup _{m = n}^{\infty }\{|X_{m} - X| \geq \epsilon \}\). Then \((A_{n})\) is a decreasing sequence of events. Let \(A =
-\bigcap _{n=1}^{\infty }A_{n}\). If \(\omega \in A\) then \(X_{n}(\omega )\) cannot converge to \(X(\omega )\) as \(n \rightarrow \infty \) and so \(\P [A] = 0\), because \(X_n\to X\) almost
-surely. By Theorem <a href="Probability-Measure.html#thm:monotone_events_P">4.1.1</a> part (2), \(\lim _{n \rightarrow \infty }\P [A_{n}] = \P [A] = 0\). But then by monotonicity,
+<b>Part 2.</b> Let \(\eps &gt; 0\) be arbitrary and let \(A_{n} = \bigcup _{m = n}^{\infty }\{|X_{m} - X| \geq \eps \}\). Then \((A_{n})\) is a decreasing sequence of events. Let \(A = \bigcap
+_{n=1}^{\infty }A_{n}\). If \(\omega \in A\) then \(X_{n}(\omega )\) cannot converge to \(X(\omega )\) as \(n \rightarrow \infty \) and so \(\P [A] = 0\), because \(X_n\to X\) almost surely. By
+Lemma <a href="notes.html#??">??</a> part (2), \(\lim _{n \rightarrow \infty }\P [A_{n}] = \P [A] = 0\). But then by monotonicity,
 </p>
 
 <p>
-\[ \P [|X_{n} - X| \geq \epsilon ] \leq \P [A_{n}] \rightarrow 0~\mbox {as}~n \rightarrow \infty .\]
+\[ \P [|X_{n} - X| \geq \eps ] \leq \P [A_{n}] \rightarrow 0~\mbox {as}~n \rightarrow \infty .\]
 </p>
 
 <p>
-<b>Part 4.</b> \((\star )\) We’ll prove part 4 next, because it will be helpful in part 3 below. This part is non-examinable because we need an inequality that is (just) outside of our own syllabus. It is true that
+<b>Part 4.</b> \((\Delta )\) We’ll prove part 4 next, because it will be helpful in part 3 below. This part is marked with a \((\Delta )\) because we need an inequality that comes from Chapter <a
+href="notes.html#??">??</a>. It is true that
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{5.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{4}\)</span>
 
 <!--
 
 
 
-                                        E[|X|]p ≤ E[|X|p ]                                          (5.5)                                                                         --><a id="eq:jensen_p"></a><!--
+                                        E[|X|]p ≤ E[|X|p ]                                           (7.5)                                                                    --><a id="eq:jensen_p"></a><!--
 
 -->
 
@@ -1132,9 +1189,9 @@ surely. By Theorem <a href="Probability-Measure.html#thm:monotone_events_P">4.1.
 </p>
 
 <p>
-for all \(p\geq 1\) and all random variables \(X\). For general \(p\), this is a special case of a result known as <i>Jensen’s inequality</i>, which we don’t cover in this course. However, the \(p=2\) case is a
-consequence of the Cauchy-Schwartz inequality, which appears in these notes as Exercise <a href="Exercises-4.html#ps:cauchy_schwarz"><b>4.11</b></a>. We have already seen the \(p=1\) case in equation
-<span class="textup">(<a href="Lebesgue-Integrability.html#eq:triangle_int">3.7</a>)</span> and Exercise <a href="Exercises-3.html#ps:abs_int"><b>3.8</b></a>.
+for all \(p\geq 1\) and all random variables \(X\). For general \(p\), this is a special case of Jensen’s inequality, which is part of the independent reading in Section <a href="notes.html#??">??</a>, marked
+with a \((\Delta )\). However, the \(p=2\) case is a consequence of the Cauchy-Schwartz inequality and has already appeared in Exercise <a href="Exercises-4.html#ps:cauchy_schwarz"><b>4.11</b></a>.
+The \(p=1\) case is simply \(|\E [X]|\leq \E [|X|]\), which is the absolute value property from Theorem <a href="notes.html#??">??</a> written in the notation of probability.
 </p>
 
 <p>
@@ -1143,8 +1200,8 @@ Putting \(|X_n-X|^p\) into <span class="textup">(<a href="Convergence-Random-Var
 </p>
 
 <p>
-<b>Part 3.</b> Thanks to part 4, it suffices to prove that \(L^1\) convergence implies convergence in probability. From Markov’s inequality (Lemma <a
-href="The-Lebesgue-Integral-Non-negative-Measurable-Functions.html#lem:markov_ineq">3.3.2</a>) for any \(a &gt; 0\) we have
+<b>Part 3.</b> Thanks to part 4, it suffices to prove that \(L^1\) convergence implies convergence in probability. From Markov’s inequality (Lemma <a href="notes.html#??">??</a>) for any \(a &gt; 0\) we
+have
 </p>
 
 <p>
@@ -1160,10 +1217,10 @@ If \(X_n\stackrel {L^1}{\to }X\) then the right hand side tends to zero as \(n\t
 
 
 
-<a id="autoid-168"></a>
+<a id="autoid-216"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 5.2.2</span> <a id="autoid-169" ></a >The following diagram records which modes of convergence imply which other modes of convergence.
+<span class="theoremheaderplain">Remark 7.2.2</span> <a id="autoid-217" ></a >The following diagram records which modes of convergence imply which other modes of convergence.
 </p>
 <div class="center">
 
@@ -1194,9 +1251,9 @@ In all other cases (i.e.&nbsp;that are not automatically implied by the above), 
 
 <p>
 Recall that for real numbers, if \(a_n\to a\) and \(a_n\to b\) then \(a=b\), which is known as uniqueness of limits. For random variables, the situation is a little more complicated: if \(X_n\stackrel {\P }{\to
-} X\) and \(X_n\stackrel {\P }{\to } Y\) then \(X=Y\) almost surely. By Lemma <a href="Convergence-Random-Variables.html#lem:conv_modes">5.2.1</a>, this result also applies to \(\stackrel
-{L^p}{\to }\) and \(\stackrel {a.s.}{\to }\). However, if we have only \(X_n\stackrel {d}{\to } X\) and \(X_n\stackrel {d}{\to } Y\) then we can only conclude that \(X\) and \(Y\) have the same
-distribution, that is \(\P [X\leq x]=\P [Y\leq x]\) for all \(x\). Proving these facts is Exercise <a href="Exercises-5.html#ps:unique_limit"><b>5.7</b></a>.
+} X\) and \(X_n\stackrel {\P }{\to } Y\) then \(X=Y\) almost surely. By Lemma <a href="notes.html#??">??</a>, this result also applies to \(\stackrel {L^p}{\to }\) and \(\stackrel {a.s.}{\to
+}\). However, if we have only \(X_n\stackrel {d}{\to } X\) and \(X_n\stackrel {d}{\to } Y\) then we can only conclude that \(X\) and \(Y\) have the same distribution, that is \(\P [X\leq x]=\P [Y\leq
+x]\) for all \(x\). Proving these facts is Exercise <a href="Exercises-5.html#ps:unique_limit"><b>5.7</b></a>.
 </p>
 
 <p>
@@ -1210,10 +1267,10 @@ the Borel-Cantelli lemmas.
 
 
 
-<a id="autoid-170"></a>
+<a id="autoid-218"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 5.2.3</span> <a id="autoid-171" ></a >Let \((X_n)\) be a sequence of i.i.d.&nbsp;random variables, each with the uniform distribution on \([0,1]\). Then
+<span class="theoremheaderplain">Example 7.2.3</span> <a id="autoid-219" ></a >Let \((X_n)\) be a sequence of i.i.d.&nbsp;random variables, each with the uniform distribution on \([0,1]\). Then
 \(\P [X_n\leq \frac 13]=\P [X_n\geq \frac 23]=\frac 13\), so (using independence) by two applications of the second Borel-Cantelli lemma we have \(\P [X_n\leq \frac 13\text { i.o.}]=\P [X_n\geq
 \frac 23\text { i.o.}]=1\). Hence, with probability \(1\), the sequence \(X_n\) will oscillate infinitely often between \([0,\frac 13]\) and \([\frac 23,1]\), in which case it cannot converge. Thus
 \((X_n)\) does not converge almost surely (to any limit) in this case.
@@ -1236,11 +1293,11 @@ that \(\P [Y_n=1\text { i.o.}]=0\). Hence \(\P [Y_n=0\text { e.v.}]=1\), which i
 
 
 
-<a id="autoid-172"></a>
+<a id="autoid-220"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 5.2.4</span> <a id="autoid-173" ></a ><a id="lem:P_as_sub"></a> If \(X_{n} \rightarrow X\) in probability as \(n \rightarrow \infty \) then there is
-a subsequence of \((X_{n})\) that converges to \(X\) almost surely.
+<span class="theoremheaderplain">Lemma 7.2.4</span> <a id="autoid-221" ></a ><a id="l:P_as_sub"></a> If \(X_{n} \rightarrow X\) in probability as \(n \rightarrow \infty \) then there is a
+subsequence of \((X_{n})\) that converges to \(X\) almost surely.
 </p>
 
 
@@ -1251,8 +1308,8 @@ a subsequence of \((X_{n})\) that converges to \(X\) almost surely.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> If \((X_{n})\) converges in probability to \(X\), for all \(c &gt; 0\), given any \(\epsilon
-&gt; 0\), there exists \(N(c) \in \mathbb {N}\) so that for all \(n \geq N(c)\), \(\P [|X_{n} - X| &gt; c] &lt; \epsilon .\)
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> If \((X_{n})\) converges in probability to \(X\), for all \(c &gt; 0\), given any \(\eps
+&gt; 0\), there exists \(N(c) \in \mathbb {N}\) so that for all \(n \geq N(c)\), \(\P [|X_{n} - X| &gt; c] &lt; \eps .\)
 </p>
 
 <p>
@@ -1260,15 +1317,15 @@ In order to find our subsequence:
 </p>
 
 <p>
-– First choose, \(c = 1\) and \(\epsilon = 1/2\), then for \(n \geq N(1)\), \(\P [|X_{n} - X| &gt; 1] &lt; 1/2.\)
+– First choose, \(c = 1\) and \(\eps = 1/2\), then for \(n \geq N(1)\), \(\P [|X_{n} - X| &gt; 1] &lt; 1/2.\)
 </p>
 
 <p>
-– Next choose \(c = 1/2\) and \(\epsilon = 1/4\), then for \(n \geq N(2)\), \(\P [|X_{n} - X| &gt; 1/2] &lt; 1/4.\)
+– Next choose \(c = 1/2\) and \(\eps = 1/4\), then for \(n \geq N(2)\), \(\P [|X_{n} - X| &gt; 1/2] &lt; 1/4.\)
 </p>
 
 <p>
-– In general, choose \(c = 1/r\) and \(\epsilon = 1/2^{r}\), then for \(n \geq N(r)\), \(\P [|X_{n} - X| &gt; 1/r] &lt; 1/2^{r}.\)
+– In general, choose \(c = 1/r\) and \(\eps = 1/2^{r}\), then for \(n \geq N(r)\), \(\P [|X_{n} - X| &gt; 1/r] &lt; 1/2^{r}.\)
 </p>
 
 <p>
@@ -1280,7 +1337,7 @@ Set \(k_{r} = \max \{N(1),N(2),\ldots ,N(r),r\}\) for \(r \in \mathbb {N}\). to 
 </p>
 
 <p>
-Since \(\sum \frac {1}{2^{r}} &lt; \infty \), by the first Borel-Cantelli lemma (Lemma <a href="Sequences-random-variables.html#lem:bc1">5.1.1</a>) we have
+Since \(\sum \frac {1}{2^{r}} &lt; \infty \), by the first Borel-Cantelli lemma (Lemma <a href="notes.html#??">??</a>) we have
 </p>
 
 <p>
@@ -1305,12 +1362,11 @@ almost surely. &#x2003;&#x2003;&#x220E;
 
 
 
-<a id="autoid-174"></a>
+<a id="autoid-222"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 5.2.5</span> <a id="autoid-175" ></a >A subtle point is that the subsequence of \((X_n)\) constructed by Lemma <a
-href="Convergence-Random-Variables.html#lem:P_as_sub">5.2.4</a> is a deterministic subsequence, in the sense that \(r\mapsto k_r\) is a deterministic function. Of course, \(X_{k_r}\) is a random
-variable for each \(r\).
+<span class="theoremheaderplain">Remark 7.2.5</span> <a id="autoid-223" ></a >A subtle point is that the subsequence of \((X_n)\) constructed by Lemma <a href="notes.html#??">??</a> is a
+deterministic subsequence, in the sense that \(r\mapsto k_r\) is a deterministic function. Of course, \(X_{k_r}\) is a random variable for each \(r\).
 </p>
 
 
@@ -1329,7 +1385,7 @@ variable for each \(r\).
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 23, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
 </p>
 
 </footer>
