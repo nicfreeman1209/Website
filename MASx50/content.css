@@ -17,7 +17,7 @@ body {
 	max-height: 150px;
 }
 
-@media (max-width: 800px) { 
+@media (pointer:none), (pointer:coarse)
 	.parblock {
 		font-size: 18;
 		line-height: 140%;
