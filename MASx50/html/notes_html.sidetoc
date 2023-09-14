@@ -7,65 +7,71 @@
 \contentsline {section}{\numberline {0.2}{\ignorespaces Preliminaries\relax }}{13}{}
 \contentsline {chapter}{\numberline {1}{\ignorespaces Measure Spaces\relax }}{16}{}
 \contentsline {section}{\numberline {1.1}{\ignorespaces What is measure theory?\relax }}{17}{}
-\contentsline {section}{\numberline {1.2}{\ignorespaces Sigma Fields\relax }}{20}{}
+\contentsline {section}{\numberline {1.2}{\ignorespaces Sigma fields\relax }}{20}{}
 \contentsline {subsection}{\numberline {1.2.1}{\ignorespaces Examples of $\sigma $-fields\relax }}{26}{}
 \contentsline {section}{\numberline {1.3}{\ignorespaces Measure\relax }}{31}{}
 \contentsline {subsection}{\numberline {1.3.1}{\ignorespaces Examples of measures\relax }}{35}{}
 \contentsline {section}{\numberline {1.4}{\ignorespaces The Borel \(\sigma \)-field\relax }}{37}{}
-\contentsline {section}{\numberline {1.5}{\ignorespaces Lebesgue Measure\relax }}{42}{}
-\contentsline {section}{\numberline {1.6}{\ignorespaces An example of a non-measurable set \((\star )\)\relax }}{49}{}
-\contentsline {section}{\numberline {1.7}{\ignorespaces Measure and limits\relax }}{53}{}
-\contentsline {section}{\numberline {1.8}{\ignorespaces Product Measures\relax }}{57}{}
-\contentsline {section}{\numberline {1.9}{\ignorespaces Exercises 1\relax }}{62}{}
-\contentsline {chapter}{\numberline {2}{\ignorespaces Measurable Functions\relax }}{66}{}
-\contentsline {section}{\numberline {2.1}{\ignorespaces Liminf and Limsup\relax }}{67}{}
-\contentsline {section}{\numberline {2.2}{\ignorespaces Measurable Functions - Basic Concepts\relax }}{70}{}
-\contentsline {section}{\numberline {2.3}{\ignorespaces Examples of Measurable Functions\relax }}{78}{}
-\contentsline {section}{\numberline {2.4}{\ignorespaces Algebra of Measurable Functions\relax }}{83}{}
-\contentsline {subsection}{\numberline {2.4.1}{\ignorespaces Limits of Measurable Functions\relax }}{87}{}
-\contentsline {section}{\numberline {2.5}{\ignorespaces Simple Functions\relax }}{90}{}
-\contentsline {section}{\numberline {2.6}{\ignorespaces Extended Real Functions\relax }}{93}{}
-\contentsline {section}{\numberline {2.7}{\ignorespaces Exercises 2\relax }}{95}{}
-\contentsline {chapter}{\numberline {3}{\ignorespaces Lebesgue Integration\relax }}{99}{}
-\contentsline {section}{\numberline {3.1}{\ignorespaces Introduction\relax }}{100}{}
-\contentsline {section}{\numberline {3.2}{\ignorespaces The Lebesgue Integral for Simple Functions\relax }}{103}{}
-\contentsline {section}{\numberline {3.3}{\ignorespaces The Lebesgue Integral for Non-negative Measurable Functions\relax }}{108}{}
-\contentsline {subsection}{\numberline {3.3.1}{\ignorespaces Integration as a measure\relax }}{113}{}
-\contentsline {section}{\numberline {3.4}{\ignorespaces The Monotone Convergence Theorem\relax }}{119}{}
-\contentsline {section}{\numberline {3.5}{\ignorespaces Fatou's Lemma\relax }}{124}{}
-\contentsline {section}{\numberline {3.6}{\ignorespaces Lebesgue Integrability\relax }}{127}{}
-\contentsline {section}{\numberline {3.7}{\ignorespaces The Dominated Convergence Theorem\relax }}{133}{}
-\contentsline {section}{\numberline {3.8}{\ignorespaces Calculations with the Lebesgue Integral\relax }}{137}{}
-\contentsline {section}{\numberline {3.9}{\ignorespaces Fubini's Theorem and Function Spaces \((\star )\)\relax }}{144}{}
-\contentsline {subsection}{\numberline {3.9.1}{\ignorespaces Fubini's Theorem \((\star )\)\relax }}{145}{}
-\contentsline {subsection}{\numberline {3.9.2}{\ignorespaces Function Spaces \((\star )\)\relax }}{147}{}
-\contentsline {section}{\numberline {3.10}{\ignorespaces Riemann Integration \((\star )\)\relax }}{149}{}
-\contentsline {subsection}{\numberline {3.10.1}{\ignorespaces The Riemann Integral \((\star )\)\relax }}{150}{}
-\contentsline {subsection}{\numberline {3.10.2}{\ignorespaces The Connection \((\star )\)\relax }}{153}{}
-\contentsline {subsection}{\numberline {3.10.3}{\ignorespaces Discussion \((\star )\)\relax }}{156}{}
-\contentsline {section}{\numberline {3.11}{\ignorespaces Exercises 3\relax }}{159}{}
-\contentsline {chapter}{\numberline {4}{\ignorespaces Probability and Measure\relax }}{167}{}
-\contentsline {section}{\numberline {4.1}{\ignorespaces Probability as Measure\relax }}{169}{}
-\contentsline {section}{\numberline {4.2}{\ignorespaces The Cumulative Distribution Function\relax }}{172}{}
-\contentsline {section}{\numberline {4.3}{\ignorespaces Discrete and Continuous Random Variables\relax }}{177}{}
-\contentsline {section}{\numberline {4.4}{\ignorespaces Independence\relax }}{180}{}
-\contentsline {section}{\numberline {4.5}{\ignorespaces Exercises 4\relax }}{185}{}
-\contentsline {chapter}{\numberline {5}{\ignorespaces Sequences of random variables\relax }}{189}{}
-\contentsline {section}{\numberline {5.1}{\ignorespaces The Borel-Cantelli lemmas\relax }}{190}{}
-\contentsline {section}{\numberline {5.2}{\ignorespaces Convergence of Random Variables\relax }}{194}{}
-\contentsline {section}{\numberline {5.3}{\ignorespaces Laws of Large Numbers\relax }}{202}{}
-\contentsline {section}{\numberline {5.4}{\ignorespaces Characteristic Functions and Weak Convergence (\(\star \))\relax }}{208}{}
-\contentsline {subsection}{\numberline {5.4.1}{\ignorespaces Characteristic Functions (\(\star \))\relax }}{209}{}
-\contentsline {subsection}{\numberline {5.4.2}{\ignorespaces Weak Convergence (\(\star \))\relax }}{214}{}
-\contentsline {subsection}{\numberline {5.4.3}{\ignorespaces An inequality concerning characteristic functions $(\star )$\relax }}{216}{}
-\contentsline {section}{\numberline {5.5}{\ignorespaces The Central Limit Theorem (\(\star \))\relax }}{218}{}
-\contentsline {subsection}{\numberline {5.5.1}{\ignorespaces Further discussion (\(\star \))\relax }}{220}{}
-\contentsline {section}{\numberline {5.6}{\ignorespaces Exercises 5\relax }}{222}{}
-\contentsline {chapter}{\numberline {6}{\ignorespaces Product Measures and Fubini's Theorem \((\Delta )\)\relax }}{227}{}
-\contentsline {section}{\numberline {6.1}{\ignorespaces Dynkin's $\pi -\lambda $ Lemma \((\Delta )\)\relax }}{228}{}
-\contentsline {section}{\numberline {6.2}{\ignorespaces Product Measure \((\Delta )\)\relax }}{233}{}
-\contentsline {section}{\numberline {6.3}{\ignorespaces Fubini's Theorem \((\Delta )\)\relax }}{237}{}
-\contentsline {section}{\numberline {6.4}{\ignorespaces Exercises 6\relax }}{241}{}
-\contentsline {chapter}{\numberline {A}{\ignorespaces Advice for revision/exams\relax }}{244}{}
-\contentsline {chapter}{\numberline {B}{\ignorespaces Solutions to exercises\relax }}{248}{}
+\contentsline {section}{\numberline {1.5}{\ignorespaces Lebesgue measure\relax }}{41}{}
+\contentsline {section}{\numberline {1.6}{\ignorespaces An example of a non-measurable set \((\star )\)\relax }}{48}{}
+\contentsline {section}{\numberline {1.7}{\ignorespaces Measures and limits\relax }}{53}{}
+\contentsline {section}{\numberline {1.8}{\ignorespaces Null sets\relax }}{57}{}
+\contentsline {section}{\numberline {1.9}{\ignorespaces Product measures\relax }}{61}{}
+\contentsline {section}{\numberline {1.10}{\ignorespaces Exercises on Chapter \ref {c:measure_spaces}\relax }}{66}{}
+\contentsline {chapter}{\numberline {2}{\ignorespaces Real Analysis\relax }}{70}{}
+\contentsline {section}{\numberline {2.1}{\ignorespaces The extended reals\relax }}{71}{}
+\contentsline {subsection}{\numberline {2.1.1}{\ignorespaces The Borel $\sigma $-field and Lebesgue measure on $\overline {\mathbb {R}}$\relax }}{74}{}
+\contentsline {section}{\numberline {2.2}{\ignorespaces Liminf and limsup\relax }}{77}{}
+\contentsline {section}{\numberline {2.3}{\ignorespaces Convergence of functions\relax }}{84}{}
+\contentsline {section}{\numberline {2.4}{\ignorespaces Exercises on Chapter \ref {c:real_analysis}\relax }}{90}{}
+\contentsline {chapter}{\numberline {3}{\ignorespaces Measurable Functions\relax }}{94}{}
+\contentsline {section}{\numberline {3.1}{\ignorespaces Overview\relax }}{95}{}
+\contentsline {section}{\numberline {3.2}{\ignorespaces Borel measurable functions\relax }}{102}{}
+\contentsline {section}{\numberline {3.3}{\ignorespaces Measurable functions and open sets \((\Delta )\)\relax }}{106}{}
+\contentsline {section}{\numberline {3.4}{\ignorespaces Algebra of measurable functions \((\Delta )\)\relax }}{114}{}
+\contentsline {section}{\numberline {3.5}{\ignorespaces Simple functions\relax }}{120}{}
+\contentsline {section}{\numberline {3.6}{\ignorespaces Extended real functions\relax }}{124}{}
+\contentsline {section}{\numberline {3.7}{\ignorespaces Exercises on Chapter \ref {c:measurable_funcs}\relax }}{127}{}
+\contentsline {chapter}{\numberline {4}{\ignorespaces Lebesgue Integration\relax }}{131}{}
+\contentsline {section}{\numberline {4.1}{\ignorespaces The Lebesgue integral for simple functions\relax }}{133}{}
+\contentsline {subsection}{\numberline {4.1.1}{\ignorespaces Integration over subsets\relax }}{136}{}
+\contentsline {section}{\numberline {4.2}{\ignorespaces The Lebesgue integral for non-negative measurable functions\relax }}{140}{}
+\contentsline {subsection}{\numberline {4.2.1}{\ignorespaces Almost everywhere equality\relax }}{144}{}
+\contentsline {section}{\numberline {4.3}{\ignorespaces The monotone convergence theorem\relax }}{149}{}
+\contentsline {section}{\numberline {4.4}{\ignorespaces Integration as a measure\relax }}{153}{}
+\contentsline {section}{\numberline {4.5}{\ignorespaces The Lebesgue integral\relax }}{157}{}
+\contentsline {section}{\numberline {4.6}{\ignorespaces The dominated convergence theorem\relax }}{163}{}
+\contentsline {subsection}{\numberline {4.6.1}{\ignorespaces Proof of the DCT $(\star )$\relax }}{166}{}
+\contentsline {section}{\numberline {4.7}{\ignorespaces Calculations with the Lebesgue integral\relax }}{169}{}
+\contentsline {section}{\numberline {4.8}{\ignorespaces Lebesgue integration of complex valued functions \((\Delta )\)\relax }}{176}{}
+\contentsline {section}{\numberline {4.9}{\ignorespaces Multiple integrals and function spaces \((\star )\)\relax }}{180}{}
+\contentsline {subsection}{\numberline {4.9.1}{\ignorespaces Fubini's Theorem \((\star )\)\relax }}{181}{}
+\contentsline {subsection}{\numberline {4.9.2}{\ignorespaces Function Spaces \((\star )\)\relax }}{183}{}
+\contentsline {section}{\numberline {4.10}{\ignorespaces Riemann integration \((\star )\)\relax }}{185}{}
+\contentsline {subsection}{\numberline {4.10.1}{\ignorespaces The Riemann integral \((\star )\)\relax }}{186}{}
+\contentsline {subsection}{\numberline {4.10.2}{\ignorespaces The connection \((\star )\)\relax }}{189}{}
+\contentsline {subsection}{\numberline {4.10.3}{\ignorespaces Discussion \((\star )\)\relax }}{192}{}
+\contentsline {section}{\numberline {4.11}{\ignorespaces Exercises on Chapter \ref {c:lebesgue_integration}\relax }}{195}{}
+\contentsline {chapter}{\numberline {5}{\ignorespaces Probability with Measure\relax }}{203}{}
+\contentsline {section}{\numberline {5.1}{\ignorespaces Probability\relax }}{205}{}
+\contentsline {section}{\numberline {5.2}{\ignorespaces The cumulative distribution function\relax }}{208}{}
+\contentsline {section}{\numberline {5.3}{\ignorespaces Discrete and continuous random variables\relax }}{214}{}
+\contentsline {section}{\numberline {5.4}{\ignorespaces Independence\relax }}{218}{}
+\contentsline {section}{\numberline {5.5}{\ignorespaces Exercises on Chapter \ref {c:prob_with_meas}\relax }}{222}{}
+\contentsline {chapter}{\numberline {6}{\ignorespaces Inequalities for Random Variables \((\Delta )\)\relax }}{228}{}
+\contentsline {section}{\numberline {6.1}{\ignorespaces Chernoff bounds \((\Delta )\)\relax }}{229}{}
+\contentsline {section}{\numberline {6.2}{\ignorespaces The Paley-Zygmund inequality \((\Delta )\)\relax }}{233}{}
+\contentsline {section}{\numberline {6.3}{\ignorespaces Jensen's inequality \((\Delta )\)\relax }}{237}{}
+\contentsline {section}{\numberline {6.4}{\ignorespaces Exercises on Chapter \ref {c:ineqs} \((\Delta )\)\relax }}{244}{}
+\contentsline {chapter}{\numberline {7}{\ignorespaces Sequences of Random Variables\relax }}{248}{}
+\contentsline {section}{\numberline {7.1}{\ignorespaces The Borel-Cantelli lemmas\relax }}{249}{}
+\contentsline {section}{\numberline {7.2}{\ignorespaces Convergence of random variables\relax }}{253}{}
+\contentsline {section}{\numberline {7.3}{\ignorespaces Laws of large numbers\relax }}{262}{}
+\contentsline {section}{\numberline {7.4}{\ignorespaces Characteristic functions (\(\Delta \))\relax }}{268}{}
+\contentsline {subsection}{\numberline {7.4.1}{\ignorespaces Approximating characteristic functions with polynomials \((\Delta )\)\relax }}{274}{}
+\contentsline {section}{\numberline {7.5}{\ignorespaces The central limit theorem (\(\Delta \))\relax }}{278}{}
+\contentsline {subsection}{\numberline {7.5.1}{\ignorespaces Further discussion (\(\star \))\relax }}{282}{}
+\contentsline {section}{\numberline {7.6}{\ignorespaces Exercises on Chapter \ref {c:rv_sequences}\relax }}{284}{}
+\contentsline {chapter}{\numberline {A}{\ignorespaces Advice for revision/exams\relax }}{290}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Solutions to exercises\relax }}{294}{}
 

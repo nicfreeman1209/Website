@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 13, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 14, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Solutions to exercises (part one)</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -228,7 +228,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 13, 2023
+last updated: September 14, 2023
 </p>
 
 </header>
@@ -672,7 +672,7 @@ Home</a>
 
 
 <p>
-<a href="Formula-Sheet-part-one.html#autosec-305" class="tocchapter" >
+<a href="Formula-Sheet-part-one.html#autosec-321" class="tocchapter" >
 <span class="sectionnumber">B</span>&#x2003;Formula Sheet (part one)</a>
 </p>
 
@@ -1590,7 +1590,7 @@ Here we use that, if \(|X|\leq 1\) then \(|X|^p\leq 1\), and if \(|X|&gt;1\) the
 
 </p>
 <p>
-From <span class="textup">(<a href="notes_1.html#??">??</a>)</span> since \(X\geq 0\) we have
+From <span class="textup">(<a href="Solutions-exercises-part-one.html#eq:markovs_pre">A.1</a>)</span> since \(X\geq 0\) we have
 </p>
 <span class="hidden"> \(\seteqnumber{0}{A.}{1}\)</span>
 
@@ -2355,7 +2355,8 @@ Here we use linearity and the taking out what is known \((S_n\in m\mc {F}_n)\) r
 \E [S_{n+1}-L_{n+1}\|\mc {F}_n] &amp;=\E \l [S_{n+1}-\sum \limits _{i=0}^n \1\{S_i=0\}\,\Bigg |\,\mc {F}_n\r ]\\ &amp;=S_{n}+\1\{S_n=0\}-\sum \limits _{i=0}^n \1\{S_i=0\}\\
 &amp;=S_n-\sum \limits _{i=0}^{n-1} \1\{S_i=0\}\\ &amp;=S_n-L_n
 \end{align*}
-Here we use <span class="textup">(<a href="notes_1.html#??">??</a>)</span> to deduce the second line, as well as taking out what is known. Hence, \(S_n-L_n\) is a martingale.
+Here we use <span class="textup">(<a href="Solutions-exercises-part-one.html#eq:SnLnpre">A.2</a>)</span> to deduce the second line, as well as taking out what is known. Hence, \(S_n-L_n\) is a
+martingale.
 </p>
 </li>
 <li>
@@ -2382,19 +2383,19 @@ Essentially the same argument as for the two colour urn of Section <a href="Urn-
                                                                                       h                                                                         i
 
 
-                                                                                   Bn + 1                           B
+                                                                                   Bn + 1                         Bn
                                                                                                                                                                     
-                                                                              =E          1{(n+1)th draw is red} + n 1{(n+1)th draw is not red} Fn
-                                                                                    n+4                            n+4
-                                                                                Bn + 1 h                                Bn
-                                                                                       E 1{(n+1)th draw is red} Fn +       E 1{(n+1)th draw is not red} Fn
-                                                                                                                    i       h                              i
+                                                                              =E          1     th             +     1    th                 Fn
+                                                                                    n + 4 {(n+1) draw is red} n + 4 {(n+1) draw is not red}
+                                                                                Bn + 1 h                              Bn
+                                                                                       E 1{(n+1)th draw is red} Fn +     E 1{(n+1)th draw is not red} Fn
+                                                                                                                  i       h                              i
                                                                               =
-                                                                                 n+4                                   n+4
-                                                                                Bn + 1 Bn        Bn              Bn
-                                                                                                                    
-                                                                              =              +           1−
-                                                                                 n+4 n+3 n+4                   n+3
+                                                                                 n+4                                 n+4
+                                                                                Bn + 1 Bn       Bn             Bn
+                                                                                                                  
+                                                                              =              +          1−
+                                                                                 n+4 n+3 n+4                  n+3
                                                                                   Bn (n + 4)
                                                                               =
                                                                                 (n + 3)(n + 4)
@@ -2578,7 +2579,7 @@ Suppose (aiming for a contradiction) that there is a deterministic function \(f:
 \[\E [S_{n+1}^3-f(n+1)\|\mc {F}_n]=S_n^3-f(n).\]
 </p>
 <p>
-Combining the above equation with <span class="textup">(<a href="notes_1.html#??">??</a>)</span> gives
+Combining the above equation with <span class="textup">(<a href="Solutions-exercises-part-one.html#eq:sn3_mart">A.3</a>)</span> gives
 </p>
 <p>
 \[f(n+1)-f(n)=3S_n\]
@@ -2765,8 +2766,9 @@ contingent claim for doing so is \(\Phi (S_1)=K-S_1\).
 <li>
 <p>
 <span class="textnormal">(a)</span> The contingent claims for the call and put options respectively are \(\max (S_1-K,0)\) from <span class="textup">(<a
-href="Hedging-in-one-period-model.html#eq:eu_call_op_contigent_2">5.6</a>)</span> and \(\max (K-S_1,0)\) from <span class="textup">(<a href="notes_1.html#??">??</a>)</span>. Using the
-risk neutral valuation formula from Proposition <a href="Hedging-in-one-period-model.html#p:one_period_pricing">5.2.6</a> we have
+href="Hedging-in-one-period-model.html#eq:eu_call_op_contigent_2">5.6</a>)</span> and \(\max (K-S_1,0)\) from <span class="textup">(<a
+href="Solutions-exercises-part-one.html#eq:eu_put_contingent">A.4</a>)</span>. Using the risk neutral valuation formula from Proposition <a
+href="Hedging-in-one-period-model.html#p:one_period_pricing">5.2.6</a> we have
 </p>
 <p>
 \[\Pi ^{call}_0=\frac {1}{1+r}\E ^\Q \l [\max (S_1-K,0)\r ],\quad \Pi ^{put}_0=\frac {1}{1+r}\E ^\Q \l [\max (K-S_1,0)\r ].\]
@@ -3376,8 +3378,8 @@ infinite sums, which are limits, and the linearity property does not tell us any
 
 
 <p>
-<span class="textnormal">(b)</span> We’ll take a limit as \(n\to \infty \) on each side of <span class="textup">(<a href="notes_1.html#??">??</a>)</span>. We’ll have to justify ourselves in each
-case.
+<span class="textnormal">(b)</span> We’ll take a limit as \(n\to \infty \) on each side of <span class="textup">(<a
+href="Solutions-exercises-part-one.html#eq:fubini_mct_pre">A.5</a>)</span>. We’ll have to justify ourselves in each case.
 </p>
 <p>
 First, consider the right hand side. Since we have \(X_n\geq 0\) almost surely, \(\E [X_n]\geq 0\) by monotonicity of \(\E \). Therefore, \(\sum _{i=1}^n \E [X_i]\) is an increasing sequence of real numbers.
@@ -3449,7 +3451,8 @@ By the triangle inequality we have
 
 </p>
 <p>
-If \(|X-X_n|+|X_n-Y|&gt;2a\) then \(|X-X_n|&gt;a\) or \(|X_n-Y|&gt;a\) (or possibly both). Hence, continuing <span class="textup">(<a href="notes_1.html#??">??</a>)</span>,
+If \(|X-X_n|+|X_n-Y|&gt;2a\) then \(|X-X_n|&gt;a\) or \(|X_n-Y|&gt;a\) (or possibly both). Hence, continuing <span class="textup">(<a
+href="Solutions-exercises-part-one.html#eq:ps_uniq_limit">A.6</a>)</span>,
 </p>
 <p>
 \[\P [|X-Y|&gt;2a]\leq \P [|X_n-X|&gt;a]+\P [|X_n-Y|&gt;a]\leq 2\epsilon .\]
@@ -3785,31 +3788,32 @@ contradiction.
 <!--
 
 
+
                                                                        E[Mn+1 | Fn ] = E Mn+1 1{nth draw is red} Fn + E Mn+1 1{nth draw is black} Fn
-                                                                                        h                                                i          h                                     i
+                                                                                         h                                               i          h                                     i
 
 
-                                                                                          Bn                                  B +1
-                                                                                                                                                                                           
-                                                                                    =E         1{nth draw is red} Fn + E n           1{nth draw is black} Fn
-                                                                                         n+3                                   n+3
-                                                                                       Bn                             i B +1 h
-                                                                                            E 1{nth draw is red} Fn +             E 1{nth draw is black} Fn
-                                                                                             h                                                              i
-                                                                                                                            n
+                                                                                            Bn                                  B +1
+                                                                                                                                                                                           
+                                                                                    =E           1{nth draw is red} Fn + E n           1{nth draw is black} Fn
+                                                                                           n+3                                   n+3
+                                                                                         Bn                             i B +1 h
+                                                                                              E 1{nth draw is red} Fn +             E 1{nth draw is black} Fn
+                                                                                               h                                                              i
+                                                                                                                              n
                                                                                     =
-                                                                                      n+3                                  n+3
-                                                                                       Bn Bn         Bn + 1         Bn
-                                                                                                                       
-                                                                                    =             +           1−
-                                                                                      n+3n+2         n+3           n+2
-                                                                                             2
-                                                                                            Bn          Bn (n + 2) + (n + 2) − Bn2 − Bn
-                                                                                    =                +
-                                                                                      (n + 2)(n + 3)             (n + 2)(n + 3)
-                                                                                      (n + 1)Bn + (n + 2)
+                                                                                        n+3                                  n+3
+                                                                                         Bn Bn         Bn + 1         Bn
+                                                                                                                         
+                                                                                    =               +           1−
+                                                                                        n+3n+2         n+3           n+2
+                                                                                               2
+                                                                                              Bn          Bn (n + 2) + (n + 2) − Bn2 − Bn
+                                                                                    =                  +
+                                                                                        (n + 2)(n + 3)             (n + 2)(n + 3)
+                                                                                        (n + 1)Bn + (n + 2)
                                                                                     =
-                                                                                         (n + 2)(n + 3)
+                                                                                           (n + 2)(n + 3)
 
 
 -->
@@ -3868,46 +3872,49 @@ Let \(\mc {F}_n=\sigma (B_1,\ldots ,B_n)\). It is clear that \(M_n\in [0,1]\), s
 <!--
 
 
+
                                                                        E[Mn+1 | Fn ] = E Mn+1 1{X1 =r,X2 =r} | Fn + E Mn+1 1{X1 =r,X2 =b} | Fn
-                                                                                        h                                    i         h                                        i
+                                                                                         h                                   i         h                                        i
 
 
-                                                                                         + E Mn+1 1{X1 =b,X2 =r} | Fn + E Mn+1 1{X1 =b,X2 =b} | Fn
-                                                                                                  h                                  i          h                                     i
+                                                                                          + E Mn+1 1{X1 =b,X2 =r} | Fn + E Mn+1 1{X1 =b,X2 =b} | Fn
+                                                                                                 h                                   i          h                                     i
 
-                                                                                         Bn                            B +1
-                                                                                                                                                                             
-                                                                                    =E      1{X1 =r,X2 =r} | Fn + E n        1{X1 =r,X2 =b} | Fn
-                                                                                          K                              K
-                                                                                              Bn − 1                           Bn
-                                                                                                                                                   
-                                                                                         +E          1{X1 =b,X2 =r} | Fn + E      1{X1 =b,X2 =b} | Fn
-                                                                                                K                              K
+                                                                                         Bn                             B +1
+                                                                                                                                                                             
+                                                                                    =E      1{X1 =r,X2 =r} | Fn + E n         1{X1 =r,X2 =b} | Fn
+                                                                                          K                               K
+                                                                                              Bn − 1                            Bn
+                                                                                                                                                    
+                                                                                         +E           1{X1 =b,X2 =r} | Fn + E      1{X1 =b,X2 =b} | Fn
+                                                                                                K                               K
                                                                                       Bn h                     i B +1 h
-                                                                                         E 1{X1 =r,X2 =r} | Fn +          E 1{X1 =r,X2 =b} | Fn
-                                                                                                                                                i
-                                                                                                                     n
+                                                                                         E 1{X1 =r,X2 =r} | Fn +           E 1{X1 =r,X2 =b} | Fn
+                                                                                                                                                 i
+                                                                                                                      n
                                                                                     =
-                                                                                      K                               K
-                                                                                           Bn − 1 h                     i B
-                                                                                                  E 1{X1 =b,X2 =r} | Fn +      E 1{X1 =b,X2 =b} | Fn
-                                                                                                                                h                    i
-                                                                                                                             n
+                                                                                      K                                K
+                                                                                           Bn − 1 h                      i B
+                                                                                                  E 1{X1 =b,X2 =r} | Fn +       E 1{X1 =b,X2 =b} | Fn
+                                                                                                                                 h                    i
+                                                                                                                              n
                                                                                          +
-                                                                                             K                              K
+                                                                                             K                               K
                                                                                       Bn Bn Bn Bn + 1 Bn K − Bn
                                                                                     =           +
-                                                                                      K K K           K K         K
+                                                                                      K K K           K K          K
                                                                                            Bn − 1 K − Bn Bn Bn K − Bn K − Bn
                                                                                          +                      +
-                                                                                             K        K       K    K      K      K
-                                                                                       1                                                                 
-                                                                                    = 3 Bn3 + 2Bn2 (K − Bn ) + Bn (K − B)n − Bn (K − Bn ) + Bn (K − Bn )2
+                                                                                             K        K       K     K      K      K
+                                                                                       1                                                                
+                                                                                            3       2
+                                                                                    = 3 Bn + 2Bn (K − Bn ) + Bn (K − B)n − Bn (K − Bn ) + Bn (K − Bn )2
                                                                                       K
                                                                                        1        
                                                                                     = 3 K 2 Bn
                                                                                       K
                                                                                     = Mn
+
 
 
 -->
@@ -4112,15 +4119,15 @@ Iterating this formula obtains that
 <!--
 
 
-                                                                                                       1          1                  1
-                                                                                                                                                                       
-                                                                                        p2n   ≤ exp −    exp −          . . . exp −      p0
-                                                                                                      2n       2(n − 1)             2(1)
-                                                                                                         n
+                                                                                                            1          1                  1
+                                                                                                                                                                       
+                                                                                        p2n ≤ exp −           exp −          . . . exp −      p0
+                                                                                                           2n       2(n − 1)             2(1)
+                                                                                                        n
                                                                                                                      !
-                                                                                                      1X    1
-                                                                                              = exp −         .                                      (A.7)                                           --><a id="eq:ssrw_p2n"></a><!--
-                                                                                                      2 i=1 i
+                                                                                                     1X    1
+                                                                                             = exp −         .                                       (A.7)                                           --><a id="eq:ssrw_p2n"></a><!--
+                                                                                                     2 i=1 i
 
 
 -->
@@ -4158,16 +4165,16 @@ Recall that \(\sum _{i=1}^n\frac {1}{i}\to \infty \) as \(n\to \infty \), and th
 <!--
 
 
-                                                                                                    Sn+1            Sn        1
+                                                                                              Sn+1            Sn        1
                                                                                                                 
-                                                                                        E                  Fn =           +         E[Xn+1 | Fn ]
-                                                                                                 f (n + 1)      f (n + 1) f (n + 1)
-                                                                                                                    Sn        1
-                                                                                                              =           +         E[Xn+1 ]
-                                                                                                                f (n + 1) f (n + 1)
-                                                                                                                    Sn
-                                                                                                              =
-                                                                                                                f (n + 1)
+                                                                                         E           Fn =           +         E[Xn+1 | Fn ]
+                                                                                           f (n + 1)      f (n + 1) f (n + 1)
+                                                                                                              Sn        1
+                                                                                                        =           +         E[Xn+1 ]
+                                                                                                          f (n + 1) f (n + 1)
+                                                                                                              Sn
+                                                                                                        =
+                                                                                                          f (n + 1)
 
 
 -->
@@ -4212,7 +4219,8 @@ constant.
 
 
 <p>
-<span class="textnormal">(b)</span> If \(\frac {S_n}{f(n)}\) is to be a supermartingale then, in place of <span class="textup">(<a href="notes_1.html#??">??</a>)</span>, we would need
+<span class="textnormal">(b)</span> If \(\frac {S_n}{f(n)}\) is to be a supermartingale then, in place of <span class="textup">(<a
+href="Solutions-exercises-part-one.html#eq:ESnfn">A.8</a>)</span>, we would need
 </p>
 <span class="hidden"> \(\seteqnumber{0}{A.}{8}\)</span>
 <!--
@@ -4232,13 +4240,13 @@ constant.
 </p>
 <p>
 Note that we would need this equation to hold true with probability one. To handle the \(\geq \) we now need to care about the sign of \(S_n\). The key idea is that \(S_n\) can be both positive or negative, so
-the only way that <span class="textup">(<a href="notes_1.html#??">??</a>)</span> can hold is if \(\frac {1}{f(n+1)}=\frac {1}{f(n)}\).
+the only way that <span class="textup">(<a href="Solutions-exercises-part-one.html#eq:ssrw_fnmart">A.9</a>)</span> can hold is if \(\frac {1}{f(n+1)}=\frac {1}{f(n)}\).
 </p>
 <p>
 We will use some of the results from the solution of exercise <a href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#ps:rw_to_zero"><b>7.11</b></a>. In particular, from for odd \(n\in \N \) from <a
 href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#ps:rw_to_zero"><b>7.11</b></a>(b) we have \(P[S_n=0]=0\), and for even \(n\in \N \) from <span class="textup">(<a
-href="notes_1.html#??">??</a>)</span> we have \(\P [S_n=0]&lt;1\). In both cases we have \(\P [S_n\neq 0]&gt;0\). Since \(S_n\) and \(-S_n\) have the same distribution we have \(\P [S_n&lt;0]=\P
-[-S_n&lt;0]=\P [S_n&gt;0]\), and hence
+href="Solutions-exercises-part-one.html#eq:ssrw_p2n">A.7</a>)</span> we have \(\P [S_n=0]&lt;1\). In both cases we have \(\P [S_n\neq 0]&gt;0\). Since \(S_n\) and \(-S_n\) have the same
+distribution we have \(\P [S_n&lt;0]=\P [-S_n&lt;0]=\P [S_n&gt;0]\), and hence
 </p>
 <p>
 \[\P [S_n\neq 0]=\P [S_n&lt;0]+\P [S_n&gt;0]=2\P [S_n&lt;0]=2\P [S_n&gt;0].\]
@@ -4247,10 +4255,10 @@ href="notes_1.html#??">??</a>)</span> we have \(\P [S_n=0]&lt;1\). In both cases
 Hence, for all \(n\in \N \) we have \(\P [S_n&gt;0]&gt;0\) and \(\P [S_n&lt;0]&gt;0\).
 </p>
 <p>
-Now, consider \(n\geq 1\). We have that here is positive probability that \(S_n&gt;0\). Hence, by <span class="textup">(<a href="notes_1.html#??">??</a>)</span>, we must have \(\frac
-{1}{f(n+1)}\leq \frac {1}{f(n)}\), which means that \(f(n+1)\geq f(n)\). But, there is also positive probability that \(S_n&lt;0\), hence by <span class="textup">(<a
-href="notes_1.html#??">??</a>)</span> we must have \(\frac {1}{f(n+1)}\geq \frac {1}{f(n)}\), which means that \(f(n+1)\leq f(n)\). Hence \(f(n+1)=f(n)\), for all \(n\), and by a trivial
-induction we have \(f(1)=f(n)\) for all \(n\).
+Now, consider \(n\geq 1\). We have that here is positive probability that \(S_n&gt;0\). Hence, by <span class="textup">(<a
+href="Solutions-exercises-part-one.html#eq:ssrw_fnmart">A.9</a>)</span>, we must have \(\frac {1}{f(n+1)}\leq \frac {1}{f(n)}\), which means that \(f(n+1)\geq f(n)\). But, there is also
+positive probability that \(S_n&lt;0\), hence by <span class="textup">(<a href="Solutions-exercises-part-one.html#eq:ssrw_fnmart">A.9</a>)</span> we must have \(\frac {1}{f(n+1)}\geq \frac
+{1}{f(n)}\), which means that \(f(n+1)\leq f(n)\). Hence \(f(n+1)=f(n)\), for all \(n\), and by a trivial induction we have \(f(1)=f(n)\) for all \(n\).
 </p>
 </li>
 </ul>
@@ -4274,9 +4282,9 @@ induction we have \(f(1)=f(n)\) for all \(n\).
 <!--
 
 
-                                                                                                         1
-                                                                                                              (Zn+1 − µZn )2 = (Mn+1 − Mn )2 .                              (A.10)                   --><a id="eq:gw_sqr_1"></a><!--
-                                                                                                      µ2(n+1)
+                                                                                                       1
+                                                                                                               (Zn+1 − µZn )2 = (Mn+1 − Mn )2 .                             (A.10)                   --><a id="eq:gw_sqr_1"></a><!--
+                                                                                                     µ2(n+1)
 
 
 -->
@@ -4311,8 +4319,7 @@ and \(Y_1,Y_2,\ldots ,Y_n\) are independent. Moreover, the \(Y_i\) are identical
                                                                                                                                        Zn
                                                                                                                                                     !2         
                                                                                          h                           i                 X
-                                                                                                             2
-                                                                                       E (Zn+1 − µZn ) | Fn = E                               Yi           Fn 
+                                                                                        E (Zn+1 − µZn )2 | Fn = E                             Yi           Fn 
                                                                                                                                          i=1
                                                                                                                              Zn
                                                                                                                              X                               Zn
@@ -4332,6 +4339,7 @@ and \(Y_1,Y_2,\ldots ,Y_n\) are independent. Moreover, the \(Y_i\) are identical
                                                                                                                          = Zn σ 2 .
 
 
+
 -->
 
 
@@ -4343,7 +4351,7 @@ and \(Y_1,Y_2,\ldots ,Y_n\) are independent. Moreover, the \(Y_i\) are identical
 {F}_n]+\sum \limits _{\stackrel {i,j=1}{i\neq j}}^{Z_n}\E [Y_iY_j\|\mc {F}_n]\\ &amp;=\sum \limits _{i=1}^{Z_n}\E [Y_{i}^2]+\sum \limits _{\stackrel {i,j=1}{i\neq j}}^{Z_n}\E
 [Y_i]\E [Y_j]\\ &amp;=Z_n\E [Y_1]^2+0\\ &amp;=Z_n\sigma ^2.
 \end{align*}
-So, from <span class="textup">(<a href="notes_1.html#??">??</a>)</span> we obtain
+So, from <span class="textup">(<a href="Solutions-exercises-part-one.html#eq:gw_sqr_1">A.10</a>)</span> we obtain
 </p>
 <p>
 \[\E [(M_{n+1}-M_n)^2\|\mc {F}_n]=\frac {Z_n\sigma ^2}{\mu ^{2(n+1)}}.\]
@@ -4425,6 +4433,7 @@ Hence, the monotone convergence theorem applies to \(X_n\) and \(X_\infty \), an
                                                                
                                                E inf |Mn | → E[|M∞ |].                                                                              (A.11)                                             --><a id="eq:Mnconv"></a><!--
                                                     k≥n
+
 -->
 <p>
 
@@ -4432,8 +4441,6 @@ Hence, the monotone convergence theorem applies to \(X_n\) and \(X_\infty \), an
 \begin{equation}
 \label {eq:Mnconv} \E \l [\inf _{k\geq n}|M_n|\r ]\to \E [|M_\infty |].
 \end{equation}
-
-
 </p>
 <p>
 However, since \(\inf _{k\geq n}|M_n|\leq |M_n|\leq C=\sup _{j\in \N } \E [|M_j|]\), the monotonicity property of expectation gives us that, for all \(n\),
@@ -4456,8 +4463,8 @@ However, since \(\inf _{k\geq n}|M_n|\leq |M_n|\leq C=\sup _{j\in \N } \E [|M_j|
 
 </p>
 <p>
-Combining <span class="textup">(<a href="notes_1.html#??">??</a>)</span> and <span class="textup">(<a href="notes_1.html#??">??</a>)</span>, with the fact that limits preserve weak
-inequalities, we obtain that \(\E [|M_\infty |]\leq C\), as required.
+Combining <span class="textup">(<a href="Solutions-exercises-part-one.html#eq:Mnconv">A.11</a>)</span> and <span class="textup">(<a
+href="Solutions-exercises-part-one.html#eq:Mn_bound">A.12</a>)</span>, with the fact that limits preserve weak inequalities, we obtain that \(\E [|M_\infty |]\leq C\), as required.
 </p>
 </li>
 </ul>
@@ -5598,7 +5605,7 @@ that \(S_n\notin B_r\) for all \(n\geq N\). Hence \(|S_n|\geq r\) for all \(n\ge
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 14, 2023
 </p>
 
 </footer>
