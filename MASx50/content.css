@@ -1,0 +1,49 @@
+.h1 {
+	font-family: Calibri, sans-serif;
+}
+.parblock {
+	font-family: Calibri, sans-serif;
+	font-size: 16;
+	line-height: 115%;
+}
+
+body {
+	margin: 10px 5% 0px 5%;
+    background-color: #f7f5f0;
+}
+
+.coursepic {
+	max-width: 60%;
+	max-height: 150px;
+}
+
+@media (max-width: 800px) { 
+	.parblock {
+		font-size: 18;
+		line-height: 140%;
+	}
+
+	.coursepic {
+		max-width: 85%;
+		max-height: 150px;
+	}
+
+	body {
+		margin: 10px 10px 10px 10px;
+	}
+
+}
+
+a {
+	color : #0066cc;
+    text-decoration: none;
+}
+
+a:visited {
+	color: #800090;
+}
+
+a:hover {
+		background-color: #323232;
+		color: #d7ebfa;
+}
