@@ -18,6 +18,12 @@ body {
 	margin-bottom: 45px
 }
 
+@media (max-width: 1200px) { 
+	.tradingview-widget-container {
+		max-width: 80%;		
+	}
+}
+
 @media (max-width: 800px) { 
 	.parblock {
 		font-size: 18;
