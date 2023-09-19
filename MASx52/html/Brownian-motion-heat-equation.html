@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 13, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 14, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MASx52 — Exercises on Chapter <a href=The-Black-Scholes-model.html#c:bs>15</a></title>
+<title>MASx52 — Brownian motion and the heat equation </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -221,14 +221,14 @@ MathJax = {
 
 
 
-<a id="notes_2-autopage-143"></a>
+<a id="notes_2-autopage-25"></a>
 <nav class="topnavigation"><a href="notes_2.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: September 13, 2023
+last updated: September 14, 2023
 </p>
 
 </header>
@@ -865,175 +865,396 @@ Home</a>
 
 <p>
 <!--
-......     section Exercises on Chapter <a href=The-Black-Scholes-model.html#c:bs>15</a> ......
+......     section Brownian motion and the heat equation           ......
 -->
-<h4 id="autosec-144"><span class="sectionnumber">15.6&#x2003;</span>Exercises on Chapter <a href="The-Black-Scholes-model.html#c:bs">15</a></h4>
-<a id="notes_2-autopage-144"></a>
-<a id="notes_2-autofile-25"></a>
+<h4 id="autosec-26"><span class="sectionnumber">11.3&#x2003;</span>Brownian motion and the heat equation \((\star )\)</h4>
+<a id="notes_2-autopage-26"></a>
+<a id="notes_2-autofile-4"></a> <a id="s:heat"></a>
 
 <p>
-All questions refer to the Black-Scholes model, and use the the same notation as in the rest of this chapter.
+Brownian motion lies at the heart of many modern models of the physical world. Before we study Brownian motion in its own right, let us give one example of a model with close connection to Brownian motion,
+namely heat diffusion. Note that this section is marked with a \((\star )\), meaning that it is off syllabus.
 </p>
+
+<p>
+Consider a long thin metal rod. If, initially, some parts of the rod are hot and some are cold, then as time passes heat will diffuse through the rod: the differences in temperature slowly average out. Suppose that the
+temperature of the metal in the rod at position \(x\) at time \(t\) is given by \(u(t,x)\), where \(t\in [0,\infty )\) represents time and \(x\in \R \) represents space. Suppose that, at time \(0\), the
+temperature at the point \(x\) is \(f(x)=u(0,x)\).
+</p>
+
+<p>
+Then (as you may have seen from e.g.&nbsp;MAS222), it is well known that the <i>heat equation</i>
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{11.}{2}\)</span>
+
 <!--
-......   subsection On the Black Scholes model ......
+
+
+                                                                                                       ∂u   1 ∂2u
+                                                                                                          =                                                                        (11.3)--><a id="eq:heat"></a><!--
+                                                                                                       ∂t   2 ∂x2
 -->
-<h5 id="autosec-145">On the Black Scholes model</h5>
-<a id="notes_2-autopage-145"></a>
-
-
-
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-<b>15.1</b> <a id="ps:bs_explicit"></a> Let \(c\in \R \) be a deterministic constant. Show that the functions \(f(t,s)=cs\) and \(g(t,s)=ce^{rt}\) are both solutions of the Black-Scholes PDE <span
-class="textup">(<a href="The-Black-Scholes-equation.html#eq:bs_eq">15.10</a>)</span>.
-</p>
-</li>
-<li>
-
 
 <p>
-<b>15.2</b> <a id="ps:pricing_simplest"></a> Consider the contingent claim \(\Phi (S_T)=K\). Use the risk neutral valuation formula <span class="textup">(<a
-href="The-Black-Scholes-equation.html#eq:bs_rnv">15.13</a>)</span> to show that its price, at time \(t\), is \(Ke^{-r(T-t)}\).
-</p>
-</li>
-<li>
 
 
-<p>
-<b>15.3</b> <a id="ps:pricing_log"></a>
-</p>
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="textnormal">(a)</span> Find the price, at time \(t\), of the contingent claim \(\Phi (S_T)=\log (S_T)\). Show that at time \(t=0\) this gives a price of
-</p>
-<p>
-\[e^{-rT}\l (\log S_0+(r-\tfrac 12\sigma ^2)T\r ).\]
-</p>
-</li>
-<li>
-
-
-<p>
-<span class="textnormal">(b)</span> An excitable mathematician suggests the following hedging strategy:
-</p>
-<blockquote>
-<p>
-<i>“At time \(0\), I will buy \(\log S_0\) units of stock. Then I’ll wait until time \(T\). The stock will be worth \(S_T\) then so then I will have \(\log (S_T)\) worth in stock. This means that at time \(0\)
-the arbitrage free price of the contingent claim \(\log (S_T)\) is actually \(\log S_0\), and therefore the formula in part (a) can’t be true.”</i>
-</p>
-</blockquote>
-<p>
-Where is the flaw in this argument?
-</p>
-</li>
-</ul>
-</li>
-<li>
-
-
-<p>
-<b>15.4</b> <a id="ps:pricing_gbm_beta"></a> Let \(\beta \geq 2\).
-</p>
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="textnormal">(a)</span> Calculate \(dY_t\) where \(Y_t=S_t^\beta \), in the risk neutral world \(\Q \). Hence, show that \(Y_t\) is a geometric Brownian motion and find its parameters.
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-<span class="textnormal">(b)</span> Show that the arbitrage free price, at time \(t\), of the contingent claim \(\Phi (S_T)=S_T^\beta \) is given by
-</p>
-<p>
-\[S_t^\beta \exp \l \{-r(T-t)(1-\beta ) -\tfrac 12\sigma ^2\beta (T-t)(1-\beta )\r \}.\]
-</p>
-<p>
+\begin{equation}
+\label {eq:heat} \frac {\p u}{\p t}=\frac 12\frac {\p ^2 u}{\p x^2}
+\end{equation}
 
 
 </p>
-</li>
-</ul>
-</li>
-<li>
-
 
 <p>
-<b>15.5</b> <a id="ps:pricing_binary"></a> Let \(0&lt;\alpha &lt;\beta \) and \(K&gt;0\) be deterministic constants. A binary option is a contract with contingent claim
+with the initial condition
 </p>
-<p>
-\[\Phi (S_T)= \begin {cases} K &amp; \text { if }S_T\in [\alpha ,\beta ]\\ 0 &amp; \text { otherwise}.                      \end {cases} \]
-</p>
-<p>
-Find an explicit formula (in terms of the cumulative distribution function of the \(N(0,1)\) distribution) for the value of this contingent claim at time \(t\in [0,T]\).
-</p>
-</li>
-<li>
 
+<span class="hidden"> \(\seteqnumber{0}{11.}{3}\)</span>
 
-<p>
-<b>15.6</b> <a id="ps:P_mart_bs"></a> Find a deterministic process \(F_t\) such that \(\frac {S_t}{F_t}\) is a martingale under \(\P \).
-</p>
-</li>
-<li>
-
-
-<p>
-<b>15.7</b> <a id="ps:pricing_linear"></a> Given a contingent claim \(\Phi (S_T)\), let \(\Pi _t(\Phi )\) denote the price of this contingent claim at time \(t\in [0,T]\). Let \(\Phi _1(S_T)\) and
-\(\Phi _2(S_T)\) be two contingent claims, with exercise date \(T\), and let \(\alpha ,\beta \in \R \) be deterministic constants. Show that
-</p>
-<p>
-\[\Pi _t(\alpha \Phi _1+\beta \Phi _2)=\alpha \Pi _t(\Phi _1)+\beta \Pi _t(\Phi _2)\]
-</p>
-<p>
-for all \(t\in [0,T]\).
-</p>
-<p>
-
-
-</p>
-</li>
-</ul>
 <!--
-......   subsection Challenge Questions ......
+
+
+
+                                                                                                     u(0, x) = f (x)                                                         (11.4)--><a id="eq:heat_init"></a><!--
+
 -->
-<h5 id="autosec-147">Challenge Questions</h5>
-<a id="notes_2-autopage-147"></a>
+
+<p>
 
 
+\begin{equation}
+\label {eq:heat_init} u(0,x)=f(x)
+\end{equation}
+
+
+</p>
+
+<p>
+describes how the temperature \(u(t,x)\) changes with time, from an initial temperature of \(f(x)\) at site \(x\). This equation has a close connection to Brownian motion, which we now explore.
+</p>
+<div class="theorembodyremark">
 
 <ul style="list-style-type:none">
 
 
+
+<a id="autoid-15"></a>
 <li>
 <p>
-<b>15.8</b> <a id="ps:excitable"></a> Our excitable mathematician from exercise <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_log"><b>15.3</b></a> is back. In response to <a
-href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.4</b></a>, they say
+<span class="theoremheaderplain">Remark 11.3.1</span> <a id="autoid-16" ></a >(\(\star \)) In the world of PDEs, the factor \(\frac 12\) in <span class="textup">(<a
+href="Brownian-motion-heat-equation-star.html#eq:heat">11.3</a>)</span> is not normally included, but in probability we tend to include it. The difference is just that time runs twice as fast (i.e.&nbsp;we
+substituted \(2t\) in place of \(t\)), which isn’t very important.
 </p>
-<blockquote>
-<p>
-<i>The situation in exercise <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.4</b></a>, is equivalent to a ‘new’ Black-Scholes model in which the stock asset is not \(S_t\), but
-\(Y_t\). Since, by part (a) of <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.4</b></a>, \(Y_t\) follows a geometric Brownian motion, this new model is actually just our
-usual Black-Scholes model but with different parameters. In this new model, we can hedge a single unit of the new ‘\(Y_t\)’ stock by simply buying a single unit of the new stock. So, the arbitrage free price of a
-single unit of the new stock will be \(Y_t=S_t^\beta \) and the answer claimed in <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.4</b></a>(b) is wrong.</i>
-</p>
-</blockquote>
-<p>
-Where is the flaw in this argument?
-</p>
+
+
 </li>
+
 </ul>
+
+</div>
+
+<p>
+If we start Brownian motion from \(x\in \R \), then \(B_t\sim x+N(0,t)\sim N(x,t)\), so we can write down its probability density function
+</p>
+
+<p>
+\[\phi _{t,x}(y)=\frac {1}{\sqrt {2\pi t}}\exp \l (-\frac {(y-x)^2}{2t}\r ).\]
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-17"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 11.3.2</span> <a id="autoid-18" ></a ><a id="l:heat_1"></a> \(\phi _{t,x}(y)\) satisfies the heat equation <span class="textup">(<a
+href="Brownian-motion-heat-equation-star.html#eq:heat">11.3</a>)</span>.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that if any function \(u(t,x)\) satisfies the heat equation, so does \(u(t,x-y)\) for
+any value of \(y\). So, we can assume \(y=0\) and need to show that
+</p>
+
+<p>
+\[\phi _{t,x}(0)=\frac {1}{\sqrt {2\pi t}}\exp \l (-\frac {x^2}{2t}\r )\]
+</p>
+
+<p>
+satisfies <span class="textup">(<a href="Brownian-motion-heat-equation-star.html#eq:heat">11.3</a>)</span>. This is an exercise in partial differentiation. Using the chain and product rules:
+</p>
+<span class="hidden"> \(\seteqnumber{0}{11.}{4}\)</span>
+
+
+
+<!--
+
+
+                                                                                     −1
+                                                                                                              1 −x2 (−1)
+                                                                                                       !                             !
+                                                                               ∂ϕ             x2                               x2
+                                                                                  = √ 2 exp −              +√            exp −
+                                                                               ∂t    2πt3     2t              2πt 2t2          2t
+                                                                                     1              1
+                                                                                                            !              !
+                                                                                             x2                       x2
+                                                                                   =√            −              exp −
+                                                                                     2π     2t5/2 2t3/2               2t
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\frac {\p \phi }{\p t}&amp;=\frac {\frac {-1}{2}}{\sqrt {2\pi t^3}}\exp \l (-\frac {x^2}{2t}\r )+\frac {1}{\sqrt {2\pi t}}\frac {-x^2(-1)}{2t^2}\exp \l (-\frac {x^2}{2t}\r )\\
+&amp;=\frac {1}{\sqrt {2\pi }}\l (\frac {x^2}{2t^{5/2}}-\frac {1}{2t^{3/2}}\r )\exp \l (-\frac {x^2}{2t}\r )
+\end{align*}
+and
+</p>
+<span class="hidden"> \(\seteqnumber{0}{11.}{4}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                  1 −2x
+                                                                                                                               !
+                                                                                            ∂ϕ                 x2
+                                                                                               =√        exp −
+                                                                                            ∂x    2πt 2t       2t
+                                                                                                                      !
+                                                                                                  −x          x2
+                                                                                                =√      exp −
+                                                                                                   2πt3       2t
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\frac {\p \phi }{\p x} &amp;=\frac {1}{\sqrt {2\pi t}}\frac {-2x}{2t}\exp \l (-\frac {x^2}{2t}\r )\\ &amp;=\frac {-x}{\sqrt {2\pi t^3}}\exp \l (-\frac {x^2}{2t}\r )
+\end{align*}
+so that
+</p>
+<span class="hidden"> \(\seteqnumber{0}{11.}{4}\)</span>
+
+
+
+<!--
+
+
+                                                                                                           !                        !
+                                                                                ∂2ϕ    −1         x2             −x −2x        x2
+                                                                                    = √     exp −              +√        exp −
+                                                                                ∂x2    2πt3       2t             2πt3 2t       2t
+                                                                                       1               1
+                                                                                                            !              !
+                                                                                                x2                    x2
+                                                                                     =√             − 3/2       exp −          .
+                                                                                       2π      t5/2  t                2t
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\frac {\p ^2\phi }{\p x^2} &amp;=\frac {-1}{\sqrt {2\pi t^3}}\exp \l (-\frac {x^2}{2t}\r )+\frac {-x}{\sqrt {2\pi t^3}}\frac {-2x}{2t}\exp \l (-\frac {x^2}{2t}\r )\\ &amp;=\frac
+{1}{\sqrt {2\pi }}\l (\frac {x^2}{t^{5/2}}-\frac {1}{t^{3/2}}\r )\exp \l (-\frac {x^2}{2t}\r ).
+\end{align*}
+Hence, \(\frac {\p \phi }{\p t}=\frac 12\frac {\p ^2\phi }{\p x^2}\). &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+We can use Lemma <a href="Brownian-motion-heat-equation-star.html#l:heat_1">11.3.2</a> to give a physical explanation of the connection between Brownian motion and heat diffusion. We define
+</p>
+<span class="hidden"> \(\seteqnumber{0}{11.}{4}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                 w(t, x) = Ex [f (Bt )]                            (11.5)           --><a id="eq:heat_duality"></a><!--
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align}
+\label {eq:heat_duality} w(t,x)&amp;=\E _x[f(B_t)]
+\end{align}
+That is, to get \(w(t,x)\), we start a particle at location \(x\), let it perform Brownian motion for time \(t\), and then take the expected value of \(f(B_t)\).
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-19"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 11.3.3</span> <a id="autoid-20" ></a ><a id="l:bm_heat_eq"></a> \(w(t,x)\) satisfies the heat equation <span class="textup">(<a
+href="Brownian-motion-heat-equation-star.html#eq:heat">11.3</a>)</span> and the initial condition <span class="textup">(<a
+href="Brownian-motion-heat-equation-star.html#eq:heat_init">11.4</a>)</span>.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+Before we give the proof, let us discuss the physical interpretation of this result. Within our metal rod, the metal atoms have fixed positions. But atoms that are next to each other transfer heat between each other,
+in random directions. If we could pick on an individual ‘piece’ of heat and watch it move, it would move like a Brownian motion. Since there are lots of little pieces of heat moving around, and they are <i>very
+</i>small, when we measure temperature we only see the average effect of all the little pieces, corresponding to \(\E [\ldots ]\).
+</p>
+
+<p>
+We should think of the Brownian motion in <span class="textup">(<a href="Brownian-motion-heat-equation-star.html#eq:heat_duality">11.5</a>)</span> as running in reverse time, so as it tracks
+(backwards in time) the path through space that a typical piece of heat has followed. Then, after running for time \(t\), it looks at the initial condition to find out how much heat there was initially that its eventual
+location.
+</p>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We have \(B_0=x\), so
+</p>
+
+<p>
+\[w(0,x)=\E _x[f(B_0)]=\E _x[f(x)]=f(x).\]
+</p>
+
+<p>
+Hence the initial condition <span class="textup">(<a href="Brownian-motion-heat-equation-star.html#eq:heat_init">11.4</a>)</span> is satisfied. We still need to check <span class="textup">(<a
+href="Brownian-motion-heat-equation-star.html#eq:heat">11.3</a>)</span>. To do so we will allow ourselves to swap \(\int \)s and partial derivatives<sup>2</sup><a id="notes_2-autopage-29"></a>.
+We have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{11.}{5}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                               w(t, x) = Ex [f (Bt )]
+                                                                                                              Z   ∞
+                                                                                                          =           f (y)ϕt,x (y) dy
+                                                                                                               −∞
+
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+w(t,x)&amp;=\E _x[f(B_t)]\\ &amp;=\int _{-\infty }^\infty f(y)\phi _{t,x}(y)\,dy
+\end{align*}
+so, by Lemma <a href="Brownian-motion-heat-equation-star.html#l:heat_1">11.3.2</a>,
+</p>
+<span class="hidden"> \(\seteqnumber{0}{11.}{5}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                             ∂w   ∂
+                                                                                                          Z   ∞
+                                                                                                =                  f (y)ϕt,x (y) dy
+                                                                                             ∂t   ∂t          −∞
+                                                                                                      Z   ∞    ∂
+                                                                                                  =               ϕt,x (y) dy
+                                                                                                              f (y)
+                                                                                                     −∞        ∂t
+                                                                                                               1 ∂2
+                                                                                                    Z ∞
+                                                                                                  =      f (y)        ϕt,x (y) dy
+                                                                                                     −∞        2 ∂x2
+                                                                                                    1 ∂2
+                                                                                                           Z ∞
+                                                                                                  =              f (y)ϕt,x (y) dy
+                                                                                                    2 ∂x2 −∞
+                                                                                                    1 ∂2w
+                                                                                                  =
+                                                                                                    2 ∂x2
+
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\frac {\p w}{\p t} &amp;=\frac {\p }{\p t}\int _{-\infty }^\infty f(y)\phi _{t,x}(y)\,dy\\ &amp;=\int _{-\infty }^\infty f(y)\frac {\p }{\p t}\phi _{t,x}(y)\,dy\\ &amp;=\int
+_{-\infty }^\infty f(y)\frac 12\frac {\p ^2}{\p x^2}\phi _{t,x}(y)\,dy\\ &amp;=\frac 12\frac {\p ^2}{\p x^2}\int _{-\infty }^\infty f(y)\phi _{t,x}(y)\,dy\\ &amp;=\frac 12\frac
+{\p ^2 w}{\p x^2}\\
+\end{align*}
+as required. &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+There are many similar ways to connect various stochastic processes to PDEs. This kind of connection can be very useful, because it allows us to transfer knowledge about stochastic process to (and from) knowledge
+about PDEs. We’ll see a more sophisticated example in Section <a href="Stochastic-processes-in-continuous-time.html#s:fk">14.1</a>.
+</p>
+<div role="note" class="footnotes">
+
+<a id="notes_2-autopage-30"></a>
+
+<p>
+<sup>2</sup>&nbsp;As far as this course is concerned, there is no need for you to justify interchanging \(\int \) and derivatives. In reality, though, it can (occasionally) fail and there are conditions to check. See
+MAS350/61022 for details.
+</p>
+
+
+
+</div>
 
 </section>
 
@@ -1044,7 +1265,7 @@ Where is the flaw in this argument?
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 13, 2023
+Copyright Nic Freeman, Sheffield University, last updated September 14, 2023
 </p>
 
 </footer>
