@@ -14,7 +14,7 @@ body {
 
 .tradingview-widget-container {
 	max-width: 55%;		
-	max-height: 275;
+	max-height: 275px;
 	margin-bottom: 45px
 }
 
