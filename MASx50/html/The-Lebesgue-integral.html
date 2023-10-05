@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 19, 2023." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, October 5, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<title>MAS350/61022 — The Lebesgue integral</title>
+<title>MAS31002/61022 — The Lebesgue integral</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -242,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 19, 2023
+last updated: October 5, 2023
 </p>
 
 </header>
@@ -1079,7 +1076,17 @@ It is important that we have a way to avoid handling infinities. This is provide
 
 <!--
 
-                                          ons-with-Lebesgue-integral.html#s:leb_int_calcs">4.7</a>. First, let us complete the process of establishing
+                                          </div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We have \(0\leq f_+\leq |f|\) and \(0\leq f_-\leq |f|\), hence if \(\int _S
+|f|\,dm&lt;\infty \) then Lemma <a href="The-Lebesgue-integral-non-negative-measurable-functions.html#l:leb_int_step_2_monotonicity">4.2.2</a> gives that both \(\int _S f_+\,dm\) and
+\(\int _S f-\,dm\) are finite. The reverse implication follows because \(|f|=f_++f_-\), which are all non-negative measurable functions, hence by Lemma <a
+href="The-monotone-convergence-theorem.html#l:leb_int_step_2_linearity">4.3.2</a> we have \(\int _S|f|\,dm = \int _S f_+\,dm + \int _Sf_-\,dm &lt;\infty \). &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+We will begin to look at examples where we evaluate integrals in Section <a href="Calculations-with-Lebesgue-integral.html#s:leb_int_calcs">4.7</a>. First, let us complete the process of establishing
 the key properties of the Lebesgue integral.
 </p>
 <div class="theorembodytheorem">
@@ -1255,7 +1262,7 @@ In the above, the first and last equalities use part 1 of the present lemma, and
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 19, 2023
+Copyright Nic Freeman, Sheffield University, last updated October 5, 2023
 </p>
 
 </footer>

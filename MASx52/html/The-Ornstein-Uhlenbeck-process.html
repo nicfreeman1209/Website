@@ -4,11 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 5, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
 <title>MASx52 — The Ornstein–Uhlenbeck process </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
@@ -242,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 19, 2023
+last updated: October 5, 2023
 </p>
 
 </header>
@@ -916,7 +913,7 @@ The parameters here are \(\mu \in \R \), \(\theta &gt;0\) and \(\sigma &gt;0\).
 <p>
 We’ll start our analysis of the OU process by calculating \(\E [X_t]\), in similar style to Exercises <a href="Exercises-on-Chapter-ref-c-sdes.html#ps:sde_Evar_ode"><b>13.7</b></a>-<a
 href="Exercises-on-Chapter-ref-c-sdes.html#ps:sde_Evar_ode_2"><b>13.9</b></a>. Writing equation <span class="textup">(<a
-href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.11</a>)</span> in integral form, we have \(X_t-X_0=\int _0^t(\mu -X_s)\,ds + \int _0^t \sigma dB_s\). Taking expectations and noting
+href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.3</a>)</span> in integral form, we have \(X_t-X_0=\int _0^t(\mu -X_s)\,ds + \int _0^t \sigma dB_s\). Taking expectations and noting
 that Ito integrals are zero mean martingales, we have
 </p>
 <span class="hidden"> \(\seteqnumber{0}{13.}{11}\)</span>
@@ -952,10 +949,10 @@ Writing \(f(t)=\E [X_t]\) and using the fundamental theorem of calculus, we obta
 
 <p>
 The most important feature of the OU process is a property known as <em>mean reversion</em>. This language is best understood if we take \(X_0=\mu \), in which case from our analysis above we have \(\E
-[X_t]=\mu \) for all \(t\). Let us examine <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.11</a>)</span> closely in this case. If the process satisfies
-\(X_t&gt;\mu \) then we have \(\theta (\mu -X_t)&lt;0\), which is a drift downwards, meaning that (on average) the process \(X_t\) will tend to become closer to its mean value \(\mu \) in the near future.
-Similarly, if \(X_t&lt;\mu \) then we have \(\theta (\mu -X_t)&gt;0\), which is a drift upwards, meaning that (on average) the process \(X_t\) will tend to become closer to its mean value \(\mu \) in the near
-future. In both cases, the drift is towards the average value \(\mu \).
+[X_t]=\mu \) for all \(t\). Let us examine <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.3</a>)</span> closely in this case. If the process satisfies \(X_t&gt;\mu
+\) then we have \(\theta (\mu -X_t)&lt;0\), which is a drift downwards, meaning that (on average) the process \(X_t\) will tend to become closer to its mean value \(\mu \) in the near future. Similarly, if
+\(X_t&lt;\mu \) then we have \(\theta (\mu -X_t)&gt;0\), which is a drift upwards, meaning that (on average) the process \(X_t\) will tend to become closer to its mean value \(\mu \) in the near future. In
+both cases, the drift is towards the average value \(\mu \).
 </p>
 
 <p>
@@ -984,8 +981,8 @@ More generally, for any \(X_0\in \R \) the same line of thinking shows that the 
 </p>
 
 <p>
-We can solve <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.11</a>)</span>, at least to an extent, to obtain a useful formula for \((X_t)\). First we substitute
-\(Y_t=X_t-\mu \) and apply Ito’s formula to <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.11</a>)</span>, we obtain \(dY_t=-\theta Y_t d_t+\sigma dB_t\)
+We can solve <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.3</a>)</span>, at least to an extent, to obtain a useful formula for \((X_t)\). First we substitute
+\(Y_t=X_t-\mu \) and apply Ito’s formula to <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.3</a>)</span>, we obtain \(dY_t=-\theta Y_t d_t+\sigma dB_t\)
 (this calculation is left for you). Next, set \(Z_t=e^{\theta t}Y_t\) to obtain
 </p>
 <span class="hidden"> \(\seteqnumber{0}{13.}{11}\)</span>
@@ -1105,7 +1102,7 @@ unlikely in some cases) for all choices of the model parameters. Various models 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 19, 2023
+Copyright Nic Freeman, Sheffield University, last updated October 5, 2023
 </p>
 
 </footer>
