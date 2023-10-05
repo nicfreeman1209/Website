@@ -44,12 +44,12 @@ body {
 }
 
 a {
-	color : #0066cc;
+	color: #0077dd;
     text-decoration: none;
 }
 
 a:visited {
-	color: #800090;
+	color: #aa00bb; 
 }
 
 a:hover {
