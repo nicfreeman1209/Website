@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 5, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — A branching process</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 5, 2023
+last updated: October 13, 2023
 </p>
 
 </header>
@@ -1030,38 +1030,38 @@ Let us assume that \(G\in L^1\) and write \(\mu =\E [G]\). Let \(\mc {F}_n=\sigm
 <!--
 
 
-                                                                                              h                               i
-                                                                              E[Zn+1 ] = E X1n+1 + . . . + XZn+1
-                                                                                                              n
+                                                                                               h                               i
+                                                                               E[Zn+1 ] = E X1n+1 + . . . + XZn+1
+                                                                                                               n
 
-                                                                                                  ∞ 
-                                                                                              "                                                            #
-                                                                                                                                          1{Zn = k}
-                                                                                                  X                                   
-                                                                                       =E                   X1n+1   + ... +   Xkn+1
-                                                                                                  k=1
-                                                                                           ∞
-                                                                                                                                          1{Zn = k}
-                                                                                           X          h                                                  i
-                                                                                       =          E       X1n+1 + . . . + Xkn+1
-                                                                                           k=1
+                                                                                                   ∞ 
+                                                                                               "                                                            #
+                                                                                                                                           1{Zn = k}
+                                                                                                   X                                   
+                                                                                        =E                   X1n+1   + ... +   Xkn+1
+                                                                                                   k=1
                                                                                             ∞
-                                                                                                                                           E [1{Zn = k}]
-                                                                                           X          h                              i
-                                                                                       =          E       X1n+1 + . . . + Xkn+1
-                                                                                           k=1
-                                                                                           X∞          h          i              h           i
-                                                                                       =           E X1n+1 + . . . + E Xkn+1                       P [Zn = k]
-                                                                                           k=1
-                                                                                           X∞
-                                                                                       =          kµP[Zn = k]
-                                                                                           k=1
+                                                                                                                                           1{Zn = k}
+                                                                                            X          h                                                  i
+                                                                                        =          E       X1n+1 + . . . + Xkn+1
+                                                                                            k=1
                                                                                              ∞
-                                                                                             X
-                                                                                       =µ             kP[Zn = k]
-                                                                                              k=1
+                                                                                                                                            E [1{Zn = k}]
+                                                                                            X          h                              i
+                                                                                        =          E       X1n+1 + . . . + Xkn+1
+                                                                                            k=1
+                                                                                            X∞          h          i              h           i
+                                                                                        =           E X1n+1 + . . . + E Xkn+1                       P [Zn = k]
+                                                                                            k=1
+                                                                                            X∞
+                                                                                        =          kµP[Zn = k]
+                                                                                            k=1
+                                                                                              ∞
+                                                                                              X
+                                                                                        =µ             kP[Zn = k]
+                                                                                               k=1
 
-                                                                                       = µ E[Zn ].                                         (4.6)                             --><a id="eq:br_exp"></a><!--
+                                                                                        = µ E[Zn ].                                         (4.6)                            --><a id="eq:br_exp"></a><!--
 
 
 
@@ -1116,33 +1116,33 @@ steps are essentially the same, and we obtain
 <!--
 
 
-                                                                                              ∞
-                                                                                                                                              1{Zn = k} | Fn
-                                                                                              X           h                                                      i
-                                                                            E[Zn+1 | Fn ] =           E        X1n+1 + . . . + Xkn+1
-                                                                                              k=1
                                                                                                ∞
-                                                                                                      1{Zn = k}E X1n+1 + . . . + Xkn+1 | Fn
-                                                                                              X                         h                                      i
-                                                                                         =
-                                                                                              k=1
-                                                                                               ∞
-                                                                                                      1{Zn = k}E X1n+1 + . . . + Xkn+1
-                                                                                              X                         h                              i
-                                                                                         =
-                                                                                              k=1
-                                                                                               ∞
-                                                                                                      kµ1{Zn = k}
-                                                                                              X
-                                                                                         =
-                                                                                              k=1
+                                                                                                                                               1{Zn = k} | Fn
+                                                                                               X           h                                                      i
+                                                                             E[Zn+1 | Fn ] =           E        X1n+1 + . . . + Xkn+1
+                                                                                               k=1
                                                                                                 ∞
-                                                                                                          k 1{Zn = k}
-                                                                                                X
-                                                                                         =µ
-                                                                                                  k=1
+                                                                                                       1{Zn = k}E X1n+1 + . . . + Xkn+1 | Fn
+                                                                                               X                         h                                      i
+                                                                                          =
+                                                                                               k=1
+                                                                                                ∞
+                                                                                                       1{Zn = k}E X1n+1 + . . . + Xkn+1
+                                                                                               X                         h                              i
+                                                                                          =
+                                                                                               k=1
+                                                                                                ∞
+                                                                                                       kµ1{Zn = k}
+                                                                                               X
+                                                                                          =
+                                                                                               k=1
+                                                                                                 ∞
+                                                                                                           k 1{Zn = k}
+                                                                                                 X
+                                                                                          =µ
+                                                                                                   k=1
 
-                                                                                         = µZn .
+                                                                                          = µZn .
 
 
 
@@ -1170,7 +1170,7 @@ Here we use that \(Z_n\) is \(\mc {F}_n\) measurable to take out what is known, 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 5, 2023
+Copyright Nic Freeman, Sheffield University, last updated October 13, 2023
 </p>
 
 </footer>

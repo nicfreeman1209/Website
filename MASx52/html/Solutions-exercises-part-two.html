@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 5, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 13, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Solutions to exercises (part two)</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -215,17 +215,6 @@ MathJax = {
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-J4222H8D03');
-</script>
-<!-- Google tag (gtag.js) -->
-
 
 </head>
 <body>
@@ -239,7 +228,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 5, 2023
+last updated: October 13, 2023
 </p>
 
 </header>
@@ -1120,46 +1109,7 @@ Then, \(e^Z=e^\mu e^Y\) and
                                                                                             E[eY ] = √         ey e− 2σ2 dy
                                                                                                        2πσ −∞
                                                                                                         1                 1 
-                                                                                                           Z ∞                                       Z ∞        (              )
-                                                                                                      σ2
-                                                                                                    =e2 √          exp −                  dy
-                                                                                                          2πσ −∞               2σ 2
-                                                                                                            σ2
-                                                                                                    =e2 .
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-\E [e^Y] &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty e^y e^{-\frac {y^2}{2\sigma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
-\{-\frac {1}{2\sigma ^2}\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
-^4\r )\r \}\,dy\\ &amp;=e^{\frac {\sigma ^2}{2}}\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {(y-\sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
-{\sigma ^2}{2}}.
-\end{align*}
-Here, to deduce the third line we complete the square, and to deduce the final line we use that the p.d.f.&nbsp;of a \(N(\sigma ^2,\sigma )\) random variable integrates to \(1\). Therefore,
-</p>
-<p>
-\[\E [e^Z]=e^\mu \E [e^Y]=e^{\mu +\frac {\sigma ^2}{2}}.\]
-</p>
-</li>
-<li>
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-bm.html#ps:mart_bm"><b>11.6</b></a>
-</p>
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="textnormal">(a)</span> Since \(B_t\) is adapted, \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is also adapted. By <span class="textup">(<a
-href="Brownian-motion-definition.html#eq:lognormal_mean">11.2</a>)</span> and scaling of normal random variables we have that \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is in \(L^1\). It remains
+                                                                                                           Z ∞      lognormal_mean">11.2</a>)</span> and scaling of normal random variables we have that \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is in \(L^1\). It remains
 only to check that
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{0}\)</span>
@@ -2311,36 +2261,16 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 
                                                                                                                              1
-                                                                                                                                 
-                                                                        dZt = (0) + (cos Xt ) (cos Xt ) + (cos Xt )2 (− sin Xt )                                                                                 dt + (cos Xt )(cos Xt ) dBt
-                                                                                                         2
-                                                                                                                                                               
-                                                                              = 1−            Zt
-                                                                                              2          1 − Zt2 dt + 1 − Zt2 dBt
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dZ_t &amp;=\l \{(0)+(\cos X_t)\l (\cos X_t\r )+\frac 12(\cos X_t)^2\l (-\sin X_t\r )\r \}\,dt+(\cos X_t)(\cos X_t)\,dB_t\\ &amp;=\l (1-\tfrac {Z_t}{2}\r )\l (1-Z_t^2\r )\,dt+\l
-(1-Z_t^2\r )\,dB_t
-\end{align*}
-
-
+                                                                                                                      >(b)</span> \(dZ_t=\l \{\alpha e^{\alpha t}+(0)(0)+\frac 12(1^2)(0)\r \}\,dt+(1)(0)\,dB_t=\alpha e^{\alpha t}\,dt\).
 </p>
-</li>
-</ul>
+
+
 </li>
 <li>
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-sdes.html#ps:Btn_diff"><b>13.4</b></a> We have
+<span class="textnormal">(c)</span> We have
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
 
@@ -2348,10 +2278,8 @@ dZ_t &amp;=\l \{(0)+(\cos X_t)\l (\cos X_t\r )+\frac 12(\cos X_t)^2\l (-\sin X_t
 <!--
 
 
-                                                                                                                                            1
-                                                                                                                                                                                                       
-                                                                                dFt = 0 +                 (0)(nBtn−1 )                     + (12 )(n(n − 1)Btn−2                                                 dt + (1)nBtn−1 dBt
-                                                                                                                                            2
+                                                                                                                                   −1                   1        2                                                                 −1
+                                                                                                                                                           2
                                                                                                  n(n − 1)Btn−2
                                                                                              =                 dt + nBtn−1 dBt .
                                                                                                        2
@@ -2489,31 +2417,7 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 
                                                                                                1
-                                                                                         t −t/2 + (0) e−Bt −t/2 − (Bt + t)e−Bt −t/2
-                                                                                               2
-                                                                                               1 2  −Bt −t/2                                    
-                                                                                              + (1 ) −e          −e −Bt −t/2
-                                                                                                                             + (Bt + t)e−Bt −t/2
-                                                                                                                                                    dt
-                                                                                               2
-                                                                                                                                                                                                                                            
-                                                                                                                                                   + (12 ) e−Bt −t/2 − (Bt + t)e−Bt −t/2 dBt
-
-                                                                                    = (1 − t − Bt )e−Bt −t/2 dBt .
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dY_t &amp;=\bigg \{e^{-B_t-t/2}-\frac {1}{2}(B_t+t)e^{-B_t-t/2}+(0)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\\ &amp;\hspace {5pc} + \frac 12(1^2)\l
-(-e^{-B_t-t/2}-e^{-B_t-t/2}+(B_t+t)e^{-B_t-t/2}\r )\bigg \}\,dt \\ &amp;\hspace {10pc} + (1^2)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\,dB_t\\ &amp;=(1-t-B_t)e^{-B_t-t/2}\,dB_t.
-\end{align*}
-Hence \(Y_t=Y_0+\int _0^t(1-u-B_u)e^{-B_u-u/2}\,dB_u\), which is martingale by Theorem <a href="Ito-integrals.html#t:stoch_int_final">12.2.1</a>.
+                                                                                         grals.html#t:stoch_int_final">12.2.1</a>.
 </p>
 </li>
 </ul>
@@ -2756,7 +2660,7 @@ have \(A=1\) and thus \(\E [Y_t]=e^t\). Hence,
 <a href="Exercises-on-Chapter-ref-c-sdes.html#ps:ou_autocov"><b>13.10</b></a>
 </p>
 <p>
-Recall that \(\cov (X_s, X_t)=\E [(X_t-\E [X_t])(X_s-\E [X_s])\). From <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#eq:ou_solution">13.11</a>)</span> we have
+Recall that \(\cov (X_s, X_t)=\E [(X_t-\E [X_t])(X_s-\E [X_s])\). From <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#eq:ou_solution">13.12</a>)</span> we have
 </p>
 <p>
 \[\E [X_t]=\E [e^{-\theta t}(X_t-\mu )]+\E \l [\int _0^t e^{-\theta (t-u)}\,dB_u\r ]=\E [e^{-\theta t}(X_t-\mu )]+0,\]
@@ -2925,7 +2829,7 @@ and thus \(X_t\) solves <span class="textup">(<a href="Geometric-Brownian-motion
 
 <p>
 <a href="Exercises-on-Chapter-ref-c-sdes.html#ps:stoch_exp_check"><b>13.13</b></a> Equation <span class="textup">(<a
-href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp_pre">13.13</a>)</span> says that
+href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp_pre">13.14</a>)</span> says that
 </p>
 <p>
 \[X_t=X_0\exp \l (\int _0^t\sigma _u\,dB_u -\frac {1}{2}\int _0^t\sigma _u^2\,du\r )\]
@@ -2963,7 +2867,7 @@ theorem of calculus) we obtain
 \begin{align*}
 dX_t&amp;=\l (-\frac 12\sigma _t^2X_t+(0)(X_t)+\frac 12(\sigma _t^2)(X_t)\r )\,dt+(\sigma _t)(X_t)\,dB_t\\ &amp;=\sigma _t X_t\,dB_t.
 \end{align*}
-Hence, \(X_t\) solves <span class="textup">(<a href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp">13.12</a>)</span>.
+Hence, \(X_t\) solves <span class="textup">(<a href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp">13.13</a>)</span>.
 </p>
 </li>
 <li>
@@ -4762,7 +4666,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 5, 2023
+Copyright Nic Freeman, Sheffield University, last updated October 13, 2023
 </p>
 
 </footer>
