@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 13, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 18, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Solutions to exercises (part two)</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -215,6 +215,17 @@ MathJax = {
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J4222H8D03');
+</script>
+<!-- Google tag (gtag.js) -->
+
 
 </head>
 <body>
@@ -228,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 13, 2023
+last updated: October 18, 2023
 </p>
 
 </header>
@@ -1109,7 +1120,47 @@ Then, \(e^Z=e^\mu e^Y\) and
                                                                                             E[eY ] = √         ey e− 2σ2 dy
                                                                                                        2πσ −∞
                                                                                                         1                 1 
-                                                                                                           Z ∞      lognormal_mean">11.2</a>)</span> and scaling of normal random variables we have that \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is in \(L^1\). It remains
+                                                                                                           Z ∞                                         1                 (y − σ 2 )2
+                                                                                                              Z ∞        (              )
+                                                                                                      σ2
+                                                                                                    =e2 √          exp −                  dy
+                                                                                                          2πσ −∞               2σ 2
+                                                                                                            σ2
+                                                                                                    =e2 .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [e^Y] &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty e^y e^{-\frac {y^2}{2\sigma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
+\{-\frac {1}{2\sigma ^2}\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
+^4\r )\r \}\,dy\\ &amp;=e^{\frac {\sigma ^2}{2}}\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {(y-\sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
+{\sigma ^2}{2}}.
+\end{align*}
+Here, to deduce the third line we complete the square, and to deduce the final line we use that the p.d.f.&nbsp;of a \(N(\sigma ^2,\sigma )\) random variable integrates to \(1\). Therefore,
+</p>
+<p>
+\[\E [e^Z]=e^\mu \E [e^Y]=e^{\mu +\frac {\sigma ^2}{2}}.\]
+</p>
+</li>
+<li>
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bm.html#ps:mart_bm"><b>11.6</b></a>
+</p>
+<ul style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="textnormal">(a)</span> Since \(B_t\) is adapted, \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is also adapted. By <span class="textup">(<a
+href="Brownian-motion-definition.html#eq:lognormal_mean">11.2</a>)</span> and scaling of normal random variables we have that \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is in \(L^1\). It remains
 only to check that
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{0}\)</span>
@@ -2261,61 +2312,8 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 
                                                                                                                              1
-                                                                                                                      >(b)</span> \(dZ_t=\l \{\alpha e^{\alpha t}+(0)(0)+\frac 12(1^2)(0)\r \}\,dt+(1)(0)\,dB_t=\alpha e^{\alpha t}\,dt\).
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-<span class="textnormal">(c)</span> We have
-</p>
-<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
-
-
-<!--
-
-
-                                                                                                                                   −1                   1        2                                                                 −1
-                                                                                                                                                           2
-                                                                                                 n(n − 1)Btn−2
-                                                                                             =                 dt + nBtn−1 dBt .
-                                                                                                       2
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dF_t &amp;=\l (0+(0)(nB_{t}^{n-1})+\frac 12(1^2)(n(n-1)B_t^{n-2}\r )\,dt+(1) n B_t^{n-1}\,dB_t\\ &amp;=\frac {n(n-1)B_t^{n-2}}{2}\,dt+nB_t^{n-1}\,dB_t.
-\end{align*}
-Written out in integral form this gives
-</p>
-<p>
-\[B^t_n=\int _0^t\frac {n(n-1)B_u^{n-2}}{2}\,du+\int _0^t nB_u^{n-1}\,dB_u.\]
-</p>
-<p>
-Taking expectations, swapping \(\int \,du\) with \(\E \), and recalling from Theorem <a href="Ito-integrals.html#t:stoch_int_final">12.2.1</a> that integrals with respect to \(dB_t\) have zero mean,
-we obtain
-</p>
-<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
-
-
-<!--
-
-
-                                                                                                                                        n(n − 1)E[Bun−2 ]
-                                                                                                                                                   t
-                                                                                                                                           Z
-                                                                                                                  E[Btn ]          =                       du + 0
-                                                                                                                                      0         2
-                                                                                                                                     n(n − 1) t
-                                                                                                                                             Z
+                                                                                                                                                         
+                                     Z
                                                                                                                                    =              E[Bun−2 ] du
                                                                                                                                         2      0
 
@@ -2417,7 +2415,32 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 
                                                                                                1
-                                                                                         grals.html#t:stoch_int_final">12.2.1</a>.
+                                                                                                                     
+                                                                              dYt = e−Bt −t/2 − (Bt + t)e−Bt −t/2 + (0) e−Bt −t/2 − (Bt + t)e−Bt −t/2
+                                                                                               2
+                                                                                               1 2  −Bt −t/2                                    
+                                                                                              + (1 ) −e          −e −Bt −t/2
+                                                                                                                             + (Bt + t)e−Bt −t/2
+                                                                                                                                                    dt
+                                                                                               2
+                                                                                                                                                                                                                                            
+                                                                                                                                                   + (12 ) e−Bt −t/2 − (Bt + t)e−Bt −t/2 dBt
+
+                                                                                    = (1 − t − Bt )e−Bt −t/2 dBt .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+dY_t &amp;=\bigg \{e^{-B_t-t/2}-\frac {1}{2}(B_t+t)e^{-B_t-t/2}+(0)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\\ &amp;\hspace {5pc} + \frac 12(1^2)\l
+(-e^{-B_t-t/2}-e^{-B_t-t/2}+(B_t+t)e^{-B_t-t/2}\r )\bigg \}\,dt \\ &amp;\hspace {10pc} + (1^2)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\,dB_t\\ &amp;=(1-t-B_t)e^{-B_t-t/2}\,dB_t.
+\end{align*}
+Hence \(Y_t=Y_0+\int _0^t(1-u-B_u)e^{-B_u-u/2}\,dB_u\), which is martingale by Theorem <a href="Ito-integrals.html#t:stoch_int_final">12.2.1</a>.
 </p>
 </li>
 </ul>
@@ -4666,7 +4689,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 13, 2023
+Copyright Nic Freeman, Sheffield University, last updated October 18, 2023
 </p>
 
 </footer>

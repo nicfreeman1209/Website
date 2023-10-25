@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 13, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 18, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — The Black-Scholes formula</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -215,6 +215,17 @@ MathJax = {
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J4222H8D03');
+</script>
+<!-- Google tag (gtag.js) -->
+
 
 </head>
 <body>
@@ -228,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 13, 2023
+last updated: October 18, 2023
 </p>
 
 </header>
@@ -1171,7 +1182,11 @@ and setting \(x-\frac {y+u}{v}\) we have
                                                                                                          = Ke−r(T −t)                                       √ e− 2 dx
                                                                                                                                 −∞                           2π
                                                                                                                                  1     s
-                                                                                                                                         Z log(s/K)
+                                                                                                                                                                                         Z log(s/K)
+                                                                                  s                                   (y+u)2
+                                                                            =   √     e−r(T −t)                e−y e− 2v2 dy
+                                                                                  2πv            −∞
+                                                                                                Z log(s/K)
                                                                                   s                                   −1 h 2
                                                                                                                                                     i
                                                                             =   √     e−r(T −t)
@@ -1231,8 +1246,21 @@ obtain
                                                                                                      =s                      √ exp −              dx
                                                                                                          −∞                   2π             2
                                                                                                              1          s
-                                                                                                                                         1 2
-                                                                                                              }
+                                                                                                                                                                  
+                                                                                                d1 = √       log     + r+                                     σ (T − t)
+                                                                                                    σ T −t        K                                         2
+                                                                                                       1          St                                        1 2
+                                                                                                           
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
         }
 
         // Create the command map for:
@@ -1397,6 +1425,17 @@ obtain
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J4222H8D03');
+</script>
+<!-- Google tag (gtag.js) -->
+
 
 </head>
 <body>
@@ -1410,7 +1449,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 13, 2023
+last updated: October 18, 2023
 </p>
 
 </header>
@@ -2226,7 +2265,7 @@ Where is the flaw in this argument?
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 13, 2023
+Copyright Nic Freeman, Sheffield University, last updated October 18, 2023
 </p>
 
 </footer>
