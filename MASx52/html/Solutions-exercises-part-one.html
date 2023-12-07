@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 18, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, December 7, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Solutions to exercises (part one)</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -232,14 +232,14 @@ MathJax = {
 
 
 
-<a id="notes_1-autopage-302"></a>
+<a id="notes_1-autopage-301"></a>
 <nav class="topnavigation"><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: October 18, 2023
+last updated: December 7, 2023
 </p>
 
 </header>
@@ -836,28 +836,6 @@ Home</a>
 
 \(\DeclareMathOperator {\cov }{cov}\)
 
-\(\newcommand {\nN }{n \in \mathbb {N}}\)
-
-\(\newcommand {\Br }{{\cal B}(\R )}\)
-
-\(\newcommand {\F }{{\cal F}}\)
-
-\(\newcommand {\ds }{\displaystyle }\)
-
-\(\newcommand {\st }{\stackrel {d}{=}}\)
-
-\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
-
-\(\newcommand {\la }{\langle }\)
-
-\(\newcommand {\ra }{\rangle }\)
-
-\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
-
-\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
-
-\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
-
 \(\def \ra {\Rightarrow }\)
 
 \(\def \to {\rightarrow }\)
@@ -928,16 +906,16 @@ Home</a>
 <!--
 ......     chapter Solutions to exercises (part one) ......
 -->
-<h3 id="autosec-303">Chapter&nbsp;<span class="sectionnumber">A&#x2003;</span>Solutions to exercises (part one)</h3>
-<a id="notes_1-autopage-303"></a>
+<h3 id="autosec-302">Chapter&nbsp;<span class="sectionnumber">A&#x2003;</span>Solutions to exercises (part one)</h3>
+<a id="notes_1-autopage-302"></a>
 <a id="notes_1-autofile-48"></a>
 
 <a id="sec:solutions_1"></a>
 <!--
-......     subsection Chapter <a href=Expectation-Arbitrage.html#c:pricing>1</a> ......
+......   subsection Chapter <a href=Expectation-Arbitrage.html#c:pricing>1</a> ......
 -->
-<h5 id="autosec-304">Chapter <a href="Expectation-Arbitrage.html#c:pricing">1</a></h5>
-<a id="notes_1-autopage-304"></a>
+<h5 id="autosec-303">Chapter <a href="Expectation-Arbitrage.html#c:pricing">1</a></h5>
+<a id="notes_1-autopage-303"></a>
 
 
 
@@ -966,7 +944,7 @@ href="Exercises-on-Chapter-ref-c-pricing.html#ps:portfolio"><b>1.1</b></a>. Sinc
 So, we are certain to pay off our debt if and only if
 </p>
 <p>
-\[x(1+r)+ysd&gt;K.\]
+\[x(1+r)+ysd \geq K.\]
 </p>
 </li>
 <li>
@@ -974,16 +952,10 @@ So, we are certain to pay off our debt if and only if
 
 <p>
 <span class="textnormal">(b)</span> Since certainty requires that we cover the worst case scenario of our stock performance, and \(d&lt;1+r\), our best strategy is to exchange all our assets for cash at time
-\(t=0\). This gives us
+\(t=0\). This gives us \(x+ys\) in cash at time \(0\). At time \(1\) we would then have \((1+r)(x+ys)\) in cash at time \(0\) and could pay our debt providing that
 </p>
 <p>
-\[x+ys\]
-</p>
-<p>
-in cash at time \(0\). At time \(1\) we would then have \((1+r)(x+ys)\) in cash at time \(0\) and could pay our debt providing that
-</p>
-<p>
-\[(1+r)(x+ys)\geq K.\]
+\[(1+r)(x+ys) \geq K.\]
 </p>
 <p>
 
@@ -1128,11 +1100,11 @@ We want to turn the above integral into the distribution function of the standar
 
 <!--
 
-                                                                                                             Z   y      1      z2
+                                                                                                             Z   y       1      z2
                                                                                           P[Y ≤ y] =                  √      e− 2 σ dz
                                                                                                                  −∞    2πσ 2
-                                                                                                             Z    y    1 − z2
-                                                                                                         =            √ e 2 dz.
+                                                                                                             Z    y    1     z2
+                                                                                                         =            √ e− 2 dz.
                                                                                                                  −∞    2π
 
 
@@ -1250,8 +1222,8 @@ Then for all \(r\) we have \(|x_{n_r}|\leq r^{-2}\). Hence,
 <!--
 ......   subsection Chapter <a href=Probability-spaces-random-variables.html#c:prob_meas>2</a> ......
 -->
-<h5 id="autosec-305">Chapter <a href="Probability-spaces-random-variables.html#c:prob_meas">2</a></h5>
-<a id="notes_1-autopage-305"></a>
+<h5 id="autosec-304">Chapter <a href="Probability-spaces-random-variables.html#c:prob_meas">2</a></h5>
+<a id="notes_1-autopage-304"></a>
 
 
 
@@ -1697,8 +1669,8 @@ for any \(a&gt;0\). Hence,
 <!--
 ......   subsection Chapter <a href=Conditional-expectation-martingales.html#c:cond_exp>3</a> ......
 -->
-<h5 id="autosec-306">Chapter <a href="Conditional-expectation-martingales.html#c:cond_exp">3</a></h5>
-<a id="notes_1-autopage-306"></a>
+<h5 id="autosec-305">Chapter <a href="Conditional-expectation-martingales.html#c:cond_exp">3</a></h5>
+<a id="notes_1-autopage-305"></a>
 
 
 
@@ -2049,8 +2021,8 @@ Here we use the linearity of conditional expectation and the fact that \(S_n\) i
 <!--
 ......    subsection Chapter <a href=Stochastic-processes.html#c:stoch_procs>4</a> ......
 -->
-<h5 id="autosec-307">Chapter <a href="Stochastic-processes.html#c:stoch_procs">4</a></h5>
-<a id="notes_1-autopage-307"></a>
+<h5 id="autosec-306">Chapter <a href="Stochastic-processes.html#c:stoch_procs">4</a></h5>
+<a id="notes_1-autopage-306"></a>
 
 
 
@@ -2603,8 +2575,8 @@ but this is impossible because \(S_n\) is not deterministic. Thus we reach a con
 <!--
 ......   subsection Chapter <a href=The-binomial-model.html#c:bin_model>5</a> ......
 -->
-<h5 id="autosec-308">Chapter <a href="The-binomial-model.html#c:bin_model">5</a></h5>
-<a id="notes_1-autopage-308"></a>
+<h5 id="autosec-307">Chapter <a href="The-binomial-model.html#c:bin_model">5</a></h5>
+<a id="notes_1-autopage-307"></a>
 
 
 
@@ -3032,8 +3004,8 @@ only if \(p_u\log u + p_d\log d=0\).
 <!--
 ......    subsection Chapter <a href=Convergence-random-variables.html#c:rv_conv>6</a> ......
 -->
-<h5 id="autosec-313">Chapter <a href="Convergence-random-variables.html#c:rv_conv">6</a></h5>
-<a id="notes_1-autopage-313"></a>
+<h5 id="autosec-312">Chapter <a href="Convergence-random-variables.html#c:rv_conv">6</a></h5>
+<a id="notes_1-autopage-312"></a>
 
 
 
@@ -3513,8 +3485,8 @@ probability).
 <!--
 ......   subsection Chapter <a href=Stochastic-processes-martingale-theory.html#c:stoch_procs_1>7</a> ......
 -->
-<h5 id="autosec-314">Chapter <a href="Stochastic-processes-martingale-theory.html#c:stoch_procs_1">7</a></h5>
-<a id="notes_1-autopage-314"></a>
+<h5 id="autosec-313">Chapter <a href="Stochastic-processes-martingale-theory.html#c:stoch_procs_1">7</a></h5>
+<a id="notes_1-autopage-313"></a>
 
 
 
@@ -4575,8 +4547,8 @@ offspring distribution that has mean \(\hat {\mu }=1\). By Lemma <a href="Long-t
 <!--
 ......   subsection Chapter <a href=Further-theory-stochastic-processes.html#c:stoch_procs_2>8</a> ......
 -->
-<h5 id="autosec-318">Chapter <a href="Further-theory-stochastic-processes.html#c:stoch_procs_2">8</a></h5>
-<a id="notes_1-autopage-318"></a>
+<h5 id="autosec-317">Chapter <a href="Further-theory-stochastic-processes.html#c:stoch_procs_2">8</a></h5>
+<a id="notes_1-autopage-317"></a>
 
 
 
@@ -4971,8 +4943,8 @@ as required.
 <!--
 ......    subsection Chapter <a href=Simple-random-walks.html#c:rws>9</a> ......
 -->
-<h5 id="autosec-319">Chapter <a href="Simple-random-walks.html#c:rws">9</a></h5>
-<a id="notes_1-autopage-319"></a>
+<h5 id="autosec-318">Chapter <a href="Simple-random-walks.html#c:rws">9</a></h5>
+<a id="notes_1-autopage-318"></a>
 
 
 
@@ -5616,7 +5588,7 @@ that \(S_n\notin B_r\) for all \(n\geq N\). Hence \(|S_n|\geq r\) for all \(n\ge
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 18, 2023
+Copyright Nic Freeman, Sheffield University, last updated December 7, 2023
 </p>
 
 </footer>

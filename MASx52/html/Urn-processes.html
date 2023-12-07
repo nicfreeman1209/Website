@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 18, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, December 7, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Urn processes</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 18, 2023
+last updated: December 7, 2023
 </p>
 
 </header>
@@ -836,28 +836,6 @@ Home</a>
 
 \(\DeclareMathOperator {\cov }{cov}\)
 
-\(\newcommand {\nN }{n \in \mathbb {N}}\)
-
-\(\newcommand {\Br }{{\cal B}(\R )}\)
-
-\(\newcommand {\F }{{\cal F}}\)
-
-\(\newcommand {\ds }{\displaystyle }\)
-
-\(\newcommand {\st }{\stackrel {d}{=}}\)
-
-\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
-
-\(\newcommand {\la }{\langle }\)
-
-\(\newcommand {\ra }{\rangle }\)
-
-\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
-
-\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
-
-\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
-
 \(\def \ra {\Rightarrow }\)
 
 \(\def \to {\rightarrow }\)
@@ -984,13 +962,13 @@ we can note that
                                                                                     = E[(Bn + 1)1{(n+1)th draw is red} | Fn ] + E[Bn 1{(n+1)th draw is black} | Fn ]
 
                                                                                     = (Bn + 1)E[1{(n+1)th draw is red} | Fn ] + Bn E[1{(n+1)th draw is black} | Fn ]
-                                                                                                Bn            Bn
+                                                                                               Bn            Bn
                                                                                                                           
-                                                                                    = (Bn + 1)      + Bn 1 −
-                                                                                               n+2           n+2
-                                                                                      Bn (n + 3)
-                                                                                    = (4.4)      > Bn .                                                                       --><a id="eq:urn_Bn_submart"></a><!--
-                                                                                        n+2
+                                                                                    = (Bn + 1)     + Bn 1 −
+                                                                                              n+2           n+2
+                                                                                     Bn (n + 3)
+                                                                                    = (4.4)     > Bn .                                                                        --><a id="eq:urn_Bn_submart"></a><!--
+                                                                                       n+2
 
 
 
@@ -1028,37 +1006,33 @@ upwards drift of \(B_n\). We now have:
 
 
 <!--
+                                                            E[Mn+1 | Fn ] = E Mn+1 1{(n+1)th draw is red} Fn + E Mn+1 1{(n+1)th draw is black} Fn
+                                                                              h                            i       h                                i
 
 
-
-                                                              E[Mn+1 | Fn ] = E Mn+1 1{(n+1)th draw is red} Fn + E Mn+1 1{(n+1)th draw is black} Fn
-                                                                                h                             i       h                               i
-
-
-                                                                                  Bn + 1                                Bn
-                                                                                                                                                       
-                                                                           =E            1      th             Fn + E       1      th               Fn
-                                                                                   n + 3 {(n+1) draw is red}           n + 3 {(n+1) draw is black}
-                                                                               Bn + 1 h                              Bn
-                                                                                      E 1{(n+1)th draw is red} Fn +      E 1{(n+1)th draw is black} Fn
-                                                                                                                 i        h                            i
-                                                                           =
-                                                                                n+3                                 n+3
-                                                                               Bn + 1 Bn        Bn            Bn
-                                                                                                                 
-                                                                           =                +          1−
-                                                                                n+3 n+2 n+3                  n+2
-                                                                                    2
-                                                                                  Bn + Bn       (n + 2)Bn − Bn2
-                                                                           =                  +
-                                                                               (n + 2)(n + 3)    (n + 2)(n + 3)
-                                                                                 (n + 3)Bn
-                                                                           =
-                                                                               (n + 2)(n + 3)
-                                                                                Bn
-                                                                           =
-                                                                               n+2
-                                                                           = Mn .
+                                                                              Bn + 1                                 Bn
+                                                                                                                                                     
+                                                                         =E          1{(n+1)th draw is red} Fn + E       1      th               Fn
+                                                                               n+3                                  n + 3 {(n+1) draw is black}
+                                                                           Bn + 1 h                               Bn
+                                                                                   E 1{(n+1)th draw is red} Fn +      E 1{(n+1)th draw is black} Fn
+                                                                                                              i        h                            i
+                                                                         =
+                                                                            n+3                                  n+3
+                                                                           Bn + 1 Bn        Bn             Bn
+                                                                                                              
+                                                                         =              +           1−
+                                                                            n+3 n+2 n+3                   n+2
+                                                                              Bn2 + Bn       (n + 2)Bn − Bn2
+                                                                         =                +
+                                                                           (n + 2)(n + 3)     (n + 2)(n + 3)
+                                                                             (n + 3)Bn
+                                                                         =
+                                                                           (n + 2)(n + 3)
+                                                                            Bn
+                                                                         =
+                                                                           n+2
+                                                                         = Mn .
 
 
 
@@ -1163,7 +1137,7 @@ the game.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 18, 2023
+Copyright Nic Freeman, Sheffield University, last updated December 7, 2023
 </p>
 
 </footer>
