@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, February 8, 2024." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, February 22, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS31002/61022 — Liminf and limsup</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 8, 2024
+last updated: February 22, 2024
 </p>
 
 </header>
@@ -985,12 +985,12 @@ Let \((a_n)\) be a sequence of real numbers. Note that the sequence \(b_n=\sup _
 limit is equal to \(\inf _{n\in \N } b_n\). With this is mind we make the following definition:
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
 
 <!--
 
                                                                      !                    !
-                                         lim sup an = lim   sup ak       = inf   sup ak       .                                (2.2)                                          --><a id="eq:limsup_def"></a><!--
+                                         lim sup an = lim   sup ak       = inf   sup ak       .                                (2.3)                                          --><a id="eq:limsup_def"></a><!--
                                           n→∞         n→∞   k≥n            n∈N   k≥n
 
 -->
@@ -1012,12 +1012,12 @@ Heuristically, \(\limsup _n a_n\) is the smallest value that the tail of the seq
 <p>
 We can do the same construction the other way up, which gives
 </p>
-<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{3}\)</span>
 
 <!--
 
                                                                                          
-                                      lim inf an = lim       inf ak       = sup       inf ak .                         (2.3)                                      --><a id="eq:liminf_def"></a><!--
+                                      lim inf an = lim       inf ak       = sup       inf ak .                         (2.4)                                      --><a id="eq:liminf_def"></a><!--
                                        n→∞        n→∞        k≥n            n∈N       k≥n
 
 -->
@@ -1104,7 +1104,7 @@ We will spend the rest of this section making connections between \(\liminf \), 
 
 
 <p>
-2. If \((a_n)\) converges then \(\liminf \limits _{n\to \infty } a_n=\limsup \limits _{n\to \infty } a_n=\lim \limits _{n\to \infty } a\).
+2. If \((a_n)\) converges then \(\liminf \limits _{n\to \infty } a_n=\limsup \limits _{n\to \infty } a_n=\lim \limits _{n\to \infty } a_n\).
 </p>
 </li>
 </ul>
@@ -1139,16 +1139,16 @@ We have therefore proved both part 2 and the forwards implication of part 1.
 </p>
 
 <p>
-We need to prove the reserve implication from part 1. Suppose that \(\liminf _n a_n=\limsup _n a_n\) (and we don’t yet know that \((a_n)\) converges). For all \(n\in \N \) we have
+We need to prove the reverse implication from part 1. Suppose that \(\liminf _n a_n=\limsup _n a_n\in \R \) (and we don’t yet know that \((a_n)\) converges). For all \(n\in \N \) we have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{2.}{3}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{4}\)</span>
 
 <!--
 
 
 
-                                                0 ≤ an − inf ak ≤ sup ak − inf ak .                                           (2.4)                                       --><a id="eq:lsli1"></a><!--
+                                                0 ≤ an − inf ak ≤ sup ak − inf ak .                                           (2.5)                                       --><a id="eq:lsli1"></a><!--
                                                             k≥n         k≥n          k≥n
 
 -->
@@ -1167,12 +1167,12 @@ We need to prove the reserve implication from part 1. Suppose that \(\liminf _n 
 Note also that
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{2.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{5}\)</span>
 
 <!--
 
                                                                  !
-                                        lim   sup ak − inf ak        = lim sup an − lim inf an = 0.                           (2.5)                                       --><a id="eq:lsli2"></a><!--
+                                        lim   sup ak − inf ak        = lim sup an − lim inf an = 0.                           (2.6)                                       --><a id="eq:lsli2"></a><!--
                                        n→∞    k≥n      k≥n              n→∞               n→∞
 
 
@@ -1193,12 +1193,12 @@ Combining <span class="textup">(<a href="Liminf-limsup.html#eq:lsli1">2.4</a>)</
 sandwich rule, we have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{2.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{6}\)</span>
 
 <!--
 
                                                                               
-                                                      lim        an − inf ak       = 0.                                       (2.6)                                       --><a id="eq:lsli3"></a><!--
+                                                      lim        an − inf ak       = 0.                                       (2.7)                                       --><a id="eq:lsli3"></a><!--
                                                      n→∞              k≥n
 
 -->
@@ -1254,7 +1254,7 @@ href="Liminf-limsup.html#eq:limsup_def">2.2</a>)</span> for \(\limsup \), and wi
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 8, 2024
+Copyright Nic Freeman, Sheffield University, last updated February 22, 2024
 </p>
 
 </footer>
