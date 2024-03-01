@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, December 7, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Solutions to exercises (part two)</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: December 7, 2023
+last updated: February 12, 2024
 </p>
 
 </header>
@@ -1120,7 +1120,8 @@ Then, \(e^Z=e^\mu e^Y\) and
                                                                                             E[eY ] = √         ey e− 2σ2 dy
                                                                                                        2πσ −∞
                                                                                                         1                 1 
-                                                                                                           Z ∞                                         1                 (y − σ 2 )2
+                                                                                                           Z ∞                                                2πσ −∞            2σ
+                                                                                                          1                 (y − σ 2 )2
                                                                                                               Z ∞        (              )
                                                                                                       σ2
                                                                                                     =e2 √          exp −                  dy
@@ -2312,8 +2313,9 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 
                                                                                                                              1
-                                                                                                                                                         
-                                     Z
+                                                                                                                                                                                                                    1
+                                                                                                        n(n − 1) t
+                                                                                                                                             Z
                                                                                                                                    =              E[Bun−2 ] du
                                                                                                                                         2      0
 
@@ -2415,101 +2417,7 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 
                                                                                                1
-                                                                                                                     
-                                                                              dYt = e−Bt −t/2 − (Bt + t)e−Bt −t/2 + (0) e−Bt −t/2 − (Bt + t)e−Bt −t/2
-                                                                                               2
-                                                                                               1 2  −Bt −t/2                                    
-                                                                                              + (1 ) −e          −e −Bt −t/2
-                                                                                                                             + (Bt + t)e−Bt −t/2
-                                                                                                                                                    dt
-                                                                                               2
-                                                                                                                                                                                                                                            
-                                                                                                                                                   + (12 ) e−Bt −t/2 − (Bt + t)e−Bt −t/2 dBt
-
-                                                                                    = (1 − t − Bt )e−Bt −t/2 dBt .
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dY_t &amp;=\bigg \{e^{-B_t-t/2}-\frac {1}{2}(B_t+t)e^{-B_t-t/2}+(0)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\\ &amp;\hspace {5pc} + \frac 12(1^2)\l
-(-e^{-B_t-t/2}-e^{-B_t-t/2}+(B_t+t)e^{-B_t-t/2}\r )\bigg \}\,dt \\ &amp;\hspace {10pc} + (1^2)\l (e^{-B_t-t/2}-(B_t+t)e^{-B_t-t/2}\r )\,dB_t\\ &amp;=(1-t-B_t)e^{-B_t-t/2}\,dB_t.
-\end{align*}
-Hence \(Y_t=Y_0+\int _0^t(1-u-B_u)e^{-B_u-u/2}\,dB_u\), which is martingale by Theorem <a href="Ito-integrals.html#t:stoch_int_final">12.2.1</a>.
-</p>
-</li>
-</ul>
-</li>
-<li>
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-sdes.html#ps:inttBt"><b>13.6</b></a> We apply Ito’s formula with \(f(t,x)=tx\) to \(Z_t=f(t,B_t)=tB_t\) and obtain
-</p>
-<p>
-\[dZ_t=\l (B_t+(0)(t)+\frac 12(1^2)(0)\r )\,dt+(1)(t)\,dB_t\]
-</p>
-<p>
-so we obtain
-</p>
-<p>
-\[tB_t=0B_0+\int _0^tB_u\,du+\int _0^t u\,dB_u,\]
-</p>
-<p>
-as required.
-</p>
-</li>
-<li>
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-sdes.html#ps:sde_Evar_ode"><b>13.7</b></a>
-</p>
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="textnormal">(a)</span> We have \(X_t=X_0+\int _0^t 2+2s\,ds+\int _0^t B_s\,dB_s\). Taking expectations, and recalling that Ito integrals have zero mean, we obtain that
-</p>
-<p>
-\[\E [X_t]=X_0+\int _0^t 2+2s\,ds+0=1+\l [2s+s^2\r ]_{s=0}^t=1+2t+t^2=(1+t)^2.\]
-</p>
-</li>
-<li>
-
-
-<p>
-<span class="textnormal">(b)</span> From Ito’s formula,
-</p>
-<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
-
-
-<!--
-
-
-                                                                                                                                                                                                   
-                                                                                              dYt = 0 + (2 + 2t)(2Xt ) + 21 (Bt )2 (2) dt + Bt (2Xt ) dBt
-                                                                                                                                                               
-                                                                                                      = 4(1 + t)Xt + (Bt )2 dt + 2Xt Bt dBt .
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dY_t&amp;=\l (0+(2+2t)(2X_t)+\tfrac 12(B_t)^2(2)\r )\,dt+B_t (2X_t)\,dB_t\\ &amp;=\l (4(1+t)X_t+(B_t)^2\r )\,dt+ 2X_t B_t\,dB_t.
-\end{align*}
-Writing in integral form, taking expectations, and using that Ito integrals have zero mean, we obtain
+                                                                                         s, and using that Ito integrals have zero mean, we obtain
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
 
@@ -4689,7 +4597,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated December 7, 2023
+Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
 </p>
 
 </footer>

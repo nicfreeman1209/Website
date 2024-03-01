@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, December 7, 2023." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Random variables</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: December 7, 2023
+last updated: February 12, 2024
 </p>
 
 </header>
@@ -487,203 +487,203 @@ Home</a>
 
 
 <p>
-<a href="Portfolios-arbitrage-martingales.html#autosec-162" class="tocsection" >
+<a href="Portfolios-arbitrage-martingales.html#autosec-161" class="tocsection" >
 <span class="sectionnumber">5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
 </p>
 
 
 
 <p>
-<a href="Hedging.html#autosec-171" class="tocsection" >
+<a href="Hedging.html#autosec-170" class="tocsection" >
 <span class="sectionnumber">5.6</span>&#x2003;Hedging</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-bin_model.html#autosec-180" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-bin_model.html#autosec-179" class="tocsection" >
 <span class="sectionnumber">5.7</span>&#x2003;Exercises on Chapter 5</a>
 </p>
 
 
 
 <p>
-<a href="Convergence-random-variables.html#autosec-185" class="tocchapter" >
+<a href="Convergence-random-variables.html#autosec-184" class="tocchapter" >
 <span class="sectionnumber">6</span>&#x2003;Convergence of random variables</a>
 </p>
 
 
 
 <p>
-<a href="Convergence-random-variables.html#autosec-186" class="tocsection" >
+<a href="Convergence-random-variables.html#autosec-185" class="tocsection" >
 <span class="sectionnumber">6.1</span>&#x2003;Modes of convergence</a>
 </p>
 
 
 
 <p>
-<a href="The-monotone-convergence-theorem.html#autosec-192" class="tocsection" >
+<a href="The-monotone-convergence-theorem.html#autosec-191" class="tocsection" >
 <span class="sectionnumber">6.2</span>&#x2003;The monotone convergence theorem</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-rv_conv.html#autosec-196" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-rv_conv.html#autosec-195" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-201" class="tocchapter" >
+<a href="Stochastic-processes-martingale-theory.html#autosec-200" class="tocchapter" >
 <span class="sectionnumber">7</span>&#x2003;Stochastic processes and martingale theory</a>
 </p>
 
 
 
 <p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-202" class="tocsection" >
+<a href="Stochastic-processes-martingale-theory.html#autosec-201" class="tocsection" >
 <span class="sectionnumber">7.1</span>&#x2003;The martingale transform</a>
 </p>
 
 
 
 <p>
-<a href="Roulette.html#autosec-205" class="tocsection" >
+<a href="Roulette.html#autosec-204" class="tocsection" >
 <span class="sectionnumber">7.2</span>&#x2003;Roulette</a>
 </p>
 
 
 
 <p>
-<a href="The-martingale-convergence-theorem.html#autosec-211" class="tocsection" >
+<a href="The-martingale-convergence-theorem.html#autosec-210" class="tocsection" >
 <span class="sectionnumber">7.3</span>&#x2003;The martingale convergence theorem</a>
 </p>
 
 
 
 <p>
-<a href="Long-term-behaviour-stochastic-processes.html#autosec-219" class="tocsection" >
+<a href="Long-term-behaviour-stochastic-processes.html#autosec-218" class="tocsection" >
 <span class="sectionnumber">7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#autosec-238" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#autosec-237" class="tocsection" >
 <span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Further-theory-stochastic-processes.html#autosec-243" class="tocchapter" >
+<a href="Further-theory-stochastic-processes.html#autosec-242" class="tocchapter" >
 <span class="sectionnumber">8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Further-theory-stochastic-processes.html#autosec-244" class="tocsection" >
+<a href="Further-theory-stochastic-processes.html#autosec-243" class="tocsection" >
 <span class="sectionnumber">8.1</span>&#x2003;The dominated convergence theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-optional-stopping-theorem.html#autosec-249" class="tocsection" >
+<a href="The-optional-stopping-theorem.html#autosec-248" class="tocsection" >
 <span class="sectionnumber">8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-stopped-field.html#autosec-256" class="tocsection" >
+<a href="The-stopped-field.html#autosec-255" class="tocsection" >
 <span class="sectionnumber">8.3</span>&#x2003;The stopped \(\sigma \)-field \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-strong-Markov-property.html#autosec-260" class="tocsection" >
+<a href="The-strong-Markov-property.html#autosec-259" class="tocsection" >
 <span class="sectionnumber">8.4</span>&#x2003;The strong Markov property \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Kolmogorov-0-1-law.html#autosec-263" class="tocsection" >
+<a href="Kolmogorov-0-1-law.html#autosec-262" class="tocsection" >
 <span class="sectionnumber">8.5</span>&#x2003;Kolmogorov’s 0-1 law \((\star )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-stoch_procs_2.html#autosec-267" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-stoch_procs_2.html#autosec-266" class="tocsection" >
 <span class="sectionnumber">8.6</span>&#x2003;Exercises on Chapter 8 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Simple-random-walks.html#autosec-271" class="tocchapter" >
+<a href="Simple-random-walks.html#autosec-270" class="tocchapter" >
 <span class="sectionnumber">9</span>&#x2003;Simple random walks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Simple-random-walks.html#autosec-273" class="tocsection" >
+<a href="Simple-random-walks.html#autosec-272" class="tocsection" >
 <span class="sectionnumber">9.1</span>&#x2003;Exit probabilities \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Stirling-Approximation.html#autosec-277" class="tocsection" >
+<a href="Stirling-Approximation.html#autosec-276" class="tocsection" >
 <span class="sectionnumber">9.2</span>&#x2003;Stirling’s Approximation \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Long-term-behaviour-symmetric-case.html#autosec-280" class="tocsection" >
+<a href="Long-term-behaviour-symmetric-case.html#autosec-279" class="tocsection" >
 <span class="sectionnumber">9.3</span>&#x2003;Long term behaviour: symmetric case \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Long-term-behaviour-asymmetric-case.html#autosec-289" class="tocsection" >
+<a href="Long-term-behaviour-asymmetric-case.html#autosec-288" class="tocsection" >
 <span class="sectionnumber">9.4</span>&#x2003;Long term behaviour: asymmetric case \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="In-higher-dimensions.html#autosec-295" class="tocsection" >
+<a href="In-higher-dimensions.html#autosec-294" class="tocsection" >
 <span class="sectionnumber">9.5</span>&#x2003;In higher dimensions \((\star )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-rws.html#autosec-299" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-rws.html#autosec-298" class="tocsection" >
 <span class="sectionnumber">9.6</span>&#x2003;Exercises on Chapter 9 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises-part-one.html#autosec-303" class="tocchapter" >
+<a href="Solutions-exercises-part-one.html#autosec-302" class="tocchapter" >
 <span class="sectionnumber">A</span>&#x2003;Solutions to exercises (part one)</a>
 </p>
 
 
 
 <p>
-<a href="Formula-Sheet-part-one.html#autosec-321" class="tocchapter" >
+<a href="Formula-Sheet-part-one.html#autosec-320" class="tocchapter" >
 <span class="sectionnumber">B</span>&#x2003;Formula Sheet (part one)</a>
 </p>
 
@@ -904,7 +904,7 @@ Home</a>
 
 <p>
 <!--
-......     section Random variables ......
+...... section Random variables ......
 -->
 <h4 id="autosec-47"><span class="sectionnumber">2.2&#x2003;</span>Random variables</h4>
 <a id="notes_1-autopage-47"></a>
@@ -1000,8 +1000,9 @@ that \(\P [X\in A]\) means \(\P [X^{-1}(A)]\), so as e.g.
 <!--
 
 
-                                                                                               h         i
-                                                                             P [a < X < b] = P X −1 (a, b) = P[ω ∈ Ω ; X(ω) ∈ (a, b)]
+
+                                                                            P [a < X < b] = P X −1 (a, b) = P[ω ∈ Ω ; X(ω) ∈ (a, b)]
+                                                                                                        
 
                                                                                  P[X = a] = P[X −1 (a)] = P[ω ∈ Ω ; X(ω) = a].
 
@@ -1042,7 +1043,7 @@ we have \(X^{-1}([0,1])=\{HH,HT,TH\}\notin \mc {G},\) so \(X\) is not \(\mc {G}\
 only contains information about whether we threw two heads (or not).
 </p>
 <!--
-......   subsection -fields and information ......
+...... subsection -fields and information ......
 -->
 <h5 id="autosec-49">\(\sigma \)-fields and information</h5>
 <a id="notes_1-autopage-49"></a>
@@ -1074,7 +1075,7 @@ The interaction between random variables and \(\sigma \)-fields can be summarise
 
 
 \begin{eqnarray*}
-\boxed {\mbox {event}} &amp;\leftrightarrow &amp; \boxed {\mbox {a piece of information:                      did the event occur}} \\ \boxed {\mbox {$\sigma $-field $\G $}} &amp;\leftrightarrow
+\boxed {\mbox {event}} &amp;\leftrightarrow &amp; \boxed {\mbox {a piece of information: did the event occur}} \\ \boxed {\mbox {$\sigma $-field $\G $}} &amp;\leftrightarrow
 &amp; \boxed {\mbox {which information we care about}} \\ \boxed {\mbox {$X$ is $\G $-measurable}} &amp;\leftrightarrow &amp; \boxed {\mbox {$X$ depends only on information that
 we care about}}
 \end{eqnarray*}
@@ -1087,7 +1088,7 @@ Rigorously, if we want to check that \(X\) is \(\mc {G}\)-measurable, we have to
 different values. Fortunately, we will shortly see that, in practice, there is rarely any need to do so. What is important for us is to understand the role played by a \(\sigma \)-field.
 </p>
 <!--
-......   subsection -fields and pre-images ......
+...... subsection -fields and pre-images ......
 -->
 <h5 id="autosec-50">\(\sigma \)-fields and pre-images</h5>
 <a id="notes_1-autopage-50"></a>
@@ -1132,9 +1133,9 @@ suppose \(X\) takes a finite or countable set of values \(\{x_1,x_2,\ldots \}\).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let us first prove the \(\Rightarrow \) implication. So, assume the left hand side: \(X\in
-m\mc {G}\). Since \(\{X=x_j\}=X^{-1}(x_j)\) and \(\{x_j\}=[x_j,x_j]\) is a subinterval of \(\R \), by Definition <a href="Random-variables.html#d:meas">2.2.1</a> we have that \(\{X=x_j\}\in \mc
-{G}\). Since this holds for any \(j=1,\ldots ,n\), we have shown the right hand side.
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Let us first prove the \(\Rightarrow \) implication. So, assume the left hand side: \(X\in m\mc
+{G}\). Since \(\{X=x_j\}=X^{-1}(x_j)\) and \(\{x_j\}=[x_j,x_j]\) is a subinterval of \(\R \), by Definition <a href="Random-variables.html#d:meas">2.2.1</a> we have that \(\{X=x_j\}\in \mc {G}\).
+Since this holds for any \(j=1,\ldots ,n\), we have shown the right hand side.
 </p>
 
 <p>
@@ -1160,9 +1161,9 @@ For example, take \(\Omega =\{1,2,3,4,5,6\}\), which we think of as rolling a di
 <!--
 
 
-                                                                                                   
+                                                                                                 
                                                                                              G1 = ∅, {1, 3, 5}, {2, 4, 6}, Ω ,
-                                                                                                   
+                                                                                                 
                                                                                              G2 = ∅, {1, 2, 3}, {4, 5, 6}, Ω ,
 
 
@@ -1191,22 +1192,19 @@ Let us define
 <!--
 
 
-                                                                                                          
-                                                                                                          
-                                                                                                          0
-                                                                                                              if ω is odd,
-                                                                                               X1 (ω) =
-                                                                                                          
-                                                                                                          1
-                                                                                                              if ω is even,
-                                                                                                          
-                                                                                                          
-                                                                                                          0
-                                                                                                              if ω ≤ 3,
-                                                                                               X2 (ω) =
-                                                                                                          
-                                                                                                          1
-                                                                                                              if ω > 3.
+                                                                                                         
+                                                                                                         0    if ω is odd,
+                                                                                                         
+                                                                                              X1 (ω) =
+                                                                                                         1    if ω is even,
+                                                                                                         
+                                                                                                         
+                                                                                                         0    if ω ≤ 3,
+                                                                                                         
+                                                                                              X2 (ω) =
+                                                                                                         1    if ω > 3.
+                                                                                                         
+
 
 
 -->
@@ -1218,7 +1216,7 @@ Let us define
 
 \begin{align*}
 X_1(\omega ) &amp;= \begin{cases} 0 &amp; \text { if }\omega \text { is odd},\\ 1 &amp; \text { if }\omega \text { is even}, \end {cases} \\ X_2(\omega ) &amp;= \begin{cases} 0
-&amp; \text { if }\omega \leq 3,\\ 1 &amp; \text { if }\omega &gt;3.                 \end {cases}
+&amp; \text { if }\omega \leq 3,\\ 1 &amp; \text { if }\omega &gt;3. \end {cases}
 \end{align*}
 That is, \(X_1\) tests if the roll is even, and \(X_2\) tests if the roll is less than or equal to three. Based on our intuition about information we should expect that \(X_1\) is measurable with respect to \(\G _1\)
 but not \(\G _2\), and that \(X_2\) is measurable with respect to \(\G _2\) but not \(\G _1\).
@@ -1238,8 +1236,8 @@ Let us extend this example by introducing a third \(\sigma \)-field,
 <!--
 
 
-                                                                                                                               
-                                                                                            G3 = σ {1, 3}, {2}, {4}, {5}, {6} .
+                                                                                                                            
+                                                                                           G3 = σ {1, 3}, {2}, {4}, {5}, {6} .
 
 -->
 
@@ -1292,7 +1290,7 @@ href="Random-variables.html#l:finitemeas">2.2.2</a>. More sophisticated tools fr
 
 </div>
 <!--
-......   subsection -fields generated by random variables ......
+...... subsection -fields generated by random variables ......
 -->
 <h5 id="autosec-53">\(\sigma \)-fields generated by random variables</h5>
 <a id="notes_1-autopage-53"></a>
@@ -1400,7 +1398,7 @@ It’s natural that \(X\) should be measurable with respect to the \(\sigma \)-f
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(I\) be a subinterval of \(\R \). Then, by definition of \(\sigma (X)\), we have that
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Let \(I\) be a subinterval of \(\R \). Then, by definition of \(\sigma (X)\), we have that
 \(X^{-1}(I)\in \sigma (X)\) for all \(I\). &#x2003;&#x2003;&#x220E;
 </p>
 
@@ -1409,7 +1407,7 @@ If we have a finite or countable set of random variables \(X_1,X_2,\ldots \) we 
 }\R )\). The intuition is the same: \(\sigma (X_1,X_2,\ldots )\) corresponds to the information jointly contained in \(X_1,X_2,\ldots \).
 </p>
 <!--
-......   subsection Combining random variables ......
+...... subsection Combining random variables ......
 -->
 <h5 id="autosec-56">Combining random variables</h5>
 <a id="notes_1-autopage-56"></a>
@@ -1439,7 +1437,7 @@ Given a collection of random variables, it is useful to be able to construct oth
 
 
 
-                                                   α,   αX,   X + Y,    XY,   1/X,                                        (2.2)                       --><a id="eq:its_all_meas"></a><!--
+                                                  α,   αX,    X + Y,   XY,   1/X,                                        (2.2)                        --><a id="eq:its_all_meas"></a><!--
 
 -->
 
@@ -1508,7 +1506,7 @@ In general, if \(X\) is a random variable and \(g:\R \to \R \) is any ‘sensibl
 continuous and piecewise continuous functions, integrals/derivatives, etc etc.
 </p>
 <!--
-......   subsection Independence ......
+...... subsection Independence ......
 -->
 <h5 id="autosec-59">Independence</h5>
 <a id="notes_1-autopage-59"></a>
@@ -1566,7 +1564,7 @@ defining what it means for e.g.&nbsp;a random variable and an event to be indepe
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated December 7, 2023
+Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
 </p>
 
 </footer>

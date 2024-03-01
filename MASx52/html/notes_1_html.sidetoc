@@ -48,41 +48,41 @@
 \contentsline {section}{\numberline {5.2}{\ignorespaces Hedging in the one-period model\relax }}{144}{}
 \contentsline {section}{\numberline {5.3}{\ignorespaces Types of financial derivative\relax }}{155}{}
 \contentsline {section}{\numberline {5.4}{\ignorespaces The binomial model (definition)\relax }}{157}{}
-\contentsline {section}{\numberline {5.5}{\ignorespaces Portfolios, arbitrage and martingales\relax }}{162}{}
-\contentsline {section}{\numberline {5.6}{\ignorespaces Hedging\relax }}{171}{}
-\contentsline {section}{\numberline {5.7}{\ignorespaces Exercises on Chapter \ref {c:bin_model}\relax }}{180}{}
-\contentsline {chapter}{\numberline {6}{\ignorespaces Convergence of random variables\relax }}{185}{}
-\contentsline {section}{\numberline {6.1}{\ignorespaces Modes of convergence\relax }}{186}{}
-\contentsline {section}{\numberline {6.2}{\ignorespaces The monotone convergence theorem\relax }}{192}{}
-\contentsline {section}{\numberline {6.3}{\ignorespaces Exercises on Chapter \ref {c:rv_conv}\relax }}{196}{}
-\contentsline {chapter}{\numberline {7}{\ignorespaces Stochastic processes and martingale theory\relax }}{201}{}
-\contentsline {section}{\numberline {7.1}{\ignorespaces The martingale transform\relax }}{202}{}
-\contentsline {section}{\numberline {7.2}{\ignorespaces Roulette\relax }}{205}{}
-\contentsline {section}{\numberline {7.3}{\ignorespaces The martingale convergence theorem\relax }}{211}{}
-\contentsline {section}{\numberline {7.4}{\ignorespaces Long term behaviour of stochastic processes\relax }}{219}{}
-\contentsline {subsection}{Long term behaviour of Roulette}{221}{}
-\contentsline {subsection}{Long term behaviour of urn processes}{223}{}
-\contentsline {subsubsection}{Extensions and applications of urn processes}{227}{}
-\contentsline {subsection}{Long term behaviour of Galton-Watson processes}{228}{}
-\contentsline {subsubsection}{Extensions and applications of the Galton-Watson process}{232}{}
-\contentsline {subsection}{Long term behaviour of random walks \((\star )\)}{233}{}
-\contentsline {subsubsection}{Extensions and applications of random walks}{236}{}
-\contentsline {section}{\numberline {7.5}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_1}\relax }}{238}{}
-\contentsline {chapter}{\numberline {8}{\ignorespaces Further theory of stochastic processes \((\Delta )\)\relax }}{243}{}
-\contentsline {section}{\numberline {8.1}{\ignorespaces The dominated convergence theorem \((\Delta )\)\relax }}{244}{}
-\contentsline {section}{\numberline {8.2}{\ignorespaces The optional stopping theorem \((\Delta )\)\relax }}{249}{}
-\contentsline {section}{\numberline {8.3}{\ignorespaces The stopped \(\sigma \)-field \((\Delta )\)\relax }}{256}{}
-\contentsline {section}{\numberline {8.4}{\ignorespaces The strong Markov property \((\Delta )\)\relax }}{260}{}
-\contentsline {section}{\numberline {8.5}{\ignorespaces Kolmogorov's 0-1 law \((\star )\)\relax }}{263}{}
-\contentsline {section}{\numberline {8.6}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_2} \((\Delta )\)\relax }}{267}{}
-\contentsline {chapter}{\numberline {9}{\ignorespaces Simple random walks \((\Delta )\)\relax }}{271}{}
-\contentsline {section}{\numberline {9.1}{\ignorespaces Exit probabilities \((\Delta )\)\relax }}{273}{}
-\contentsline {section}{\numberline {9.2}{\ignorespaces Stirling's Approximation \((\Delta )\)\relax }}{277}{}
-\contentsline {section}{\numberline {9.3}{\ignorespaces Long term behaviour: symmetric case \((\Delta )\)\relax }}{280}{}
-\contentsline {subsection}{How long does the simple symmetric random walk take to reach $1$?}{284}{}
-\contentsline {section}{\numberline {9.4}{\ignorespaces Long term behaviour: asymmetric case \((\Delta )\)\relax }}{289}{}
-\contentsline {section}{\numberline {9.5}{\ignorespaces In higher dimensions \((\star )\)\relax }}{295}{}
-\contentsline {section}{\numberline {9.6}{\ignorespaces Exercises on Chapter \ref {c:rws} \((\Delta )\)\relax }}{299}{}
-\contentsline {chapter}{\numberline {A}{\ignorespaces Solutions to exercises (part one)\relax }}{303}{}
-\contentsline {chapter}{\numberline {B}{\ignorespaces Formula Sheet (part one)\relax }}{321}{}
+\contentsline {section}{\numberline {5.5}{\ignorespaces Portfolios, arbitrage and martingales\relax }}{161}{}
+\contentsline {section}{\numberline {5.6}{\ignorespaces Hedging\relax }}{170}{}
+\contentsline {section}{\numberline {5.7}{\ignorespaces Exercises on Chapter \ref {c:bin_model}\relax }}{179}{}
+\contentsline {chapter}{\numberline {6}{\ignorespaces Convergence of random variables\relax }}{184}{}
+\contentsline {section}{\numberline {6.1}{\ignorespaces Modes of convergence\relax }}{185}{}
+\contentsline {section}{\numberline {6.2}{\ignorespaces The monotone convergence theorem\relax }}{191}{}
+\contentsline {section}{\numberline {6.3}{\ignorespaces Exercises on Chapter \ref {c:rv_conv}\relax }}{195}{}
+\contentsline {chapter}{\numberline {7}{\ignorespaces Stochastic processes and martingale theory\relax }}{200}{}
+\contentsline {section}{\numberline {7.1}{\ignorespaces The martingale transform\relax }}{201}{}
+\contentsline {section}{\numberline {7.2}{\ignorespaces Roulette\relax }}{204}{}
+\contentsline {section}{\numberline {7.3}{\ignorespaces The martingale convergence theorem\relax }}{210}{}
+\contentsline {section}{\numberline {7.4}{\ignorespaces Long term behaviour of stochastic processes\relax }}{218}{}
+\contentsline {subsection}{Long term behaviour of Roulette}{220}{}
+\contentsline {subsection}{Long term behaviour of urn processes}{222}{}
+\contentsline {subsubsection}{Extensions and applications of urn processes}{226}{}
+\contentsline {subsection}{Long term behaviour of Galton-Watson processes}{227}{}
+\contentsline {subsubsection}{Extensions and applications of the Galton-Watson process}{231}{}
+\contentsline {subsection}{Long term behaviour of random walks \((\star )\)}{232}{}
+\contentsline {subsubsection}{Extensions and applications of random walks}{235}{}
+\contentsline {section}{\numberline {7.5}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_1}\relax }}{237}{}
+\contentsline {chapter}{\numberline {8}{\ignorespaces Further theory of stochastic processes \((\Delta )\)\relax }}{242}{}
+\contentsline {section}{\numberline {8.1}{\ignorespaces The dominated convergence theorem \((\Delta )\)\relax }}{243}{}
+\contentsline {section}{\numberline {8.2}{\ignorespaces The optional stopping theorem \((\Delta )\)\relax }}{248}{}
+\contentsline {section}{\numberline {8.3}{\ignorespaces The stopped \(\sigma \)-field \((\Delta )\)\relax }}{255}{}
+\contentsline {section}{\numberline {8.4}{\ignorespaces The strong Markov property \((\Delta )\)\relax }}{259}{}
+\contentsline {section}{\numberline {8.5}{\ignorespaces Kolmogorov's 0-1 law \((\star )\)\relax }}{262}{}
+\contentsline {section}{\numberline {8.6}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_2} \((\Delta )\)\relax }}{266}{}
+\contentsline {chapter}{\numberline {9}{\ignorespaces Simple random walks \((\Delta )\)\relax }}{270}{}
+\contentsline {section}{\numberline {9.1}{\ignorespaces Exit probabilities \((\Delta )\)\relax }}{272}{}
+\contentsline {section}{\numberline {9.2}{\ignorespaces Stirling's Approximation \((\Delta )\)\relax }}{276}{}
+\contentsline {section}{\numberline {9.3}{\ignorespaces Long term behaviour: symmetric case \((\Delta )\)\relax }}{279}{}
+\contentsline {subsection}{How long does the simple symmetric random walk take to reach $1$?}{283}{}
+\contentsline {section}{\numberline {9.4}{\ignorespaces Long term behaviour: asymmetric case \((\Delta )\)\relax }}{288}{}
+\contentsline {section}{\numberline {9.5}{\ignorespaces In higher dimensions \((\star )\)\relax }}{294}{}
+\contentsline {section}{\numberline {9.6}{\ignorespaces Exercises on Chapter \ref {c:rws} \((\Delta )\)\relax }}{298}{}
+\contentsline {chapter}{\numberline {A}{\ignorespaces Solutions to exercises (part one)\relax }}{302}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Formula Sheet (part one)\relax }}{320}{}
 

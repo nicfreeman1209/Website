@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, October 5, 2023." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, February 22, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS31002/61022 — Solutions to exercises</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 5, 2023
+last updated: February 22, 2024
 </p>
 
 </header>
@@ -968,7 +968,7 @@ Home</a>
 
 <p>
 <!--
-......     chapter Solutions to exercises ......
+...... chapter Solutions to exercises ......
 -->
 <h3 id="autosec-294">Chapter&nbsp;<span class="sectionnumber">B&#x2003;</span>Solutions to exercises</h3>
 <a id="notes-autopage-294"></a>
@@ -976,7 +976,7 @@ Home</a>
 
 <a id="s:solutions"></a>
 <!--
-......    subsection Chapter <a href=Measure-Spaces.html#c:measure_spaces>1</a> ......
+...... subsection Chapter <a href=Measure-Spaces.html#c:measure_spaces>1</a> ......
 -->
 <h5 id="autosec-295">Chapter <a href="Measure-Spaces.html#c:measure_spaces">1</a></h5>
 <a id="notes-autopage-295"></a>
@@ -1071,11 +1071,11 @@ Hence
 
 
 
-                                                                        m(A ∪ B) + m(A ∩ B) = m(A \ B) + m(B \ A) + 2m(A ∩ B)
+                                                                       m(A ∪ B) + m(A ∩ B) = m(A \ B) + m(B \ A) + 2m(A ∩ B)
 
-                                                                                                    = [m(A \ B) + m(A ∩ B)] + [m(B \ A) + m(A ∩ B)]
+                                                                                                   = [m(A \ B) + m(A ∩ B)] + [m(B \ A) + m(A ∩ B)]
 
-                                                                                                    = m(A) + m(B),
+                                                                                                   = m(A) + m(B),
 
 
 
@@ -1106,17 +1106,16 @@ We’ve just established \(n=2\). Now suppose the result holds for some \(n\). T
 
 <!--
 
-                                                                              n+1                 n                               n
-                                                                                         !                          !                    !
-                                                                              [                   [                               [
-                                                                          m         Ai       =m         Ai ∪ An+1       ≤m              Ai + m(An+1 )
-                                                                              i=1                 i=1                             i=1
-                                                                                                                            n
-                                                                                                                            X                           n+1
-                                                                                                                                                        X
-                                                                                                                        ≤         m(Ai ) + m(An+1 ) =         m(Ai ).
-                                                                                                                            i=1                         i=1
-
+                                                                             n+1                 n                               n
+                                                                                        !                          !                        !
+                                                                             [                   [                               [
+                                                                        m          Ai       =m         Ai ∪ An+1       ≤m              Ai       + m(An+1 )
+                                                                             i=1                 i=1                             i=1
+                                                                                                                           n
+                                                                                                                           X                                 n+1
+                                                                                                                                                             X
+                                                                                                                       ≤         m(Ai ) + m(An+1 ) =               m(Ai ).
+                                                                                                                           i=1                               i=1
 
 
 -->
@@ -1243,9 +1242,9 @@ By part (a) we have
 
 
 
-                                                                                 m(Bn ) = m(S \ An ) = m(S) − m(An )
+                                                                                   m(Bn ) = m(S \ An ) = m(S) − m(An )
 
-                                                                                    m(B) = m(∪j S \ An ) = m(S \ ∩j Aj ) = m(S) − m(∩j Aj )
+                                                                                   m(B) = m(∪j S \ An ) = m(S \ ∩j Aj ) = m(S) − m(∩j Aj )
 
 
 
@@ -1415,7 +1414,7 @@ have \((a,b)\sw C_{n+1}\). Thus we have reached a contradiction.
 </p>
 <p>
 \[\lambda (C)=\lim _n \lambda (C_n)=\lim _{n\to \infty } e^{-1}e^{-1/4}e^{-1/9}\ldots e^{-1/n^2}=\lim _{n\to \infty } \exp \l (-\sum _1^n \frac {1}{i^2}\r ) =\exp \l (-\sum
-_1^\infty \frac {1}{n^2}\r ).          \]
+_1^\infty \frac {1}{n^2}\r ). \]
 </p>
 <p>
 We have that \(\lambda (C)\) is positive because \(\sum _1^\infty \frac {1}{n^2}&lt;\infty \).
@@ -1441,7 +1440,7 @@ A similar argument as in part (a) applies here, and shows that \(C\) does not co
 
 </div>
 <!--
-......        subsection Chapter <a href=Real-Analysis.html#c:real_analysis>2</a> ......
+...... subsection Chapter <a href=Real-Analysis.html#c:real_analysis>2</a> ......
 -->
 <h5 id="autosec-297">Chapter <a href="Real-Analysis.html#c:real_analysis">2</a></h5>
 <a id="notes-autopage-297"></a>
@@ -1512,27 +1511,26 @@ For (M2), if \((A_n)_{n\in \N }\) is a sequence of disjoint measurable sets then
 
 <!--
 
-                                                                                  ∞
-                                                                                  X                         ∞
-                                                                                                            X
-                                                                                        (m1 + m2 )(An ) =         m1 (An ) + m2 (An )
-                                                                                  n=1                       n=1
-                                                                                                            X∞                 ∞
+                                                                                 ∞
+                                                                                 X                       ∞
+                                                                                                         X
+                                                                                     (m1 + m2 )(An ) =         m1 (An ) + m2 (An )
+                                                                                 n=1                     n=1
+                                                                                                         X∞                    ∞
                                                                                                                                X
-                                                                                                       =          m1 (An ) +         m2 (An )
-                                                                                                            n=1                j=1
-                                                                                                                                                 
-                                                                                                                   ∞                      ∞
+                                                                                                     =         m1 (An ) +            m2 (An )
+                                                                                                         n=1                   j=1
+                                                                                                                                                 
+                                                                                                                ∞                          ∞
                                                                                                                            !
-                                                                                                                   [                      [
-                                                                                                       = m1              An + m2               An 
-                                                                                                                   n=1                    j=1
-                                                                                                                            ∞
+                                                                                                                [                          [
+                                                                                                     = m1             An       + m2            An 
+                                                                                                                n=1                       j=1
+                                                                                                                           ∞
                                                                                                                                       !
-                                                                                                                            [
-                                                                                                       = (m1 + m2 )              An .
+                                                                                                                           [
+                                                                                                     = (m1 + m2 )                An       .
                                                                                                                            n=1
-
 
 
 -->
@@ -1788,9 +1786,9 @@ can define a subsequence \((a_{r_n})\) of \((a_n)\) by setting
 
 
 
-                                                                                                r1 = inf{k ≥ N ; ak ≤ a + ϵ},
+                                                                                              r1 = inf{k ≥ N ; ak ≤ a + },
 
-                                                                                              rn+1 = inf{k > rn ; an ≤ a + ϵ}.
+                                                                                           rn+1 = inf{k > rn ; an ≤ a + }.
 
 
 
@@ -1814,7 +1812,7 @@ the proof.
 </li>
 </ul>
 <!--
-......   subsection Chapter <a href=Measurable-Functions.html#c:measurable_funcs>3</a> ......
+...... subsection Chapter <a href=Measurable-Functions.html#c:measurable_funcs>3</a> ......
 -->
 <h5 id="autosec-298">Chapter <a href="Measurable-Functions.html#c:measurable_funcs">3</a></h5>
 <a id="notes-autopage-298"></a>
@@ -1929,8 +1927,7 @@ href="Measurable-Functions.html#t:alg_meas_funcs">3.1.5</a>.
 
 
 <p>
-<span class="textnormal">(c)</span> Recall that we have shown all intervals (i.e.&nbsp;sets of the form \((a,b)\), \([a,b)\) and so on) are Borel sets. Another way to describe intervals is that \(I\sw \R \) is
-an interval if, whenever \(a,b\in \R \) and \(a&lt;c&lt;b\) we have \(c\in I\).
+<span class="textnormal">(c)</span> Recall that we have shown all intervals (i.e.&nbsp;sets of the form \((a,b)\), \([a,b)\) and so on) are Borel sets. We use the description of intervals given in the hint.
 </p>
 <p>
 Suppose \(f\) is monotone increasing. Fix \(c\in \R \) and consider \(I=f^{-1}((c,\infty ))\). We want to show that \(I\) is an interval. Let \(a,b\in I\), so that we have \(f(a),f(b)&gt;c\), and let
@@ -1944,7 +1941,17 @@ Suppose \(f\) is monotone increasing. Fix \(c\in \R \) and consider \(I=f^{-1}((
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-measurable_funcs.html#ps:meas_without_alg"><b>3.5</b></a>
+<a href="Exercises-on-Chapter-ref-c-measurable_funcs.html#ps:simple_funcs_vector_space"><b>3.5</b></a> We need to show that if \(f\) and \(g\) are simple functions and \(\alpha ,\beta \in
+\R \), then \(\alpha f+\beta g\) is also a simple function. This follows from the same calculation as leads to equation <span class="textup">(<a
+href="Lebesgue-Integration.html#eq:simple_func_linearity">4.4</a>)</span>, which is the first step in the proof of Lemma <a
+href="Lebesgue-Integration.html#l:leb_int_step_1_properties">4.1.2</a>.
+</p>
+</li>
+<li>
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-measurable_funcs.html#ps:meas_without_alg"><b>3.6</b></a>
 </p>
 <ul style="list-style-type:none">
 
@@ -1982,16 +1989,6 @@ measurabilty of \(f\) thus implies that \(f^{-1}(G^{-1}(A))\in \Sigma \). Hence 
 </p>
 </li>
 </ul>
-</li>
-<li>
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-measurable_funcs.html#ps:simple_funcs_vector_space"><b>3.6</b></a> We need to show that if \(f\) and \(g\) are simple functions and \(\alpha ,\beta \in
-\R \), then \(\alpha f+\beta g\) is also a simple function. This follows from the same calculation as leads to equation <span class="textup">(<a
-href="Lebesgue-Integration.html#eq:simple_func_linearity">4.4</a>)</span>, which is the first step in the proof of Lemma <a
-href="Lebesgue-Integration.html#l:leb_int_step_1_properties">4.1.2</a>.
-</p>
 </li>
 <li>
 
@@ -2052,17 +2049,17 @@ containing \(x\), then \(I_1\sw \cup _n O_n\), and we are done.
 
 
 
-                                                                                        R \ (C1 ∪ C2 ) = (R \ C1 ) ∩ (R \ C2 )
+                                                                                          R \ (C1 ∪ C2 ) = (R \ C1 ) ∩ (R \ C2 )
 
-                                                                                        R \ (C1 ∩ C2 ) = (R \ C1 ) ∪ (R \ C2 )
-                                                                                                        !
-                                                                                              [                 \
-                                                                                         R\        Cn       =       (R \ Cn )
-                                                                                               n                n
-                                                                                                        !
-                                                                                              \                 [
-                                                                                         R\        Cn       =       (R \ Cn )
-                                                                                               n                n
+                                                                                          R \ (C1 ∩ C2 ) = (R \ C1 ) ∪ (R \ C2 )
+                                                                                                     !
+                                                                                                [          \
+                                                                                          R\       Cn =       (R \ Cn )
+                                                                                                 n                n
+                                                                                                          !
+                                                                                                \                 [
+                                                                                          R\         Cn       =       (R \ Cn )
+                                                                                                 n                n
 
 
 
@@ -2121,15 +2118,15 @@ not open).
 
 <p>
 <span class="textnormal">(c)</span> Let \(U = f^{-1}((-\infty , a))\). We will show that \(U\) is open. Then it is a Borel set and \(f\) is measurable. Fix \(x \in U\) and let \(\eps = a - f(x)\).
-Then there exists \(\de &gt; 0\) so that \(|x - y| &lt; \de \Rightarrow f(y) &lt; f(x) + \eps = a\) and so \(y \in U\). We have shown that for each \(x \in U\) there exists an open interval (of radius
-\(\de \)) so that if \(y\) is in this interval then \(y \in U\). Hence \(U\) is open.
+Then there exists \(\de &gt; 0\) so that \(|x - y| &lt; \de \Rightarrow f(y) &lt; f(x) + \eps = a\) and so \(y \in U\). We have shown that for each \(x \in U\) there exists an open interval (of
+radius \(\de \)) so that if \(y\) is in this interval then \(y \in U\). Hence \(U\) is open.
 </p>
 </li>
 </ul>
 </li>
 </ul>
 <!--
-......     subsection Chapter <a href=Lebesgue-Integration.html#c:lebesgue_integration>4</a> ......
+...... subsection Chapter <a href=Lebesgue-Integration.html#c:lebesgue_integration>4</a> ......
 -->
 <h5 id="autosec-299">Chapter <a href="Lebesgue-Integration.html#c:lebesgue_integration">4</a></h5>
 <a id="notes-autopage-299"></a>
@@ -2325,8 +2322,8 @@ calculate the integrals explicitly in this case.
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-lebesgue_integration.html#ps:cos_int"><b>4.8</b></a> Since \(|\cos (\cdot )| \leq 1\) we have \(|\cos (\alpha x)f(x)| \leq |f(x)|\) for all \(x \in \R
-\). Lemma <a href="The-dominated-convergence-theorem.html#l:dom_int">4.6.1</a> thus gives that this function is in \(\mc {L}^1\).
+<a href="Exercises-on-Chapter-ref-c-lebesgue_integration.html#ps:cos_int"><b>4.8</b></a> Since \(|\cos (\cdot )| \leq 1\) we have \(|\cos (\alpha x)f(x)| \leq |f(x)|\) for all \(x \in
+\R \). Lemma <a href="The-dominated-convergence-theorem.html#l:dom_int">4.6.1</a> thus gives that this function is in \(\mc {L}^1\).
 </p>
 <p>
 Let \(f_n(x)=\cos (x/n)f(x)\). Note that \(\lim _{n \rightarrow \infty }\cos (x/n) = \cos (0) = 1\) for all \(x \in \R \). Hence \(f_n\to f\) pointwise. Moreover, \(f\in \mc {L}^1\) is a
@@ -2404,21 +2401,22 @@ Lastly, writing \(a=a_+-a_-\) we have
 
 <!--
 
-                                                                                                Z                   Z                       Z
-                                                                                                         a d# =             a+ d# −                   a− d#
-                                                                                                     N              N                         N
-                                                                                                                    ∞
-                                                                                                                    X                                   ∞
-                                                                                                                                                        X
-                                                                                                                =            max(an , 0) −                      max(−an , 0)
-                                                                                                                    n=1                                n=1
-                                                                                                                    X∞
-                                                                                                                =            max(an , 0) − max(−an , 0)
-                                                                                                                    n=1
-                                                                                                                    X∞
-                                                                                                                =            an .
-                                                                                                                    n=1
-
+                                                                                                   Z                   Z                       Z
+                                                                                                            a d# =             a+ d# −                  a− d#
+                                                                                                        N              N                           N
+                                                                                                                       ∞                                 ∞
+                                                                                                                                   max(an , 0) −                  max(−an , 0)
+                                                                                                                       X                                 X
+                                                                                                                   =
+                                                                                                                       n=1                               n=1
+                                                                                                                        ∞
+                                                                                                                                   max(an , 0) − max(−an , 0)
+                                                                                                                       X
+                                                                                                                   =
+                                                                                                                       n=1
+                                                                                                                       X∞
+                                                                                                                   =               an .
+                                                                                                                       n=1
 
 
 -->
@@ -2462,12 +2460,12 @@ Rearranging both sides,
 
 <!--
 
-                                                                                 Z                              Z                             Z                      Z
-                                                                                     f dm + lim inf                 (−fn ) dm ≥                       f dm +              lim inf (−fn ) dm,
-                                                                                 S                    n→∞        S                                                    S n→∞
-                                                                                                                Z                           ZS
-                                                                                                lim inf −               fn dm ≥                       lim inf (−fn ) dm.
-                                                                                                 n→∞                S                           S n→∞
+                                                                                Z                                  Z       Z           Z
+                                                                                        f dm + lim inf         (−fn ) dm ≥     f dm +     lim inf(−fn ) dm,
+                                                                                    S                 n→∞ S                  S          S n→∞
+                                                                                                             Z         Z
+                                                                                                   lim inf −     fn dm ≥       lim inf(−fn ) dm.
+                                                                                                   n→∞                 S                           S n→∞
 
 
 
@@ -2522,16 +2520,16 @@ apply the DCT to real and imaginary parts of \(f\). The result then follows by l
 
 <!--
 
-                                                                                      Z     x                       Z    x                             Z    x
-                                                                                                     iay
-                                                                                                ie         dy = i            cos(ay) dy −                       sin(ay) dy
-                                                                                        0                            0                                  0
-                                                                                                                  1               1
-                                                                                                               = i (sin(ax) − 0) − (− cos(ax) − (−1))
-                                                                                                                  a               a
-                                                                                                                 1  iax    
-                                                                                                               =    e −1 .
-                                                                                                                 a
+                                                                                         Z     x                       Z       x                         Z    x
+                                                                                                   ie   iay
+                                                                                                              dy = i               cos(ay) dy −                   sin(ay) dy
+                                                                                           0                               0                              0
+                                                                                                                     1               1
+                                                                                                                  = i (sin(ax) − 0) − (− cos(ax) − (−1))
+                                                                                                                     a               a
+                                                                                                                    1 iax      
+                                                                                                                  =    e −1 .
+                                                                                                                    a
 
 
 -->
@@ -2561,22 +2559,22 @@ valued equivalents. Details are left for you.
 
 <p>
 <a href="Exercises-on-Chapter-ref-c-lebesgue_integration.html#ps:ints_cts"><b>4.16</b></a> Define \(f_{n}(x) = f(t_{n}, x)\) for each \(\nN , x \in S\). Then \(|f_{n}(x)| \leq g(x)\) for
-all \(x \in S\). Since \(g\) is integrable, by dominated convergence
+all \(x \in S\). Since \(g\in \Lone \), by dominated convergence
 </p>
 <span class="hidden"> \(\seteqnumber{0}{B.}{0}\)</span>
 
 
 <!--
 
-                                                                                                           Z                                  Z
-                                                                                                lim            f (tn , x)dm(x) =                       lim fn (x)dm(x)
-                                                                                                n→∞ S                                             S n→∞
-                                                                                                                                              Z
-                                                                                                                                          =            lim f (tn , x)dm(x)
-                                                                                                                                                      n→∞
-                                                                                                                                              ZS
-                                                                                                                                          =           f (t, x)dm(x),
-                                                                                                                                                  S
+                                                                                                              Z                                 Z
+                                                                                                   lim            f (tn , x)dm(x) =                     lim fn (x)dm(x)
+                                                                                               n→∞ S                                               n→∞
+                                                                                                                                                ZS
+                                                                                                                                           =            lim f (tn , x)dm(x)
+                                                                                                                                                   n→∞
+                                                                                                                                                ZS
+                                                                                                                                           =            f (t, x)dm(x),
+                                                                                                                                                    S
 
 
 
@@ -2612,15 +2610,13 @@ By linearity of the integral we have
 
 <!--
 
-
-                                                                        ∂                                           1
-                                                                             Z                                                   Z                                            Z                  
-                                                                                 f (t, x) dm(x) = lim                                    f (t + hn , x) dm(x) −                      f (t, x) dm(x)
-                                                                        ∂t   S                                 n→∞ hn                S                                           S
-                                                                                                                        Z
-                                                                                                           = lim                an,t (x) dm(x)
-                                                                                                               n→∞ S
-
+                                                                            Z                                          Z                            Z                  
+                                                                       ∂                                             1
+                                                                                f (t, x) dm(x) = lim                          f (t + hn , x) dm(x) −     f (t, x) dm(x)
+                                                                       ∂t   S                                  n→∞ hn      S                           S
+                                                                                                                    Z
+                                                                                                              = lim    an,t (x) dm(x)
+                                                                                                                  n→∞ S
 
 
 
@@ -2669,7 +2665,7 @@ _{0}^{a}f(x)dx = -2\int _{0}^{a}xe^{-x^{2}}dx = e^{-a^{2}} - 1\). But on the oth
 </p>
 <p>
 \[\begin {aligned} \int _{0}^{a}f_{n}(x)\,dx &amp; = \sum _{r=1}^{n}\int _{0}^{a}\l (-2r^{2}xe^{-r^{2}x^{2}} + 2(r+1)^{2}xe^{-(r+1)^{2}x^{2}}\r )\,dx\\ &amp; = \sum _{r=1}^{n}\l
-(e^{-r^{2}a} - e^{-(r+1)^{2}a}\r )\\ &amp; = e^{-a^{2}} - e^{-(n+1)^{2}a} \rightarrow e^{-a^{2}}~\mbox {as}~n \rightarrow \infty .                                                                    \end {aligned}\]
+(e^{-r^{2}a} - e^{-(r+1)^{2}a}\r )\\ &amp; = e^{-a^{2}} - e^{-(n+1)^{2}a} \rightarrow e^{-a^{2}}~\mbox {as}~n \rightarrow \infty . \end {aligned}\]
 </p>
 <p>
 So we conclude that \(\int _{0}^{a}f(x)\,dx \neq \lim _{n \rightarrow \infty }\int _{0}^{a}f_{n}(x)\,dx\).
@@ -2692,7 +2688,7 @@ For the linearity, we have
 </p>
 <p>
 \[\begin {aligned} \widehat {af + bg}(y) &amp; = \int _{\R }e^{-ixy}(a f(x) + b g(x))\,dx \\ &amp; = a\int _{\R }e^{-ixy}f(x)\,dx + b\int _{\R }e^{-ixy}g(x)\,dx \\ &amp; = a
-\widehat {f}(y) + b \widehat {g}(y).               \end {aligned}\]
+\widehat {f}(y) + b \widehat {g}(y). \end {aligned}\]
 </p>
 </li>
 <li>
@@ -2700,12 +2696,12 @@ For the linearity, we have
 
 <p>
 <a href="Exercises-on-Chapter-ref-c-lebesgue_integration.html#ps:fourier_jump"><b>4.20</b></a> \(x \rightarrow {\1}_{\mathbb {Q}}(x)\cos (nx)\) is \(\mc {L}^1\) as \(|{\1}_{\mathbb
-{Q}}(x)\cos (nx)| \leq |\cos (nx)|\) for all \(x \in \R \) and \(x \rightarrow \cos (nx)\) is \(\mc {L}^1\) . Similarly \(x \rightarrow {\1}_{\mathbb {Q}}(x)\sin (nx)\) is \(\mc {L}^1\). So the
-Fourier coefficients \(a_{n}\) and \(b_{n}\) are well-defined as Lebesgue integrals. As \(|\cos (nx)| \leq 1\), we have \(a_{n} = 0\) for all \(n \in \mathbb {Z}_{+}\) since,
+{Q}}(x)\cos (nx)| \leq |\cos (nx)|\) for all \(x \in \R \) and \(x \rightarrow \cos (nx)\) is \(\mc {L}^1\) . Similarly \(x \rightarrow {\1}_{\mathbb {Q}}(x)\sin (nx)\) is \(\mc {L}^1\). So
+the Fourier coefficients \(a_{n}\) and \(b_{n}\) are well-defined as Lebesgue integrals. As \(|\cos (nx)| \leq 1\), we have \(a_{n} = 0\) for all \(n \in \mathbb {Z}_{+}\) since,
 </p>
 <p>
 \[\begin {aligned} |a_{n}| &amp; \leq \frac {1}{\pi }\int _{-\pi }^{\pi }{\1}_{\mathbb {Q}}(x)|\cos (nx)|\,dx \\ &amp; \leq \frac {1}{\pi }\int _{-\pi }^{\pi }{\1}_{\mathbb
-{Q}}(x)\,dx = 0.       \end {aligned}\]
+{Q}}(x)\,dx = 0. \end {aligned}\]
 </p>
 <p>
 By a similar argument, \(b_{n} = 0\) for all \(\nN \). So it is possible to associate a Fourier series to \({\1}_{\mathbb {Q}}\), but this Fourier series will be identically zero.
@@ -2746,13 +2742,13 @@ and the result follows on making a change of variable \(u = x-a\).
 
 <!--
 
-                                                                                                                            Z                                    Z
-                                                                                                                                    −ixyn
-                                                                                       |fb(yn ) − fb(y)| =                       e          f (x)dx −                    e−ixy f (x) dx
-                                                                                                                             R                                    R
-                                                                                                                         Z
-                                                                                                                    ≤            |e−ixyn − e−ixy |.|f (x)| dx.
-                                                                                                                             R
+                                                                                                                               Z                                  Z
+                                                                                                                                       −ixyn
+                                                                                         |fb(yn ) − fb(y)| =                           e       f (x)dx −                  e−ixy f (x) dx
+                                                                                                                                   R                                  R
+                                                                                                                           Z
+                                                                                                                       ≤            |e−ixyn − e−ixy |.|f (x)| dx.
+                                                                                                                               R
 
 
 
@@ -2781,7 +2777,7 @@ so \(\lim _{n \rightarrow \infty }|e^{-ixy_{n}}- e^{-ixy}| = 0\). The result fol
 </p>
 <p>
 \[\begin {aligned} \frac {\widehat {f}(y + h) - \widehat {f}(y)}{h} &amp; = \frac {1}{h}\int _{\R }(e^{-ix(y + h)} - e^{-ixy})f(x)\,dx \\ &amp; = \int _{\R }e^{-ixy}\left (\frac
-{e^{-ihx} - 1}{h}\right )f(x)\,dx.              \end {aligned}\]
+{e^{-ihx} - 1}{h}\right )f(x)\,dx. \end {aligned}\]
 </p>
 <p>
 Since \(|e^{-ixy}| \leq 1\), and using the hint with \(b = hx\), we get
@@ -2790,10 +2786,10 @@ Since \(|e^{-ixy}| \leq 1\), and using the hint with \(b = hx\), we get
 
 
 <!--
-                                                                   fb(y + h) − fb(y)               e−ihx − 1
-                                                                                          Z                                                   Z
-                                                                                     ≤                       |f (x)| dx ≤                         |x||f (x)| dx < ∞.
-                                                                           h               R           h                                      R
+                                                                  fb(y + h) − fb(y)                 e−ihx − 1
+                                                                                            Z                                     Z
+                                                                                        ≤                     |f (x)| dx ≤            |x||f (x)| dx < ∞.
+                                                                          h                  R          h                         R
 
 
 
@@ -2839,15 +2835,15 @@ We also have by Fubini’s theorem
 
 <!--
 
-                                                                       Z Z                                       Z Z                                    
-                                                                                |(f (x − y)g(y)|dydx ≤                         |f (x − y)| |g(y)| dy dx
-                                                                        R   R                                     R   R
-                                                                                                                 Z Z                             
-                                                                                                            =                  |f (x − y)|dx |g(y)| dy
-                                                                                                                 ZR        R
-                                                                                                                                      Z
-                                                                                                            =           |f (x)| dx         |g(y)| dy < ∞,
-                                                                                                                    R                  R
+                                                                       Z Z                                       Z Z                        
+                                                                                 |(f (x − y)g(y)|dydx ≤             |f (x − y)| |g(y)| dy dx
+                                                                        R    R
+                                                                                                                 ZR ZR           
+                                                                                                         =          |f (x − y)|dx |g(y)| dy
+                                                                                                            R     R
+                                                                                                           Z             Z
+                                                                                                         =    |f (x)| dx |g(y)| dy < ∞,
+                                                                                                                  R           R
 
 
 
@@ -2871,20 +2867,21 @@ By a similar argument using Fubini’s theorem, we have that
 
 <!--
 
-                                                                                               Z             Z
-                                                                                                     −ixy
-                                                                                   ∗ g(y) =
-                                                                                  f[                e               f (x − z)g(z) dz dx
-                                                                                               ZR Z            R
-                                                                                                                                          
-                                                                                          =                 e−iy(u+z) f (u)du g(z) dz
-                                                                                               ZR       R
-                                                                                                                           Z
-                                                                                                     −iyu
-                                                                                          =         e       f (u)du.               e−iyz g(z) dz
-                                                                                                R                              R
+                                                                                                Z            Z
+                                                                                                      −ixy
+                                                                                    ∗ g(y) =
+                                                                                   f[              e       f (x − z)g(z) dz dx
+                                                                                                ZR Z        R
+                                                                                                                        
+                                                                                                       −iy(u+z)
+                                                                                            =         e          f (u)du g(z) dz
+                                                                                               R    R
+                                                                                              Z                 Z
+                                                                                                  −iyu
+                                                                                            =    e     f (u)du. e−iyz g(z) dz
+                                                                                                 R                        R
 
-                                                                                          = fb(y)gb(y),
+                                                                                            = fb(y)gb(y),
 
 
 
@@ -2896,7 +2893,7 @@ By a similar argument using Fubini’s theorem, we have that
 
 \begin{align*}
 \widehat {f * g}(y) &amp; = \int _{\R }e^{-ixy}\int _{\R }f(x -z)g(z)\,dz\, dx \\ &amp; = \int _{\R }\left (\int _{\R }e^{-iy(u + z)}f(u)du \right )g(z)\,dz \\ &amp; = \int _{\R
-}e^{-iyu}f(u)du.     \int _{\R }e^{-iyz}g(z)\,dz\\ &amp; = \widehat {f}(y)\widehat {g}(y),
+}e^{-iyu}f(u)du. \int _{\R }e^{-iyz}g(z)\,dz\\ &amp; = \widehat {f}(y)\widehat {g}(y),
 \end{align*}
 where we used that change of variable \(x = u + z\).
 </p>
@@ -2907,7 +2904,7 @@ where we used that change of variable \(x = u + z\).
 </li>
 </ul>
 <!--
-......   subsection Chapter <a href=Probability-with-Measure.html#c:prob_with_meas>5</a> ......
+...... subsection Chapter <a href=Probability-with-Measure.html#c:prob_with_meas>5</a> ......
 -->
 <h5 id="autosec-301">Chapter <a href="Probability-with-Measure.html#c:prob_with_meas">5</a></h5>
 <a id="notes-autopage-301"></a>
@@ -2953,8 +2950,8 @@ href="Exercises-on-Chapter-ref-c-prob_with_meas.html#ps:prob_notation"><b>5.1</b
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#ps:uniform_dist"><b>5.3</b></a> \(\P [U\in A]=\int _A \frac {1}{b-a}\,dx=\frac {\lambda (A)}{b-a}\), where \(\lambda \) denotes
-Lebesgue measure.
+<a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#ps:uniform_dist"><b>5.3</b></a> \(\P [U\in A]=\int _A \frac {1}{b-a}\,dx=\frac {\lambda (A)}{b-a}\), where \(\lambda \)
+denotes Lebesgue measure.
 </p>
 </li>
 <li>
@@ -3065,15 +3062,15 @@ _{n=1}^{\infty }A_{n}\r ] = \prod _{n=1}^{\infty }\P [A_{n}]\) would hold in, fo
 
 
 
-                                                                                          P[Ac ∩ B c ] = P[(A ∪ B)c ] = 1 − P[A ∪ B]
+                                                                                        P[Ac ∩ B c ] = P[(A ∪ B)c ] = 1 − P[A ∪ B]
 
-                                                                                                                    = 1 − P[A] − P[B] + P[A ∩ B]
+                                                                                                                  = 1 − P[A] − P[B] + P[A ∩ B]
 
-                                                                                                                    = 1 − P[A] − P[B] − P[A]P[B]
+                                                                                                                  = 1 − P[A] − P[B] − P[A]P[B]
 
-                                                                                                                    = (1 − P[A])(1 − P[B])
+                                                                                                                  = (1 − P[A])(1 − P[B])
 
-                                                                                                                    = P[Ac ]P[B c ].
+                                                                                                                  = P[Ac ]P[B c ].
 
 
 
@@ -3198,7 +3195,7 @@ For \(X_2\) we need to be slightly more careful. We have \(Y\leq X_2\leq Y+1\), 
 </p>
 <p>
 \[ \E [Y]\leq \E [X_2] =\sum \limits _{n=1}^\infty \P [X_2\geq n] \leq \sum \limits _{n=1}^\infty \P [Y+1\geq n] = \1_{\{Y\geq 0\}}+\sum \limits _{n=1}^\infty \P [Y\geq n] =
-1+\sum \limits _{n=1}^\infty \P [Y\geq n].           \]
+1+\sum \limits _{n=1}^\infty \P [Y\geq n]. \]
 </p>
 <p>
 
@@ -3226,7 +3223,7 @@ most one real root, and hence has a non-positive discriminant (i.e.&nbsp;\(b^2-4
 
 
 <p>
-<span class="textnormal">(b)</span> Put \(Y=1\) in the Cauchy-Schwarz inequality from (a) to get \(\E [|X|] \leq \E [X^{2}]^{\frac {1}{2}} &lt; \infty \). Thus \(X\) is integrable. By Lemma <a
+<span class="textnormal">(b)</span> Put \(Y=1\) in the Cauchy-Schwarz inequality from (a) to get \(\E [|X|] \leq \E [X^{2}]^{\frac {1}{2}} &lt; \infty \). Thus \(X\in \Lone \). By Lemma <a
 href="The-Lebesgue-integral-non-negative-measurable-functions.html#l:leb_int_step_2_monotonicity">4.2.2</a> we have \(|\E [X]| \leq \E [|X|]\). Combining our two inequalities gives \(|\E
 [X]|^{2} \leq \E [X^{2}]\).
 </p>
@@ -3235,7 +3232,7 @@ href="The-Lebesgue-integral-non-negative-measurable-functions.html#l:leb_int_ste
 
 
 <p>
-<span class="textnormal">(c)</span> If \(\E [X^2]&lt;\infty \) then by part (b) \(X\) is also integrable, so by linearity we have
+<span class="textnormal">(c)</span> If \(\E [X^2]&lt;\infty \) then by part (b) \(\E [|X|]&lt;\infty \), so by linearity we have
 </p>
 <p>
 \[ \var (X) = \E [(X - \mu )^{2}] = \E [X^{2}] - 2\mu \E [X] + \mu ^{2} = \E [X^{2}] - \mu ^{2}.\]
@@ -3245,7 +3242,7 @@ Hence \(\var (X)&lt;\infty \).
 </p>
 <p>
 Conversely, suppose that \(\var (X)&lt;\infty \), and note that by assumption we also have \(\E [X]&lt;\infty \). We can write \(X^2=(X-\E [X])^2+2X\E [X]-\E [X]^2\) and note that all terms here are
-integrable by our assumptions, thus
+in \(\Lone \) by our assumptions, thus
 </p>
 <p>
 \[\E [X^2]=\var (X)+2\E [X]\E [X]-\E [X]^2=\var (X)-\E [X]^2.\]
@@ -3332,12 +3329,12 @@ If \(f\) is non-negative but not necessarily bounded, the result still holds but
 
 <!--
 
-                                                                              N                        N                      N                  N
-                                                                          "           #           "            #          "            #
-                                                                              [                        [                      \                  Y
-                                                          P[∪n En ] ≥ P             En = 1 − P Ω \           En = 1 − P           Ω \ En = 1 −         P[Ω \ En ] ≥ 1 − (1 − ϵ)N .
-                                                                              n=1                      n=1                n=1                    n=1
 
+                                                                            N                        N                      N                  N
+                                                                        "           #           "            #          "            #
+                                                                            [                        [                      \                  Y
+                                                        P[∪n En ] ≥ P             En = 1 − P Ω \           En = 1 − P           Ω \ En = 1 −         P[Ω \ En ] ≥ 1 − (1 − )N .
+                                                                            n=1                      n=1                n=1                    n=1
 
 
 -->
@@ -3373,7 +3370,7 @@ For the last part, if \(\Omega \) was countable then we could write \(\Omega =\{
 </li>
 </ul>
 <!--
-......   subsection Chapter <a href=Inequalities-Random-Variables.html#c:ineqs>6</a> ......
+...... subsection Chapter <a href=Inequalities-Random-Variables.html#c:ineqs>6</a> ......
 -->
 <h5 id="autosec-302">Chapter <a href="Inequalities-Random-Variables.html#c:ineqs">6</a></h5>
 <a id="notes-autopage-302"></a>
@@ -3393,14 +3390,16 @@ Poisson\((\lambda )\) distribution the \(\P [X_n=k]=\frac {\lambda ^ke^{-\lambda
 
 <!--
 
-                                                                                                   ∞                       ∞
-                                                                                                     λk e−λ                  (et λ)k                      t           t
-                                                                                                              etk = e−λ                           = e−λ ee λ = eλ(e −1) .
-                                                                                                   X                       X
-                                                                                 E[etX ] =
-                                                                                                   k=0
-                                                                                                         k!                k=0
-                                                                                                                                      k!
+                                                                                       ∞                             ∞
+                                                                                       X λk e−λ                 −λ
+                                                                                                                     X (et λ)k             t                t
+                                                                         E[etX
+                                                                                 ]=               e   tk
+                                                                                                           =e                       = e−λ ee   λ
+                                                                                                                                                   = eλ(e       −1)
+                                                                                                                                                                      .
+                                                                                             k!                             k!
+                                                                                       k=0                           k=0
 
 
 -->
@@ -3419,14 +3418,14 @@ Putting \(n\lambda \) as the parameter, we obtain \(\E [e^{tX_n}]=e^{n\lambda (e
 To derive the Chernoff bound, note that by Markov’s inequality we have
 </p>
 <p>
-\[ \P [X_n\geq n\lambda ^2] =\P [e^{tX_n}\leq e^{tn\lambda ^2}] \leq e^{-tn\lambda ^2}\E [e^{tX_n}] = \exp \l (n\lambda (e^t-1-\lambda t)\r ).                                                              \]
+\[ \P [X_n\geq n\lambda ^2] =\P [e^{tX_n}\leq e^{tn\lambda ^2}] \leq e^{-tn\lambda ^2}\E [e^{tX_n}] = \exp \l (n\lambda (e^t-1-\lambda t)\r ). \]
 </p>
 <p>
 Differentiating the above with respect to \(t\) obtains \(n\lambda (e^t-\lambda )\exp \l (n\lambda (e^t-1-\lambda t)\r )\), which is minimized when \(\lambda =e^t\). We thus obtain the Chernoff
 bound
 </p>
 <p>
-\[ \P [X_n\geq n\lambda ^2] \leq \exp \l (n\lambda (\lambda -1-\lambda \log \lambda )\r ).                                       \]
+\[ \P [X_n\geq n\lambda ^2] \leq \exp \l (n\lambda (\lambda -1-\lambda \log \lambda )\r ). \]
 </p>
 <p>
 <em>Note that \(\lambda -1-\lambda \log \lambda \leq 0\) for \(\lambda &gt;0\), with equality only when \(\lambda =1\), so this is a useful bound provided \(\lambda \geq 1\).</em>
@@ -3443,20 +3442,15 @@ bound
 
 <!--
 
-                                                                                                                                                      
-                                                                   n                    n
-                                                                                      n X                         n                 n
-                                                                                                                                  n X                          n                  n
-                                                                                                                                                                                n X
-                                                                             12Ei +                1Ei 1Ej               1Ei +                   1Ei ∩Ej 
-                                                                   X                  X                           X               X                            X                X
-                                                       E[Xn2 ] = E 
-                                                                                                                                                      
-                                                                                                           = E
-                                                                                                                
-                                                                                                                                                          =         P[Ei ] +                P[Ei ∩ Ej ].
-                                                                       i=1            i=1   j=1                     i=1           i=1      j=1                 i=1              i=1   j=1
-                                                                                            j̸=i                                           j̸=i                                       j̸=i
+                                                                                                               
+                                                                   n       n n                n       n n            n            n
+                                                                                                                                n X
+                                                                 X 2
+                                                                     1Ei +     1Ei 1Ej         1Ei +     1Ei ∩Ej 
+                                                                           XX               X        XX             X          X
+                                                     E[Xn2 ] = E                       = E                     =   P[Ei ] +     P[Ei ∩ Ej ].
+                                                                 i=1      i=1   j=1                        i=1             i=1   j=1                i=1                   i=1   j=1
+                                                                                j6=i                                             j6=i                                           j6=i
 
 
 -->
@@ -3473,7 +3467,7 @@ Hence,
 </p>
 <p>
 \[\frac {\E [X_n]^2}{\E [X_n^2]} =\frac {\l (\sum _{i=1}^n \P [E_i]\r )^2} {\sum _{i=1}^n \P [E_i] + \sum _{i=1}^n\sum _{\stackrel {j=1}{j\neq i}}^n\P [E_i\cap E_j]} =\frac {1}
-{\l (\sum _{i=1}^n \P [E_i]\r )^{-1}+\frac {\sum _{i=1}^n\sum _{\stackrel {j=1}{j\neq i}}^n\P [E_i\cap E_j]}{\l (\sum _{i=1}^n \P [E_i]\r )^2}}.                                                                 \]
+{\l (\sum _{i=1}^n \P [E_i]\r )^{-1}+\frac {\sum _{i=1}^n\sum _{\stackrel {j=1}{j\neq i}}^n\P [E_i\cap E_j]}{\l (\sum _{i=1}^n \P [E_i]\r )^2}}. \]
 </p>
 <p>
 Using that \(\P [E_i\cap E_j]\leq \P [E_i]\P [E_j]\) we have
@@ -3604,7 +3598,7 @@ href="Exercises-on-Chapter-ref-c-prob_with_meas.html#ps:chebyshev_prob"><b>5.2</
 </li>
 </ul>
 <!--
-......     subsection Chapter <a href=Sequences-Random-Variables.html#c:rv_sequences>7</a> ......
+...... subsection Chapter <a href=Sequences-Random-Variables.html#c:rv_sequences>7</a> ......
 -->
 <h5 id="autosec-303">Chapter <a href="Sequences-Random-Variables.html#c:rv_sequences">7</a></h5>
 <a id="notes-autopage-303"></a>
@@ -3653,10 +3647,12 @@ some \(n\geq \max (m,k)\). Then \(\omega \in \bigcup _{i\geq k}A_i\), but this h
 
 <!--
 
-                                                                                                       
-                                                                                    \ [       [       [         [ \
-                                                               Ω \ {An i.o.} = Ω \     An  = Ω \    An  =     Ω \ An = {Ω \ An e.v.}.
-                                                                                       m n≥m           m          n≥m           m n≥m
+                                                                                                       
+
+                                                             Ω \ {An i.o.} = Ω \                                   Ω \ An = {Ω \ An e.v.}.
+                                                                                  \ [        [        [         [ \
+                                                                                      An  =   Ω \    An  =
+                                                                                     m n≥m           m          n≥m             m n≥m
 
 
 
@@ -3684,9 +3680,8 @@ href="Probability-with-Measure.html#l:monotone_events_P">5.1.1</a> we have
 <!--
 
 
-        P[An e.v.] = P[∪m Bm ] = lim P[Bm ] = lim inf P[Bm ] ≤ lim inf P[Am ].        (B.1)                                                                                        --><a id="eq:evbound"></a><!--
-                                 m→∞            m→∞              m→∞
-
+      P[An e.v.] = P[∪m Bm ] = lim P[Bm ] = lim inf P[Bm ] ≤ lim inf P[Am ].      (B.1)                                                                                         --><a id="eq:evbound"></a><!--
+                                m→∞            m→∞             m→∞
 -->
 <p>
 
@@ -3707,9 +3702,9 @@ Using (b), we then have
 <!--
 
 
-                                                       P[An i.o.] = 1 − P[Acn e.v.] ≥ 1 − lim inf P[Acm ] = 1 − lim inf (1 − P[Am ]) = − lim inf −P[Am ] = lim sup P[Am ].
-                                                                                              m→∞               m→∞                      m→∞                m→∞
-                                                                                      (B.2)                                                                                       --><a id="eq:iobound"></a><!--
+                                                      P[An i.o.] = 1 − P[Acn e.v.] ≥ 1 − lim inf P[Acm ] = 1 − lim inf(1 − P[Am ]) = − lim inf −P[Am ] = lim sup P[Am ].
+                                                                                          m→∞                 m→∞                       m→∞               m→∞
+                                                                                  (B.2)                                                                                         --><a id="eq:iobound"></a><!--
 -->
 <p>
 
@@ -3836,8 +3831,8 @@ values \(0\) and \(n\) we have that \(\{|X_n-0|&gt;a\}=\{X_n=n\}\) whenever \(a&
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-rv_sequences.html#ps:P_not_as"><b>7.5</b></a> Let us first show that \(X_n\stackrel {\P }{\to }0\). Given any \(\eps &gt; 0\) and \(c &gt; 0\) we can find
-\(m\in \N \) such that \(\frac {1}{2^{m}c} &lt; \eps \). The key point is that for \(n&gt;2^m\) the length of the interval \(A_n\) is less than or equal to \(\frac {1}{2^m}\), and since our probability
+<a href="Exercises-on-Chapter-ref-c-rv_sequences.html#ps:P_not_as"><b>7.5</b></a> Let us first show that \(X_n\stackrel {\P }{\to }0\). Given any \(\eps &gt; 0\) and \(c &gt; 0\) we can
+find \(m\in \N \) such that \(\frac {1}{2^{m}c} &lt; \eps \). The key point is that for \(n&gt;2^m\) the length of the interval \(A_n\) is less than or equal to \(\frac {1}{2^m}\), and since our probability
 measure is Lebesgue measure this gives \(\E [1_{A_n}]\leq \frac {1}{2^m}\). Hence, for all \(n &gt; 2^m\), by Markov’s inequality
 </p>
 <p>
@@ -3893,7 +3888,7 @@ By the triangle inequality we have
 
 
                                                                      P[|X − Y | > 2a] = P[|X − Xn + Xn − Y | > 2a] ≤ P[|X − Xn | + |Xn − Y | > 2a].
-                                                                              (B.3)                                                                                          --><a id="eq:ps_uniq_limit"></a><!--
+                                                                         (B.3)                                                                                             --><a id="eq:ps_uniq_limit"></a><!--
 -->
 <p>
 
@@ -3929,7 +3924,7 @@ The proof proceeds in exactly the same way as when the random variables are inde
 </p>
 <p>
 \[\begin {aligned} \var (\overline {X_n}) &amp; = \frac {1}{n^{2}}\E \l [\left (\sum _{i=1}^{n}X_{i}\right )^{2}\r ]\\ &amp; = \frac {1}{n^{2}}\sum _{i=1}^{n}\sum _{j=1}^{n}\E
-[X_{i}X_{j}]\\ &amp; = \frac {1}{n^{2}}\sum _{i=1}^{n}\E [X_{i}^{2}]\\ &amp; = \frac {\sigma ^{2}}{n}.                             \end {aligned}\]
+[X_{i}X_{j}]\\ &amp; = \frac {1}{n^{2}}\sum _{i=1}^{n}\E [X_{i}^{2}]\\ &amp; = \frac {\sigma ^{2}}{n}. \end {aligned}\]
 </p>
 </li>
 <li>
@@ -3960,9 +3955,9 @@ and take expectations, giving
 
                                                                                  E[min(1, X)] = E[min(1, X)1{X<a} ] + E[min(1, X)1{X≥a} ]
 
-                                                                                                ≤ E[a] + E[1{X≥a} ]
+                                                                                              ≤ E[a] + E[1{X≥a} ]
 
-                                                                                                = a + P[X ≥ a].
+                                                                                              = a + P[X ≥ a].
 
 
 
@@ -4026,11 +4021,11 @@ Let \(\eps &gt;0\). Choose \(a=\frac {\eps }{2}\) and let \(N\in \N \) be large 
 </p>
 <p>
 \[\begin {aligned} \phi (u) &amp; = \frac {1}{\sqrt {2 \pi }}\int _{\R }e^{iuy}e^{-\frac {1}{2}y^{2}}dy \\ &amp; = \frac {1}{\sqrt {2 \pi }}\int _{\R }\cos (uy)e^{-\frac
-{1}{2}y^{2}}dy + i \frac {1}{\sqrt {2 \pi }}\int _{\R }\sin (uy)e^{-\frac {1}{2}y^{2}}dy.                         \end {aligned}\]
+{1}{2}y^{2}}dy + i \frac {1}{\sqrt {2 \pi }}\int _{\R }\sin (uy)e^{-\frac {1}{2}y^{2}}dy. \end {aligned}\]
 </p>
 <p>
 As \(|\cos (uy)ye^{-\frac {1}{2}u^{2}}| \leq |y|e^{-\frac {1}{2}y^{2}}\) and \(|\sin (uy)ye^{-\frac {1}{2}u^{2}}| \leq |y|e^{-\frac {1}{2}y^{2}}\) and \(y \rightarrow |y|e^{-\frac
-{1}{2}y^{2}}\) is integrable on \(\R \), we may apply Problem <a href="Exercises-on-Chapter-ref-c-lebesgue_integration.html#ps:diff_under_int"><b>4.17</b></a> to real and imaginary parts, to
+{1}{2}y^{2}}\) is in \(\Lone _\R \), we may apply Problem <a href="Exercises-on-Chapter-ref-c-lebesgue_integration.html#ps:diff_under_int"><b>4.17</b></a> to real and imaginary parts, to
 deduce that \(u \rightarrow \phi (u)\) is differentiable and its derivative at \(u \in \R \) is
 </p>
 <p>
@@ -4041,7 +4036,7 @@ Now integrate by parts to find that
 </p>
 <p>
 \[\begin {aligned} \phi &apos;(u) &amp; = \frac {i}{\sqrt {2 \pi }}\left [-e^{iuy}e^{-\frac {1}{2}y^{2}}\right ]_{-\infty }^{\infty } - \frac {1}{\sqrt {2 \pi }}\int _{-\infty
-}^{\infty }ue^{iuy}e^{-\frac {1}{2}y^{2}}dy\\ &amp; = -u \phi (u).                    \end {aligned}\]
+}^{\infty }ue^{iuy}e^{-\frac {1}{2}y^{2}}dy\\ &amp; = -u \phi (u). \end {aligned}\]
 </p>
 <p>
 So we have the ordinary differential equation \(\ds \frac {d \phi (u)}{du} = -u \phi (u)\) with initial condition, \(\Phi _{Y}(0) = 1\) and the result follows by using the standard separation of variables
@@ -4052,8 +4047,8 @@ technique.
 
 
 <p>
-<span class="textnormal">(b)</span> First suppose that we have established the case for \(Y\sim N(0,1)\) i.e.&nbsp;we know that \(\phi _{Y}(u) = e^{-\frac {1}{2}u^{2}}\) for all \(u \in \R \). Then
-since \(X = \mu + \sigma Y\), we have
+<span class="textnormal">(b)</span> First suppose that we have established the case for \(Y\sim N(0,1)\) i.e.&nbsp;we know that \(\phi _{Y}(u) = e^{-\frac {1}{2}u^{2}}\) for all \(u \in \R \).
+Then since \(X = \mu + \sigma Y\), we have
 </p>
 <p>
 \[\begin {aligned} \phi _{X}(u) &amp; = \E (e^{iu (\mu + \sigma Y)})\\ &amp; = e^{iu\mu }\E (e^{i(u\sigma )Y}) = e^{i\mu u - \frac {1}{2}\sigma ^{2}u^{2}},\end {aligned}.\]
@@ -4144,7 +4139,7 @@ Since \(Y_n\stackrel {\P }{\to } X\), there exists \(N\in \N \) such that for al
 /2]\geq \de /2\) and \(\P [Y_n\geq c+\eps /2]\geq \de /2\). Hence also
 </p>
 <p>
-\[ \sum _n\P [Y_n\leq c-\eps /2]=\infty \quad \quad \text { and }\quad \quad \sum _n\P [Y_n\geq c+\eps /2]=\infty .                                \]
+\[ \sum _n\P [Y_n\leq c-\eps /2]=\infty \quad \quad \text { and }\quad \quad \sum _n\P [Y_n\geq c+\eps /2]=\infty . \]
 </p>
 <p>
 The \((X_n)\) are independent, hence so are the elements of the subsequence \((Y_n)\). From the second Borel-Cantelli lemma we obtain that
@@ -4218,7 +4213,7 @@ For \(\eps \in (0,1]\) we have \(\P [|X_n-0|\geq \eps ]=\P [X_n=1]=\frac 1n\), s
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 5, 2023
+Copyright Nic Freeman, Sheffield University, last updated February 22, 2024
 </p>
 
 </footer>

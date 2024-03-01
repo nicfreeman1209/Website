@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, October 5, 2023." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, February 22, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS31002/61022 — Characteristic functions ()</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 5, 2023
+last updated: February 22, 2024
 </p>
 
 </header>
@@ -968,7 +968,7 @@ Home</a>
 
 <p>
 <!--
-......     section Characteristic functions () ......
+...... section Characteristic functions () ......
 -->
 <h4 id="autosec-268"><span class="sectionnumber">7.4&#x2003;</span>Characteristic functions (\(\Delta \))</h4>
 <a id="notes-autopage-268"></a>
@@ -996,10 +996,12 @@ function</i> \(\phi _{X}:\R \rightarrow \C \) of \(X\) and is defined, for each 
 
 <!--
 
-
-                                                 h    i    Z
-                                       ϕX (u) = E eiuX =       eiuy dpX (y).                                (7.7)                                                --><a id="eq:char_func"></a><!--
-                                                           R
+                                                                  Z
+                                                    iuX
+                                                                      eiuy dpX (y).                        (7.7)                                                 --><a id="eq:char_func"></a><!--
+                                                         
+                                      φX (u) = E e            =
+                                                                  R
 
 -->
 
@@ -1055,9 +1057,9 @@ case \(\phi _{X}(u) = \exp \l (i\mu u - \frac {1}{2}\sigma ^{2}u^{2}\r )\) for a
 <p>
 Equation <span class="textup">(<a href="Characteristic-functions.html#eq:char_func">7.7</a>)</span> states that the characteristic function of \(X\) is the Fourier transform of the law \(p_{X}\) of
 the random variable \(X\). In elementary probability theory courses we often meet the Laplace transform \(\E [e^{uX}]\) of \(X\), which is called the <i>moment generating function</i> of \(X\). The moment
-generating function has the disadvantage that it only exists when \(|u|\) is small enough, because the function \(y \mapsto e^{uy}\) may not be integrable. How small \(|u|\) is required to be depends on \(X\),
-but unfortunately there are random variables for which \(\E [e^{uX}]\) is undefined for all \(u\neq 0\). In such cases the moment generating function is useless. The characteristic function has the important
-advantage that it is always defined for all \(u\in \R \).
+generating function has the disadvantage that it only exists when \(|u|\) is small enough, because the function \(y \mapsto e^{uy}\) may not be \(\Lone \). How small \(|u|\) is required to be depends on
+\(X\), but unfortunately there are random variables for which \(\E [e^{uX}]\) is undefined for all \(u\neq 0\). In such cases the moment generating function is useless. The characteristic function has the
+important advantage that it is always defined for all \(u\in \R \).
 </p>
 
 <p>
@@ -1092,9 +1094,9 @@ Here is a useful property of characteristic functions, which is another instance
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We have \(\phi _{X+Y}(u) = \E \big [e^{iu(X+Y)}\big ] = \E \l
-[e^{iuX}e^{iuY}\r ] = \E \l [e^{iuX}\r ]\E \l [e^{iuY}\r ] = \phi _{X}(u)\phi _{Y}(u)\), where the key step follows by the complex version of Theorem <a
-href="Independence.html#t:indep_E">5.4.2</a>. &#x2003;&#x2003;&#x220E;
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> We have \(\phi _{X+Y}(u) = \E \big [e^{iu(X+Y)}\big ] = \E \l [e^{iuX}e^{iuY}\r ]
+= \E \l [e^{iuX}\r ]\E \l [e^{iuY}\r ] = \phi _{X}(u)\phi _{Y}(u)\), where the key step follows by the complex version of Theorem <a href="Independence.html#t:indep_E">5.4.2</a>.
+&#x2003;&#x2003;&#x220E;
 </p>
 
 <p>
@@ -1158,7 +1160,7 @@ _{Y}(u)\) for all \(u \in \R \) then \(p_{X} = p_{Y}\).
 
 </div>
 <!--
-......   subsection Approximating characteristic functions with polynomials              ......
+...... subsection Approximating characteristic functions with polynomials              ......
 -->
 <h5 id="autosec-274"><span class="sectionnumber">7.4.1&#x2003;</span>Approximating characteristic functions with polynomials \((\Delta )\)</h5>
 <a id="notes-autopage-274"></a>
@@ -1207,12 +1209,12 @@ We start with an upper bound on \(R_n(x)\), which we then convert into a bound o
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> A simple calculation based on Exercise <a
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> A simple calculation based on Exercise <a
 href="Exercises-on-Chapter-ref-c-lebesgue_integration.html#ps:int_C_calc"><b>4.14</b></a> shows that
 </p>
 
 <p>
-\[R_{0}(x) = e^{ix} - 1 = \begin {cases} \int _{0}^{x}ie^{iy}\,dy &amp; \text { if }x &gt; 0, \\ -\int _{x}^{0}ie^{iy}\,dy &amp; \text { if }x &lt; 0.                          \end {cases} \]
+\[R_{0}(x) = e^{ix} - 1 = \begin {cases} \int _{0}^{x}ie^{iy}\,dy &amp; \text { if }x &gt; 0, \\ -\int _{x}^{0}ie^{iy}\,dy &amp; \text { if }x &lt; 0. \end {cases} \]
 </p>
 
 <p>
@@ -1226,7 +1228,7 @@ A slightly longer calculation, again using on Exercise <a href="Exercises-on-Cha
 </p>
 
 <p>
-\[R_{n}(x) = \begin {cases} \int _{0}^{x}iR_{n-1}(y)\,dy&amp;\text { if }x &gt; 0,\\ -\int _{x}^{0}iR_{n-1}(y)\,dy &amp;\text { if }x &lt; 0.                          \end {cases}\]
+\[R_{n}(x) = \begin {cases} \int _{0}^{x}iR_{n-1}(y)\,dy&amp;\text { if }x &gt; 0,\\ -\int _{x}^{0}iR_{n-1}(y)\,dy &amp;\text { if }x &lt; 0. \end {cases}\]
 </p>
 
 <p>
@@ -1249,48 +1251,9 @@ Using this relationship, the result can be shown via induction (which is left fo
 
 <!--
 
-
-                                                                                     n
-                                                                                                          "      (                      )#
-                                                                                     X (iy)k E[X k ]                 2|yX|n |yX|n+1
-                                                                            ϕ(y) −                     ≤ E min             ,                 .
-                                                                                     k=0
-                                                                                             k!                         n!   (n + 1)!
--->
-
-<p>
-
-
-\begin{equation*}
-\left |\phi (y) - \sum _{k=0}^{n}\frac {(iy)^{k}\E [X^{k}]}{k!}\right | \leq \E \left [\min \left \{\frac {2|yX|^{n}}{n!}, \frac {|yX|^{n+1}}{(n+1)!}\right \}\right ].
-\end{equation*}
-
-
-</p>
-
-<p>
-for all \(n\in \N \cup \{0\}\).
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We have
-</p>
-
-<p>
-\[|\E [R_n(yX)]|\leq \E [|R_n(yX)|]\leq \E \l [\max \l \{\frac {2|yX|^2}{n!},\frac {|yX|^{n+1}}{(n+1)!}\r \}\r ].\]
-</p>
-
-<p>
-The first step uses the absolute value property of integrals, and the second step uses Lemma <a href="Characteristic-functions.html#l:eix_vs_poly">7.4.6</a> (with \(x=yX\)) and monotonicity. The
-required result follows after noting that by linearity \(\E [R_n(yX)]=\phi (y)-\sum _{k=0}^n \frac {(iy)^k \E [X^k]}{k!}\). We may use linearity here because, by Exercise <a
-href="Exercises-on-Chapter-ref-c-ineqs.html#ps:jensen_LpLq"><b>6.5</b></a>, if \(\E [|X|^n]&lt;\infty \) then \(\E [|X|^k]&lt;\infty \) for all \(1\leq k\leq n\). &#x2003;&#x2003;&#x220E;
+                                                                                       n
+                                                                                         (iy)k E[X k ]             2|yX|n |yX|n+1
+                                                                                                                -on-Chapter-ref-c-ineqs.html#ps:jensen_LpLq"><b>6.5</b></a>, if \(\E [|X|^n]&lt;\infty \) then \(\E [|X|^k]&lt;\infty \) for all \(1\leq k\leq n\). &#x2003;&#x2003;&#x220E;
 </p>
 
 </section>
@@ -1302,7 +1265,7 @@ href="Exercises-on-Chapter-ref-c-ineqs.html#ps:jensen_LpLq"><b>6.5</b></a>, if \
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 5, 2023
+Copyright Nic Freeman, Sheffield University, last updated February 22, 2024
 </p>
 
 </footer>
