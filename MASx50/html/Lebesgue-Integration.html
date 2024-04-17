@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, February 22, 2024." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, March 4, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS31002/61022 — Lebesgue Integration</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 22, 2024
+last updated: March 4, 2024
 </p>
 
 </header>
@@ -1275,16 +1275,16 @@ Thus
 
 <p>
 \[ \begin {aligned} \mc {I}( \alpha f + \beta g) &amp; = \sum _{i=1}^{n}\sum _{j=1}^{m}( \alpha c_{i} + \beta d_{j})m(A_{i} \cap B_{j})\\ &amp; = \alpha \sum _{i=1}^{n}c_i\sum
-_{j=1}^{m}m(A_{i} \cap B_{j}) + \beta \sum _{j=1}^{n}d_i\sum _{i=1}^{m}m(A_{i} \cap B_{j}) \\ &amp; = \alpha \sum _{i=1}^{n}c_{i}m\left (A_{i} \cap \bigcup _{j=1}^{m}B_{j}\right
-) + \beta \sum _{j=1}^{m}d_{j}m\left (\bigcup _{i=1}^{n}A_{i} \cap B_{j}\right )\\ &amp; = \alpha \sum _{i=1}^{n}c_{i}m(A_{i}\cap S) + \beta \sum _{j=1}^{m}d_{j}m(B_{j}\cap S)\\
+_{j=1}^{m}m(A_{i} \cap B_{j}) + \beta \sum _{j=1}^{n}d_j\sum _{i=1}^{m}m(A_{i} \cap B_{j}) \\ &amp; = \alpha \sum _{i=1}^{n}c_{i}m\left (A_{i} \cap \bigcup _{j=1}^{m}B_{j}\right
+) + \beta \sum _{j=1}^{m}d_{j}m\left (B_j\cap \bigcup _{i=1}^{n}A_{i}\right )\\ &amp; = \alpha \sum _{i=1}^{n}c_{i}m(A_{i}\cap S) + \beta \sum _{j=1}^{m}d_{j}m(B_{j}\cap S)\\
 &amp; = \alpha \sum _{i=1}^{n}c_{i}m(A_{i}) + \beta \sum _{j=1}^{m}d_{j}m(B_{j})\\ &amp; = \alpha \mc {I}(f) + \beta \mc {I}(g). \end {aligned} \]
 </p>
 
 <p>
 This proves linearity. For monotonicity, note that by linearity we have \(\mc {I}(g) = \mc {I}(f) + \mc {I}(g-f)\). Putting \(\alpha =1\) and \(\beta =-1\) into <span class="textup">(<a
-href="Lebesgue-Integration.html#eq:simple_func_linearity">4.4</a>)</span>, we have that we have that \(g-f\) is a non-simple function. If \(f\leq g\) then \(g-f\geq 0\), which means that we can
-write \(g-f\) in the form \(g-f=\sum _{i=1}^l e_i \1_{F_i}\) where \(e_i\geq 0\), from which <span class="textup">(<a href="Lebesgue-Integration.html#eq:leb_int_simple">4.3</a>)</span>
-gives that \(\mc {I}(g-f)\geq 0\). Hence \(\mc {I}(f)\leq \mc {I}(g)\), as required. &#x2003;&#x2003;&#x220E;
+href="Lebesgue-Integration.html#eq:simple_func_linearity">4.4</a>)</span>, we have that we have that \(g-f\) is a non-negative simple function. If \(f\leq g\) then \(g-f\geq 0\), which means that
+we can write \(g-f\) in the form \(g-f=\sum _{i=1}^l e_i \1_{F_i}\) where \(e_i\geq 0\), from which <span class="textup">(<a
+href="Lebesgue-Integration.html#eq:leb_int_simple">4.3</a>)</span> gives that \(\mc {I}(g-f)\geq 0\). Hence \(\mc {I}(f)\leq \mc {I}(g)\), as required. &#x2003;&#x2003;&#x220E;
 </p>
 <!--
 ...... subsection Integration over subsets ......
@@ -1407,7 +1407,7 @@ measure. This completes the proof. &#x2003;&#x2003;&#x220E;
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 22, 2024
+Copyright Nic Freeman, Sheffield University, last updated March 4, 2024
 </p>
 
 </footer>

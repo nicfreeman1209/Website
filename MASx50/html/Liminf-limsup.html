@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, February 22, 2024." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, March 4, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS31002/61022 — Liminf and limsup</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 22, 2024
+last updated: March 4, 2024
 </p>
 
 </header>
@@ -1033,8 +1033,8 @@ We can do the same construction the other way up, which gives
 </p>
 
 <p>
-Heuristically, \(\liminf _n a_n\) is the largest value that the tail of the sequence \((a_n)\) stays above. Note that <span class="textup">(<a href="Liminf-limsup.html#eq:limsup_def">2.2</a>)</span>
-and <span class="textup">(<a href="Liminf-limsup.html#eq:liminf_def">2.3</a>)</span> are always well defined, as extended real numbers, and that \(\liminf _n a_n\leq \limsup _n a_n\).
+Heuristically, \(\liminf _n a_n\) is the largest value that the tail of the sequence \((a_n)\) stays above. Note that <span class="textup">(<a href="Liminf-limsup.html#eq:limsup_def">2.3</a>)</span>
+and <span class="textup">(<a href="Liminf-limsup.html#eq:liminf_def">2.4</a>)</span> are always well defined, as extended real numbers, and that \(\liminf _n a_n\leq \limsup _n a_n\).
 </p>
 <div class="theorembodyexample">
 
@@ -1189,7 +1189,7 @@ Note also that
 </p>
 
 <p>
-Combining <span class="textup">(<a href="Liminf-limsup.html#eq:lsli1">2.4</a>)</span> with <span class="textup">(<a href="Liminf-limsup.html#eq:lsli2">2.5</a>)</span> and using the
+Combining <span class="textup">(<a href="Liminf-limsup.html#eq:lsli1">2.5</a>)</span> with <span class="textup">(<a href="Liminf-limsup.html#eq:lsli2">2.6</a>)</span> and using the
 sandwich rule, we have
 </p>
 
@@ -1215,7 +1215,7 @@ sandwich rule, we have
 
 <p>
 We can write \(a_{n} = \left (a_{n} - \inf _{k \geq n}a_{k}\right ) + \inf _{k \geq n}a_{k}\), and we know that both of these terms have a limit as \(n\to \infty \). The first tends to zero by
-<span class="textup">(<a href="Liminf-limsup.html#eq:lsli3">2.6</a>)</span> and the second converges to \(\liminf _n a_n\). From the algebra of limits we thus obtain that \((a_n)\) converges and
+<span class="textup">(<a href="Liminf-limsup.html#eq:lsli3">2.7</a>)</span> and the second converges to \(\liminf _n a_n\). From the algebra of limits we thus obtain that \((a_n)\) converges and
 \(\lim _n a_n=\liminf _n a_n\). Since \(\liminf _n a_n=\limsup _n a_n\) was our assumption, this completes the proof. &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodylemma">
@@ -1241,7 +1241,7 @@ _n a_n\).
 <p>
 <span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> You already know from real analysis that \(\sup _n (-a_n)=-\inf _n a_n\) for real \(a_n\).
 This equation also holds for extended reals, but we’ll omit checking the extra cases involving infinities here. The result follows from this along with <span class="textup">(<a
-href="Liminf-limsup.html#eq:limsup_def">2.2</a>)</span> for \(\limsup \), and with <span class="textup">(<a href="Liminf-limsup.html#eq:liminf_def">2.3</a>)</span> for \(\liminf \).
+href="Liminf-limsup.html#eq:limsup_def">2.3</a>)</span> for \(\limsup \), and with <span class="textup">(<a href="Liminf-limsup.html#eq:liminf_def">2.4</a>)</span> for \(\liminf \).
 &#x2003;&#x2003;&#x220E;
 </p>
 
@@ -1254,7 +1254,7 @@ href="Liminf-limsup.html#eq:limsup_def">2.2</a>)</span> for \(\limsup \), and wi
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 22, 2024
+Copyright Nic Freeman, Sheffield University, last updated March 4, 2024
 </p>
 
 </footer>

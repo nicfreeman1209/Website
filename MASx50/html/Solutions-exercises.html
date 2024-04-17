@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, February 22, 2024." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, March 4, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS31002/61022 — Solutions to exercises</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 22, 2024
+last updated: March 4, 2024
 </p>
 
 </header>
@@ -3009,6 +3009,30 @@ Hence, for each \(x\) with \(\P [X=x]\) we have a rational number \(q_x\), and b
 
 
 <p>
+<a href="notes.html#??">??</a> Recall that \(\E [X]=\int _\Omega X\,d\P \). If \(X:\Omega \to \R \) is a simple function given by \(X(\omega )=\sum _{i=1}^n c_i\1_{A_i}\) then
+</p>
+<p>
+\[\frac {1}{m(\Omega )}\int _\Omega X\,dm=\frac {1}{m(\Omega )}\sum _{i=1}^n c_im(A_i)=\sum _{i=1}^n c_i \frac {m(A_i)}{m(\Omega )}=\sum _{i=1}^n c_i \P [A_i]=\E [X].\]
+</p>
+<p>
+For non-negative measurable \(X:\Omega \to \R \), by Theorem <a href="Simple-functions.html#t:simple_approx">3.5.2</a> take a sequence of non-negative increasing simple functions \(X_n:\Omega \to
+\R \) such that \(X_n(\omega )\to X(\omega )\) for all \(\omega \in \Omega \). From what we have already proved, we have \(\frac {1}{m(\Omega )}\int _\Omega X_n\,dm = \E [X_n]\) for all \(n\in
+\N \). Letting \(n\to \infty \), the monotone convergence theorem gives that \(\frac {1}{m(\Omega )}\int _S X\,dm = \E [X]\).
+</p>
+<p>
+Lastly, if \(X\in \mc {L}^1\) then we may write \(X=X_+-X_-\), where \(X_+,X_-:S\to \R \) are non-negative and measurable. From what we have already proved we have
+</p>
+<p>
+\[\frac {1}{m(\Omega )}\int _\Omega X\,dm = \frac {1}{m(\Omega )}\int _\Omega X_+\,dm \;-\; \frac {1}{m(\Omega )}\int _\Omega X_-\,dm = \E [X_+]-\E [X_-]=\E [X].\]
+</p>
+<p>
+as required.
+</p>
+</li>
+<li>
+
+
+<p>
 <a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#ps:indep_inf"><b>5.6</b></a>
 </p>
 <ul style="list-style-type:none">
@@ -4213,7 +4237,7 @@ For \(\eps \in (0,1]\) we have \(\P [|X_n-0|\geq \eps ]=\P [X_n=1]=\frac 1n\), s
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 22, 2024
+Copyright Nic Freeman, Sheffield University, last updated March 4, 2024
 </p>
 
 </footer>
