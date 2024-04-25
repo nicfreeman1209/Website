@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, March 4, 2024." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, April 25, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS31002/61022 — Riemann integration </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: March 4, 2024
+last updated: April 25, 2024
 </p>
 
 </header>
@@ -563,126 +563,126 @@ Home</a>
 
 
 <p>
-<a href="The-cumulative-distribution-function.html#autosec-208" class="tocsection" >
+<a href="The-cumulative-distribution-function.html#autosec-211" class="tocsection" >
 <span class="sectionnumber">5.2</span>&#x2003;The cumulative distribution function</a>
 </p>
 
 
 
 <p>
-<a href="Discrete-continuous-random-variables.html#autosec-214" class="tocsection" >
+<a href="Discrete-continuous-random-variables.html#autosec-217" class="tocsection" >
 <span class="sectionnumber">5.3</span>&#x2003;Discrete and continuous random variables</a>
 </p>
 
 
 
 <p>
-<a href="Independence.html#autosec-218" class="tocsection" >
+<a href="Independence.html#autosec-221" class="tocsection" >
 <span class="sectionnumber">5.4</span>&#x2003;Independence</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#autosec-222" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#autosec-225" class="tocsection" >
 <span class="sectionnumber">5.5</span>&#x2003;Exercises on Chapter 5</a>
 </p>
 
 
 
 <p>
-<a href="Inequalities-Random-Variables.html#autosec-228" class="tocchapter" >
+<a href="Inequalities-Random-Variables.html#autosec-231" class="tocchapter" >
 <span class="sectionnumber">6</span>&#x2003;Inequalities for Random Variables \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Inequalities-Random-Variables.html#autosec-229" class="tocsection" >
+<a href="Inequalities-Random-Variables.html#autosec-232" class="tocsection" >
 <span class="sectionnumber">6.1</span>&#x2003;Chernoff bounds \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-Paley-Zygmund-inequality.html#autosec-233" class="tocsection" >
+<a href="The-Paley-Zygmund-inequality.html#autosec-236" class="tocsection" >
 <span class="sectionnumber">6.2</span>&#x2003;The Paley-Zygmund inequality \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Jensen-inequality.html#autosec-237" class="tocsection" >
+<a href="Jensen-inequality.html#autosec-240" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Jensen’s inequality \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-ineqs.html#autosec-244" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-ineqs.html#autosec-247" class="tocsection" >
 <span class="sectionnumber">6.4</span>&#x2003;Exercises on Chapter 6 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-Random-Variables.html#autosec-248" class="tocchapter" >
+<a href="Sequences-Random-Variables.html#autosec-251" class="tocchapter" >
 <span class="sectionnumber">7</span>&#x2003;Sequences of Random Variables</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-Random-Variables.html#autosec-249" class="tocsection" >
+<a href="Sequences-Random-Variables.html#autosec-252" class="tocsection" >
 <span class="sectionnumber">7.1</span>&#x2003;The Borel-Cantelli lemmas</a>
 </p>
 
 
 
 <p>
-<a href="Convergence-random-variables.html#autosec-253" class="tocsection" >
+<a href="Convergence-random-variables.html#autosec-256" class="tocsection" >
 <span class="sectionnumber">7.2</span>&#x2003;Convergence of random variables</a>
 </p>
 
 
 
 <p>
-<a href="Laws-large-numbers.html#autosec-262" class="tocsection" >
+<a href="Laws-large-numbers.html#autosec-265" class="tocsection" >
 <span class="sectionnumber">7.3</span>&#x2003;Laws of large numbers</a>
 </p>
 
 
 
 <p>
-<a href="Characteristic-functions.html#autosec-268" class="tocsection" >
+<a href="Characteristic-functions.html#autosec-271" class="tocsection" >
 <span class="sectionnumber">7.4</span>&#x2003;Characteristic functions (\(\Delta \))</a>
 </p>
 
 
 
 <p>
-<a href="The-central-limit-theorem.html#autosec-278" class="tocsection" >
+<a href="The-central-limit-theorem.html#autosec-281" class="tocsection" >
 <span class="sectionnumber">7.5</span>&#x2003;The central limit theorem (\(\Delta \))</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-rv_sequences.html#autosec-284" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-rv_sequences.html#autosec-287" class="tocsection" >
 <span class="sectionnumber">7.6</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Advice-revision-exams.html#autosec-290" class="tocchapter" >
+<a href="Advice-revision-exams.html#autosec-293" class="tocchapter" >
 <span class="sectionnumber">A</span>&#x2003;Advice for revision/exams</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises.html#autosec-294" class="tocchapter" >
+<a href="Solutions-exercises.html#autosec-297" class="tocchapter" >
 <span class="sectionnumber">B</span>&#x2003;Solutions to exercises</a>
 </p>
 
@@ -968,23 +968,23 @@ Home</a>
 
 <p>
 <!--
-...... section Riemann integration         ......
+......     section Riemann integration      ......
 -->
 <h4 id="autosec-185"><span class="sectionnumber">4.10&#x2003;</span>Riemann integration \((\star )\)</h4>
 <a id="notes-autopage-185"></a>
 <a id="notes-autofile-33"></a> <a id="s:rie_leb_ints"></a>
 
 <p>
-In this section, our aim is to show that if a bounded function \(f: [a,b] \rightarrow \R \) is Riemann integrable, then it is measurable and Lebesgue integrable. Moreover, in this case the Riemann and
+In this section, our aim is to show that if a bounded function \(f:   [a,b] \rightarrow \R \) is Riemann integrable, then it is measurable and Lebesgue integrable. Moreover, in this case the Riemann and
 Lebesgue integrals of \(f\) are equal. We state this result formally as Theorem <a href="Riemann-integration.html#t:RiL">4.10.3</a>. In this section we will prefer to say ‘\(f\) is Lebesgue integral’ rather
 than \(f\in \Lone \), simply because it makes for better grammar when we compare Riemann and Lebesgue integrability within the same sentence.
 </p>
 
 <p>
-We begin by briefly revising the Riemann integral. Note that this whole section is marked with a \((\star )\), meaning that it is off-syllabus. It will be discussed briefly in lectures.
+We begin by briefly revising the Riemann integral. Note that this whole section is marked with a \((\star )\), meaning that it is off-syllabus. It will be discussed very briefly in lectures.
 </p>
 <!--
-...... subsection The Riemann integral         ......
+......   subsection The Riemann integral        ......
 -->
 <h5 id="autosec-186"><span class="sectionnumber">4.10.1&#x2003;</span>The Riemann integral \((\star )\)</h5>
 <a id="notes-autopage-186"></a>
@@ -1012,13 +1012,13 @@ and overestimate by defining
 A partition \({\cal P}^{\prime }\) is said to be a refinement of \(\cal P\) if \({\cal P} \subset {\cal P}^{\prime }\). We then have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{4.}{20}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{23}\)</span>
 
 <!--
 
 
 
-                                       L(f, P) ≤ L(f, P 0 ),   U (f, P 0 ) ≤ U (f, P).                                  (4.21)                                                     --><a id="ref"></a><!--
+                                        L(f, P) ≤ L(f, P ′ ),   U (f, P ′ ) ≤ U (f, P).                                  (4.24)                                                    --><a id="ref"></a><!--
 
 -->
 
@@ -1053,13 +1053,13 @@ b]\) if \(L_{a,b}f = U_{a,b}f\), and we then write the common value as \(\int _{
 \(\eps &gt; 0\) there exists a partition \(\cal P\) for which
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{4.}{21}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{24}\)</span>
 
 <!--
 
 
 
-                                               U (f, P) − L(f, P) < .                                            (4.22)                                                      --><a id="part"></a><!--
+                                                U (f, P) − L(f, P) < ϵ.                                             (4.25)                                                     --><a id="part"></a><!--
 
 -->
 
@@ -1086,7 +1086,7 @@ b]\) if \(L_{a,b}f = U_{a,b}f\), and we then write the common value as \(\int _{
 </div>
 
 <p>
-If <span class="textup">(<a href="Riemann-integration.html#part">4.22</a>)</span> holds for some \(\cal P\), it also holds for all refinements of \(\cal P\). A useful corollary is:
+If <span class="textup">(<a href="Riemann-integration.html#part">4.25</a>)</span> holds for some \(\cal P\), it also holds for all refinements of \(\cal P\). A useful corollary is:
 </p>
 <div class="theorembodycor">
 
@@ -1118,9 +1118,10 @@ increasing sequence \(({\cal P}_{n})\) of partitions of \([a,b]\) for which
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> This follows from Theorem (<a href="Riemann-integration.html#t:Pfind">4.10.1</a>) by
-successively choosing \(\eps = 1, \frac {1}{2}, \frac {1}{3}, \ldots , \frac {1}{n}, \ldots .\) If the sequence \(({\cal P}_{n})\) is not increasing, then just replace \({\cal P}_{n}\) with \({\cal
-P}_{n} \cup {\cal P}_{n-1}\) and observe that this can only improve the inequality <span class="textup">(<a href="Riemann-integration.html#part">4.22</a>)</span>. &#x2003;&#x2003;&#x220E;
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> This follows from Theorem (<a href="Riemann-integration.html#t:Pfind">4.10.1</a>)
+by successively choosing \(\eps = 1, \frac {1}{2}, \frac {1}{3}, \ldots , \frac {1}{n}, \ldots .\) If the sequence \(({\cal P}_{n})\) is not increasing, then just replace \({\cal P}_{n}\) with
+\({\cal P}_{n} \cup {\cal P}_{n-1}\) and observe that this can only improve the inequality <span class="textup">(<a href="Riemann-integration.html#part">4.25</a>)</span>.
+&#x2003;&#x2003;&#x220E;
 </p>
 
 <p>
@@ -1128,7 +1129,7 @@ We can integrate <i>many</i> more functions using Lebesgue integration than we c
 \sc \mathbb {Q}}(x) dx = (b - a)\), but with Lebesgue integration we can.
 </p>
 <!--
-...... subsection The connection   ......
+......   subsection The connection   ......
 -->
 <h5 id="autosec-189"><span class="sectionnumber">4.10.2&#x2003;</span>The connection \((\star )\)</h5>
 <a id="notes-autopage-189"></a>
@@ -1141,7 +1142,7 @@ We can integrate <i>many</i> more functions using Lebesgue integration than we c
 <a id="autoid-172"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 4.10.3</span> <a id="autoid-173" ></a ><a id="t:RiL"></a> If \(f: [a, b] \rightarrow \R \) is Riemann integrable, then it is Lebesgue integrable, and
+<span class="theoremheaderplain">Theorem 4.10.3</span> <a id="autoid-173" ></a ><a id="t:RiL"></a> If \(f:             [a, b] \rightarrow \R \) is Riemann integrable, then it is Lebesgue integrable, and
 the two integrals coincide.
 </p>
 
@@ -1153,8 +1154,8 @@ the two integrals coincide.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> We use the notation \(\lambda \) for Lebsgue measure in this section. We also write \(M = \sup
-_{x \in [a,b]}|f(x)|\) and \(m = \inf _{x \in [a,b]}|f(x)|\).
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We use the notation \(\lambda \) for Lebsgue measure in this section. We also write \(M =
+\sup _{x \in [a,b]}|f(x)|\) and \(m = \inf _{x \in [a,b]}|f(x)|\).
 </p>
 
 <p>
@@ -1177,13 +1178,13 @@ Consider the sequences \((g_{n})\) and \((h_{n})\) which correspond to the parti
 where \(U_{n}(f) = U(f, {\cal P}_{n})\) and \(L_{n}(f) = L(f, {\cal P}_{n})\). Clearly we also have for each \(\nN \),
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{4.}{22}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{25}\)</span>
 
 <!--
 
 
 
-                                                     gn ≤ f ≤ hn .                                                (4.23)                                                      --><a id="order"></a><!--
+                                                     gn ≤ f ≤ hn .                                                 (4.26)                                                     --><a id="order"></a><!--
 
 -->
 
@@ -1198,17 +1199,17 @@ where \(U_{n}(f) = U(f, {\cal P}_{n})\) and \(L_{n}(f) = L(f, {\cal P}_{n})\). C
 </p>
 
 <p>
-Since \((g_{n})\) is increasing (by (<a href="Riemann-integration.html#ref">4.21</a>)) and bounded above by \(M\), it converges pointwise to a measurable function \(g\). Similarly \((h_{n})\) is
-decreasing and bounded below by \(m\), so it converges pointwise to a measurable function \(h\). By (<a href="Riemann-integration.html#order">4.23</a>) we have
+Since \((g_{n})\) is increasing (by (<a href="Riemann-integration.html#ref">4.24</a>)) and bounded above by \(M\), it converges pointwise to a measurable function \(g\). Similarly \((h_{n})\) is
+decreasing and bounded below by \(m\), so it converges pointwise to a measurable function \(h\). By (<a href="Riemann-integration.html#order">4.26</a>) we have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{4.}{23}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{4.}{26}\)</span>
 
 <!--
 
 
 
-                                                     g ≤ f ≤ h.                                                 (4.24)                                                       --><a id="order1"></a><!--
+                                                      g ≤ f ≤ h.                                                  (4.27)                                                     --><a id="order1"></a><!--
 
 -->
 
@@ -1240,7 +1241,7 @@ Hence we have
 </p>
 
 <p>
-and so by Corollary 3.3.1, \(h(x) = g(x)\) (a.e.). Then by (<a href="Riemann-integration.html#order1">4.24</a>) \(f = g\) (a.e.) and so \(f\) is measurable<sup>3</sup><a
+and so by Corollary 3.3.1, \(h(x) = g(x)\) (a.e.). Then by (<a href="Riemann-integration.html#order1">4.27</a>) \(f = g\) (a.e.) and so \(f\) is measurable<sup>3</sup><a
 id="notes-autopage-190"></a> and also integrable. So \(\int _{[a, b]}f d \lambda = \int _{[a, b]}g d\lambda \), and hence we have
 </p>
 
@@ -1264,7 +1265,7 @@ of the Borel \(\sigma \)-field known as ‘completeness’.
 
 </div>
 <!--
-...... subsection Discussion         ......
+......    subsection Discussion       ......
 -->
 <h5 id="autosec-192"><span class="sectionnumber">4.10.3&#x2003;</span>Discussion \((\star )\)</h5>
 <a id="notes-autopage-192"></a>
@@ -1360,7 +1361,7 @@ problem; Riemann integration cannot.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 4, 2024
+Copyright Nic Freeman, Sheffield University, last updated April 25, 2024
 </p>
 
 </footer>

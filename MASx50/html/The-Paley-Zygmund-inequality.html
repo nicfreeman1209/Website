@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, March 4, 2024." />
+<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, April 25, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS31002/61022 — The Paley-Zygmund inequality </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -232,14 +232,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-232"></a>
+<a id="notes-autopage-235"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: March 4, 2024
+last updated: April 25, 2024
 </p>
 
 </header>
@@ -563,126 +563,126 @@ Home</a>
 
 
 <p>
-<a href="The-cumulative-distribution-function.html#autosec-208" class="tocsection" >
+<a href="The-cumulative-distribution-function.html#autosec-211" class="tocsection" >
 <span class="sectionnumber">5.2</span>&#x2003;The cumulative distribution function</a>
 </p>
 
 
 
 <p>
-<a href="Discrete-continuous-random-variables.html#autosec-214" class="tocsection" >
+<a href="Discrete-continuous-random-variables.html#autosec-217" class="tocsection" >
 <span class="sectionnumber">5.3</span>&#x2003;Discrete and continuous random variables</a>
 </p>
 
 
 
 <p>
-<a href="Independence.html#autosec-218" class="tocsection" >
+<a href="Independence.html#autosec-221" class="tocsection" >
 <span class="sectionnumber">5.4</span>&#x2003;Independence</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#autosec-222" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#autosec-225" class="tocsection" >
 <span class="sectionnumber">5.5</span>&#x2003;Exercises on Chapter 5</a>
 </p>
 
 
 
 <p>
-<a href="Inequalities-Random-Variables.html#autosec-228" class="tocchapter" >
+<a href="Inequalities-Random-Variables.html#autosec-231" class="tocchapter" >
 <span class="sectionnumber">6</span>&#x2003;Inequalities for Random Variables \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Inequalities-Random-Variables.html#autosec-229" class="tocsection" >
+<a href="Inequalities-Random-Variables.html#autosec-232" class="tocsection" >
 <span class="sectionnumber">6.1</span>&#x2003;Chernoff bounds \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-Paley-Zygmund-inequality.html#autosec-233" class="tocsection" >
+<a href="The-Paley-Zygmund-inequality.html#autosec-236" class="tocsection" >
 <span class="sectionnumber">6.2</span>&#x2003;The Paley-Zygmund inequality \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Jensen-inequality.html#autosec-237" class="tocsection" >
+<a href="Jensen-inequality.html#autosec-240" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Jensen’s inequality \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-ineqs.html#autosec-244" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-ineqs.html#autosec-247" class="tocsection" >
 <span class="sectionnumber">6.4</span>&#x2003;Exercises on Chapter 6 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-Random-Variables.html#autosec-248" class="tocchapter" >
+<a href="Sequences-Random-Variables.html#autosec-251" class="tocchapter" >
 <span class="sectionnumber">7</span>&#x2003;Sequences of Random Variables</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-Random-Variables.html#autosec-249" class="tocsection" >
+<a href="Sequences-Random-Variables.html#autosec-252" class="tocsection" >
 <span class="sectionnumber">7.1</span>&#x2003;The Borel-Cantelli lemmas</a>
 </p>
 
 
 
 <p>
-<a href="Convergence-random-variables.html#autosec-253" class="tocsection" >
+<a href="Convergence-random-variables.html#autosec-256" class="tocsection" >
 <span class="sectionnumber">7.2</span>&#x2003;Convergence of random variables</a>
 </p>
 
 
 
 <p>
-<a href="Laws-large-numbers.html#autosec-262" class="tocsection" >
+<a href="Laws-large-numbers.html#autosec-265" class="tocsection" >
 <span class="sectionnumber">7.3</span>&#x2003;Laws of large numbers</a>
 </p>
 
 
 
 <p>
-<a href="Characteristic-functions.html#autosec-268" class="tocsection" >
+<a href="Characteristic-functions.html#autosec-271" class="tocsection" >
 <span class="sectionnumber">7.4</span>&#x2003;Characteristic functions (\(\Delta \))</a>
 </p>
 
 
 
 <p>
-<a href="The-central-limit-theorem.html#autosec-278" class="tocsection" >
+<a href="The-central-limit-theorem.html#autosec-281" class="tocsection" >
 <span class="sectionnumber">7.5</span>&#x2003;The central limit theorem (\(\Delta \))</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-rv_sequences.html#autosec-284" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-rv_sequences.html#autosec-287" class="tocsection" >
 <span class="sectionnumber">7.6</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Advice-revision-exams.html#autosec-290" class="tocchapter" >
+<a href="Advice-revision-exams.html#autosec-293" class="tocchapter" >
 <span class="sectionnumber">A</span>&#x2003;Advice for revision/exams</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises.html#autosec-294" class="tocchapter" >
+<a href="Solutions-exercises.html#autosec-297" class="tocchapter" >
 <span class="sectionnumber">B</span>&#x2003;Solutions to exercises</a>
 </p>
 
@@ -968,10 +968,10 @@ Home</a>
 
 <p>
 <!--
-...... section The Paley-Zygmund inequality          ......
+......     section The Paley-Zygmund inequality       ......
 -->
-<h4 id="autosec-233"><span class="sectionnumber">6.2&#x2003;</span>The Paley-Zygmund inequality \((\Delta )\)</h4>
-<a id="notes-autopage-233"></a>
+<h4 id="autosec-236"><span class="sectionnumber">6.2&#x2003;</span>The Paley-Zygmund inequality \((\Delta )\)</h4>
+<a id="notes-autopage-236"></a>
 <a id="notes-autofile-41"></a> <a id="s:paley_zygmund"></a>
 
 <p>
@@ -984,10 +984,10 @@ seeks to control how large \(X\) can become relative to \(\E [X]\).
 
 
 
-<a id="autoid-198"></a>
+<a id="autoid-204"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 6.2.1 (Paley-Zymund Inequality)</span> <a id="autoid-199" ></a ><a id="l:paley_zygmund"></a> Let \(X\) be a non-negative random variable and suppose
+<span class="theoremheaderplain">Lemma 6.2.1 (Paley-Zymund Inequality)</span> <a id="autoid-205" ></a ><a id="l:paley_zygmund"></a> Let \(X\) be a non-negative random variable and suppose
 that \(0&lt;\E [X^2]&lt;\infty \). Then for any \(\theta \in [0,1]\),
 </p>
 
@@ -1008,8 +1008,8 @@ that \(0&lt;\E [X^2]&lt;\infty \). Then for any \(\theta \in [0,1]\),
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Note that \(X=X\1_{\{X\leq \theta \E [X]\}} + X\1_{X&gt;\theta \E [X]}\) and take
-expectations to obtain
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that \(X=X\1_{\{X\leq \theta \E [X]\}} + X\1_{X&gt;\theta \E [X]}\) and
+take expectations to obtain
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{6.}{1}\)</span>
@@ -1018,9 +1018,9 @@ expectations to obtain
 
 
 
-                                                 E[X] = E X 1{X≤θE[X]} + E X 1{X>θE[X]} .                                                      (6.2)                               --><a id="eq:pz_0"></a><!--
-                                                                                    
-
+                                                 E[X] = E X 1{X≤θE[X]} + E X 1{X>θE[X]} .
+                                                           h              i     h           i
+                                                                                                                                               (6.2)                               --><a id="eq:pz_0"></a><!--
 
 -->
 
@@ -1037,7 +1037,7 @@ expectations to obtain
 <p>
 We will bound the two terms on the right hand side of the above. If \(\1_{\{X\leq \theta \E [X]\}}\) is non-zero then \(X\leq \theta \E [X]\), so also \(X\1_{\{X\leq \theta \E [X]\}}\leq \theta \E
 [X]\). Hence we have \(\E [X\1_{X\leq \theta \E [X]}] \leq \theta \E [X]\). For the second term, we apply the Cauchy-Schwarz inequality (Exercise <a
-href="Exercises-on-Chapter-ref-c-prob_with_meas.html#ps:cauchy_schwarz"><b>5.11</b></a>) and obtain that
+href="Exercises-on-Chapter-ref-c-prob_with_meas.html#ps:cauchy_schwarz"><b>5.12</b></a>) and obtain that
 </p>
 
 <p>
@@ -1098,11 +1098,11 @@ non-zero. It is often called the <em>second moment method</em>.
 
 
 
-<a id="autoid-200"></a>
+<a id="autoid-206"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 6.2.2</span> <a id="autoid-201" ></a ><a id="ex:second_moment"></a> Consider a graph with \(n\) vertices. For each (unordered) pair of distinct vertices
-\((v_1,v_2)\), the edge from \(v_1\) to \(v_2\) is present in the graph with probability \(p\), independent of all other pairs of vertices. This graph is known as the Erdős-Renyi graph, often denoted by
+<span class="theoremheaderplain">Example 6.2.2</span> <a id="autoid-207" ></a ><a id="ex:second_moment"></a> Consider a graph with \(n\) vertices. For each (unordered) pair of distinct vertices
+\((v_1,v_2)\), the edge from \(v_1\) to \(v_2\) is present in the graph with probability \(p\), independent of all other pairs of vertices. This graph is known as the Erdo&#x030B;s-Renyi graph, often denoted by
 \(G(n,p)\). We are interested in whether \(G(n,p)\) contains <em>isolated</em> vertices, which are vertices that have no edges connected to them, as \(n\to \infty \).
 </p>
 
@@ -1122,17 +1122,17 @@ second moment too, with the help of Exercise <a href="Exercises-on-Chapter-ref-c
 <!--
 
 
-                                                                                                     n
-                                                                                                     X
-                                                                                       E[Yn2 ]   =           P[Ei ∩ Ej ]
-                                                                                                     i,j=1
-                                                                                                     X n              n
-                                                                                                                      X
-                                                                                                 =         P[Ei ] +           P[Ei ∩ Ej ]
-                                                                                                     i=1              i,j=1
-                                                                                                                      i6=j
+                                                                                                    n
+                                                                                                    X
+                                                                                        E[Yn2 ] =           P[Ei ∩ Ej ]
+                                                                                                    i,j=1
+                                                                                                    X n              n
+                                                                                                                     X
+                                                                                               =          P[Ei ] +           P[Ei ∩ Ej ]
+                                                                                                    i=1              i,j=1
+                                                                                                                     i̸=j
 
-                                                                                                 = n(1 − p)n−1 + n(n − 1)(1 − p)2n−3
+                                                                                               = n(1 − p)n−1 + n(n − 1)(1 − p)2n−3
 
 
 
@@ -1175,7 +1175,7 @@ Allowing \(p\) to depend on \(n\), it follows that if \(\frac {1}{n(1-p)^n}\to 0
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated March 4, 2024
+Copyright Nic Freeman, Sheffield University, last updated April 25, 2024
 </p>
 
 </footer>
