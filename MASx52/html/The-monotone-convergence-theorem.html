@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — The monotone convergence theorem</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,13 +901,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section The monotone convergence theorem ......
 -->
 <h4 id="autosec-191"><span class="sectionnumber">6.2&#x2003;</span>The monotone convergence theorem</h4>
 <a id="notes_1-autopage-191"></a>
-<a id="notes_1-autofile-29"></a> <a id="s:monotone_conv_thm"></a>
+<a id="notes_1-autofile-29"></a>
+
+<a id="s:monotone_conv_thm"></a>
 
 <p>
 A natural question to ask is, when does \(\E [X_n]\to \E [X]\)? This is not a mode of convergence, but simply a practical question.
@@ -920,22 +920,22 @@ href="Convergence-random-variables.html#ex:rv_conv">6.1.1</a>, in general it doe
 </p>
 <div class="theorembodytheorem">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-136"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 6.2.1 (Monotone Convergence Theorem)</span> <a id="autoid-137" ></a ><a id="t:monotone_conv_thm"></a> Let \((X_n)\) be a sequence of random
-variables and suppose that:
+<span class="listmarker"> <span class="theoremheaderplain">Theorem 6.2.1 (Monotone Convergence Theorem)</span></span> <a id="autoid-137" ></a ><a id="t:monotone_conv_thm"></a> Let
+\((X_n)\) be a sequence of random variables and suppose that:
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-1. \(X_{n+1}\geq X_n\), almost surely, for all \(n\).
+<span class="listmarker">1.</span> \(X_{n+1}\geq X_n\), almost surely, for all \(n\).
 </p>
 
 
@@ -944,7 +944,7 @@ variables and suppose that:
 
 
 <p>
-2. \(X_n\geq 0\), almost surely, for all \(n\).
+<span class="listmarker">2.</span> \(X_n\geq 0\), almost surely, for all \(n\).
 </p>
 </li>
 </ul>
@@ -1003,7 +1003,7 @@ href="Exercises-on-Chapter-ref-c-rv_conv.html#ps:conv_simple_2"><b>6.5</b></a>. 
 <a id="notes_1-autopage-193"></a>
 
 <p>
-<sup>1</sup>&nbsp;\((\star )\) More precisely: we have \(\P \l [\lim _{n\to \infty }X_n(\omega )\text { exists}\r ]=1\) and for \(\omega \) in this set we can define \(X(\omega )=\lim _{n\to
+<sup>1</sup>&nbsp;\(\offsyl \) More precisely: we have \(\P \l [\lim _{n\to \infty }X_n(\omega )\text { exists}\r ]=1\) and for \(\omega \) in this set we can define \(X(\omega )=\lim _{n\to
 \infty }X_n(\omega )\). We don’t care about \(\omega \) for which the limit doesn’t exist, because this has probability zero! We could set \(X(\omega )=0\) in such cases, and it won’t affect any probabilities
 involving \(X\). See MAS31002/61022 for details.
 </p>
@@ -1016,15 +1016,15 @@ involving \(X\). See MAS31002/61022 for details.
 
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-138"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 6.2.2</span> <a id="autoid-139" ></a >(\(\Delta \)) Those of you taking the MAS61023 version of the course should now begin your independent reading,
-starting in Chapter <a href="Further-theory-stochastic-processes.html#c:stoch_procs_2">8</a>. It begins with a convergence theorem similar to Theorem <a
+<span class="listmarker"> <span class="theoremheaderplain">Remark 6.2.2</span></span> <a id="autoid-139" ></a >\(\msconly \) Those of you taking the MAS61023 version of the course should
+now begin your independent reading, starting in Chapter <a href="Further-theory-stochastic-processes.html#c:stoch_procs_2">8</a>. It begins with a convergence theorem similar to Theorem <a
 href="The-monotone-convergence-theorem.html#t:monotone_conv_thm">6.2.1</a>, but which applies to non-monotone sequences.
 </p>
 
@@ -1044,7 +1044,7 @@ href="The-monotone-convergence-theorem.html#t:monotone_conv_thm">6.2.1</a>, but 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Exercises on Chapter <a href=Stochastic-processes-martingale-theory.html#c:stoch_procs_1>7</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Exercises on Chapter <a href=Stochastic-processes-martingale-theory.html#c:stoch_procs_1>7</a> ......
 -->
@@ -917,20 +915,20 @@ Home</a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>7.1</b> <a id="ps:mart_tranfs_calcs"></a> Let \(S_n=\sum _{i=1}^n X_i\) be the symmetric random walk, from Section <a
+<span class="listmarker"><b>7.1</b></span> <a id="ps:mart_tranfs_calcs"></a> Let \(S_n=\sum _{i=1}^n X_i\) be the symmetric random walk, from Section <a
 href="Long-term-behaviour-stochastic-processes.html#s:rw_long_term">7.4</a>. In each of the following cases, establish the given formula for \((C\circ S)_n\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> If \(C_n=0\), show that \((C\circ S)_n=0\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> If \(C_n=0\), show that \((C\circ S)_n=0\).
 </p>
 
 
@@ -939,7 +937,7 @@ href="Long-term-behaviour-stochastic-processes.html#s:rw_long_term">7.4</a>. In 
 
 
 <p>
-<span class="textnormal">(b)</span> If \(C_n=1\), show that \((C\circ S)_n=S_n\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> If \(C_n=1\), show that \((C\circ S)_n=S_n\).
 </p>
 
 
@@ -948,7 +946,7 @@ href="Long-term-behaviour-stochastic-processes.html#s:rw_long_term">7.4</a>. In 
 
 
 <p>
-<span class="textnormal">(c)</span> If \(C_n=S_n\), show that \((C\circ S)_n=\frac {S_n^2}{2}-\frac {n}{2}\)
+<span class="listmarker"><span class="textnormal">(c)</span></span> If \(C_n=S_n\), show that \((C\circ S)_n=\frac {S_n^2}{2}-\frac {n}{2}\)
 </p>
 </li>
 </ul>
@@ -957,8 +955,8 @@ href="Long-term-behaviour-stochastic-processes.html#s:rw_long_term">7.4</a>. In 
 
 
 <p>
-<b>7.2</b> <a id="ps:mart_tranfs_linear"></a> Let \(M_n\) be a stochastic process. Let \(\alpha ,\beta \in \R \) and let \(C_n\) and \(D_n\) be adapted stochastic processes. Let \(X_n=\alpha
-C_n+\beta D_n\). Show that
+<span class="listmarker"><b>7.2</b></span> <a id="ps:mart_tranfs_linear"></a> Let \(M_n\) be a stochastic process. Let \(\alpha ,\beta \in \R \) and let \(C_n\) and \(D_n\) be adapted stochastic
+processes. Let \(X_n=\alpha C_n+\beta D_n\). Show that
 </p>
 <p>
 \[(X \circ M)_n=\alpha (C\circ M)_n+\beta (D\circ M)_n\]
@@ -980,12 +978,12 @@ for all \(n\).
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>7.3</b> <a id="ps:rw_converge"></a> Let \((X_n)\) be a sequence of independent random variables, with distribution
+<span class="listmarker"><b>7.3</b></span> <a id="ps:rw_converge"></a> Let \((X_n)\) be a sequence of independent random variables, with distribution
 </p>
 <p>
 \[\P [X_n=1]=\P [X_n=-1]=\frac {1}{2n^2}\]
@@ -999,13 +997,13 @@ and \(\P [X_n=0]=1-\frac {1}{n^2}\). Define
 <p>
 where we take \(S_0=0\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(S_n\) is a martingale, and deduce that there exists a real-valued random variable \(S_\infty \) such that \(S_n\stackrel {a.s.}{\to }S_\infty \) as
-\(n\to \infty \).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(S_n\) is a martingale, and deduce that there exists a real-valued random variable \(S_\infty \) such that
+\(S_n\stackrel {a.s.}{\to }S_\infty \) as \(n\to \infty \).
 </p>
 
 
@@ -1014,7 +1012,7 @@ where we take \(S_0=0\).
 
 
 <p>
-<span class="textnormal">(b)</span> Show that, almost surely, there exists some \(N\in \N \) such that \(X_n=0\) for all \(n\geq N\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that, almost surely, there exists some \(N\in \N \) such that \(X_n=0\) for all \(n\geq N\).
 </p>
 </li>
 </ul>
@@ -1023,8 +1021,8 @@ where we take \(S_0=0\).
 
 
 <p>
-<b>7.4</b> <a id="ps:rw_simulate"></a> Write simulations of the symmetric &amp; asymmetric random walks (in a language of your choice). Add functionality to draw the random walk as a graph, with time on
-the horizontal axis and the value of the walk on the vertical axis.
+<span class="listmarker"><b>7.4</b></span> <a id="ps:rw_simulate"></a> Write simulations of the symmetric &amp; asymmetric random walks (in a language of your choice). Add functionality to draw the
+random walk as a graph, with time on the horizontal axis and the value of the walk on the vertical axis.
 </p>
 <p>
 Look at several samples from your simulations, with e.g.&nbsp;\(1000\) steps of time, and check that they support the claims made in Section <a
@@ -1039,7 +1037,7 @@ your graphs support the result that, in both cases, \(S_n\stackrel {a.s.}{\to }S
 
 
 <p>
-<b>7.5</b> <a id="ps:rw_local_time_mart_long_term"></a> Let \(M_n=S_n-L_n\) be the martingale defined in exercise <a
+<span class="listmarker"><b>7.5</b></span> <a id="ps:rw_local_time_mart_long_term"></a> Let \(M_n=S_n-L_n\) be the martingale defined in exercise <a
 href="Exercises-on-Chapter-ref-c-stoch_procs.html#ps:rw_local_time_mart"><b>4.5</b></a>. Show that \((M_n)\) is not uniformly bounded in \(L^1\).
 </p>
 </li>
@@ -1047,15 +1045,15 @@ href="Exercises-on-Chapter-ref-c-stoch_procs.html#ps:rw_local_time_mart"><b>4.5<
 
 
 <p>
-<b>7.6</b> <a id="ps:gw_when_dies_out"></a> Recall the Galton-Watson process \((Z_n)\) from Section <a href="Long-term-behaviour-stochastic-processes.html#s:gw_long_term">7.4</a>, and recall
-that it is parametrized by its offspring distribution \(G\).
+<span class="listmarker"><b>7.6</b></span> <a id="ps:gw_when_dies_out"></a> Recall the Galton-Watson process \((Z_n)\) from Section <a
+href="Long-term-behaviour-stochastic-processes.html#s:gw_long_term">7.4</a>, and recall that it is parametrized by its offspring distribution \(G\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Give an example of an offspring distribution \(G\) for which \(\P [Z_n\text { dies out}]=1\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Give an example of an offspring distribution \(G\) for which \(\P [Z_n\text { dies out}]=1\).
 </p>
 
 
@@ -1064,7 +1062,7 @@ that it is parametrized by its offspring distribution \(G\).
 
 
 <p>
-<span class="textnormal">(b)</span> Give an example of an offspring distribution \(G\) for which \(\P [Z_n\text { dies out}]=0\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Give an example of an offspring distribution \(G\) for which \(\P [Z_n\text { dies out}]=0\).
 </p>
 </li>
 </ul>
@@ -1073,19 +1071,21 @@ that it is parametrized by its offspring distribution \(G\).
 
 
 <p>
-<b>7.7</b> <a id="ps:urn_mean_revert"></a> Consider the following modification of the Pólya urn process. At time \(n=0\), the urn contains one red ball and one black ball. Then, at each time
-\(n=1,2,\ldots \), we draw a ball from the urn. We place this ball back into the urn, and add one ball of the <i>opposite</i> colour to the urn; so if we drew a red ball, we would add a black ball, and vice versa.
+<span class="listmarker"><b>7.7</b></span> <a id="ps:urn_mean_revert"></a> Consider the following modification of the Pólya urn process. At time \(n=0\), the urn contains one red ball and one black
+ball. Then, at each time \(n=1,2,\ldots \), we draw a ball from the urn. We place this ball back into the urn, and add one ball of the <i>opposite</i> colour to the urn; so if we drew a red ball, we would add a
+black ball, and vice versa.
 </p>
 <p>
 Therefore, at time \(n\) (which means: after the \(n^{th}\) draw is complete) the urn contains \(n+2\) balls. Let \(B_n\) denote the number of red balls in the urn at time \(n\), and let \(M_n=\frac
 {B_n}{n+2}\) denote the fraction of red balls in the urn at time \(n\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Calculate \(\E [M_{n+1}\|\mc {F}_n]\) and hence show that \(M_n\) is not a martingale, with respect to the filtration \(\mc {F}_n=\sigma (B_1,\ldots ,B_n)\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Calculate \(\E [M_{n+1}\|\mc {F}_n]\) and hence show that \(M_n\) is not a martingale, with respect to the filtration \(\mc
+{F}_n=\sigma (B_1,\ldots ,B_n)\).
 </p>
 
 
@@ -1094,8 +1094,8 @@ Therefore, at time \(n\) (which means: after the \(n^{th}\) draw is complete) th
 
 
 <p>
-<span class="textnormal">(b)</span> Write a simulation of the urn (in a language of your choice) and use your simulation to make a conjecture about the value of the almost sure limit of \(M_n\) as \(n\to
-\infty \). Does this limit depend on the initial state of the urn?
+<span class="listmarker"><span class="textnormal">(b)</span></span> Write a simulation of the urn (in a language of your choice) and use your simulation to make a conjecture about the value of the
+almost sure limit of \(M_n\) as \(n\to \infty \). Does this limit depend on the initial state of the urn?
 </p>
 </li>
 </ul>
@@ -1104,23 +1104,15 @@ Therefore, at time \(n\) (which means: after the \(n^{th}\) draw is complete) th
 
 
 <p>
-<b>7.8</b> <a id="ps:urn_moran"></a> Consider an urn that, at time \(n=0\), contains \(K\geq 1\) balls, each of which is either black or red. At each time \(n=1,2,\ldots \), we do the following, in order:
+<span class="listmarker"><b>7.8</b></span> <a id="ps:urn_moran"></a> Consider an urn that, at time \(n=0\), contains \(K\geq 1\) balls, each of which is either black or red. At each time
+\(n=1,2,\ldots \), we do the following, in order:
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-1. Draw a ball \(X_1\) from the urn, and record its colour. Place \(X_1\) back into the urn.
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-2. Draw a ball \(X_2\) from the urn, and discard it.
+<span class="listmarker">1.</span> Draw a ball \(X_1\) from the urn, and record its colour. Place \(X_1\) back into the urn.
 </p>
 
 
@@ -1129,19 +1121,28 @@ Therefore, at time \(n\) (which means: after the \(n^{th}\) draw is complete) th
 
 
 <p>
-3. Place a new ball, with the same colour as \(X_1\), into the urn.
+<span class="listmarker">2.</span> Draw a ball \(X_2\) from the urn, and discard it.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">3.</span> Place a new ball, with the same colour as \(X_1\), into the urn.
 </p>
 </li>
 </ul>
 <p>
 Thus, for all time, the urn contains exactly \(K\) balls. We write \(M_n\) for the fraction of red balls in the urn, after the \(n^{th}\) iteration of the above steps is complete.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(M_n\) is a martingale.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(M_n\) is a martingale.
 </p>
 
 
@@ -1150,8 +1151,8 @@ Thus, for all time, the urn contains exactly \(K\) balls. We write \(M_n\) for t
 
 
 <p>
-<span class="textnormal">(b)</span> Show that there exists a random variable \(M_\infty \) such that \(M_n\stackrel {a.s.}{\to }M_\infty \) as \(n\to \infty \), and deduce that \(\P [M_\infty
-=0\text { or }M_\infty =1]=1\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that there exists a random variable \(M_\infty \) such that \(M_n\stackrel {a.s.}{\to }M_\infty \) as \(n\to \infty
+\), and deduce that \(\P [M_\infty =0\text { or }M_\infty =1]=1\).
 </p>
 </li>
 </ul>
@@ -1168,15 +1169,16 @@ data obtained by genome sequencing.</i>
 
 
 <p>
-<b>7.9</b> <a id="ps:urn_initial_conds"></a> Consider the Pólya urn process from Section <a href="Long-term-behaviour-stochastic-processes.html#s:urn_long_term">7.4</a>. Suppose that we
-begin our urn, at time \(n=0\), with two red balls and one black ball. Let \(M_n\) denote the resulting fraction of red balls in the urn at time \(n\).
+<span class="listmarker"><b>7.9</b></span> <a id="ps:urn_initial_conds"></a> Consider the Pólya urn process from Section <a
+href="Long-term-behaviour-stochastic-processes.html#s:urn_long_term">7.4</a>. Suppose that we begin our urn, at time \(n=0\), with two red balls and one black ball. Let \(M_n\) denote the resulting
+fraction of red balls in the urn at time \(n\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(M_n\) does not converge almost surely to \(0\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(M_n\) does not converge almost surely to \(0\).
 </p>
 
 
@@ -1185,7 +1187,8 @@ begin our urn, at time \(n=0\), with two red balls and one black ball. Let \(M_n
 
 
 <p>
-<span class="textnormal">(b)</span> Write a simulation of the Pólya urn process (in a language of your choice) and compare the effect of different initial conditions on \(M_\infty \).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Write a simulation of the Pólya urn process (in a language of your choice) and compare the effect of different initial conditions on
+\(M_\infty \).
 </p>
 </li>
 </ul>
@@ -1194,7 +1197,7 @@ begin our urn, at time \(n=0\), with two red balls and one black ball. Let \(M_n
 
 
 <p>
-<b>7.10</b> <a id="ps:rw_asym_long_term"></a> Let \((S_n)\) denote the simple asymmetric random walk, with \(q&gt;p\). In Exercise <a
+<span class="listmarker"><b>7.10</b></span> <a id="ps:rw_asym_long_term"></a> Let \((S_n)\) denote the simple asymmetric random walk, with \(q&gt;p\). In Exercise <a
 href="Exercises-on-Chapter-ref-c-stoch_procs.html#ps:asym_rw_qpmart"><b>4.2</b></a> we showed that
 </p>
 <p>
@@ -1203,12 +1206,12 @@ href="Exercises-on-Chapter-ref-c-stoch_procs.html#ps:asym_rw_qpmart"><b>4.2</b><
 <p>
 is a martingale.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that there exists a real valued random variable \(M_\infty \) such that \(M_n\stackrel {a.s.}{\to } M_\infty \).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that there exists a real valued random variable \(M_\infty \) such that \(M_n\stackrel {a.s.}{\to } M_\infty \).
 </p>
 
 
@@ -1217,7 +1220,7 @@ is a martingale.
 
 
 <p>
-<span class="textnormal">(b)</span> Deduce that \(\P [M_\infty =0]=1\) and that \((M_n)\) is not uniformly bounded in \(L^2\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Deduce that \(\P [M_\infty =0]=1\) and that \((M_n)\) is not uniformly bounded in \(L^2\).
 </p>
 
 
@@ -1226,8 +1229,8 @@ is a martingale.
 
 
 <p>
-<span class="textnormal">(c)</span> Use (a) and (b) to show that \(S_n\stackrel {a.s.}{\to } -\infty \). Explain briefly why this means that \(S_n\stackrel {a.s.}{\to }\infty \) for asymmetric
-random walks with \(p&gt;q\).
+<span class="listmarker"><span class="textnormal">(c)</span></span> Use (a) and (b) to show that \(S_n\stackrel {a.s.}{\to } -\infty \). Explain briefly why this means that \(S_n\stackrel
+{a.s.}{\to }\infty \) for asymmetric random walks with \(p&gt;q\).
 </p>
 </li>
 </ul>
@@ -1236,15 +1239,15 @@ random walks with \(p&gt;q\).
 
 
 <p>
-<b>7.11</b> <a id="ps:rw_to_zero"></a> Let \(S_n\) denote the symmetric random walk, from Section <a href="Long-term-behaviour-stochastic-processes.html#s:rw_long_term">7.4</a>. Recall that
-\(S_0=0\).
+<span class="listmarker"><b>7.11</b></span> <a id="ps:rw_to_zero"></a> Let \(S_n\) denote the symmetric random walk, from Section <a
+href="Long-term-behaviour-stochastic-processes.html#s:rw_long_term">7.4</a>. Recall that \(S_0=0\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(S_n\) is even when \(n\) is even, and odd when \(n\) is odd.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(S_n\) is even when \(n\) is even, and odd when \(n\) is odd.
 </p>
 
 
@@ -1253,7 +1256,7 @@ random walks with \(p&gt;q\).
 
 
 <p>
-<span class="textnormal">(b)</span> Define \(p_{n}=\P [S_{n}=0]\). Show that \(p_{2n}=\binom {2n}{n}2^{-2n}\) and \(p_{2n+1}=0\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Define \(p_{n}=\P [S_{n}=0]\). Show that \(p_{2n}=\binom {2n}{n}2^{-2n}\) and \(p_{2n+1}=0\).
 </p>
 <p>
 <i>(Hint: Count the number of ways to return to zero after precisely \(2n\) steps.)</i>
@@ -1265,7 +1268,8 @@ random walks with \(p&gt;q\).
 
 
 <p>
-<span class="textnormal">(c)</span> Show that \(p_{2(n+1)}=\big (1-\frac {1}{2(n+1)}\big )p_{2n}\) for all \(n\), and hence show that \(p_{2n}\to 0\) as \(n\to \infty \).
+<span class="listmarker"><span class="textnormal">(c)</span></span> Show that \(p_{2(n+1)}=\big (1-\frac {1}{2(n+1)}\big )p_{2n}\) for all \(n\), and hence show that \(p_{2n}\to 0\) as
+\(n\to \infty \).
 </p>
 <p>
 <i>(Hint: Use the inequality \(1-x\leq e^{-x}\), which holds for all \(x\geq 0\).)</i>
@@ -1277,15 +1281,15 @@ random walks with \(p&gt;q\).
 
 
 <p>
-<b>7.12</b> <a id="ps:rw_sign"></a> Let \(S_n\) denote the symmetric random walk, from Section <a href="Long-term-behaviour-stochastic-processes.html#s:rw_long_term">7.4</a>. Let \(f:\N
-\to \N \) be a deterministic function.
+<span class="listmarker"><b>7.12</b></span> <a id="ps:rw_sign"></a> Let \(S_n\) denote the symmetric random walk, from Section <a
+href="Long-term-behaviour-stochastic-processes.html#s:rw_long_term">7.4</a>. Let \(f:\N \to \N \) be a deterministic function.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that if \(\frac {S_n}{f(n)}\) is a martingale (for \(n\geq 1\)), then \(f\) is constant.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that if \(\frac {S_n}{f(n)}\) is a martingale (for \(n\geq 1\)), then \(f\) is constant.
 </p>
 
 
@@ -1294,7 +1298,7 @@ random walks with \(p&gt;q\).
 
 
 <p>
-<span class="textnormal">(b)</span> Show that if \(\frac {S_n}{f(n)}\) is a supermartingale (for \(n\geq 1\)), then \(f\) is constant.
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that if \(\frac {S_n}{f(n)}\) is a supermartingale (for \(n\geq 1\)), then \(f\) is constant.
 </p>
 </li>
 </ul>
@@ -1308,24 +1312,24 @@ random walks with \(p&gt;q\).
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>7.13</b> <a id="ps:gw_var"></a> <i>In this question we establish the formula <span class="textup">(<a
-href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.9</a>)</span>, which we used in the proof of Lemma <a
+<span class="listmarker"><b>7.13</b></span> <a id="ps:gw_var"></a> <i>In this question we establish the formula <span class="textup">(<a
+href="Long-term-behaviour-stochastic-processes.html#eq:gw_2nd_iterate">7.10</a>)</span>, which we used in the proof of Lemma <a
 href="Long-term-behaviour-stochastic-processes.html#l:gw_supercrit">7.4.8</a>.</i>
 </p>
 <p>
 Let \((Z_n)\) be the Galton-Watson process, with the offspring distribution \(G\). Suppose that \(\E [G]=\mu \) and \(\var (G)=\sigma ^2&lt;\infty \). Set \(M_n=\frac {Z_n}{\mu ^n}\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that
 </p>
 <p>
 \[\E [(M_{n+1}-M_n)^2\|\mc {F}_n]=\frac {Z_n\sigma ^2}{\mu ^{2(n+1)}},\]
@@ -1335,8 +1339,8 @@ Let \((Z_n)\) be the Galton-Watson process, with the offspring distribution \(G\
 
 
 <p>
-<span class="textnormal">(b)</span> Deduce from part (a) and exercise <a href="Exercises-on-Chapter-ref-c-cond_exp.html#ps:doob_pre"><b>3.6</b></a> that \(\E [M_{n+1}^2]=\E [M_n^2]+\frac
-{\sigma ^2}{\mu ^{n+2}}.\)
+<span class="listmarker"><span class="textnormal">(b)</span></span> Deduce from part (a) and exercise <a href="Exercises-on-Chapter-ref-c-cond_exp.html#ps:doob_pre"><b>3.6</b></a> that
+\(\E [M_{n+1}^2]=\E [M_n^2]+\frac {\sigma ^2}{\mu ^{n+2}}.\)
 </p>
 </li>
 </ul>
@@ -1345,8 +1349,8 @@ Let \((Z_n)\) be the Galton-Watson process, with the offspring distribution \(G\
 
 
 <p>
-<b>7.14</b> <a id="ps:fatou_subst"></a> <i>In this question we prove the inequality <span class="textup">(<a href="The-martingale-convergence-theorem.html#eq:fatou_subst">7.4</a>)</span>,
-which we used in the proof of the martingale convergence theorem.</i>
+<span class="listmarker"><b>7.14</b></span> <a id="ps:fatou_subst"></a> <i>In this question we prove the inequality <span class="textup">(<a
+href="The-martingale-convergence-theorem.html#eq:fatou_subst">7.4</a>)</span>, which we used in the proof of the martingale convergence theorem.</i>
 </p>
 <p>
 Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\to }M_\infty \). Define
@@ -1354,12 +1358,13 @@ Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\t
 <p>
 \[X_n=\inf _{k\geq n} |M_k|.\]
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Explain why \((X_n)\) is an increasing sequence and, hence, why there is a random variable \(X_\infty \) such that \(X_n\stackrel {a.s.}{\to }X_\infty \).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Explain why \((X_n)\) is an increasing sequence and, hence, why there is a random variable \(X_\infty \) such that
+\(X_n\stackrel {a.s.}{\to }X_\infty \).
 </p>
 
 
@@ -1368,7 +1373,7 @@ Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\t
 
 
 <p>
-<span class="textnormal">(b)</span> Show that, for all \(\epsilon &gt;0\) and all \(n\in \N \) there exists some \(n&apos;\geq n\) such that
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that, for all \(\epsilon &gt;0\) and all \(n\in \N \) there exists some \(n&apos;\geq n\) such that
 </p>
 <p>
 \[|M_{n&apos;}|-\epsilon \leq X_n\leq |M_n|.\]
@@ -1378,7 +1383,7 @@ Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\t
 
 
 <p>
-<span class="textnormal">(c)</span> Deduce that \(X_\infty =|M_\infty |\).
+<span class="listmarker"><span class="textnormal">(c)</span></span> Deduce that \(X_\infty =|M_\infty |\).
 </p>
 
 
@@ -1387,7 +1392,7 @@ Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\t
 
 
 <p>
-<span class="textnormal">(d)</span> Check that the monotone convergence theorem applies to \((X_n)\).
+<span class="listmarker"><span class="textnormal">(d)</span></span> Check that the monotone convergence theorem applies to \((X_n)\).
 </p>
 
 
@@ -1396,7 +1401,7 @@ Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\t
 
 
 <p>
-<span class="textnormal">(e)</span> Deduce that \(\E [|M_\infty |]\leq \sup _{n\in \N }\E [|M_n|]\).
+<span class="listmarker"><span class="textnormal">(e)</span></span> Deduce that \(\E [|M_\infty |]\leq \sup _{n\in \N }\E [|M_n|]\).
 </p>
 </li>
 </ul>
@@ -1405,10 +1410,11 @@ Let \(M_n\) be a sequence of random variables such that \(M_n\stackrel {a.s.}{\t
 
 
 <p>
-<b>7.15</b> <a id="ps:gw_subcrit"></a> <i>In this question we give a rigorous proof of Lemma <a href="Long-term-behaviour-stochastic-processes.html#l:gw_subcrit">7.4.7</a>.</i>
+<span class="listmarker"><b>7.15</b></span> <a id="ps:gw_subcrit"></a> <i>In this question we give a rigorous proof of Lemma <a
+href="Long-term-behaviour-stochastic-processes.html#l:gw_subcrit">7.4.7</a>.</i>
 </p>
 <p>
-Let \(Z_n\) and \(X^{n+1}_i\) be as in <span class="textup">(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.8</a>)</span> (i.e.&nbsp;\(Z_n\) is a
+Let \(Z_n\) and \(X^{n+1}_i\) be as in <span class="textup">(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.9</a>)</span> (i.e.&nbsp;\(Z_n\) is a
 Galton-Watson process) and suppose that \(\E [X^{n+1}_i]=\mu &lt;1\).
 </p>
 <p>
@@ -1418,21 +1424,21 @@ Let \(\alpha \in [0,1]\). For each \(i,n\) we define an independent random varia
 <span class="hidden"> \(\seteqnumber{0}{7.}{10}\)</span>
 <!--
 
-                                                   
-                                                   
-                                                   
-                                                   0         if Xin+1 = 0 and Cin+1 = 0
-                                                   
-                                                   
-                                          e n+1
-                                          Xi      = 1         if Xin+1 = 0 and Cin+1 = 1                                    (7.11)                               --><a id="eq:gw_coupling"></a><!--
-                                                   
-                                                   
-                                                              if Xin+1 ≥ 1.
-                                                   
-                                                   X n+1
-                                                   
-                                                      i
+                                                 
+                                                 
+                                                 
+                                                 0          if Xin+1 = 0 and Cin+1 = 0
+                                                 
+                                                 
+                                          e n+1 = 1
+                                          Xi                 if Xin+1 = 0 and Cin+1 = 1                                     (7.11)                              --><a id="eq:gw_coupling"></a><!--
+                                                 
+                                                 
+                                                             if Xin+1 ≥ 1.
+                                                 
+                                                 X n+1
+                                                 
+                                                    i
 -->
 <p>
 
@@ -1445,16 +1451,16 @@ X^{n+1}_i &amp; \text { if }X^{n+1}_i\geq 1. \end {cases}
 
 </p>
 <p>
-Define \(\wt {Z}_n\) by setting \(\wt {Z}_0=1\), and then using <span class="textup">(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.8</a>)</span> with
+Define \(\wt {Z}_n\) by setting \(\wt {Z}_0=1\), and then using <span class="textup">(<a href="Long-term-behaviour-stochastic-processes.html#eq:gw_iterative_defn">7.9</a>)</span> with
 \(\wt {Z}_n\) in place of \(Z_n\) and \(\wt {X}^{n+1}_i\) in place of \(X^{n+1}_i\). Define \(f:[0,1]\to \R \) by \(f(\alpha )=\E [X^{n+1}_i]\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Convince yourself that \(\wt {Z}_n\) is a Galton-Watson process, with offspring distribution given by <span class="textup">(<a
-href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#eq:gw_coupling">7.10</a>)</span>.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Convince yourself that \(\wt {Z}_n\) is a Galton-Watson process, with offspring distribution given by <span class="textup">(<a
+href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#eq:gw_coupling">7.11</a>)</span>.
 </p>
 
 
@@ -1463,7 +1469,7 @@ href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#eq:gw_coupling">7.10</a>)</s
 
 
 <p>
-<span class="textnormal">(b)</span> Explain briefly why \(0\leq Z_n\leq \wt {Z}_n\) for all \(n\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Explain briefly why \(0\leq Z_n\leq \wt {Z}_n\) for all \(n\).
 </p>
 
 
@@ -1472,7 +1478,7 @@ href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#eq:gw_coupling">7.10</a>)</s
 
 
 <p>
-<span class="textnormal">(c)</span> Show that \(f(0)&lt;1\) and \(f(1)\geq 1\). Deduce that there exists a value \(\alpha \in [0,1]\) such that \(f(\alpha )=1\).
+<span class="listmarker"><span class="textnormal">(c)</span></span> Show that \(f(0)&lt;1\) and \(f(1)\geq 1\). Deduce that there exists a value \(\alpha \in [0,1]\) such that \(f(\alpha )=1\).
 </p>
 
 
@@ -1481,7 +1487,7 @@ href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#eq:gw_coupling">7.10</a>)</s
 
 
 <p>
-<span class="textnormal">(d)</span> Show that \(\P [Z_n\text { dies out}]=1\).
+<span class="listmarker"><span class="textnormal">(d)</span></span> Show that \(\P [Z_n\text { dies out}]=1\).
 </p>
 </li>
 </ul>
@@ -1497,7 +1503,7 @@ href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#eq:gw_coupling">7.10</a>)</s
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

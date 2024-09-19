@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Portfolios, arbitrage and martingales</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Portfolios, arbitrage and martingales ......
 -->
@@ -937,14 +935,14 @@ We now have enough terminology to define the strategies that are available to pa
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-112"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 5.5.1</span> <a id="autoid-113" ></a >A <b>portfolio strategy</b> is a stochastic process
+<span class="listmarker"> <span class="theoremheaderplain">Definition 5.5.1</span></span> <a id="autoid-113" ></a >A <b>portfolio strategy</b> is a stochastic process
 </p>
 
 <p>
@@ -968,15 +966,15 @@ The interpretation is that \(x_t\) is the amount of cash, and \(y_t\) the amount
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-114"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 5.5.2</span> <a id="autoid-115" ></a >The <b>value process</b> of the portfolio strategy \(h=(h_t)_{t=1}^T\) is the stochastic process
-\((V^h_t)_{t=0}^T\) given by
+<span class="listmarker"> <span class="theoremheaderplain">Definition 5.5.2</span></span> <a id="autoid-115" ></a >The <b>value process</b> of the portfolio strategy \(h=(h_t)_{t=1}^T\) is
+the stochastic process \((V^h_t)_{t=0}^T\) given by
 </p>
 <span class="hidden"> \(\seteqnumber{0}{5.}{9}\)</span>
 
@@ -1023,14 +1021,14 @@ itself. We capture such portfolio strategies in the following definition.
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-116"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 5.5.3</span> <a id="autoid-117" ></a >A portfolio strategy \(h_t=(x_t,y_t)\) is said to be <b>self-financing</b> if
+<span class="listmarker"> <span class="theoremheaderplain">Definition 5.5.3</span></span> <a id="autoid-117" ></a >A portfolio strategy \(h_t=(x_t,y_t)\) is said to be <b>self-financing</b> if
 </p>
 
 <p>
@@ -1058,14 +1056,15 @@ Lastly, our idea of arbitrage must also be upgraded to handle multiple time step
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-118"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 5.5.4</span> <a id="autoid-119" ></a >We say that a portfolio strategy \((h_t)\) is an <b>arbitrage possibility</b> if it is self-financing and satisfies
+<span class="listmarker"> <span class="theoremheaderplain">Definition 5.5.4</span></span> <a id="autoid-119" ></a >We say that a portfolio strategy \((h_t)\) is an <b>arbitrage possibility</b>
+if it is self-financing and satisfies
 </p>
 <span class="hidden"> \(\seteqnumber{0}{5.}{9}\)</span>
 
@@ -1114,14 +1113,15 @@ It’s natural to ask when the binomial model is arbitrage free. Happily, the co
 </p>
 <div class="theorembodyprop">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-120"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Proposition 5.5.5</span> <a id="autoid-121" ></a ><a id="p:risk_free_bin"></a> The binomial model is arbitrage free if and only if \(d&lt;1+r&lt;u\).
+<span class="listmarker"> <span class="theoremheaderplain">Proposition 5.5.5</span></span> <a id="autoid-121" ></a ><a id="p:risk_free_bin"></a> The binomial model is arbitrage free if and
+only if \(d&lt;1+r&lt;u\).
 </p>
 
 
@@ -1141,15 +1141,15 @@ world \(\Q \), in which on each time step the stock price moves up (by \(u\)) wi
 </p>
 <div class="theorembodyprop">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-122"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Proposition 5.5.6</span> <a id="autoid-123" ></a ><a id="p:risk_free_martingale"></a> If \(d&lt;1+r&lt;u\), then under the probability measure \(\Q \), the
-process
+<span class="listmarker"> <span class="theoremheaderplain">Proposition 5.5.6</span></span> <a id="autoid-123" ></a ><a id="p:risk_free_martingale"></a> If \(d&lt;1+r&lt;u\), then under
+the probability measure \(\Q \), the process
 </p>
 
 <p>
@@ -1228,15 +1228,15 @@ respect to the filtration \(\mc {F}_t\), in the risk-neutral world \(\Q \). &#x2
 </p>
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-124"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 5.5.7</span> <a id="autoid-125" ></a >Using Lemma <a href="Martingales.html#l:not_mart_E">3.3.6</a> we have \(\E ^\Q [M_0]=\E ^\Q [M_1]\),
-which states that \(S_0=\frac {1}{1+r}\E ^\Q [S_1]\). This is precisely <span class="textup">(<a href="The-binomial-model.html#eq:risk_free_1">5.4</a>)</span>.
+<span class="listmarker"> <span class="theoremheaderplain">Remark 5.5.7</span></span> <a id="autoid-125" ></a >Using Lemma <a href="Martingales.html#l:not_mart_E">3.3.6</a> we have
+\(\E ^\Q [M_0]=\E ^\Q [M_1]\), which states that \(S_0=\frac {1}{1+r}\E ^\Q [S_1]\). This is precisely <span class="textup">(<a href="The-binomial-model.html#eq:risk_free_1">5.4</a>)</span>.
 </p>
 
 
@@ -1255,7 +1255,7 @@ which states that \(S_0=\frac {1}{1+r}\E ^\Q [S_1]\). This is precisely <span cl
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

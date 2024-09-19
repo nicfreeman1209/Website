@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Exercises on Chapter <a href=Conditional-expectation-martingales.html#c:cond_exp>3</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Exercises on Chapter <a href=Conditional-expectation-martingales.html#c:cond_exp>3</a> ......
 -->
@@ -917,12 +915,13 @@ Home</a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>3.1</b> <a id="ps:cond_exp_calc"></a> Let \((X_n)\) be a sequence of independent identically distributed random variables, such that \(\P [X_i=1]=\frac 12\) and \(\P [X_i=-1]=\frac 12\). Let
+<span class="listmarker"><b>3.1</b></span> <a id="ps:cond_exp_calc"></a> Let \((X_n)\) be a sequence of independent identically distributed random variables, such that \(\P [X_i=1]=\frac 12\) and
+\(\P [X_i=-1]=\frac 12\). Let
 </p>
 <p>
 \[S_n=\sum \limits _{i=1}^nX_i.\]
@@ -935,36 +934,38 @@ Use the properties of conditional expectation to find \(\E [S_2\|\sigma (X_1)]\)
 
 
 <p>
-<b>3.2</b> <a id="ps:biased_walk_mart"></a> Let \((X_n)\) be a sequence of independent random variables such that \(\P [X_n=2]=\frac 13\) and \(\P [X_n=-1]=\frac 23\). Set \(\mc {F}_n=\sigma
-(X_i\-i\leq n)\). Show that \(S_n=\sum _{i=1}^nX_i\) is an \(\mc {F}_n\) martingale.
+<span class="listmarker"><b>3.2</b></span> <a id="ps:biased_walk_mart"></a> Let \((X_n)\) be a sequence of independent random variables such that \(\P [X_n=2]=\frac 13\) and \(\P
+[X_n=-1]=\frac 23\). Set \(\mc {F}_n=\sigma (X_i\-i\leq n)\). Show that \(S_n=\sum _{i=1}^nX_i\) is an \(\mc {F}_n\) martingale.
 </p>
 </li>
 <li>
 
 
 <p>
-<b>3.3</b> <a id="ps:mart_exs"></a> Check that Examples <a href="Martingales.html#ex:m1">3.3.8</a> and <a href="Martingales.html#ex:m2">3.3.9</a> are martingales.
+<span class="listmarker"><b>3.3</b></span> <a id="ps:mart_exs"></a> Check that Examples <a href="Martingales.html#ex:m1">3.3.8</a> and <a href="Martingales.html#ex:m2">3.3.9</a> are
+martingales.
 </p>
 </li>
 <li>
 
 
 <p>
-<b>3.4</b> <a id="ps:subsupmartmart"></a>Let \((M_t)\) be a stochastic process that is both and submartingale and a supermartingale. Show that \((M_t)\) is a martingale.
+<span class="listmarker"><b>3.4</b></span> <a id="ps:subsupmartmart"></a>Let \((M_t)\) be a stochastic process that is both and submartingale and a supermartingale. Show that \((M_t)\) is a
+martingale.
 </p>
 </li>
 <li>
 
 
 <p>
-<b>3.5</b> <a id="ps:mart_alt_char"></a>
+<span class="listmarker"><b>3.5</b></span> <a id="ps:mart_alt_char"></a>
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Let \((M_n)\) be an \(\mc {F}_n\) martingale. Show that, for all \(0\leq n\leq m\), \(\E [M_m\|\mc {F}_n]=M_n\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Let \((M_n)\) be an \(\mc {F}_n\) martingale. Show that, for all \(0\leq n\leq m\), \(\E [M_m\|\mc {F}_n]=M_n\).
 </p>
 
 
@@ -973,7 +974,7 @@ Use the properties of conditional expectation to find \(\E [S_2\|\sigma (X_1)]\)
 
 
 <p>
-<span class="textnormal">(b)</span> Guess and state (without proof) the analogous result to (a) for submartingales.
+<span class="listmarker"><span class="textnormal">(b)</span></span> Guess and state (without proof) the analogous result to (a) for submartingales.
 </p>
 </li>
 </ul>
@@ -982,7 +983,7 @@ Use the properties of conditional expectation to find \(\E [S_2\|\sigma (X_1)]\)
 
 
 <p>
-<b>3.6</b> <a id="ps:doob_pre"></a> Let \((M_n)\) be a \(\mc {F}_n\) martingale and suppose \(M_n\in L^2\) for all \(n\). Show that
+<span class="listmarker"><b>3.6</b></span> <a id="ps:doob_pre"></a> Let \((M_n)\) be a \(\mc {F}_n\) martingale and suppose \(M_n\in L^2\) for all \(n\). Show that
 </p>
 <span class="hidden"> \(\seteqnumber{0}{3.}{3}\)</span>
 <!--
@@ -1009,8 +1010,8 @@ and deduce that \((M_n^2)\) is a submartingale.
 
 
 <p>
-<b>3.7</b> <a id="ps:mart_linear"></a> Let \(X_0,X_1,\ldots \) be a sequence of \(L^1\) random variables. Let \(\mc {F}_n\) be their generated filtration and suppose that \(\E [X_{n+1}|\mc
-{F}_n]=aX_n+bX_{n-1}\) for all \(n\in \N \), where \(a,b&gt;0\) and \(a+b=1\).
+<span class="listmarker"><b>3.7</b></span> <a id="ps:mart_linear"></a> Let \(X_0,X_1,\ldots \) be a sequence of \(L^1\) random variables. Let \(\mc {F}_n\) be their generated filtration and
+suppose that \(\E [X_{n+1}|\mc {F}_n]=aX_n+bX_{n-1}\) for all \(n\in \N \), where \(a,b&gt;0\) and \(a+b=1\).
 </p>
 <p>
 Find a value of \(\alpha \in \R \) (in terms of \(a,b\)) for which \(S_n=\alpha X_n+X_{n-1}\) is an \(\mc {F}_n\) martingale.
@@ -1029,13 +1030,13 @@ Find a value of \(\alpha \in \R \) (in terms of \(a,b\)) for which \(S_n=\alpha 
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>3.8</b> <a id="ps:cond_exp_2"></a> In the setting of <a href="Exercises-on-Chapter-ref-c-cond_exp.html#ps:cond_exp_calc"><b>3.1</b></a>, show that \(\E [X_1\|\sigma (S_n)]=\frac
-{S_n}{n}\).
+<span class="listmarker"><b>3.8</b></span> <a id="ps:cond_exp_2"></a> In the setting of <a href="Exercises-on-Chapter-ref-c-cond_exp.html#ps:cond_exp_calc"><b>3.1</b></a>, show that \(\E
+[X_1\|\sigma (S_n)]=\frac {S_n}{n}\).
 </p>
 </li>
 </ul>
@@ -1049,7 +1050,7 @@ Find a value of \(\alpha \in \R \) (in terms of \(a,b\)) for which \(S_n=\alpha 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

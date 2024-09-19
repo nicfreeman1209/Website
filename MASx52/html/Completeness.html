@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Completeness</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -651,10 +651,9 @@ Home</a>
 (part two)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -874,13 +873,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
-......     section Completeness ......
+...... section Completeness ......
 -->
 <h4 id="autosec-127"><span class="sectionnumber">15.2&#x2003;</span>Completeness</h4>
 <a id="notes_2-autopage-127"></a>
-<a id="notes_2-autofile-21"></a> <a id="s:bs_compl"></a>
+<a id="notes_2-autofile-21"></a>
+
+<a id="s:bs_compl"></a>
 
 <p>
 We’ll begin our analysis of the Black-Scholes model by showing that, in the Black-Scholes market, we can replicate any contingent claim that has a well-defined expectation. This is, essentially, what is meant by
@@ -888,16 +888,16 @@ completeness in the Black-Scholes model.
 </p>
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-105"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 15.2.1</span> <a id="autoid-106" ></a >The Black-Scholes model uses Ito integration. Up to now, whenever we wrote an Ito integral \(\int _0^t F_t\,dB_t\)
-we were careful to check that \(F\in \mc {H}^2\). From now on, we won’t go to the trouble of checking this condition (although it does always hold). We’ll say slightly more about this issue in Section <a
-href="Discontinuous-stock-prices-heavy-tails.html#s:discont">17.3</a>
+<span class="listmarker"> <span class="theoremheaderplain">Remark 15.2.1</span></span> <a id="autoid-106" ></a >The Black-Scholes model uses Ito integration. Up to now, whenever we wrote an
+Ito integral \(\int _0^t F_t\,dB_t\) we were careful to check that \(F\in \mc {H}^2\). From now on, we won’t go to the trouble of checking this condition (although it does always hold). We’ll say slightly more
+about this issue in Section <a href="Discontinuous-stock-prices-heavy-tails.html#s:discont">17.3</a>
 </p>
 
 
@@ -912,14 +912,15 @@ In the binomial model we discovered the importance of the so-called risk-neutral
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-107"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 15.2.2</span> <a id="autoid-108" ></a >The <b>risk-netural world</b> \(\Q \) is the probability measure under which \(S_t\) evolves according to the SDE
+<span class="listmarker"> <span class="theoremheaderplain">Definition 15.2.2</span></span> <a id="autoid-108" ></a >The <b>risk-netural world</b> \(\Q \) is the probability measure under
+which \(S_t\) evolves according to the SDE
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{15.}{3}\)</span>
@@ -928,7 +929,7 @@ In the binomial model we discovered the importance of the so-called risk-neutral
 
 
 
-                                                                    dSt = rSt dt + σSt dBt .                                                          (15.4)            --><a id="eq:rnw"></a><!--
+                                                                    dSt = rSt dt + σSt dBt .                                                         (15.4)             --><a id="eq:rnw"></a><!--
 
 -->
 
@@ -959,15 +960,15 @@ The key point here is that, compared to the ‘real’ dynamics of \(S_t\), give
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-109"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 15.2.3</span> <a id="autoid-110" ></a >As in Section <a href="Geometric-Brownian-motion.html#s:gbm">13.2</a>, we refer to \(r\) as the <b>drift</b>
-and to \(\sigma \) as the <b>volatility</b>.
+<span class="listmarker"> <span class="theoremheaderplain">Definition 15.2.3</span></span> <a id="autoid-110" ></a >As in Section <a href="Geometric-Brownian-motion.html#s:gbm">13.2</a>,
+we refer to \(r\) as the <b>drift</b> and to \(\sigma \) as the <b>volatility</b>.
 </p>
 
 
@@ -987,15 +988,15 @@ For reasons that will become clear in Section <a href="American-Exotic-options.h
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-111"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 15.2.4</span> <a id="autoid-112" ></a ><a id="l:compl_prep"></a> Let \(X\in \mc {F}_T\) be a contingent claim in the Black-Scholes market with exercise
-time \(T\). Suppose that the stochastic process
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 15.2.4</span></span> <a id="autoid-112" ></a ><a id="l:compl_prep"></a> Let \(X\in \mc {F}_T\) be a contingent claim in
+the Black-Scholes market with exercise time \(T\). Suppose that the stochastic process
 </p>
 
 <p>
@@ -1012,7 +1013,7 @@ exists and has the stochastic differential
 
 
 
-                                                                               dMt = ft dZt                                                                     (15.5)        --><a id="eq:wtf"></a><!--
+                                                                               dMt = ft dZt                                                                     (15.5)       --><a id="eq:wtf"></a><!--
 
 -->
 
@@ -1038,7 +1039,7 @@ where \(Z_t=e^{-rt}S_t\), for some (continuous, adapated) stochastic process \(f
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We are looking for a portfolio strategy \(h_t=(x_t,y_t)\) such that both
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> We are looking for a portfolio strategy \(h_t=(x_t,y_t)\) such that both
 </p>
 <span class="hidden"> \(\seteqnumber{0}{15.}{5}\)</span>
 
@@ -1048,7 +1049,7 @@ where \(Z_t=e^{-rt}S_t\), for some (continuous, adapated) stochastic process \(f
 
 
 
-                                                                                                      VTh = X                            ,            (15.6)             --><a id="eq:repl_rep"></a><!--
+                                                                                                     VTh = X                       ,                  (15.6)             --><a id="eq:repl_rep"></a><!--
 
                                                                                                     dVth = xt dCt + yt dSt .                           (15.7)             --><a id="eq:repl_sf"></a><!--
 
@@ -1074,11 +1075,10 @@ Here, the first equation is ‘replication’ and the second is ‘self-financin
 
 
 
-                                                                                                       xt = Mt − e−rt ft St
-                                                                                                                                     
+                                                                                                      xt = Mt − e−rt ft St
+                                                                                                                               
 
-
-                                                                                                       yt = ft .
+                                                                                                      yt = ft .
 
 
 
@@ -1105,9 +1105,9 @@ href="Completeness.html#eq:repl_rep">15.6</a>)</span> and <span class="textup">(
 
                                                                                                     Vth = xt Ct + yt St
 
-                                                                                                          = ert Mt − ft St + ft St
+                                                                                                        = ert Mt − ft St + ft St
 
-                                                                                                          = ert Mt .                                   (15.8)             --><a id="eq:Vht_ito"></a><!--
+                                                                                                        = ert Mt .                                    (15.8)              --><a id="eq:Vht_ito"></a><!--
 
 
 
@@ -1143,10 +1143,9 @@ Using Ito’s formula on \(Z_t=e^{rt}S_t\) we obtain that
 
 
                                                                                        dZt = −rSt e−rt + µSt e−rt + 0 dt + σSt e−rt dBt
-                                                                                                                             
+                                                                                                                     
 
-
-                                                                                            = e−rt St (µ − r) dt + σe−rt St dBt .
+                                                                                           = e−rt St (µ − r) dt + σe−rt St dBt .
 
 
 
@@ -1179,19 +1178,16 @@ and we are now ready to apply Ito’s formula to \(V^h_t=e^{rt}M_t\). We obtain
 
 
                                                                                 dVth = rert Mt + e−rt ft St (µ − r)ert + 0 dt + σe−rt ft St ert dBt
-                                                                                                                                 
+                                                                                                                          
 
+                                                                                     = rert Mt − rft St dt + ft [µSt dt + σSt dBt ]
+                                                                                                       
 
-                                                                                      = rert Mt − rft St dt + ft [µSt dt + σSt dBt ]
-                                                                                                          
+                                                                                     = Mt − e−rt ft St rert dt + ft [µSt dt + σSt dBt ] .
+                                                                                                              
 
-
-                                                                                      = Mt − e−rt ft St        rert dt + ft [µSt dt + σSt dBt ] .
-                                                                                                                   
-
-
-                                                                                      = Mt − e−rt ft St dCt + ft dSt .
-                                                                                                          
+                                                                                     = Mt − e−rt ft St dCt + ft dSt .
+                                                                                                      
 
 
 
@@ -1221,15 +1217,15 @@ and, as required, we have checked <span class="textup">(<a href="Completeness.ht
 </p>
 <div class="theorembodytheorem">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-113"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 15.2.5</span> <a id="autoid-114" ></a ><a id="t:bs_compl"></a> Let \(X\in \mc {F}_T\) be a contingent claim in the Black-Scholes market with exercise
-time \(T\). Suppose that \(\E ^\Q [|X|]&lt;\infty \). Then there exists a replicating portfolio strategy for \(X\).
+<span class="listmarker"> <span class="theoremheaderplain">Theorem 15.2.5</span></span> <a id="autoid-114" ></a ><a id="t:bs_compl"></a> Let \(X\in \mc {F}_T\) be a contingent claim in
+the Black-Scholes market with exercise time \(T\). Suppose that \(\E ^\Q [|X|]&lt;\infty \). Then there exists a replicating portfolio strategy for \(X\).
 </p>
 
 
@@ -1240,7 +1236,7 @@ time \(T\). Suppose that \(\E ^\Q [|X|]&lt;\infty \). Then there exists a replic
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We define \(M_t=e^{-rT}\E ^\Q \l [X\|\mc {F}_t\r ]\) and look to apply Lemma <a
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> We define \(M_t=e^{-rT}\E ^\Q \l [X\|\mc {F}_t\r ]\) and look to apply Lemma <a
 href="Completeness.html#l:compl_prep">15.2.4</a>. Note that since \(\E ^\Q [|X|]&lt;\infty \) this conditional expectation is well defined. From Example <a href="Martingales.html#ex:m2">3.3.9</a>
 (which is easily adapted to continuous time) we have that \(\E [X\|\mc {F}_t]\) is a martingale. Hence, since \(e^{-rT}\) is just a constant, we know that \(M_t\) is a martingale.
 </p>
@@ -1256,7 +1252,7 @@ The key step is the next one: use the martingale representation theorem (Theorem
 
 
 
-                                                  dMt = gt dBt .                                                  (15.9)                                                                 --><a id="eq:dMt_gtBt"></a><!--
+                                                 dMt = gt dBt .                                                  (15.9)                                                                  --><a id="eq:dMt_gtBt"></a><!--
 
 -->
 
@@ -1283,8 +1279,7 @@ when we apply Ito’s formula to \(Z_t\) we obtain
 
 
                                                                                       dZt = −re−rt St + rSt e−rt + 0 dt + σe−rt St dBt
-                                                                                                                      
-
+                                                                                                                    
 
                                                                                           = σZt dBt .
 
@@ -1338,7 +1333,7 @@ in fact, unique.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

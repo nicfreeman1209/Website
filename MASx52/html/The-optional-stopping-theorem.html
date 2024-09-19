@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — The optional stopping theorem </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,13 +901,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section The optional stopping theorem         ......
 -->
-<h4 id="autosec-248"><span class="sectionnumber">8.2&#x2003;</span>The optional stopping theorem \((\Delta )\)</h4>
+<h4 id="autosec-248"><span class="sectionnumber">8.2&#x2003;</span>The optional stopping theorem \(\msconly \)</h4>
 <a id="notes_1-autopage-248"></a>
-<a id="notes_1-autofile-37"></a> <a id="s:op_stop"></a>
+<a id="notes_1-autofile-37"></a>
+
+<a id="s:op_stop"></a>
 
 <p>
 Adaptedness, from Definition <a href="Martingales.html#d:adapted">3.3.2</a>, captures the idea that we cannot see into the future. This leaves us with the question: as time passes, in what circumstances can
@@ -916,15 +916,15 @@ we tell if an event has already occurred?
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-178"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 8.2.1</span> <a id="autoid-179" ></a >A map \(T:\Om \to \{0,1,2,\ldots ,\infty \}\) is called a \((\mc {F}_n)\) stopping time if, for all \(n\), the
-event \(\{T\leq n\}\) is \(\F _n\) measurable.
+<span class="listmarker"> <span class="theoremheaderplain">Definition 8.2.1</span></span> <a id="autoid-179" ></a >A map \(T:\Om \to \{0,1,2,\ldots ,\infty \}\) is called a \((\mc
+{F}_n)\) stopping time if, for all \(n\), the event \(\{T\leq n\}\) is \(\F _n\) measurable.
 </p>
 
 
@@ -941,15 +941,15 @@ href="Exercises-on-Chapter-ref-c-stoch_procs_2.html#ps:stopping_time_defn_2"><b>
 </p>
 <div class="theorembodyexample">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-180"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 8.2.2</span> <a id="autoid-181" ></a ><a id="ex:rw_hitting_time"></a> Let \(S_n=\sum _{i=1}^nX_i\) be the simple symmetric random walk, with \(\P
-[X_i=1]=\P [X_i=-1]=\frac {1}{2}\). Let \(\mc {F}_n=\sigma (X_1,\ldots ,X_n)\). Then, for any \(a\in \N \), the time
+<span class="listmarker"> <span class="theoremheaderplain">Example 8.2.2</span></span> <a id="autoid-181" ></a ><a id="ex:rw_hitting_time"></a> Let \(S_n=\sum _{i=1}^nX_i\) be the
+simple symmetric random walk, with \(\P [X_i=1]=\P [X_i=-1]=\frac {1}{2}\). Let \(\mc {F}_n=\sigma (X_1,\ldots ,X_n)\). Then, for any \(a\in \N \), the time
 </p>
 
 <p>
@@ -995,7 +995,7 @@ Since \(S_i\) is \(\mc {F}_n\) measurable for all \(i\leq n\), the above equatio
 </div>
 
 <p>
-You will have seen hitting times before – for most of you, in MAS275 in the context of Markov chains. You might also recall that the random walk \(S_n\) can be represented as Markov chains on \(\Z \). You will
+You will have seen hitting times before – for most of you, in MAS2003 in the context of Markov chains. You might also recall that the random walk \(S_n\) can be represented as Markov chains on \(\Z \). You will
 probably have looked at a method for calculating expected hitting times by solving systems of linear equations. This approach is feasible if the state space of a Markov chain is finite; however \(\Z \) is infinite. In
 this section we look at an alternative method, based on martingales.
 </p>
@@ -1005,15 +1005,15 @@ Recall the notation \(\wedge \) and \(\vee \) that we introduced at the start of
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-182"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 8.2.3</span> <a id="autoid-183" ></a ><a id="l:min_stopping_times"></a> Let \(S\) and \(T\) be stopping times with respect to the filtration \((\mc
-{F}_n)\). Then \(S\wedge T\) is also a \((\mc {F}_n)\) stopping time.
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 8.2.3</span></span> <a id="autoid-183" ></a ><a id="l:min_stopping_times"></a> Let \(S\) and \(T\) be stopping times with
+respect to the filtration \((\mc {F}_n)\). Then \(S\wedge T\) is also a \((\mc {F}_n)\) stopping time.
 </p>
 
 
@@ -1050,15 +1050,15 @@ href="The-optional-stopping-theorem.html#ex:rw_hitting_time">8.2.2</a>, \(S^T\) 
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-184"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 8.2.4</span> <a id="autoid-185" ></a ><a id="l:stopped_martingale"></a> Let \(M_n\) be a martingale (resp.&nbsp;supmartingale, supermartingale) and let
-\(T\) be a stopping time. Then \(M^T\) is also a martingale (resp.&nbsp;supmartingale, supermartingale).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 8.2.4</span></span> <a id="autoid-185" ></a ><a id="l:stopped_martingale"></a> Let \(M_n\) be a martingale
+(resp.&nbsp;supmartingale, supermartingale) and let \(T\) be a stopping time. Then \(M^T\) is also a martingale (resp.&nbsp;supmartingale, supermartingale).
 </p>
 
 
@@ -1084,15 +1084,15 @@ href="Stochastic-processes-martingale-theory.html#t:mart_transf">7.1.1</a>, if \
 </p>
 <div class="theorembodythm">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-186"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 8.2.5 (Doob’s Optional Stopping Theorem)</span> <a id="autoid-187" ></a ><a id="t:optional_stopping"></a> Let \(M\) be martingale
-(resp.&nbsp;submartingale, supermartingale) and let \(T\) be a stopping time. Then
+<span class="listmarker"> <span class="theoremheaderplain">Theorem 8.2.5 (Doob’s Optional Stopping Theorem)</span></span> <a id="autoid-187" ></a ><a id="t:optional_stopping"></a> Let
+\(M\) be martingale (resp.&nbsp;submartingale, supermartingale) and let \(T\) be a stopping time. Then
 </p>
 
 <p>
@@ -1102,12 +1102,12 @@ href="Stochastic-processes-martingale-theory.html#t:mart_transf">7.1.1</a>, if \
 <p>
 (resp.&nbsp;\(\geq \), \(\leq \)) if any one of the following conditions hold:
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-(a) \(T\) is bounded.
+<span class="listmarker">(a)</span> \(T\) is bounded.
 </p>
 
 
@@ -1116,7 +1116,7 @@ href="Stochastic-processes-martingale-theory.html#t:mart_transf">7.1.1</a>, if \
 
 
 <p>
-(b) \(\P [T&lt;\infty ]=1\) and there exists \(c\in \R \) such that \(|M_n|\leq c\) for all \(n\).
+<span class="listmarker">(b)</span> \(\P [T&lt;\infty ]=1\) and there exists \(c\in \R \) such that \(|M_n|\leq c\) for all \(n\).
 </p>
 
 
@@ -1125,7 +1125,7 @@ href="Stochastic-processes-martingale-theory.html#t:mart_transf">7.1.1</a>, if \
 
 
 <p>
-(c) \(\E [T]&lt;\infty \) and there exists \(c\in \R \) such that \(|M_n-M_{n-1}|\leq c\) for all \(n\).
+<span class="listmarker">(c)</span> \(\E [T]&lt;\infty \) and there exists \(c\in \R \) such that \(|M_n-M_{n-1}|\leq c\) for all \(n\).
 </p>
 </li>
 </ul>
@@ -1205,7 +1205,7 @@ These three sets of conditions (a)-(c) for the optional stopping theorem are lis
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

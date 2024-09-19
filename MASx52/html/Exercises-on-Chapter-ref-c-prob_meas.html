@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Exercises on Chapter <a href=Probability-spaces-random-variables.html#c:prob_meas>2</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Exercises on Chapter <a href=Probability-spaces-random-variables.html#c:prob_meas>2</a> ......
 -->
@@ -917,20 +915,20 @@ Home</a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>2.1</b> <a id="ps:two_dice_sample"></a> Consider the experiment of throwing two dice, then recording the uppermost faces of both dice. Write down a suitable sample space \(\Omega \) and suggest an
-appropriate \(\sigma \)-field \(\mc {F}\).
+<span class="listmarker"><b>2.1</b></span> <a id="ps:two_dice_sample"></a> Consider the experiment of throwing two dice, then recording the uppermost faces of both dice. Write down a suitable sample
+space \(\Omega \) and suggest an appropriate \(\sigma \)-field \(\mc {F}\).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>2.2</b> <a id="ps:sigma_meas"></a> Let \(\Omega =\{1,2,3\}\). Let
+<span class="listmarker"><b>2.2</b></span> <a id="ps:sigma_meas"></a> Let \(\Omega =\{1,2,3\}\). Let
 </p>
 <span class="hidden"> \(\seteqnumber{0}{2.}{7}\)</span>
 
@@ -939,9 +937,9 @@ appropriate \(\sigma \)-field \(\mc {F}\).
 
 
 
-                                                                                         F = {∅, {1}, {2, 3}, {1, 2, 3}},
+                                                                                      F = {∅, {1}, {2, 3}, {1, 2, 3}},
 
-                                                                                        F 0 = {∅, {2}, {1, 3}, {1, 2, 3}}.
+                                                                                      F 0 = {∅, {2}, {1, 3}, {1, 2, 3}}.
 
 
 
@@ -957,12 +955,12 @@ appropriate \(\sigma \)-field \(\mc {F}\).
 
 
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(\mc {F}\) and \(\mc {F}&apos;\) are both \(\sigma \)-fields.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(\mc {F}\) and \(\mc {F}&apos;\) are both \(\sigma \)-fields.
 </p>
 
 
@@ -971,33 +969,8 @@ appropriate \(\sigma \)-field \(\mc {F}\).
 
 
 <p>
-<span class="textnormal">(b)</span> Show that \(\mc {F}\cup \mc {F}&apos;\) is not a \(\sigma \)-field, but that \(\mc {F}\cap \mc {F}&apos;\) is a \(\sigma \)-field.
-</p>
-</li>
-</ul>
-</li>
-<li>
-
-
-<p>
-<b>2.3</b> <a id="ps:inf_Om"></a> Let \(\Omega =\{H,T\}^\N \) be the probability space from Section <a href="Infinite.html#s:inf_Om">2.3</a>, corresponding to an infinite sequence of independent fair
-coin tosses \((X_n)_{n=1}^\infty \).
-</p>
-<ul style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="textnormal">(a)</span> Fix \(m\in \N \). Show that the probability that that random sequence \(X_1,X_2,\ldots ,\) contains precisely \(m\) heads is zero.
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-<span class="textnormal">(b)</span> Deduce that, almost surely, the sequence \(X_1,X_2,\ldots \) contains infinitely many heads and infinitely many tails.
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that \(\mc {F}\cup \mc {F}&apos;\) is not a \(\sigma \)-field, but that \(\mc {F}\cap \mc {F}&apos;\) is a \(\sigma
+\)-field.
 </p>
 </li>
 </ul>
@@ -1006,24 +979,16 @@ coin tosses \((X_n)_{n=1}^\infty \).
 
 
 <p>
-<b>2.4</b> <a id="ps:rv_meas_1"></a> Let \(\Omega =\{1,2,3,4,5,6\}\), corresponding to one roll of a die. In each of the following cases describe, in words, the information contained within the given
-\(\sigma \)-field.
+<span class="listmarker"><b>2.3</b></span> <a id="ps:inf_Om"></a> Let \(\Omega =\{H,T\}^\N \) be the probability space from Section <a href="Infinite.html#s:inf_Om">2.3</a>, corresponding to
+an infinite sequence of independent fair coin tosses \((X_n)_{n=1}^\infty \).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> \(\F _1=\big \{\emptyset ,\{1,2,3,4,5\},\{6\},\Omega \big \}\).
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-<span class="textnormal">(b)</span> \(\F _2=\sigma \big (\{1\},\{2\},\{3\},\{4,5,6\}\big )\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Fix \(m\in \N \). Show that the probability that that random sequence \(X_1,X_2,\ldots ,\) contains precisely \(m\) heads is
+zero.
 </p>
 
 
@@ -1032,7 +997,42 @@ coin tosses \((X_n)_{n=1}^\infty \).
 
 
 <p>
-<span class="textnormal">(c)</span> \(\F _3=\big \{\emptyset ,\{1,2\},\{3,4\},\{5,6\}, \{1,2,3,4\}, \{3,4,5,6\}, \{1,2,5,6\}, \Omega \big \}\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Deduce that, almost surely, the sequence \(X_1,X_2,\ldots \) contains infinitely many heads and infinitely many tails.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><b>2.4</b></span> <a id="ps:rv_meas_1"></a> Let \(\Omega =\{1,2,3,4,5,6\}\), corresponding to one roll of a die. In each of the following cases describe, in words, the
+information contained within the given \(\sigma \)-field.
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> \(\F _1=\big \{\emptyset ,\{1,2,3,4,5\},\{6\},\Omega \big \}\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> \(\F _2=\sigma \big (\{1\},\{2\},\{3\},\{4,5,6\}\big )\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> \(\F _3=\big \{\emptyset ,\{1,2\},\{3,4\},\{5,6\}, \{1,2,3,4\}, \{3,4,5,6\}, \{1,2,5,6\}, \Omega \big \}\).
 </p>
 </li>
 </ul>
@@ -1046,12 +1046,12 @@ coin tosses \((X_n)_{n=1}^\infty \).
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>2.5</b> <a id="ps:rv_meas_2"></a> Let \(\Omega =\{1,2,3,4,5\}\) and set
+<span class="listmarker"><b>2.5</b></span> <a id="ps:rv_meas_2"></a> Let \(\Omega =\{1,2,3,4,5\}\) and set
 </p>
 <span class="hidden"> \(\seteqnumber{0}{2.}{7}\)</span>
 
@@ -1059,10 +1059,10 @@ coin tosses \((X_n)_{n=1}^\infty \).
 <!--
 
 
-                                                                                                                 
-                                                                                      G1 = σ {1, 5}, {2, 4}, {3}
-                                                                                           
-                                                                                      G2 = ∅, {1, 2}, {3, 4, 5}, Ω .
+                                                                                                               
+                                                                                    G1 = σ {1, 5}, {2, 4}, {3}
+                                                                                         
+                                                                                    G2 = ∅, {1, 2}, {3, 4, 5}, Ω .
 
 
 
@@ -1078,12 +1078,12 @@ coin tosses \((X_n)_{n=1}^\infty \).
 
 
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Define \(X_1:\Omega \to \R \) by \(X_1(\omega )=(\omega -3)^2\). Show that \(X_1\in m\G _1\) and \(X_1\notin m\G _2\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Define \(X_1:\Omega \to \R \) by \(X_1(\omega )=(\omega -3)^2\). Show that \(X_1\in m\G _1\) and \(X_1\notin m\G _2\).
 </p>
 
 
@@ -1092,7 +1092,7 @@ coin tosses \((X_n)_{n=1}^\infty \).
 
 
 <p>
-<span class="textnormal">(b)</span> Give an example of a function \(X_2:\Omega \to \R \) such that \(X_2\in m\G _2\) and \(X_2\notin m\G _1\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Give an example of a function \(X_2:\Omega \to \R \) such that \(X_2\in m\G _2\) and \(X_2\notin m\G _1\).
 </p>
 </li>
 </ul>
@@ -1101,22 +1101,22 @@ coin tosses \((X_n)_{n=1}^\infty \).
 
 
 <p>
-<b>2.6</b> <a id="ps:two_coin_toss_sigma"></a> Let \(\Omega =\{HH,HT,TH,TT\}\), representing two coin tosses. Define \(X\) to be the total number of heads shown. Write down all the events in \(\sigma
-(X)\).
+<span class="listmarker"><b>2.6</b></span> <a id="ps:two_coin_toss_sigma"></a> Let \(\Omega =\{HH,HT,TH,TT\}\), representing two coin tosses. Define \(X\) to be the total number of heads shown.
+Write down all the events in \(\sigma (X)\).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>2.7</b> <a id="ps:rv_gen"></a> Let \(X\) be a random variable. Explain why \(\frac {X}{X^2+1}\) and \(\sin (X)\) are also random variables.
+<span class="listmarker"><b>2.7</b></span> <a id="ps:rv_gen"></a> Let \(X\) be a random variable. Explain why \(\frac {X}{X^2+1}\) and \(\sin (X)\) are also random variables.
 </p>
 </li>
 <li>
 
 
 <p>
-<b>2.8</b> <a id="ps:not_int_rv"></a> Let \(X\) be a random variable with the probability density function \(f:\R \to \R \) given by
+<span class="listmarker"><b>2.8</b></span> <a id="ps:not_int_rv"></a> Let \(X\) be a random variable with the probability density function \(f:\R \to \R \) given by
 </p>
 <p>
 \[f(x)= \begin {cases} 2x^{-3} &amp; \text { if }x\in [1,\infty ),\\ 0 &amp; \text { otherwise.} \end {cases} \]
@@ -1129,14 +1129,15 @@ Show that \(X\in L^1\) but \(X\notin L^2\).
 
 
 <p>
-<b>2.9</b> <a id="ps:Lpq"></a> Let \(1\leq p\leq q&lt;\infty \).
+<span class="listmarker"><b>2.9</b></span> <a id="ps:Lpq"></a> Let \(1\leq p\leq q&lt;\infty \).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Generalize <span class="textup">(<a href="Expectation.html#eq:L1L2">2.7</a>)</span> to show that \(\E [|X|^p]\leq \E [|X|^q]+1\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Generalize <span class="textup">(<a href="Expectation.html#eq:L1L2">2.7</a>)</span> to show that \(\E [|X|^p]\leq \E
+[|X|^q]+1\).
 </p>
 
 
@@ -1145,7 +1146,7 @@ Show that \(X\in L^1\) but \(X\notin L^2\).
 
 
 <p>
-<span class="textnormal">(b)</span> Deduce that if \(X\in L^q\) then \(X\in L^p\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Deduce that if \(X\in L^q\) then \(X\in L^p\).
 </p>
 </li>
 </ul>
@@ -1154,7 +1155,8 @@ Show that \(X\in L^1\) but \(X\notin L^2\).
 
 
 <p>
-<b>2.10</b> <a id="ps:markovs_ineq"></a> Let \(a&gt;0\) and let \(X\) be a random variable such that \(X\geq 0\). Show that \(\P [X\geq a]\leq \frac {1}{a}\E [X].\)
+<span class="listmarker"><b>2.10</b></span> <a id="ps:markovs_ineq"></a> Let \(a&gt;0\) and let \(X\) be a random variable such that \(X\geq 0\). Show that \(\P [X\geq a]\leq \frac {1}{a}\E
+[X].\)
 </p>
 <p>
 
@@ -1170,12 +1172,12 @@ Show that \(X\in L^1\) but \(X\notin L^2\).
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>2.11</b> <a id="ps:exp_zero"></a> Show that if \(\P [X\geq 0]=1\) and \(\E [X]=0\) then \(\P [X=0]=1\).
+<span class="listmarker"><b>2.11</b></span> <a id="ps:exp_zero"></a> Show that if \(\P [X\geq 0]=1\) and \(\E [X]=0\) then \(\P [X=0]=1\).
 </p>
 <p>
 
@@ -1193,7 +1195,7 @@ Show that \(X\in L^1\) but \(X\notin L^2\).
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Exercises on Chapter <a href=Application-extension-Black-Scholes-model.html#c:bs_extensions>16</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -651,10 +651,9 @@ Home</a>
 (part two)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -874,35 +873,34 @@ Home</a>
 
 </div>
 
-<p>
 <!--
-......     section Exercises on Chapter <a href=Application-extension-Black-Scholes-model.html#c:bs_extensions>16</a> ......
+...... section Exercises on Chapter <a href=Application-extension-Black-Scholes-model.html#c:bs_extensions>16</a> ......
 -->
 <h4 id="autosec-168"><span class="sectionnumber">16.4&#x2003;</span>Exercises on Chapter <a href="Application-extension-Black-Scholes-model.html#c:bs_extensions">16</a></h4>
 <a id="notes_2-autopage-168"></a>
 <a id="notes_2-autofile-29"></a>
 <!--
-......   subsection On parity relations ......
+...... subsection On parity relations ......
 -->
 <h5 id="autosec-169">On parity relations</h5>
 <a id="notes_2-autopage-169"></a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>16.1</b> <a id="ps:put-call"></a>
+<span class="listmarker"><b>16.1</b></span> <a id="ps:put-call"></a>
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Draw graphs of the functions \(\Phi ^{cash}(S_T)\), \(\Phi ^{stock}(S_T)\), \(\Phi ^{call}(S_T)\) and \(\Phi ^{put}(S_T)\) defined in Section <a
-href="Application-extension-Black-Scholes-model.html#s:transaction_costs">16.1</a>, as functions of \(S_T\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Draw graphs of the functions \(\Phi ^{cash}(S_T)\), \(\Phi ^{stock}(S_T)\), \(\Phi ^{call}(S_T)\) and \(\Phi
+^{put}(S_T)\) defined in Section <a href="Application-extension-Black-Scholes-model.html#s:transaction_costs">16.1</a>, as functions of \(S_T\).
 </p>
 
 
@@ -911,7 +909,8 @@ href="Application-extension-Black-Scholes-model.html#s:transaction_costs">16.1</
 
 
 <p>
-<span class="textnormal">(b)</span> Verify that the put-call parity relation <span class="textup">(<a href="Application-extension-Black-Scholes-model.html#eq:put-call">16.1</a>)</span> holds.
+<span class="listmarker"><span class="textnormal">(b)</span></span> Verify that the put-call parity relation <span class="textup">(<a
+href="Application-extension-Black-Scholes-model.html#eq:put-call">16.1</a>)</span> holds.
 </p>
 </li>
 </ul>
@@ -920,50 +919,53 @@ href="Application-extension-Black-Scholes-model.html#s:transaction_costs">16.1</
 
 
 <p>
-<b>16.2</b> <a id="ps:put_price"></a> Use the put-call parity relation to show that the price at time \(0\) of a European put option with strike price \(K\) and exercise date \(T\) is given by \(Ke^{-rT}\mc
-{N}(-d_2)-S_0\mc {N}(-d_1)\), where \(d_1\) and \(d_2\) are from <span class="textup">(<a href="The-Black-Scholes-formula.html#eq:bs_formula">15.23</a>)</span>.
+<span class="listmarker"><b>16.2</b></span> <a id="ps:put_price"></a> Use the put-call parity relation to show that the price at time \(0\) of a European put option with strike price \(K\) and exercise
+date \(T\) is given by \(Ke^{-rT}\mc {N}(-d_2)-S_0\mc {N}(-d_1)\), where \(d_1\) and \(d_2\) are from <span class="textup">(<a
+href="The-Black-Scholes-formula.html#eq:bs_formula">15.23</a>)</span>.
 </p>
 </li>
 <li>
 
 
 <p>
-<b>16.3</b> <a id="ps:parity_0"></a> Write down a constant portfolio, which may consist of cash, stock and/or European call and put options, that would replicate the contingent claim
+<span class="listmarker"><b>16.3</b></span> <a id="ps:parity_0"></a> Write down a constant portfolio, which may consist of cash, stock and/or European call and put options, that would replicate the
+contingent claim
 </p>
 <p>
-\[ \begin {cases} S_T-1 &amp; \text { if }S_T&gt;1,\\ 0 &amp; \text { if }S_T\in [-1,1]\\ -1-S_T &amp; \text { if }S_T&lt;-1.                       \end {cases} \]
+\[ \begin {cases} S_T-1 &amp; \text { if }S_T&gt;1,\\ 0 &amp; \text { if }S_T\in [-1,1]\\ -1-S_T &amp; \text { if }S_T&lt;-1. \end {cases} \]
 </p>
 </li>
 <li>
 
 
 <p>
-<b>16.4</b> <a id="ps:parity_1"></a> Let \(A\geq 0\) and \(K\geq 0\) be deterministic constants. Consider the contingent claim, with exercise date \(T\),
+<span class="listmarker"><b>16.4</b></span> <a id="ps:parity_1"></a> Let \(A\geq 0\) and \(K\geq 0\) be deterministic constants. Consider the contingent claim, with exercise date \(T\),
 </p>
 <p>
 \[\Phi (S_T)= \begin {cases} K &amp; \text { if }S_T\leq A,\\ K+A-S_T &amp; \text { if }A\leq S_T\leq K+A,\\ 0 &amp; \text { if }K+A&lt;S_T. \end {cases} \]
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Sketch (for general \(A\geq 0\)) a graph of \(\Phi (S_T)\) as a function of \(S_T\). Find a constant portfolio consisting of European put options, with exercise dates and
-strike prices of your choice, that replicates \(\Phi (S_T)\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Sketch (for general \(A\geq 0\)) a graph of \(\Phi (S_T)\) as a function of \(S_T\). Find a constant portfolio consisting of
+European put options, with exercise dates and strike prices of your choice, that replicates \(\Phi (S_T)\).
 </p>
 </li>
 <li>
 
 
 <p>
-<span class="textnormal">(b)</span> Find a constant portfolio consisting of cash, stock, and European call options (with exercise dates and strike prices of your choice) that replicates \(\Phi (S_T)\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Find a constant portfolio consisting of cash, stock, and European call options (with exercise dates and strike prices of your choice)
+that replicates \(\Phi (S_T)\).
 </p>
 </li>
 <li>
 
 
 <p>
-<span class="textnormal">(c)</span> In parts (a) and (b) we found two different replicating portfolios for \(\Phi (S_T)\). However Corollary <a
+<span class="listmarker"><span class="textnormal">(c)</span></span> In parts (a) and (b) we found two different replicating portfolios for \(\Phi (S_T)\). However Corollary <a
 href="The-Black-Scholes-equation.html#cor:repl_uniq">15.3.3</a> claimed that ‘replicating portfolios are unique’. Why is this not a contradiction?
 </p>
 </li>
@@ -973,7 +975,7 @@ href="The-Black-Scholes-equation.html#cor:repl_uniq">15.3.3</a> claimed that ‘
 
 
 <p>
-<b>16.5</b> <a id="ps:parity_2"></a> Let \(A\) and \(B\) be deterministic constants with \(A&lt;B\). Consider the contingent claim
+<span class="listmarker"><b>16.5</b></span> <a id="ps:parity_2"></a> Let \(A\) and \(B\) be deterministic constants with \(A&lt;B\). Consider the contingent claim
 </p>
 <p>
 \[ \Phi ^{bull}(S_T)= \begin {cases} B &amp; \text { if }S_T&gt;B,\\ S_T &amp; \text { if }A\leq S_T\leq B,\\ A &amp; \text { if }S_T&lt;A. \end {cases} \]
@@ -984,34 +986,36 @@ This is known as a ‘bull spread’. Find a constant portfolio consisting of ca
 </li>
 </ul>
 <!--
-......   subsection On the Greeks and delta/gamma hedging ......
+...... subsection On the Greeks and delta/gamma hedging ......
 -->
 <h5 id="autosec-170">On the Greeks and delta/gamma hedging</h5>
 <a id="notes_2-autopage-170"></a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>16.9</b> <a id="ps:greeks"></a> Let \(\beta &gt;2\). Find the values of all the Greeks, at time \(t\in [0,T]\), for the derivative with contingent claim \(\Phi (S_T)=S_T^\beta \). (<i>Hint: You will
-need part (b) of <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.4</b></a>.</i>)
+<span class="listmarker"><b>16.9</b></span> <a id="ps:greeks"></a> Let \(\beta &gt;2\). Find the values of all the Greeks, at time \(t\in [0,T]\), for the derivative with contingent claim \(\Phi
+(S_T)=S_T^\beta \). (<i>Hint: You will need part (b) of <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.4</b></a>.</i>)
 </p>
 </li>
 <li>
 
 
 <p>
-<b>16.10</b> <a id="ps:delta_gamma_hedge"></a> At time \(t\) you hold a portfolio \(h\) with value \(F(t,S_t)\), for which (at time \(t\)) \(\Delta _F=2\) and \(\Gamma _F=3\).
+<span class="listmarker"><b>16.10</b></span> <a id="ps:delta_gamma_hedge"></a> At time \(t\) you hold a portfolio \(h\) with value \(F(t,S_t)\), for which (at time \(t\)) \(\Delta _F=2\) and
+\(\Gamma _F=3\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> You want to make this portfolio delta neutral by adding a quantity of the underlying stock \(S_t\). How much should you add? What is the cost of doing so?
+<span class="listmarker"><span class="textnormal">(a)</span></span> You want to make this portfolio delta neutral by adding a quantity of the underlying stock \(S_t\). How much should you add?
+What is the cost of doing so?
 </p>
 
 
@@ -1020,8 +1024,8 @@ need part (b) of <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta
 
 
 <p>
-<span class="textnormal">(b)</span> You want to make this portfolio both delta and gamma neutral, by adding a combination of the underlying stock \(S_t\) as well a second financial derivative with value
-\(D(t,S_t)\), for which \(\Delta _D=1\) and \(\Gamma _D=2\). How much of each should you add? What is the cost of doing so?
+<span class="listmarker"><span class="textnormal">(b)</span></span> You want to make this portfolio both delta and gamma neutral, by adding a combination of the underlying stock \(S_t\) as well a
+second financial derivative with value \(D(t,S_t)\), for which \(\Delta _D=1\) and \(\Gamma _D=2\). How much of each should you add? What is the cost of doing so?
 </p>
 </li>
 </ul>
@@ -1030,15 +1034,15 @@ need part (b) of <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta
 
 
 <p>
-<b>16.11</b> <a id="ps:gamma_stock"></a> Consider trying to gamma hedge a portfolio with value \(F(t,S_t)\), by adding in an amount \(w_t\) of a financial derivative with value \(W(t,S_t)\) and an
-amount \(z_t\) of a financial derivative with value \(Z(t,S_t)\).
+<span class="listmarker"><b>16.11</b></span> <a id="ps:gamma_stock"></a> Consider trying to gamma hedge a portfolio with value \(F(t,S_t)\), by adding in an amount \(w_t\) of a financial derivative
+with value \(W(t,S_t)\) and an amount \(z_t\) of a financial derivative with value \(Z(t,S_t)\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> An excitable mathematician suggests the following idea:
+<span class="listmarker"><span class="textnormal">(a)</span></span> An excitable mathematician suggests the following idea:
 </p>
 <blockquote>
 <p>
@@ -1056,7 +1060,7 @@ Why does this idea not work?
 
 
 <p>
-<span class="textnormal">(b)</span> Consider the case in which \(Z(t,S_t)=S_t\). In this case, solve the equations <span class="textup">(<a
+<span class="listmarker"><span class="textnormal">(b)</span></span> Consider the case in which \(Z(t,S_t)=S_t\). In this case, solve the equations <span class="textup">(<a
 href="Delta-Gamma-Hedging.html#eq:gamma_eqs">16.4</a>)</span> to find explicit expressions for \(w_t\) and \(z_t\).
 </p>
 
@@ -1066,7 +1070,7 @@ href="Delta-Gamma-Hedging.html#eq:gamma_eqs">16.4</a>)</span> to find explicit e
 
 
 <p>
-<span class="textnormal">(c)</span> Does the following idea work? Explain why, or why not.
+<span class="listmarker"><span class="textnormal">(c)</span></span> Does the following idea work? Explain why, or why not.
 </p>
 <blockquote>
 <p>
@@ -1078,20 +1082,20 @@ href="Delta-Gamma-Hedging.html#eq:gamma_eqs">16.4</a>)</span> to find explicit e
 </li>
 </ul>
 <!--
-......    subsection Challenge Questions ......
+...... subsection Challenge Questions ......
 -->
 <h5 id="autosec-173">Challenge Questions</h5>
 <a id="notes_2-autopage-173"></a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>16.12</b> <a id="ps:greeks_call"></a> Use the Black-Scholes formula <span class="textup">(<a href="The-Black-Scholes-formula.html#eq:bs_formula">15.23</a>)</span> to verify that, in the
-case of a European call option with strike price \(K\) and exercise date \(T\), the Greeks are given by
+<span class="listmarker"><b>16.12</b></span> <a id="ps:greeks_call"></a> Use the Black-Scholes formula <span class="textup">(<a
+href="The-Black-Scholes-formula.html#eq:bs_formula">15.23</a>)</span> to verify that, in the case of a European call option with strike price \(K\) and exercise date \(T\), the Greeks are given by
 </p>
 <p>
 \[\Delta =\mc {N}(d_1),\hspace {5pc} \Gamma =\frac {\phi (d_1)}{s\delta \sqrt {T-t}},\]
@@ -1117,7 +1121,7 @@ Use the put-call parity relation to find the values of the Greeks in the case of
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

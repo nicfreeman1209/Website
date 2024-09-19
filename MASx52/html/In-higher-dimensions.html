@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — In higher dimensions </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,13 +901,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section In higher dimensions         ......
 -->
-<h4 id="autosec-294"><span class="sectionnumber">9.5&#x2003;</span>In higher dimensions \((\star )\)</h4>
+<h4 id="autosec-294"><span class="sectionnumber">9.5&#x2003;</span>In higher dimensions \(\offsyl \)</h4>
 <a id="notes_1-autopage-294"></a>
-<a id="notes_1-autofile-46"></a> <a id="s:rw_2d_3d"></a>
+<a id="notes_1-autofile-46"></a>
+
+<a id="s:rw_2d_3d"></a>
 
 <p>
 We will look briefly at the behaviour of simple symmetric random walks in higher dimensions. This section is off-syllabus and is included for interest. In particular, we will consider versions of Lemma <a
@@ -926,14 +926,15 @@ Let \(R=\inf \{n\geq 1\-S_n=\v {0}\}\) denote the time taken to return to the or
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-224"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.5.1</span> <a id="autoid-225" ></a ><a id="l:rw_return_time_d_2"></a> If \(d=2\) then \(\P [R&lt;\infty ]=1\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.5.1</span></span> <a id="autoid-225" ></a ><a id="l:rw_return_time_d_2"></a> If \(d=2\) then \(\P [R&lt;\infty
+]=1\).
 </p>
 
 
@@ -1012,14 +1013,15 @@ walk still manages to return. The picture changes if we move to three dimensions
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-226"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.5.2</span> <a id="autoid-227" ></a ><a id="l:rw_return_time_d_3"></a> If \(d=3\) then \(\P [R&lt;\infty ]&lt;1\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.5.2</span></span> <a id="autoid-227" ></a ><a id="l:rw_return_time_d_3"></a> If \(d=3\) then \(\P [R&lt;\infty
+]&lt;1\).
 </p>
 
 
@@ -1042,23 +1044,23 @@ class="textup">(<a href="In-higher-dimensions.html#eq:rw_return_time_d_2_eq_1">9
 <!--
 
 
-                                                                                             X          (2n)!
-                                                                      P[S2n = (0, 0, 0)] =                          6−2n
-                                                                                                  (i!)2 (j!)2 (k!)2
-                                                                                          i+j+k=n
-
-                                                                                                                    n! −n 2
-                                                                                                                        
-                                                                                            2n −2n X
-                                                                                        =       2                        3
-                                                                                             n                    i!j!k!
-                                                                                                     i+j+k=n
-                                                                                                                                              
-                                                                                                                        
-                                                                                            2n −2n                  n! −n  X            n! −n 
-                                                                                        ≤       2         max            3                    3  .
-                                                                                             n          i+j+k=n i!j!k!                 i!j!k!
-                                                                                                                             i+j+k=n
+                                                                                                 X          (2n)!
+                                                                      P[S2n = (0, 0, 0)] =                                 6−2n
+                                                                                                       (i!)2 (j!)2 (k!)2
+                                                                                             i+j+k=n
+                                                                                                                                 2
+                                                                                                 2n −2n       X            n! −n
+                                                                                        =             2                         3
+                                                                                                  n                      i!j!k!
+                                                                                                          i+j+k=n
+                                                                                                                                                          
+                                                                                                                                 
+                                                                                                 2n −2n                    n!                        n! −n 
+                                                                                                               max
+                                                                                                                                            X
+                                                                                        ≤           2                           3−n                      3  .
+                                                                                                  n           i+j+k=n i!j!k!                       i!j!k!
+                                                                                                                                         i+j+k=n
 
 
 
@@ -1114,7 +1116,7 @@ i.e.&nbsp;\(|S_n|\stackrel {a.s.}{\to }\infty \). This is left for you to prove,
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

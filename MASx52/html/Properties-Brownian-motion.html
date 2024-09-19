@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Properties of Brownian motion</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -651,10 +651,9 @@ Home</a>
 (part two)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -874,9 +873,8 @@ Home</a>
 
 </div>
 
-<p>
 <!--
-......     section Properties of Brownian motion ......
+...... section Properties of Brownian motion ......
 -->
 <h4 id="autosec-32"><span class="sectionnumber">11.4&#x2003;</span>Properties of Brownian motion</h4>
 <a id="notes_2-autopage-32"></a>
@@ -886,7 +884,7 @@ Home</a>
 We now examine some of the more detailed properties of Brownian motion. Recall that \(B_t\) denotes a standard Brownian motion.
 </p>
 <!--
-......   subsubsection Symmetry ......
+...... subsubsection Symmetry ......
 -->
 <h6 id="autosec-33">Symmetry</h6>
 <a id="notes_2-autopage-33"></a>
@@ -898,14 +896,15 @@ The normal distribution \(Z\sim N(0,\sigma ^2)\) is symmetric about \(0\), in th
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-21"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 11.4.1</span> <a id="autoid-22" ></a ><a id="l:bm_sym"></a> The stochastic process \(W_t=-B_t\) is a standard Brownian motion.
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 11.4.1</span></span> <a id="autoid-22" ></a ><a id="l:bm_sym"></a> The stochastic process \(W_t=-B_t\) is a standard
+Brownian motion.
 </p>
 
 
@@ -916,8 +915,8 @@ The normal distribution \(Z\sim N(0,\sigma ^2)\) is symmetric about \(0\), in th
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We must check that \(W_t=-B_t\) satisfies the three defining properties of Brownian motion.
-By the first property, \(B_t\) is almost surely continuous, hence \(-B_t\) is also almost surely continuous. Also, for \(0\leq u\leq t\) we have
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> We must check that \(W_t=-B_t\) satisfies the three defining properties of Brownian motion. By
+the first property, \(B_t\) is almost surely continuous, hence \(-B_t\) is also almost surely continuous. Also, for \(0\leq u\leq t\) we have
 </p>
 
 <p>
@@ -954,7 +953,7 @@ Lemma <a href="Properties-Brownian-motion.html#l:bm_sym">11.4.1</a> is often ref
 results in another Brownian motion. It turns out that Brownian motion has many self-symmetries, and they are very important to the theory of Brownian motion.
 </p>
 <!--
-......   subsubsection Non-differentiability ......
+...... subsubsection Non-differentiability ......
 -->
 <h6 id="autosec-35">Non-differentiability</h6>
 <a id="notes_2-autopage-35"></a>
@@ -967,15 +966,15 @@ motion are not differentiable!
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-23"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 11.4.2</span> <a id="autoid-24" ></a ><a id="l:bm_non_diff"></a> Let \(t\in [0,\infty )\). Almost surely, the function \(t\mapsto B_t\) is not
-differentiable at \(t\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 11.4.2</span></span> <a id="autoid-24" ></a ><a id="l:bm_non_diff"></a> Let \(t\in [0,\infty )\). Almost surely, the
+function \(t\mapsto B_t\) is not differentiable at \(t\).
 </p>
 
 
@@ -986,7 +985,7 @@ differentiable at \(t\).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Using the second property of Brownian motion, and the scaling properties of normal random
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Using the second property of Brownian motion, and the scaling properties of normal random
 variables,
 </p>
 
@@ -1003,14 +1002,12 @@ where \(X\sim N(0,1)\). Note that \(X\) is positive half the time and negative h
 <!--
 
                                                              
-                                                                      with probability 1/2,
+                                                             ∞       with probability 1/2,
                                                              
-                                               X a.s.        ∞
-                                                             
-                                               √ → X∞ =                                                                                   (11.6)                               --><a id="eq:limXsqrth"></a><!--
-                                                h       −∞
-                                                        
-                                                                     with probability 1/2.
+                                              X a.s.
+                                              √ → X∞ =                                                                                    (11.6)                               --><a id="eq:limXsqrth"></a><!--
+                                               h       −∞            with probability 1/2.
+                                                       
 
 -->
 
@@ -1019,7 +1016,7 @@ where \(X\sim N(0,1)\). Note that \(X\) is positive half the time and negative h
 
 \begin{equation}
 \label {eq:limXsqrth} \frac {X}{\sqrt {h}}\stackrel {a.s.}{\to } X_\infty = \begin{cases} \infty &amp; \text { with probability }1/2, \\ -\infty &amp; \text { with probability
-}1/2.    \end {cases}
+}1/2. \end {cases}
 \end{equation}
 
 
@@ -1041,7 +1038,7 @@ Pure mathematicians discovered functions that were nowhere differentiable at aro
 importance in the ‘real’ world. A few decades later, the discovery that Brownian motion played a key role in physics, biology and mathematical finance had reversed this viewpoint.
 </p>
 <!--
-......    subsubsection Relationship to martingales ......
+...... subsubsection Relationship to martingales ......
 -->
 <h6 id="autosec-37">Relationship to martingales</h6>
 <a id="notes_2-autopage-37"></a>
@@ -1054,14 +1051,14 @@ others in later sections of the course.
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-25"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 11.4.3</span> <a id="autoid-26" ></a ><a id="l:bm_mart"></a> Brownian motion is a martingale.
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 11.4.3</span></span> <a id="autoid-26" ></a ><a id="l:bm_mart"></a> Brownian motion is a martingale.
 </p>
 
 
@@ -1072,7 +1069,7 @@ others in later sections of the course.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> It is enough to look at the case \((B_t)\) of standard Brownian motion, since adding and
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> It is enough to look at the case \((B_t)\) of standard Brownian motion, since adding and
 subtracting a deterministic constant does not change if a process is a martingale.
 </p>
 
@@ -1110,14 +1107,14 @@ Here, we use the properties of Brownian motion: \(B_t-B_s\) is independent of \(
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-27"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 11.4.4</span> <a id="autoid-28" ></a ><a id="l:bm2_mart"></a> \(B_t^2-t\) is a martingale
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 11.4.4</span></span> <a id="autoid-28" ></a ><a id="l:bm2_mart"></a> \(B_t^2-t\) is a martingale
 </p>
 
 
@@ -1128,7 +1125,7 @@ Here, we use the properties of Brownian motion: \(B_t-B_s\) is independent of \(
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Since \(B_t\sim N(0,t)\) we have \(\var (B_t)&lt;\infty \), which implies \(B^2_t\in
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Since \(B_t\sim N(0,t)\) we have \(\var (B_t)&lt;\infty \), which implies \(B^2_t\in
 L^1\). Hence also \(B_t^2-t\in L^1\). Since \(B_t^2-t\) is a deterministic function of \(B_t\), we have that \(B_t^2-t\) is adapted to the generated filtration of \(B_t\). Lastly, for \(0\leq u\leq t\),
 </p>
 <span class="hidden"> \(\seteqnumber{0}{11.}{6}\)</span>
@@ -1139,15 +1136,15 @@ L^1\). Hence also \(B_t^2-t\in L^1\). Since \(B_t^2-t\) is a deterministic funct
 
 
 
-                                                                              E[Bt2 − t | Fu ] = E[(Bt − Bu )2 + 2Bt Bu − Bu2 | Fu ] − t
+                                                                           E[Bt2 − t | Fu ] = E[(Bt − Bu )2 + 2Bt Bu − Bu2 | Fu ] − t
 
-                                                                                             = E[(Bt − Bu )2 | Fu ] + 2Bu E[Bt | Fu ] − Bu2 − t
+                                                                                          = E[(Bt − Bu )2 | Fu ] + 2Bu E[Bt | Fu ] − Bu2 − t
 
-                                                                                             = E[(Bt − Bu )2 ] + 2Bu2 − Bu2 − t
+                                                                                          = E[(Bt − Bu )2 ] + 2Bu2 − Bu2 − t
 
-                                                                                             = (t − u) + Bu2 − t
+                                                                                          = (t − u) + Bu2 − t
 
-                                                                                             = Bu2 − u
+                                                                                          = Bu2 − u
 
 
 
@@ -1175,7 +1172,7 @@ as required. Here we use that \(B_t-B_u\) is independent of \(\mc {F}_u\), along
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

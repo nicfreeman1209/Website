@@ -1,0 +1,3948 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, September 19, 2024." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MAS364/61006 — Solutions to exercises</title>
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
+
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
+
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
+         },
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
+}
+</script>
+
+<script
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J4222H8D03');
+</script>
+<!-- Google tag (gtag.js) -->
+
+
+</head>
+<body>
+
+
+
+<a id="notes-autopage-280"></a>
+<nav class="topnavigation"><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 19, 2024
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
+
+
+
+<nav class="sidetoc">
+
+
+
+<div class="sidetoctitle">
+
+<p>
+<span class="sidetocthetitle">Bayesian Statistics</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents">
+
+<p>
+<a href="notes.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber">0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Outline-course.html#autosec-13" class="tocsection" >
+<span class="sectionnumber">0.2</span>&#x2003;Outline of the course</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning.html#autosec-15" class="tocchapter" >
+<span class="sectionnumber">1</span>&#x2003;Conditioning</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning.html#autosec-16" class="tocsection" >
+<span class="sectionnumber">1.1</span>&#x2003;Random variables</a>
+</p>
+
+
+
+<p>
+<a href="Equality-in-distribution.html#autosec-21" class="tocsection" >
+<span class="sectionnumber">1.2</span>&#x2003;Equality in distribution</a>
+</p>
+
+
+
+<p>
+<a href="Families-random-variables.html#autosec-31" class="tocsection" >
+<span class="sectionnumber">1.3</span>&#x2003;Families of random variables</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-on-location.html#autosec-35" class="tocsection" >
+<span class="sectionnumber">1.4</span>&#x2003;Conditioning on location</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-correlations.html#autosec-43" class="tocsection" >
+<span class="sectionnumber">1.5</span>&#x2003;Conditioning and correlations</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-on-events-with-zero-probability.html#autosec-50" class="tocsection" >
+<span class="sectionnumber">1.6</span>&#x2003;Conditioning on events with zero probability</a>
+</p>
+
+
+
+<p>
+<a href="Families-with-random-parameters.html#autosec-57" class="tocsection" >
+<span class="sectionnumber">1.7</span>&#x2003;Families with random parameters</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-conditioning.html#autosec-60" class="tocsection" >
+<span class="sectionnumber">1.8</span>&#x2003;Exercises on Chapter 1</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-discrete-data.html#autosec-65" class="tocchapter" >
+<span class="sectionnumber">2</span>&#x2003;Bayesian models: discrete data</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-discrete-data.html#autosec-66" class="tocsection" >
+<span class="sectionnumber">2.1</span>&#x2003;Models with random parameters</a>
+</p>
+
+
+
+<p>
+<a href="Discrete-Bayesian-models.html#autosec-70" class="tocsection" >
+<span class="sectionnumber">2.2</span>&#x2003;Discrete Bayesian models</a>
+</p>
+
+
+
+<p>
+<a href="The-posterior-distribution.html#autosec-75" class="tocsection" >
+<span class="sectionnumber">2.3</span>&#x2003;The posterior distribution</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-updates.html#autosec-83" class="tocsection" >
+<span class="sectionnumber">2.4</span>&#x2003;Bayesian updates</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#autosec-87" class="tocsection" >
+<span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-continuous-data.html#autosec-90" class="tocchapter" >
+<span class="sectionnumber">3</span>&#x2003;Bayesian models: continuous data</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-continuous-data.html#autosec-91" class="tocsection" >
+<span class="sectionnumber">3.1</span>&#x2003;Continuous Bayesian models</a>
+</p>
+
+
+
+<p>
+<a href="Notation-independent-data.html#autosec-97" class="tocsection" >
+<span class="sectionnumber">3.2</span>&#x2003;Notation: independent data</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#autosec-107" class="tocsection" >
+<span class="sectionnumber">3.3</span>&#x2003;Exercises on Chapter 3</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-priors.html#autosec-110" class="tocchapter" >
+<span class="sectionnumber">4</span>&#x2003;Conjugate priors</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-priors.html#autosec-112" class="tocsection" >
+<span class="sectionnumber">4.1</span>&#x2003;Notation: proportionality</a>
+</p>
+
+
+
+<p>
+<a href="Two-more-examples-conjugate-pairs.html#autosec-122" class="tocsection" >
+<span class="sectionnumber">4.2</span>&#x2003;Two more examples of conjugate pairs</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-pairs-exponential-family.html#autosec-132" class="tocsection" >
+<span class="sectionnumber">4.3</span>&#x2003;Conjugate pairs and the exponential family \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="What-if.html#autosec-137" class="tocsection" >
+<span class="sectionnumber">4.4</span>&#x2003;What if?</a>
+</p>
+
+
+
+<p>
+<a href="The-normal-distribution-with-unknown-mean-variance.html#autosec-150" class="tocsection" >
+<span class="sectionnumber">4.5</span>&#x2003;The normal distribution with unknown mean and variance</a>
+</p>
+
+
+
+<p>
+<a href="The-limitations-conjugate-pairs.html#autosec-158" class="tocsection" >
+<span class="sectionnumber">4.6</span>&#x2003;The limitations of conjugate pairs</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#autosec-160" class="tocsection" >
+<span class="sectionnumber">4.7</span>&#x2003;Exercises on Chapter 4</a>
+</p>
+
+
+
+<p>
+<a href="The-prior.html#autosec-163" class="tocchapter" >
+<span class="sectionnumber">5</span>&#x2003;The prior</a>
+</p>
+
+
+
+<p>
+<a href="The-prior.html#autosec-164" class="tocsection" >
+<span class="sectionnumber">5.1</span>&#x2003;Elicitation</a>
+</p>
+
+
+
+<p>
+<a href="Uninformative-priors.html#autosec-172" class="tocsection" >
+<span class="sectionnumber">5.2</span>&#x2003;Uninformative priors</a>
+</p>
+
+
+
+<p>
+<a href="Reference-priors.html#autosec-180" class="tocsection" >
+<span class="sectionnumber">5.3</span>&#x2003;Reference priors</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-prior.html#autosec-186" class="tocsection" >
+<span class="sectionnumber">5.4</span>&#x2003;Exercises on Chapter 5</a>
+</p>
+
+
+
+<p>
+<a href="Discussion.html#autosec-189" class="tocchapter" >
+<span class="sectionnumber">6</span>&#x2003;Discussion</a>
+</p>
+
+
+
+<p>
+<a href="Discussion.html#autosec-190" class="tocsection" >
+<span class="sectionnumber">6.1</span>&#x2003;Bayesian shorthand notation</a>
+</p>
+
+
+
+<p>
+<a href="The-connection-maximum-likelihood.html#autosec-195" class="tocsection" >
+<span class="sectionnumber">6.2</span>&#x2003;The connection to maximum likelihood</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-discussion.html#autosec-202" class="tocsection" >
+<span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
+</p>
+
+
+
+<p>
+<a href="Testing-parameter-estimation.html#autosec-205" class="tocchapter" >
+<span class="sectionnumber">7</span>&#x2003;Testing and parameter estimation</a>
+</p>
+
+
+
+<p>
+<a href="Testing-parameter-estimation.html#autosec-206" class="tocsection" >
+<span class="sectionnumber">7.1</span>&#x2003;Hypothesis testing</a>
+</p>
+
+
+
+<p>
+<a href="High-posterior-density-regions.html#autosec-214" class="tocsection" >
+<span class="sectionnumber">7.2</span>&#x2003;High posterior density regions</a>
+</p>
+
+
+
+<p>
+<a href="Point-estimates.html#autosec-223" class="tocsection" >
+<span class="sectionnumber">7.3</span>&#x2003;Point estimates</a>
+</p>
+
+
+
+<p>
+<a href="Comparison-classical-methods.html#autosec-228" class="tocsection" >
+<span class="sectionnumber">7.4</span>&#x2003;Comparison to classical methods</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-tests.html#autosec-234" class="tocsection" >
+<span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
+</p>
+
+
+
+<p>
+<a href="Computational-methods.html#autosec-237" class="tocchapter" >
+<span class="sectionnumber">8</span>&#x2003;Computational methods</a>
+</p>
+
+
+
+<p>
+<a href="Computational-methods.html#autosec-238" class="tocsection" >
+<span class="sectionnumber">8.1</span>&#x2003;Approximate Bayesian computation \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Metropolis-Hastings.html#autosec-241" class="tocsection" >
+<span class="sectionnumber">8.2</span>&#x2003;Metropolis-Hastings</a>
+</p>
+
+
+
+<p>
+<a href="Markov-chain-Monte-Carlo.html#autosec-255" class="tocsection" >
+<span class="sectionnumber">8.3</span>&#x2003;Markov chain Monte Carlo</a>
+</p>
+
+
+
+<p>
+<a href="Gibbs-sampling.html#autosec-260" class="tocsection" >
+<span class="sectionnumber">8.4</span>&#x2003;Gibbs sampling</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-computational.html#autosec-267" class="tocsection" >
+<span class="sectionnumber">8.5</span>&#x2003;Exercises on Chapter 8</a>
+</p>
+
+
+
+<p>
+<a href="Reference-Sheets.html#autosec-269" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Reference Sheets</a>
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-277" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-281" class="tocchapter" >
+<span class="sectionnumber">C</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<main class="bodycontainer">
+
+
+
+<section class="textbody">
+
+<h1>Bayesian Statistics</h1>
+
+<!--MathJax customizations:-->
+<div data-nosnippet
+      style="display:none"
+>
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
+
+\(\require {colortbl}\)
+
+\(\let \LWRorigcolumncolor \columncolor \)
+
+\(\renewcommand {\columncolor }[2][named]{\LWRorigcolumncolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\let \LWRorigrowcolor \rowcolor \)
+
+\(\renewcommand {\rowcolor }[2][named]{\LWRorigrowcolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\let \LWRorigcellcolor \cellcolor \)
+
+\(\renewcommand {\cellcolor }[2][named]{\LWRorigcellcolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\require {mathtools}\)
+
+\(\newenvironment {crampedsubarray}[1]{}{}\)
+
+\(\newcommand {\smashoperator }[2][]{#2\limits }\)
+
+\(\newcommand {\SwapAboveDisplaySkip }{}\)
+
+\(\newcommand {\LaTeXunderbrace }[1]{\underbrace {#1}}\)
+
+\(\newcommand {\LaTeXoverbrace }[1]{\overbrace {#1}}\)
+
+\(\newcommand {\LWRmultlined }[1][]{\begin {multline*}}\)
+
+\(\newenvironment {multlined}[1][]{\LWRmultlined }{\end {multline*}}\)
+
+\(\let \LWRorigshoveleft \shoveleft \)
+
+\(\renewcommand {\shoveleft }[1][]{\LWRorigshoveleft }\)
+
+\(\let \LWRorigshoveright \shoveright \)
+
+\(\renewcommand {\shoveright }[1][]{\LWRorigshoveright }\)
+
+\(\newcommand {\shortintertext }[1]{\text {#1}\notag \\}\)
+
+\(\newcommand {\vcentcolon }{\mathrel {\unicode {x2236}}}\)
+
+\(\renewcommand {\intertext }[2][]{\text {#2}\notag \\}\)
+
+\(\newenvironment {fleqn}[1][]{}{}\)
+
+\(\newenvironment {ceqn}{}{}\)
+
+\(\newenvironment {darray}[2][c]{\begin {array}[#1]{#2}}{\end {array}}\)
+
+\(\newcommand {\dmulticolumn }[3]{#3}\)
+
+\(\newcommand {\LWRnrnostar }[1][0.5ex]{\\[#1]}\)
+
+\(\newcommand {\nr }{\ifstar \LWRnrnostar \LWRnrnostar }\)
+
+\(\newcommand {\mrel }[1]{\begin {aligned}#1\end {aligned}}\)
+
+\(\newcommand {\underrel }[2]{\underset {#2}{#1}}\)
+
+\(\newcommand {\medmath }[1]{#1}\)
+
+\(\newcommand {\medop }[1]{#1}\)
+
+\(\newcommand {\medint }[1]{#1}\)
+
+\(\newcommand {\medintcorr }[1]{#1}\)
+
+\(\newcommand {\mfrac }[2]{\frac {#1}{#2}}\)
+
+\(\newcommand {\mbinom }[2]{\binom {#1}{#2}}\)
+
+\(\newenvironment {mmatrix}{\begin {matrix}}{\end {matrix}}\)
+
+\(\newcommand {\displaybreak }[1][]{}\)
+
+\( \def \offsyl {(\oslash )} \def \msconly {(\Delta )} \)
+
+\( \DeclareMathOperator {\var }{var} \DeclareMathOperator {\cov }{cov} \DeclareMathOperator {\Bin }{Bin} \DeclareMathOperator {\Geo }{Geometric} \DeclareMathOperator {\Beta
+}{Beta} \DeclareMathOperator {\Unif }{Uniform} \DeclareMathOperator {\Gam }{Gamma} \DeclareMathOperator {\Normal }{N} \DeclareMathOperator {\Exp }{Exp} \DeclareMathOperator
+{\Cauchy }{Cauchy} \DeclareMathOperator {\Bern }{Bernoulli} \DeclareMathOperator {\Poisson }{Poisson} \DeclareMathOperator {\Weibull }{Weibull} \DeclareMathOperator {\IGam
+}{IGamma} \DeclareMathOperator {\NGam }{NGamma} \DeclareMathOperator {\ChiSquared }{ChiSquared} \DeclareMathOperator {\Pareto }{Pareto} \DeclareMathOperator {\NBin }{NegBin}
+\DeclareMathOperator {\Studentt }{Student-t} \DeclareMathOperator *{\argmax }{arg\,max} \DeclareMathOperator *{\argmin }{arg\,min} \)
+
+\( \def \to {\rightarrow } \def \iff {\Leftrightarrow } \def \ra {\Rightarrow } \def \sw {\subseteq } \def \mc {\mathcal } \def \mb {\mathbb } \def \sc {\setminus } \def \wt
+{\widetilde } \def \v {\textbf } \def \E {\mb {E}} \def \P {\mb {P}} \def \R {\mb {R}} \def \C {\mb {C}} \def \N {\mb {N}} \def \Q {\mb {Q}} \def \Z {\mb {Z}} \def \B {\mb {B}}
+\def \~{\sim } \def \-{\,;\,} \def \qed {$\blacksquare $} \def \1{\mathbbm {1}} \def \cadlag {c\&grave;{a}dl\&grave;{a}g} \def \p {\partial } \def \l {\left } \def \r {\right }
+\def \Om {\Omega } \def \om {\omega } \def \eps {\epsilon } \def \de {\delta } \def \ov {\overline } \def \sr {\stackrel } \def \Lp {\mc {L}^p} \def \Lq {\mc {L}^p} \def \Lone
+{\mc {L}^1} \def \Ltwo {\mc {L}^2} \def \toae {\sr {\rm a.e.}{\to }} \def \toas {\sr {\rm a.s.}{\to }} \def \top {\sr {\mb {\P }}{\to }} \def \tod {\sr {\rm d}{\to }} \def \toLp
+{\sr {\Lp }{\to }} \def \toLq {\sr {\Lq }{\to }} \def \eqae {\sr {\rm a.e.}{=}} \def \eqas {\sr {\rm a.s.}{=}} \def \eqd {\sr {\rm d}{=}} \def \approxd {\sr {\rm d}{\approx }}
+\def \Sa {(S1)\xspace } \def \Sb {(S2)\xspace } \def \Sc {(S3)\xspace } \)
+
+</div>
+
+<!--
+...... chapter Solutions to exercises ......
+-->
+<h3 id="autosec-281">Chapter&nbsp;<span class="sectionnumber">C&#x2003;</span>Solutions to exercises</h3>
+<a id="notes-autopage-281"></a>
+<a id="notes-autofile-45"></a>
+
+<a id="a:solutions"></a>
+<!--
+...... subsection Chapter <a href=Conditioning.html#c:conditioning>1</a> ......
+-->
+<h5 id="autosec-282">Chapter <a href="Conditioning.html#c:conditioning">1</a></h5>
+<a id="notes-autopage-282"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:pdf_pmf_checks"><b>1.1</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> Samples of \(X\) will tend to be in one of three different locations: (1) sharply clustered around \(-7.5\), (2) a broad cluster between
+approximately \([-4,4]\) and (3) close to \(10\), but not greater than \(10\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> We have
+</p>
+<p>
+\[\int _\R f_{X_\theta }(x)\,dx=\int _1^\infty (1+\theta )x^{\theta }\,dx =\l [(1+\theta )\frac {x^{1+\theta }}{1+\theta }\r ]_{x=1}^\infty =1\]
+</p>
+<p>
+as required.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:not_disc_absc"><b>1.2</b></a></span> Neither.
+</p>
+<p>
+To see that \(Z\) is not absolutely continuous: recall that for any absolutely continuous random variable \(Z&apos;\) we have \(\P [Z&apos;=z]=0\) for all \(z&apos;\). However, \(\P [Z=0]=\P [Y=0]+\P
+[Y=1,X=0]=\frac 12+\frac 12(0)=\frac 12\).
+</p>
+<p>
+To see that \(Z\) is not discrete: note that \(Z\) takes values across all of \(\R \), coming from the case where \(Y=1\), which has probability \(\frac 12\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:conditioning_uniform_on_location"><b>1.3</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> \(U&apos;\) has the conditional distribution of \(U\) given the event \(\{U\in [a,b]\}\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> We apply Lemma <a href="Conditioning-on-location.html#l:rv_from_conditioning_pve">1.4.1</a> with \(A=[a,b]\). Part
+1 gives that \(\P [U&apos;\in [a,b]]=1\). Part 2 gives that for all \(B\sw [a,b]\) we have
+</p>
+<p>
+\[\P [U&apos;\in B] =\frac {\P [U\in B]}{\P [U\in A]} =\frac {\int _B \frac {1}{c-a}\,dx}{\int _a^b\frac {1}{c-a}\,dx} =\frac {\int _B \frac {1}{c-a}\,dx}{\frac {b-a}{c-a}} =\int
+_B \frac {1}{b-a}\,dx.\]
+</p>
+<p>
+Hence \(U&apos;\) is an absolutely continuous random variable with p.d.f.
+</p>
+<p>
+\[f_{U&apos;}(u)=\begin {cases} \frac {1}{b-a} &amp; \text { for }x\in [a,b] \\ 0 &amp; \text { otherwise}. \end {cases} \]
+</p>
+<p>
+This is the continuous uniform distribution on \([a,b]\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> We have:
+</p>
+<div class="center">
+<p>
+
+
+<a href="pdf_conditioned_uniforms.png" target="_blank" ><img
+      src="pdf_conditioned_uniforms.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:conditioning_geometric_on_start"><b>1.4</b></a></span> Suppose that \(G\) has the \(\Geo (p)\)
+distribution, that is \(\P [G=g]=p^{g-1}(1-p)\) for \(g\in \{1,\ldots \}\), where \(p\in [0,1]\). Let \(G&apos;\eqd G|_{\{G\geq n\}}\), where \(n\in \N \).
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> We apply Lemma <a href="Conditioning-on-location.html#l:rv_from_conditioning_pve">1.4.1</a> with
+\(A=\{n,n+1,\ldots \}\). From part 1 of the lemma we have \(\P [G&apos;\in \{n,n+1,\ldots ,\}]=1\). From part 2, for \(g\in \{n,n+1,\ldots \}\) we have
+</p>
+<p>
+\[\P [G&apos;=g] =\frac {\P [G=g]}{\P [G\in A]} =\frac {p^{g}(1-p)}{\sum _{k=n}^\infty p^{k}(1-p)} =\frac {p^{g}(1-p)}{(1-p)\sum _{k=n}^\infty p^k} =\frac {p^{g}(1-p)}{(1-p)\frac
+{p^{n}}{1-p}} =p^{g-n}(1-p) \]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> The claim is correct. For \(g\in \{n,n+1,\ldots ,\}\), the \(-n\) term in \(p^{g-n}\) above corresponds to removing the factors
+\(p\) corresponding to success/failure of the first \(n\) trials, from what would otherwise have been \(p^{g}\) in the p.m.f.&nbsp;of \(G\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:rejection_sampling_code"><b>1.5</b></a></span> You should notice that as \(n\) gets larger it takes longer to
+obtain samples, and it quickly becomes impractical to do so as \(n\) grows large. This is because it becomes more likely that samples fall into \((-\infty ,n)\) and are rejected, so it takes longer to find a sample
+that is accepted.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:cond_corr"><b>1.6</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> We have
+</p>
+<p>
+\[ \sum _{y=1}^\infty \sum _{x=1}^\infty 2^{-xy}(1-2^{-y}) =\sum _{y=1}^\infty (1-2^{-y})\sum _{x=1}^\infty (2^{-y})^x =\sum _{y=1}^\infty (1-2^{-y})\frac {2^{-y}}{1-2^{-y}} =\sum
+_{y=1}^\infty 2^{-y}=\frac {1/2}{1-1/2}=1 \]
+</p>
+<p>
+as required. Note that here we use that the summations are geometric sums.
+</p>
+<p>
+The random variables \(X\) and \(Y\) are not independent because <span class="textup">(<a href="Exercises-on-Chapter-ref-c-conditioning.html#eq:cond_corr_ps">1.14</a>)</span> does not
+factorise into the form \(g(x)h(y)\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(i)</span></span> To find the marginal distribution of \(Y\) we sum over all possible values of \(x\), giving
+</p>
+<p>
+\[\P [Y=y] =\sum _{x=1}^\infty 2^{-xy}(1-2^{-y}) =(1-2^{-y})\sum _{x=1}^\infty (2^{-y})^x =(1-2^{-y})\frac {2^{-y}}{1-2^{-y}} =\l (\frac {1}{2}\r )^y\]
+</p>
+<p>
+for \(y\in \N \).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(ii)</span></span> Using Lemma <a href="Conditioning-correlations.html#l:cond_corr">1.5.1</a> we have
+</p>
+<p>
+\[\P [X|_{\{Y=5\}}=x] =\frac {\P [X=x,Y=5]}{\P [Y=5]} =\frac {2^{-5x}(1-2^{-5})}{2^{-5}} =\l (1-\frac {1}{2^5}\r )\l (\frac {1}{2^5}\r )^{x-1}.\]
+</p>
+<p>
+In the middle equality we use <span class="textup">(<a href="Exercises-on-Chapter-ref-c-conditioning.html#eq:cond_corr_ps">1.14</a>)</span> and part (a).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(iii)</span></span> Again using Lemma <a href="Conditioning-correlations.html#l:cond_corr">1.5.1</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{0}\)</span>
+<!--
+                                                P[X ≥ 5, Y = y]
+                            P[Y |{X≥5} = y] =                   .                          (C.1)                                                                        --><a id="eq:cond_corr_ps_xy"></a><!--
+                                                   P[X ≥ 5]
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:cond_corr_ps_xy} \P [Y|_{\{X\geq 5\}}=y] =\frac {\P [X\geq 5,Y=y]}{\P [X\geq 5]}.
+\end{equation}
+
+
+</p>
+<p>
+We need to calculate the top and bottom of <span class="textup">(<a href="Solutions-exercises.html#eq:cond_corr_ps_xy">C.1</a>)</span>. For \(y\in \N \),
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+                                                                                             ∞
+                                                                                             X
+                                                                         P[X ≥ 5, Y = y] =         2−xy (1 − 2−y )
+                                                                                             x=5
+                                                                                                         ∞
+                                                                                                         X                       (2−y )5
+                                                                                          = (1 − 2−y )     (2−y )x = (1 − 2−y )          = 2−5y .
+                                                                                                                                1 − 2−y
+                                                                                                         x=5
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\P [X\geq 5, Y=y] &amp;=\sum _{x=5}^\infty 2^{-xy}(1-2^{-y}) \\ &amp;=(1-2^{-y})\sum _{x=5}^\infty (2^{-y})^x =(1-2^{-y})\frac {(2^{-y})^5}{1-2^{-y}} =2^{-5y}.
+\end{align*}
+Hence \(\P [X\geq 5] =\sum _{y=1}^\infty 2^{-5y} =\sum _{y=1}^\infty (2^{-5})^y =\frac {2^{-5}}{1-2^{-5}}.\) Putting these into <span class="textup">(<a
+href="Solutions-exercises.html#eq:cond_corr_ps_xy">C.1</a>)</span> we obtain
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{1}\)</span>
+
+
+<!--
+                                                                                                                                           y−1
+                                                                                                 2−5y (1 − 2−5 )
+                                                                                                                                
+                                                                                                                             1        1
+                                                                               P[Y |{X≥5} = y] =                 =        1− 5
+                                                                                                       2−5                  2         25
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\P [Y|_{\{X\geq 5\}}=y] = \frac {2^{-5y}(1-2^{-5})}{2^{-5}} = \l (1-\frac {1}{2^5}\r )\l (\frac {1}{2^5}\r )^{y-1}
+\end{align*}
+for \(y\in \N \).
+</p>
+<p>
+<em>The distributions found in (b) are all Geometric distributions. They have range \(\{1,2,\ldots ,\}\) rather than \(\{0,1,\ldots ,\}\) i.e.&nbsp;using the alternative parametrization mentioned on the
+reference sheet.</em>
+</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:N_conditioning_fold"><b>1.7</b></a></span> Let \(X\in \Normal (0,1)\) and set \(A=[0,\infty )\), as in
+Example <a href="Conditioning-on-location.html#ex:N_conditioning_fold">1.4.3</a>. Let \(Y&apos;=|X|\). Show that \(Y&apos;\eqd X|_{\{X\in A\}}\).
+</p>
+<p>
+Note that \(\P [Y&apos;\geq 0]=1\). For \(y&gt; 0\) we can calculate,
+</p>
+<p>
+\[\P [Y&apos;\leq y] =\P [X\leq -y\text { or }X\geq y] =\P [X\leq -y]+\P [X\geq y] =\int _{-\infty }^y f_X(x)\,dx + \int _y^\infty f_X(x)\,dx =2\int _{-\infty }^{-y} f_X(x).\]
+</p>
+<p>
+The last equality follows by symmetry (or a \(v=-y\) substitution) because \(f_X(x)=f_X(-x)\). Differentiating, for \(y&gt;0\) we have \(f_{Y&apos;}(y)=2f_X(y)\). Hence \(Y&apos;\) is absolutely continuous
+with p.d.f.
+</p>
+<p>
+\[f_{Y&apos;}(y)=\begin {cases} 2f_X(y) &amp; \text { for }y&gt;0 \\ 0 &amp; \text { otherwise}. \end {cases} \]
+</p>
+<p>
+This matches the distribution of \(X|_{\{X\geq 0\}}\) that we obtained in Example <a href="Conditioning-on-location.html#ex:N_conditioning_fold">1.4.3</a>.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:rv_from_conditioning_pve_abs_cts"><b>1.8</b></a></span> From part 2 of Lemma <a
+href="Conditioning-on-location.html#l:rv_from_conditioning_pve">1.4.1</a>, for \(B\sw A\) we have
+</p>
+<p>
+\[\P [X|_{\{X\in A\}}\in B] =\frac {\P [X\in A\cap B]}{\P [X\in A]} =\frac {\P [X\in B]}{\P [X\in A]} =\frac {\int _{B}f_X(x)\,dx}{\P [X\in A]} =\int _{B}\frac {f_X(x)}{\P [X\in
+A]}\,dx.\]
+</p>
+<p>
+By part 1 of Lemma <a href="Conditioning-on-location.html#l:rv_from_conditioning_pve">1.4.1</a> we have \(\P [X|_{\{X\in A\}}\in B]=1\). By Definition <a
+href="Conditioning.html#d:rv_types">1.1.1</a> \(X\) is absolutely continuous with p.d.f.&nbsp;
+</p>
+<p>
+\[f_{X|_{\{X\in A\}}}(x)= \begin {cases} \frac {f_X(x)}{\P [X\in A]} &amp; \text { if } x\in A \\ 0 &amp; \text {otherwise.} \end {cases} \]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:eqd_pmf"><b>1.9</b></a></span> Let us write \(\mc {L}_X(A)=\P [X\in A]\) for the law of \(X\).
+</p>
+<p>
+For the ‘if’ part, suppose that \(X\eqd Y\). Take \(A=\{x\}\) in Definition <a href="Equality-in-distribution.html#d:eqd">1.2.1</a>, where \(x\in R\), then \(\mc {L}_X(\{x\})=\P [X\in \{x\}]=\P
+[X=x]=p_X(x)\), and similarly for \(Y\). Since \(\mc {L}_X=\mc {L}_Y\) we have \(p_X(x)=p_Y(x)\).
+</p>
+<p>
+For the ‘only if’ part, suppose that \(p_X(x)=p_Y(x)\) for all \(x\in R^d\). Note that for any \(A\sw \R ^d\) we have \(\mc {L}_X(A)=\P [X\in A]=\sum _{x\in A}\P [X=a]=\sum _{x\in A}p_X(x)\), and
+similarly for \(Y\). Hence \(\mc {L}_X(A)=\mc {L}_Y(A)\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:indep_conditioning"><b>1.10</b></a></span> Suppose that \(X\) takes values in \(\R ^n\) and \(Y\) takes
+values in \(\R ^d\). We apply Lemma <a href="Conditioning-on-location.html#l:rv_from_conditioning_pve">1.4.1</a>, conditioning \((X,Y)\) to be inside the set \(A\times \R ^d\). By part 2 of that
+lemma, for all \(B\sw \R ^d\) we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{1}\)</span>
+<!--
+                         P[(X, Y ) ∈ A × B]    P[X ∈ A, Y ∈ B]   P[X ∈ A]P[Y ∈ B]
+  P[(X, Y ) ∈ A × B] =                    d
+                                             =                 =                  = P[Y ∈ B], (C.2)                                                               --><a id="eq:indep_conditioning_1"></a><!--
+                         P[(X, Y ) ∈ A × R ]      P[X ∈ A]           P[X ∈ A]
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:indep_conditioning_1} \P [(X,Y)\in A\times B] =\frac {\P [(X,Y)\in A\times B]}{\P [(X,Y)\in A\times \R ^d]} =\frac {\P [X\in A, Y\in B]}{\P [X\in A]} =\frac {\P [X\in
+A]\P [Y\in B]}{\P [X\in A]} =\P [Y\in B],
+\end{equation}
+
+
+</p>
+<p>
+where we have used the fact that \(X\) and \(Y\) are independent. By part 1 of the lemma we have \(\P [(X,Y)|_{\{X\in A\}}\in A\times \R ^d]=1\), which since \((X,Y)|_{\{X\in A\}}=(X|_{\{X\in
+A\}}, Y|_{\{X\in A\}})\) means that \(\P [X|_{\{X\in A\}}\in A]=1\). Hence, for all \(B\sw \R ^d\)
+</p>
+<p>
+\[\P [Y|_{\{X\in A\}}\in B] =\P [X|_{\{X\in A\}}\in A\text { and }Y|_{\{X\in A\}}\in B] =\P [(X,Y)|_{\{X\in A\}}\in A\times B]=\P [Y\in B].\]
+</p>
+<p>
+The last equality above uses <span class="textup">(<a href="Solutions-exercises.html#eq:indep_conditioning_1">C.2</a>)</span>. Thus \(Y\eqd Y|_{\{X\in A\}}\).
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<!--
+...... subsection Chapter <a href=Bayesian-models-discrete-data.html#c:bayes_models_discrete>2</a> ......
+-->
+<h5 id="autosec-284">Chapter <a href="Bayesian-models-discrete-data.html#c:bayes_models_discrete">2</a></h5>
+<a id="notes-autopage-284"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#ps:dist_sketching_2"><b>2.1</b></a></span> See <a href="2_dist_sketching_solution.ipynb"
+target="_blank" >2_dist_sketching_solution.ipynb</a> or <a href="2_dist_sketching_solution.Rmd" target="_blank" >2_dist_sketching_solution.Rmd</a>
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#ps:geo_beta_example_mirror"><b>2.2</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> \(\P [M_p=n]=p(1-p)^{n}\) for \(n\in \{1,2,\ldots ,\}\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> From Theorem <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> the posterior distribution is given by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                              1
+                                                          fP |{X=5} (p) = R 1                                           P[Geometric(p) = 5]fUniform([0,1]) (p) dp
+                                                                          0 P[Geometric(q) = 5]fUniform([0,1]) (q) dq
+                                                                                 1
+                                                                       = R1              p(1 − p)5
+                                                                                     5
+                                                                          0 q(1 − q) dq
+                                                                            1
+                                                                       =         p(1 − p)5
+                                                                         B(2, 6)
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{P|_{\{X=5\}}}(p) &amp;=\frac {1}{\int _0^1 \P [\Geo (q)=5]f_{\Unif ([0,1])}(q)\,dq}\P [\Geo (p)=5]f_{\Unif ([0,1])}(p)\,dp \\ &amp;=\frac {1}{\int _0^1 q(1-q)^5\,dq}p(1-p)^5
+\\ &amp;=\frac {1}{\mc {B}(2,6)}p(1-p)^5
+\end{align*}
+for \(p\in [0,1]\) and zero elsewhere, which we recognize as the p.d.f.&nbsp;of \(\Beta (2,6)\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> We obtain
+</p>
+<div class="center">
+<p>
+
+
+<a href="geo_beta_example_mirror_1.png" target="_blank" ><img
+      src="geo_beta_example_mirror_1.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(d)</span></span> From Theorem <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a>, now with the prior taken as \(P\sim
+\Beta (2,6)\) and the new data point \(x=9\), the posterior distribution is given by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                 1
+                                                              fP |{X=9} (p) = R 1                                       P[Geometric(p) = 9]fBeta(2,6) (p) dp
+                                                                              0 P [Geometric (q)  = 9]fBeta(2,6) (q) dq
+                                                                             B(2, 6)              1
+                                                                           =         R1                           p(1 − p)5 p(1 − p)9
+                                                                             B(2, 6) q(1 − q) q(1 − q)9 q dq
+                                                                                                 5
+                                                                                       0
+                                                                                1
+                                                                           =          p2 (1 − p)14
+                                                                             B(3, 15)
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{P|_{\{X=9\}}}(p) &amp;=\frac {1}{\int _0^1 \P [\Geo (q)=9]f_{\Beta (2,6)}(q)\,dq}\P [\Geo (p)=9]f_{\Beta (2,6)}(p)\,dp \\ &amp;=\frac {\mc {B}(2,6)}{\mc {B}(2,6)}\frac
+{1}{\int _0^1 q(1-q)^5q(1-q)^9q\,dq}p(1-p)^5p(1-p)^9 \\ &amp;=\frac {1}{\mc {B}(3,15)}p^2(1-p)^{14}
+\end{align*}
+which we recognize as the p.d.f.&nbsp;of \(\Beta (3,15)\). Including this into our graph from (c),
+</p>
+<div class="center">
+<p>
+
+
+<a href="geo_beta_example_mirror_2.png" target="_blank" ><img
+      src="geo_beta_example_mirror_2.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(e)</span></span> The p.m.f.&nbsp;of the predictive distribution is
+</p>
+<p>
+\[\P [X&apos;=x&apos;]=\int _0^1 \P [{\Geo (p)}=x&apos;]f_{\Beta (3,15)}(p)\,dp\]
+</p>
+<p>
+for \(x&apos;\in \{0,1,\ldots \}\). We sketch this:
+</p>
+<div class="center">
+<p>
+
+
+<a href="geo_beta_example_mirror_3.png" target="_blank" ><img
+      src="geo_beta_example_mirror_3.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#ps:poisson_exp"><b>2.3</b></a></span> From Theorem <a
+href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> the posterior has p.d.f.
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                1
+                                                                    fΛ|{X=5} (λ) = R ∞                              P[Poisson(λ) = 7]fExp(5) (λ)
+                                                                                  0 P[Poisson(l) = 7]fExp(5) (l) dl
+                                                                                 7!       1
+                                                                               = R ∞ 7 −l −5l λ7 e−λ λe−5λ
+                                                                                 7! 0 l e le dl
+                                                                                      1
+                                                                               = R ∞ 8 −6l λ8 e−6λ
+                                                                                  0 l e dl
+                                                                                    69         1
+                                                                               =                       λ8 e−6λ
+                                                                                   Γ(9) 0∞ Γ(9)
+                                                                                            69 8 −6l
+                                                                                       R
+                                                                                                l e dl
+                                                                                    69       1
+                                                                               =       R∞               λ8 e−6λ
+                                                                                   Γ(9) 0 fΓ(6,9)(l) dl
+                                                                                    69 8 −6λ
+                                                                               =        λ e
+                                                                                   Γ(9)
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Lambda |_{\{X=5\}}}(\lambda ) &amp;=\frac {1}{\int _0^\infty \P [\Poisson (l)=7]f_{\Exp (5)}(l)\,dl}\P [\Poisson (\lambda )=7]f_{\Exp (5)}(\lambda ) \\ &amp;=\frac
+{7!}{7!}\frac {1}{\int _0^\infty l^7e^{-l}le^{-5l}\,dl}\lambda ^7 e^{-\lambda }\lambda e^{-5\lambda } \\ &amp;=\frac {1}{\int _0^\infty l^8e^{-6l}\,dl}\lambda ^8e^{-6\lambda } \\
+&amp;=\frac {6^9}{\Gamma (9)}\frac {1}{\int _0^\infty \frac {6^9}{\Gamma (9)}l^8e^{-6l}\,dl} \lambda ^8e^{-6\lambda }\\ &amp;=\frac {6^9}{\Gamma (9)}\frac {1}{\int _0^\infty
+f_{\Gamma (6,9)(l)}\,dl} \lambda ^8e^{-6\lambda }\\ &amp;=\frac {6^9}{\Gamma (9)}\lambda ^8e^{-6\lambda }
+\end{align*}
+for \(\lambda &gt;0\) and zero otherwise. We recognize this as the p.d.f.&nbsp;of the \(\Gam (9,6)\) distribution.
+</p>
+<p>
+The predictive p.m.f.&nbsp;is given by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                              Z ∞
+                                                                               P[X 0 = x] =         P[Poisson(λ) = x]fGamma(9,6) (λ) dλ
+                                                                                              0
+                                                                                              Z ∞
+                                                                                                λx e−λ 96 8 −6λ
+                                                                                          =                 λ e    dλ
+                                                                                             0     x! Γ(9)
+                                                                                                Z ∞
+                                                                                             96
+                                                                                          =          λ8+x e−7λ dλ.
+                                                                                            8!x! 0
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\P [X&apos;=x] &amp;=\int _0^\infty \P [\Poisson (\lambda )=x]f_{\Gam (9,6)}(\lambda )\,d\lambda \\ &amp;=\int _0^\infty \frac {\lambda ^{x}e^{-\lambda }}{x!}\frac {9^6}{\Gamma
+(9)}\lambda ^8e^{-6\lambda }\,d\lambda \\ &amp;=\frac {9^6}{8! x!}\int _0^\infty \lambda ^{8+x}e^{-7\lambda }\,d\lambda .
+\end{align*}
+for \(x\in \{0,1,\ldots \}\).
+</p>
+</li>
+</ul>
+<!--
+...... subsection Chapter <a href=Bayesian-models-continuous-data.html#c:bayes_models_continuous>3</a> ......
+-->
+<h5 id="autosec-288">Chapter <a href="Bayesian-models-continuous-data.html#c:bayes_models_continuous">3</a></h5>
+<a id="notes-autopage-288"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:dist_sketching_3"><b>3.1</b></a></span> See <a href="2_dist_sketching_solution.ipynb"
+target="_blank" >2_dist_sketching_solution.ipynb</a> or <a href="2_dist_sketching_solution.Rmd" target="_blank" >2_dist_sketching_solution.Rmd</a>
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:exp_gamma"><b>3.2</b></a></span> <em>In this solution and that of Exercise <a
+href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:uniform_pareto"><b>3.4</b></a> we keep track of the normalizing constants. If you prefer to write them as \(\frac {1}{Z}\) in the
+style of e.g.&nbsp;<span class="textup">(<a href="Notation-independent-data.html#eq:social_post_pdf">3.7</a>)</span> and use Lemma <a
+href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> to recognize the distributions, or to use \(\propto \) as introduced in Chapter <a
+href="Conjugate-priors.html#c:conjugate_priors">4</a>, that is fine.</em>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> From <span class="textup">(<a
+href="Bayesian-models-continuous-data.html#eq:bayes_continuous_sampling_pdf">3.2</a>)</span> the sampling distribution has p.d.f.&nbsp;
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                          Z ∞
+                                                                             fX (x) =        fExp(θ) (x)fGamma(2,3) (θ) dθ
+                                                                                           0
+                                                                                              Z ∞
+                                                                                         32
+                                                                                      =            θe−θx θe−3θ dθ
+                                                                                        Γ(2) 0
+                                                                                         Z ∞
+                                                                                      =9       θ2 e−θ(x+3) dθ
+                                                                                           0
+                                                                                                    Z ∞
+                                                                                             2           (x + 3)3 2 −θ(x+3)
+                                                                                      =9                         θ e         dθ
+                                                                                         (x + 3)3 0         2
+                                                                                                    Z ∞
+                                                                                             2
+                                                                                      =9                fGamma(3,x+3) (θ) dθ
+                                                                                         (x + 3)3 0
+                                                                                           18
+                                                                                      =
+                                                                                        (x + 3)3
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{X}(x) &amp;=\int _0^\infty f_{\Exp (\theta )}(x)f_{\Gam (2,3)}(\theta )\,d\theta \\ &amp;=\frac {3^2}{\Gamma (2)}\int _0^\infty \theta e^{-\theta x}\theta e^{-3\theta
+}\,d\theta \\ &amp;=9\int _0^\infty \theta ^2 e^{-\theta (x+3)}\,d\theta \\ &amp;=9\frac {2}{(x+3)^3}\int _0^\infty \frac {(x+3)^3}{2}\theta ^2 e^{-\theta (x+3)}\,d\theta \\
+&amp;=9\frac {2}{(x+3)^3}\int _0^\infty f_{\Gam (3,x+3)}(\theta )\,d\theta \\ &amp;=\frac {18}{(x+3)^3}
+\end{align*}
+for \(x&gt;0\) and zero otherwise.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> the posterior
+distribution has p.d.f.
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                  1
+                                                                     fΘ|{X=2} = R ∞                                 fExp(θ) (2)fGamma(2,3) (θ)
+                                                                                  0   fExp(t) (2)fGamma(2,3) (t) dt
+                                                                               32 /Γ(2)      1
+                                                                             = 2        R∞           θe−2θ θe−3θ
+                                                                                            −2t
+                                                                               3 /Γ(2) 0 te te−3t dt
+                                                                                     1
+                                                                             = R ∞ 2 −5t θ2 e−5θ
+                                                                                0 t e    dt
+                                                                                          1           53 2 −5θ
+                                                                             = R ∞ 53       2 −5t dt Γ(3)
+                                                                                                          θ e
+                                                                                  0   Γ(3) t e
+                                                                                               1          53 2 −5θ
+                                                                             = R∞                             θ e
+                                                                                  0   fGamma(3,5) (t) dt Γ(3)
+                                                                                  53 2 −5θ
+                                                                             =        θ e
+                                                                                 Γ(3)
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=2\}}} &amp;=\frac {1}{\int _0^\infty f_{\Exp (t)}(2)f_{\Gam (2,3)}(t)\,dt} f_{\Exp (\theta )}(2)f_{\Gam (2,3)}(\theta ) \\ &amp;=\frac {3^2/\Gamma
+(2)}{3^2/\Gamma (2)}\frac {1}{\int _0^\infty te^{-2t}te^{-3t}\,dt} \theta e^{-2\theta }\theta e^{-3\theta } \\ &amp;=\frac {1}{\int _0^\infty t^2e^{-5t}\,dt}\theta ^2 e^{-5\theta
+} \\ &amp;=\frac {1}{\int _0^\infty \frac {5^3}{\Gamma (3)}t^2e^{-5t}\,dt} \frac {5^3}{\Gamma (3)} \theta ^2 e^{-5\theta } \\ &amp;=\frac {1}{\int _0^\infty f_{\Gam
+(3,5)}(t)\,dt} \frac {5^3}{\Gamma (3)} \theta ^2 e^{-5\theta } \\ &amp;=\frac {5^3}{\Gamma (3)} \theta ^2 e^{-5\theta }
+\end{align*}
+for \(\theta &gt;0\) and zero otherwise. We recognize \(\Theta |_{\{X=2\}}\sim \Gam (3,5)\). From <span class="textup">(<a
+href="Bayesian-models-continuous-data.html#eq:bayes_continuous_predictive_pdf">3.5</a>)</span> the corresponding predictive distribution has p.d.f.
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                          Z ∞
+                                                                            fX 0 (x) =        fExp(θ) (x)fGamma(3,5) (θ) dθ
+                                                                                           0
+                                                                                               Z ∞
+                                                                                          53
+                                                                                      =             θe−θx θ2 e−5θ dθ
+                                                                                        Γ(3) 0
+                                                                                        53 ∞ 3 −θ(x+5)
+                                                                                            Z
+                                                                                      =           θ e         dθ
+                                                                                         2 0
+                                                                                                       Z ∞
+                                                                                        53 Γ(4)            (x + 5)4 3 −θ(x+5)
+                                                                                      =                              θ e        dθ
+                                                                                         2 (x + 5)4 0         Γ(4)
+                                                                                                       Z ∞
+                                                                                        53      6
+                                                                                      =                    fGamma(4,x+5) (θ) dθ
+                                                                                         2 (x + 5)4 0
+                                                                                           375
+                                                                                      =
+                                                                                        (x + 5)4
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{X&apos;}(x) &amp;=\int _0^\infty f_{\Exp (\theta )}(x)f_{\Gam (3,5)}(\theta )\,d\theta \\ &amp;=\frac {5^3}{\Gamma (3)}\int _0^\infty \theta e^{-\theta x}\theta ^2 e^{-5\theta
+}\,d\theta \\ &amp;=\frac {5^3}{2}\int _0^\infty \theta ^3 e^{-\theta (x+5)}\,d\theta \\ &amp;=\frac {5^3}{2}\frac {\Gamma (4)}{(x+5)^4}\int _0^\infty \frac {(x+5)^4}{\Gamma
+(4)}\theta ^3 e^{-\theta (x+5)}\,d\theta \\ &amp;=\frac {5^3}{2}\frac {6}{(x+5)^4}\int _0^\infty f_{\Gam (4,x+5)}(\theta )\,d\theta \\ &amp;=\frac {375}{(x+5)^4}
+\end{align*}
+for \(x&gt;0\) and zero otherwise.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> Using independence, the p.d.f.&nbsp;of the model family now becomes
+</p>
+<p>
+\[f_{M_{\theta }}(x)=\prod _{i=1}^n \theta e^{-\theta x_i}=\theta ^n e^{-\theta \sum _1^n x_i}.\]
+</p>
+<p>
+Let us write \(z=\sum _1^n x_i\). From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                 1
+                                                                    fΘ|{X=x} (θ) = R ∞                         fM (x)fΓ(2,3) (θ)
+                                                                                      0   fMt (x)fΓ(2,3) (t) dt θ
+                                                                                   32 /Γ(2)       1
+                                                                                 = 2        R∞            θn e−θz θe−3θ
+                                                                                                 −tz
+                                                                                   3 /Γ(2) 0 t e te−3t dt
+                                                                                               n
+
+                                                                                            1
+                                                                                 = R ∞ n+1 −t(3+z) θn+1 e−θ(3+z)
+                                                                                    0 t     e     dt
+                                                                                                    1               (3 + z)n+2 n+1 −θ(3+z)
+                                                                                 = R ∞ (3+z)n+2                               θ   e
+                                                                                      0    Γ(n+2)   tn+1 e−t(3+z) dt Γ(n + 2)
+                                                                                                    1
+                                                                                 = R∞                              fGamma(n+2,3+z) (θ)
+                                                                                      0   fGamma(n+2,3+z) (t) dt
+                                                                                 = fGamma(n+2,3+z) (θ).
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp;= \frac {1}{\int _0^\infty f_{M_t}(x)f_{\Gamma (2,3)}(t)\,dt} f_{M_\theta }(x)f_{\Gamma (2,3)}(\theta ) \\ &amp;= \frac {3^2/\Gamma
+(2)}{3^2/\Gamma (2)}\frac {1}{\int _0^\infty t^n e^{-tz} t e^{-3t}\,dt} \theta ^n e^{-\theta z} \theta e^{-3\theta } \\ &amp;= \frac {1}{\int _0^\infty t^{n+1} e^{-t(3+z)} \,dt}
+\theta ^{n+1} e^{-\theta (3+z)} \\ &amp;= \frac {1}{\int _0^\infty \frac {(3+z)^{n+2}}{\Gamma (n+2)} t^{n+1} e^{-t(3+z)} \,dt} \frac {(3+z)^{n+2}}{\Gamma (n+2)}\theta ^{n+1}
+e^{-\theta (3+z)} \\ &amp;= \frac {1}{\int _0^\infty f_{\Gam (n+2,3+z)}(t) \,dt} f_{\Gam (n+2,3+z)}(\theta ) \\ &amp;= f_{\Gam (n+2,3+z)}(\theta ).
+\end{align*}
+for \(\theta &gt;0\) and zero otherwise.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:exp_gamma_sketching"><b>3.3</b></a></span> We obtain:
+</p>
+<div class="center">
+<p>
+
+
+<a href="exp_gamma_1.png" target="_blank" ><img
+      src="exp_gamma_1.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+<a href="exp_gamma_2.png" target="_blank" ><img
+      src="exp_gamma_2.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:uniform_pareto"><b>3.4</b></a></span> In this question we need to be very careful with the limits
+of integrals. The \(\Unif ([0,\theta ])\) p.d.f.&nbsp;is zero outside of \([0,\theta ]\) and the \(\Pareto (a,b)\) p.d.f.&nbsp;is zero outside of \((a,\infty )\). This matters particularly for the integrals in
+part (b).
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> the posterior
+distribution has p.d.f.&nbsp;
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                       1
+                                                                      fΘ|{X=5} (θ) = R                                       fUniform([0,θ]) ( 12 )fPareto(1,3) (θ)
+                                                                                       f
+                                                                                     R Uniform([0,t])
+                                                                                                      (5)fPareto(1,3) (t) dt
+                                                                                          1       1 −4
+                                                                                  = R ∞ 1 −4        3θ
+                                                                                     1 t 3t   dt θ
+                                                                                         1
+                                                                                  = R ∞ −5 3θ−5
+                                                                                     1 3t    dt
+                                                                                     1 −5
+                                                                                  =     θ
+                                                                                    3/4
+                                                                                  = 4θ−5
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=5\}}}(\theta ) &amp;= \frac {1}{\int _\R f_{\Unif ([0,t])}(5) f_{\Pareto (1,3)}(t)\, dt}f_{\Unif ([0,\theta ])}(\tfrac 12) f_{\Pareto (1,3)}(\theta ) \\
+&amp;=\frac {1}{\int _1^\infty \frac {1}{t}3t^{-4}\,dt} \frac {1}{\theta }3\theta ^{-4} \\ &amp;=\frac {1}{\int _1^\infty 3t^{-5}\,dt} 3\theta ^{-5} \\ &amp;=\frac {1}{3/4}\theta
+^{-5} \\ &amp;=4\theta ^{-5}
+\end{align*}
+for \(\theta &gt;1\) and zero otherwise. We recognize the p.d.f.&nbsp;of the \(\Pareto (1,4)\) distribution. Note that to deduce the second line we used \(f_{\Unif ([0,\theta ])}(\tfrac 12)=\frac
+{1}{\theta }\), which was true because \(\frac 12&lt;\theta \).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> the posterior
+distribution has p.d.f.&nbsp;
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                       1
+                                                                      fΘ|{X=5} (θ) = R                                      f               (5)fPareto(1,3) (θ)
+                                                                                       f
+                                                                                     R Uniform([0,t])
+                                                                                                      (5)fPareto(1,3) (t) dt Uniform([0,θ])
+                                                                                             1                    1
+                                                                                  = R∞                     1{5≤θ} 3θ−4
+                                                                                     1 1{5≤t} t 3t
+                                                                                               1 −4               θ
+                                                                                                        dt
+                                                                                         1
+                                                                                  = R ∞ −5 1{5≤θ} 3θ−5
+                                                                                     5 3t    dt
+                                                                                      1
+                                                                                  = 5−4 1{5≤θ} θ−5
+                                                                                    3 4
+                                                                                  = 1{5≤θ} 54 4θ−5
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=5\}}}(\theta ) &amp;= \frac {1}{\int _\R f_{\Unif ([0,t])}(5) f_{\Pareto (1,3)}(t)\, dt}f_{\Unif ([0,\theta ])}(5) f_{\Pareto (1,3)}(\theta ) \\ &amp;=\frac
+{1}{\int _1^\infty \1_{\{5\leq t\}}\frac {1}{t}3t^{-4}\,dt} \1_{\{5\leq \theta \}}\frac {1}{\theta }3\theta ^{-4} \\ &amp;=\frac {1}{\int _5^\infty 3t^{-5}\,dt} \1_{\{5\leq
+\theta \}}3\theta ^{-5} \\ &amp;=\frac {1}{3\frac {5^{-4}}{4}}\1_{\{5\leq \theta \}}\theta ^{-5} \\ &amp;=\1_{\{5\leq \theta \}}5^44\theta ^{-5}
+\end{align*}
+We recognize the p.d.f.&nbsp;of the \(\Pareto (5,4)\) distribution.
+</p>
+<p>
+From <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:bayes_continuous_predictive_pdf">3.5</a>)</span> the predictive distribution has p.d.f.&nbsp;given by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                   Z ∞
+                                                                                      fX 0 (x) =       fUniform([0,θ]) (x)fPareto(5,4) (θ) dθ
+                                                                                                 5
+                                                                                                  ∞ 1 54 4θ−5 dθ for x > 5
+                                                                                                  R
+                                                                                                     x θ
+                                                                                               = R
+                                                                                                  ∞ 1 54 4θ−5 dθ for x ∈ [0, 5]
+                                                                                                 
+                                                                                                     5 θ
+                                                                                                 
+                                                                                                  ∞ 1x≤θ 54 4θ−6 dθ for x > 5
+                                                                                                  R
+                                                                                                     x
+                                                                                               = R
+                                                                                                  ∞ 54 4θ−6 dθ              for x ∈ [0, 5]
+                                                                                                 
+                                                                                                     5
+                                                                                                 
+                                                                                                 54 4[ θ−5 ]∞ for x > 5
+                                                                                                 
+                                                                                                          −5 x
+                                                                                               =
+                                                                                                 54 4[ θ−5 ]∞ for x ∈ [0, 5]
+                                                                                                 
+                                                                                                          −5 5
+                                                                                                 
+                                                                                                 54 4 1 x−5 for x > 5
+                                                                                                 
+                                                                                                        5
+                                                                                               =
+                                                                                                 54 4 1 5−5 for x ∈ [0, 5]
+                                                                                                 
+                                                                                                        5
+                                                                                                 
+                                                                                                 53 4x−5 for x > 5
+                                                                                                 
+                                                                                               =
+                                                                                                  42          for x ∈ [0, 5]
+                                                                                                 
+                                                                                                    5
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{X&apos;}(x) &amp;=\int _5^\infty f_{\Unif ([0,\theta ])}(x)f_{\Pareto (5,4)}(\theta )\,d\theta \\ &amp;= \begin{cases} \int _x^\infty \frac {1}{\theta } 5^4 4\theta
+^{-5}\,d\theta &amp; \text { for }x&gt;5 \\ \int _5^\infty \frac {1}{\theta } 5^4 4\theta ^{-5}\,d\theta &amp; \text { for }x\in [0,5] \end {cases} \\ &amp;= \begin{cases} \int
+_x^\infty \1_{x\leq \theta }5^4 4\theta ^{-6}\,d\theta &amp; \text { for }x&gt;5 \\ \int _5^\infty 5^4 4\theta ^{-6}\,d\theta &amp; \text { for }x\in [0,5] \end {cases} \\ &amp;=
+\begin{cases} 5^4 4[\frac {\theta ^{-5}}{-5}]_x^\infty &amp; \text { for }x&gt;5 \\ 5^4 4[\frac {\theta ^{-5}}{-5}]_5^\infty &amp; \text { for }x\in [0,5] \end {cases} \\ &amp;=
+\begin{cases} 5^4 4\frac 15x^{-5} &amp; \text { for }x&gt;5 \\ 5^4 4\frac 155^{-5} &amp; \text { for }x\in [0,5] \end {cases} \\ &amp;= \begin{cases} 5^3 4 x^{-5} &amp; \text {
+for }x&gt;5 \\ \frac {4}{5^2} &amp; \text { for }x\in [0,5] \end {cases}
+\end{align*}
+for \(x\geq 0\) and zero otherwise.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_condition_theta"><b>3.5</b></a></span> Noting that \(\P [\Theta \in
+A]&gt;0]\), we will use Lemma <a href="Conditioning-correlations.html#l:cond_corr">1.5.1</a>. For \(B\sw R_X\) we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                        P[X ∈ B, Θ ∈ A]
+                                                                                                                       Z Z
+                                                                                                                 1
+                                                                       P[X|{Θ∈A} ∈ B] =                  =                 fM (x)fΘ (θ) dθ dx
+                                                                                           P[Θ ∈ A]         P[Θ ∈ A] B A θ
+                                                                                        Z Z
+                                                                                      =      fMθ (x)fΘ|{Θ∈A} (θ) dθ dx.
+                                                                                              B    A
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\P [X|_{\{\Theta \in A\}}\in B] &amp;=\frac {\P [X\in B, \Theta \in A]}{\P [\Theta \in A]} =\frac {1}{\P [\Theta \in A]}\int _B\int _A f_{M_\theta }(x)f_\Theta (\theta )\,d\theta
+\,dx\\ &amp;=\int _B\int _A f_{M_\theta }(x)f_{\Theta |_{\{\Theta \in A\}}}(\theta )\,d\theta \,dx.
+\end{align*}
+It follows from Definition <a href="Conditioning.html#d:rv_types">1.1.1</a> that \(X|_{\{\Theta \in A\}}\) is absolutely continuous with p.d.f.
+</p>
+<p>
+\[f_{X|_{\{\Theta \in A\}}}(x)=\int _A f_{M_\theta }(x)f_{\Theta |_{\{\Theta \in A\}}}(\theta )\,d\theta .\]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:convolution_pass_through"><b>3.6</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> We have
+</p>
+<p>
+\[\int _\R f_{M&apos;_\theta }(x)\,dx =\int _\R \int _\R f_{M_\theta }(x-y)\kappa (y)\,dy\,dx =\int _\R \kappa (y)\l (\int _\R f_{M_\theta }(x-y)\,dx\r )\,dy =\int _\R \kappa
+(y)\,dy =1.\]
+</p>
+<p>
+Here we used that \(f_{M_\theta }\) is a p.d.f.&nbsp;which integrates to \(1\), and also our assumption that \(\kappa \) integrates to \(1\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> By Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have
+\(f_{\Theta |_{\{X=x\}}}(\theta )=\frac {1}{Z}f_{M_\theta }(x)f_\Theta (\theta )\) and also that
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                       Z                                        Z
+                                                                               1                  1                                  Z
+                                                             fΘ|{X 0 =x} (θ) = 0 fMθ0 (x)fΘ (θ) = 0        fMθ (x − y)κ(y)fΘ (θ) dy = 0               fΘ|{X=x−y} (θ)κ(y) dy
+                                                                              Z                  Z       R                           Z            R
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X&apos;=x\}}}(\theta ) = \frac {1}{Z&apos;} f_{M&apos;_\theta }(x) f_\Theta (\theta ) = \frac {1}{Z&apos;} \int _\R f_{M_\theta }(x-y)\kappa (y)f_\Theta (\theta
+)\, dy = \frac {Z}{Z&apos;} \int _\R f_{\Theta |_{\{X=x-y\}}}(\theta )\kappa (y)\,dy
+\end{align*}
+as required.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> In the case where \(\kappa (x)\) is the p.d.f.&nbsp;of \(\Normal (0,1)\), the convolution applied to Model 1 is equivalent to
+adding a \(\Normal (0,1)\) random variable to the data, which gives Model 2. That is, \(X&apos;\eqd X+\Normal (0,1)\). Model 2 is therefore a version of Model 1 that is designed handle (additional) noise.
+</p>
+<p>
+It helps to visualize things, which is left for you here: the effect of convolution on the probability density functions is to smooth them i.e.&nbsp;to spread out high peaks into lower and wider regions. Equation
+<span class="textup">(<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#eq:model_convolution_posterior">3.10</a>)</span> says that the posterior density of
+\((X&apos;,\Theta )\) can be obtained by taking the posterior density of \((X,\Theta )\) and smoothing it in this way (with respect to the \(x\) coordinate).
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<!--
+...... subsection Chapter <a href=Conjugate-priors.html#c:conjugate_priors>4</a> ......
+-->
+<h5 id="autosec-290">Chapter <a href="Conjugate-priors.html#c:conjugate_priors">4</a></h5>
+<a id="notes-autopage-290"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:dist_sketching_4"><b>4.1</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(i)</span></span> The posterior is
+</p>
+<p>
+\[\Normal \l (\frac {\frac {1}{4}(14.08)+\frac {0}{1}}{\frac {3}{4}+\frac {1}{1}},\frac {1}{\frac {3}{4}+\frac {1}{1}}\r ) \eqd \Normal (2.01,0.76^2)\]
+</p>
+<p>
+where we have rounded the parameters to two decimal places.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(ii)</span></span> The p.d.f.&nbsp;of the sampling distribution is
+</p>
+<p>
+\[f_X(x)=\int _\R f_{\Normal (\theta ,2)}(x)f_{\Normal (0,1)}(\theta )\,d\theta .\]
+</p>
+<p>
+The p.d.f.&nbsp;of the posterior distribution is
+</p>
+<p>
+\[f_{X&apos;}(x)=\int _\R f_{\Normal (\theta ,2)}(x)f_{\Normal (2.01,0.76^2)}(\theta )\,d\theta .\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> See <a href="2_dist_sketching_solution.ipynb" target="_blank" >2_dist_sketching_solution.ipynb</a> and <a
+href="2_dist_sketching_solution.Rmd" target="_blank" >2_dist_sketching_solution.Rmd</a>.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_beta_geom"><b>4.2</b></a></span> From Theorem <a
+href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+
+                                                                        fΘ|{X=x} (θ) ∝ P[Geometric(θ)⊗n = x]fBeta(α,β) (θ)
+                                                                                         n
+                                                                                                      !
+                                                                                         Y
+                                                                                                   xi     1
+                                                                                     ∝     θ(1 − θ)             θα−1 (1 − θ)β−1
+                                                                                                        B(α, β)
+                                                                                           i=1
+                                                                                                    Pn
+                                                                                          n            1 xi
+                                                                                     ∝ θ (1 − θ)              θα−1 (1 − θ)β−1
+                                                                                                                Pn
+                                                                                     ∝ θα+n−1 (1 − θ)β+           1 xi −1
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp; \propto \P [\Geo (\theta )^{\otimes n}=x]f_{\Beta (\alpha ,\beta )}(\theta ) \\ &amp; \propto \l (\prod _{i=1}^n \theta (1-\theta )^{x_i}\r
+) \frac {1}{\mc {B}(\alpha ,\beta )}\theta ^{\alpha -1}(1-\theta )^{\beta -1} \\ &amp; \propto \theta ^n(1-\theta )^{\sum _1^n x_i}\theta ^{\alpha -1}(1-\theta )^{\beta -1} \\
+&amp; \propto \theta ^{\alpha +n-1}(1-\theta )^{\beta +\sum _1^nx_i-1}
+\end{align*}
+for \(\theta \in [0,1]\) and zero otherwise. Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a>, we recognize the \(\Beta (\alpha +n, \beta +\sum
+_1^n x_i)\) distribution, as required.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_gamma_poisson"><b>4.3</b></a></span> From Theorem <a
+href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+
+                                                                           fΘ|{X=x} (θ) ∝ P[Poisson(θ)⊗n = x]fGamma(α,β) (θ)
+                                                                                            n
+                                                                                                       !
+                                                                                            Y  θxi e−θ    β α α−1 −βθ
+                                                                                        ∝                     θ  e
+                                                                                                 xi !    Γ(α)
+                                                                                              i=1
+                                                                                              Pn
+                                                                                         ∝θ    1 xi −nθ α−1 −βθ
+                                                                                                   e      θ       e
+                                                                                                 Pn
+                                                                                         ∝ θα+     1 xi −1   e−θ(β+n)
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp; \propto \P [\Poisson (\theta )^{\otimes n}=x]f_{\Gam (\alpha ,\beta )}(\theta ) \\ &amp; \propto \l (\prod _{i=1}^n\frac {\theta ^{x_i}
+e^{-\theta }}{x_i!}\r ) \frac {\beta ^\alpha }{\Gamma (\alpha )}\theta ^{\alpha -1}e^{-\beta \theta } \\ &amp; \propto \theta ^{\sum _1^n x_i} e^{-n\theta }\theta ^{\alpha
+-1}e^{-\beta \theta } \\ &amp; \propto \theta ^{\alpha +\sum _1^n x_i-1}e^{-\theta (\beta +n)}
+\end{align*}
+for \(\theta &gt;0\) and zero otherwise. Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a>, we recognize the \(\Gam (\alpha +\sum _1^n x_i, \beta
++n)\) distribution, as required.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_gamma_normal_prec"><b>4.4</b></a></span> From Theorem <a
+href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+
+                                                                       fΘ|{X=x} (τ ) ∝ fN(µ, 1 )⊗n (x)fGamma(α,β) (τ )
+                                                                                              τ
+
+                                                                                         Y √τ
+                                                                                           n
+                                                                                                                  !
+                                                                                                       τ (xi −µ)2    β α α−1 −βτ
+                                                                                     ∝         √ e− 2                      τ     e
+                                                                                                 2π                 Γ(α)
+                                                                                          i=1
+                                                                                                         n
+                                                                                                                         !
+                                                                                                     τX
+                                                                                     ∝ τ 2 exp −
+                                                                                         n
+                                                                                                             (xi − µ) τ α−1 e−βτ
+                                                                                                                       2
+                                                                                                     2
+                                                                                                          1
+                                                                                                                         n
+                                                                                                      "                                !#
+                                                                                                                     1
+                                                                                     ∝ τ α+ 2 −1 exp −τ β +
+                                                                                             n
+                                                                                                                        X
+                                                                                                                             (xi − µ)2    .
+                                                                                                                     2
+                                                                                                                            1
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\tau ) &amp; \propto f_{\Normal (\mu ,\frac {1}{\tau })^{\otimes n}}(x) f_{\Gam (\alpha ,\beta )}(\tau ) \\ &amp; \propto \l (\prod _{i=1}^n\frac {\sqrt
+{\tau }}{\sqrt {2\pi }}e^{-\frac {\tau (x_i-\mu )^2}{2}}\r ) \frac {\beta ^\alpha }{\Gamma (\alpha )}\tau ^{\alpha -1}e^{-\beta \tau } \\ &amp; \propto \tau ^{\frac {n}{2}}\exp
+\l (-\frac {\tau }{2}\sum _1^n(x_i-\mu )^2\r )\tau ^{\alpha -1}e^{-\beta \tau } \\ &amp; \propto \tau ^{\alpha +\frac {n}{2}-1}\exp \l [-\tau \l (\beta +\frac 12\sum _1^n(x_i-\mu
+)^2\r )\r ].
+\end{align*}
+Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a>, we recognize the \(\Gam (\alpha +\frac {n}{2}, \beta +\frac 12\sum _1^n(x_i-\mu )^2)\)
+distribution, as required.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_update_with_data"><b>4.5</b></a></span> We obtain
+</p>
+<div class="center">
+<p>
+
+
+<a href="conj_update_with_data_1.png" target="_blank" ><img
+      src="conj_update_with_data_1.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+<a href="conj_update_with_data_2.png" target="_blank" ><img
+      src="conj_update_with_data_2.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:transitive_bayes_example"><b>4.6</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> The posterior is \(N(2.013, 0.36)\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> Writing the code is left for you. The result will be the same as in part (a).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> We have seen that the Bayesian updates here can be done all at once, or piece by piece, and will give the same results. Checking the
+formulae for the conjugate priors, in every other case covered in this chapter it is obvious that this will be the case – only in Lemma <a
+href="Two-more-examples-conjugate-pairs.html#l:conj_normal_normal">4.2.2</a> are the update formulae complicated enough that it is not obvious from the formulae.
+</p>
+<p>
+<em>In fact, this principle holds with or without conjugate pairs, as we will see in Exercise <a href="Exercises-on-Chapter-ref-c-discussion.html#ps:transitive_bayes"><b>6.7</b></a>.</em>
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_gamma_weibull"><b>4.7</b></a></span> From Theorem <a
+href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+
+                                                                                   fΘ|{X=x} (θ) ∝ fWeibull(θ,β)⊗n (x)fIGamma(a,b) (θ)
+                                                                                                    n
+                                                                                                                          !
+                                                                                                   Y                    β    ba a−1 −bθ
+                                                                                                ∝      θβ(xi )β−1 e−θxi           θ e
+                                                                                                                            Γ(a)
+                                                                                                   i=1
+                                                                                                          Pn  β
+                                                                                               ∝ θn e−θ    1 xi   θa−1 e−bθ
+                                                                                                                    Pn  β
+                                                                                               ∝ θa+n−1 e−θ(b+       1 xi )   .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp; \propto f_{\Weibull (\theta ,\beta )^{\otimes n}}(x) f_{\IGam (a,b)}(\theta ) \\ &amp; \propto \l (\prod _{i=1}^n \theta \beta (x_i)^{\beta
+-1}e^{-\theta x_i^\beta }\r ) \frac {b^a}{\Gamma (a)} \theta ^{a-1}e^{-b\theta } \\ &amp; \propto \theta ^n e^{-\theta \sum _1^n x_i^\beta }\theta ^{a-1}e^{-b\theta } \\ &amp;
+\propto \theta ^{a+n-1}e^{-\theta (b+\sum _1^n x_i^\beta )}.
+\end{align*}
+Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a>, we recognize the \(\Gamma (\alpha +n, \beta +\sum _1^n x_i^k)\) distribution, as required.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_sheet_match"><b>4.8</b></a></span> Omitted.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:propto"><b>4.9</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> Taking \(C=1\) in Definition <a href="Conjugate-priors.html#d:propto">4.1.1</a> gives \(f\propto f\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> If \(f(x)=Cg(x)\) then \(g(x)=\frac {1}{C}f(x)\). Note that Definition <a
+href="Conjugate-priors.html#d:propto">4.1.1</a> gives \(C&gt;0\), so \(\frac {1}{C}&gt;0\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> If \(f(x)=Cg(x)\) and \(g(x)=C&apos;h(x)\) then \(f(x)=CC&apos;h(x)\). Note that Definition <a
+href="Conjugate-priors.html#d:propto">4.1.1</a> gives \(C,C&apos;&gt;0\), so \(CC&apos;&gt;0\).
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<!--
+...... subsection Chapter <a href=The-prior.html#c:prior>5</a> ......
+-->
+<h5 id="autosec-292">Chapter <a href="The-prior.html#c:prior">5</a></h5>
+<a id="notes-autopage-292"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-prior.html#ps:elicitation_ages"><b>5.1</b></a></span> The data from Census 2021 is as follows.
+</p>
+<div class="center">
+<table>
+<tr style="display:none"><th>.</th></tr>
+
+
+<tr class="hline">
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">Age band</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">Population</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">Proportion (2dp)</td>
+</tr>
+
+
+<tr class="hline">
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">10+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">60096227</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.89</td>
+</tr>
+
+
+<tr>
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">20+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">52089688</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.77</td>
+</tr>
+
+
+<tr>
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">30+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">43661735</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.65</td>
+</tr>
+
+
+<tr>
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">40+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">34458842</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.51</td>
+</tr>
+
+
+<tr>
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">50+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">26028478</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.39</td>
+</tr>
+
+
+<tr>
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">60+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">16814195</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.25</td>
+</tr>
+
+
+<tr>
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">70+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">9316631</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.14</td>
+</tr>
+
+
+<tr>
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">80+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">3399106</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.05</td>
+</tr>
+
+
+<tr>
+<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">90+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">609904</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0.01</td>
+</tr>
+
+
+<tr class="hline" aria-hidden="true">
+<td class="tdc"></td>
+<td class="tdc"></td>
+<td class="tdc"></td>
+</tr>
+</table>
+</div>
+<p>
+The total population was 67596281.
+</p>
+<p>
+The point of this question that you will (probably) find it more difficult to give accurate estimates for events that have smaller probabilities.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-prior.html#ps:elicitation_temperature"><b>5.2</b></a></span> This is up to you!
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-prior.html#ps:reference_poisson"><b>5.3</b></a></span> For the model family \((M_\lambda )_{\lambda \in (0,\infty )}\) in
+which \(M_\lambda \sim \Poisson (\lambda )\) we have
+</p>
+<p>
+\[L_{M_\lambda }(x)= \begin {cases} \dfrac {\lambda ^x e^{-\lambda }}{x!} &amp; \text { for }\lambda &gt;0 \\ 0 &amp; \text { otherwise} \end {cases} \]
+</p>
+<p>
+where \(x\in \{0,1,\ldots \}\). Hence \(\frac {d}{d\lambda }\log (L_{M_\lambda }(x))=\frac {d}{d\lambda } (x\log (\lambda )-\lambda -x!)=\frac {x}{\lambda }-1=\frac {x-\lambda
+}{\lambda }\). For \(\lambda &gt;0\), the density function of the Jeffrey’s prior is given by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                      "                 2 #1/2
+                                                                                                          d
+                                                                                           fΛ (λ) ∝ E        log(LMθ (X))
+                                                                                                          dθ
+                                                                                                      "          #1/2
+                                                                                                          X −λ 2
+                                                                                                  ∝E
+                                                                                                             λ
+                                                                                                    1   h         i1/2
+                                                                                                  ∝ E (X − λ)2
+                                                                                                    λ
+                                                                                                    1
+                                                                                                  ∝ var(X)1/2
+                                                                                                    λ
+                                                                                                    1
+                                                                                                  ∝ λ1/2
+                                                                                                    λ
+                                                                                                      1
+                                                                                                  ∝ 1/2 .
+                                                                                                    λ
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_\Lambda (\lambda ) &amp;\propto \E \l [\l (\frac {d}{d\theta }\log (L_{M_{\theta }}(X))\r )^2\r ]^{1/2} \\ &amp;\propto \E \l [\l (\frac {X-\lambda }{\lambda }\r )^2\r ]^{1/2}
+\\ &amp;\propto \frac {1}{\lambda }\E \l [\l (X-\lambda \r )^2\r ]^{1/2} \\ &amp;\propto \frac {1}{\lambda }\var (X)^{1/2} \\ &amp;\propto \frac {1}{\lambda }\lambda ^{1/2} \\
+&amp;\propto \frac {1}{\lambda ^{1/2}}.
+\end{align*}
+Noting that \(\int _0^\infty \frac {1}{\lambda ^{1/2}}\,d\lambda =\infty \), this is an improper prior.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-prior.html#ps:improper_to_proper"><b>5.4</b></a></span> Our model here is \(M_\lambda =\Poisson (\lambda )^{\otimes
+12}\). From Theorem <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                              1
+                                                                                                                              !
+                                                                                                              Y   λxi e−λ               1
+                                                                                             fΛ|{X=x} (x) ∝     2                      √
+                                                                                                                    xi !                 λ
+                                                                                                              i=1
+                                                                                                              P12
+                                                                                                                    xi − 12 −12λ
+                                                                                                         ∝λ    1         e         .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Lambda |_{\{X=x\}}}(x) &amp;\propto \l (\prod _{i=1}^12\frac {\lambda ^{x_i} e^{-\lambda }}{x_i!}\r )\frac {1}{\sqrt {\lambda }} \\ &amp;\propto \lambda ^{\sum _1^{12} x_i -
+\frac 12}e^{-12\lambda }.
+\end{align*}
+Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize the \(\Gam (\frac 12+\sum _1^{n} x_i, n)\) distribution with \(n=12\). This is a proper
+distribution for all values of \(x\), which answers part (b). For part (a) we have \(\sum _1^{12}x_i=5\), so we obtain \(\Lambda |_{\{X=x\}}\sim \Gam (\frac {11}{2},12)\). A sketch looks like
+</p>
+<div class="center">
+<p>
+
+
+<a href="gamma_fires_density.png" target="_blank" ><img
+      src="gamma_fires_density.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-prior.html#ps:uniform_model"><b>5.5</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                                                               
+                                                                                                                1 θe−θx   for θ > x > 0,       e−θx   for θ > x > 0,
+                                                                                                                                               
+                                                                                                                 θ
+                                                            fΘ|{X=x} (θ) ∝ fUniform(0,θ) (x)fExp(1) (θ) ∝                                   ∝
+                                                                                                               0          otherwise,           0      otherwise.
+                                                                                                                                               
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\theta ) \propto f_{\Unif (0,\theta )}(x)f_{\Exp (1)}(\theta ) \propto \begin{cases} \frac {1}{\theta }\theta e^{-\theta x} &amp; \text { for }\theta
+&gt;x&gt;0, \\ 0 &amp; \text { otherwise,} \end {cases} \propto \begin{cases} e^{-\theta x} &amp; \text { for }\theta &gt;x&gt;0,\\ 0 &amp; \text { otherwise.} \end {cases}
+\end{align*}
+The distribution \(\Unif (0,\theta )\) only generates values in \((0,\theta )\), so in order to generate the data \(x\) it must have \(x\in (0,\theta )\). For this reason our posterior places zero weight on
+\(\theta &lt;x\). (The boundary \(x=\theta \) has probability zero, so it does not matter what happens there.)
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> The posterior is not well defined in this case. Formally the condition \(x\in R\) of Theorem <a
+href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> is not satisfied. From a more practical point of view, we have failed to account for Cromwell’s rule. Our prior density
+is zero outside of \(\theta \in (1,2)\) but our model makes sense for all \(\theta &gt;0\), and to generate the data \(x=3\) we would need to have \(\theta &gt;3\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-prior.html#ps:no_inf_uniform"><b>5.6</b></a></span> We argue by contradiction: suppose such a \(U\) does exist. Take \(c=1\) and
+\([a,b]=[n,n+1]\) and we obtain that \(\P [U\in [n,n+1]]=\P [U\in [n+1,n+2]]\). By a trivial induction we have \(\P [U\in [0,1]]=\P [U\in [1,2]]=\P [U\in [2,3]]=\ldots \), but then
+</p>
+<p>
+\[1=\P [U\in [0,\infty )]=\sum _{n=0}^\infty \P [U\in [n,n+1]]=\sum _{n=0}^\infty \P [U\in [0,1]].\]
+</p>
+<p>
+This a contradiction: the right hand side is either \(0\) (if \(\P [U\in [0,1]]=0\)) or equal to \(\infty \) (if \(\P [U\in [0,1]]&gt;0)\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-prior.html#ps:alice_bob_meet"><b>5.7</b></a></span> Bob chooses his prior to be \(h(\Theta )\), where \(\Theta \) is Alice’s prior
+with p.d.f.&nbsp;\(f_1\). As \(h\) is strictly monotone increasing and differentiable, this means that Bob’s prior has p.d.f.
+</p>
+<p>
+\[f_2(\theta )=\frac {dh^{-1}}{d\theta }f_1\l (h^{-1}(\theta )\r ).\]
+</p>
+<p>
+Take Alice’s sampling distribution and substitute \(\theta =h(\lambda )\) to obtain
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                     Z
+                                                                                        fX1 (x) =         fMθ (x)f1 (θ) dθ
+                                                                                                      Π
+                                                                                                                                  dh−1
+                                                                                                     Z
+                                                                                                 =        fMh(λ) (x)f1 h−1 (λ)          dλ
+                                                                                                                                    dλ
+                                                                                                     ZΠ
+                                                                                                 =        fMh(λ) (x)f2 (λ) dλ
+                                                                                                      Π
+
+                                                                                                 = fX2 (x)
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{X_1}(x) &amp;=\int _\Pi f_{M_\theta }(x)f_1(\theta )\,d\theta \\ &amp;=\int _\Pi f_{M_{h(\lambda )}}(x)f_1\l (h^{-1}(\lambda )\r )\frac {dh^{-1}}{d\lambda }\,d\lambda \\
+&amp;=\int _\Pi f_{M_{h(\lambda )}}(x)f_2(\lambda )\,d\lambda \\ &amp;=f_{X_2}(x)
+\end{align*}
+as required.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-prior.html#ps:reference_prior_otimes"><b>5.8</b></a></span> By independence we have \(L_{M_\theta ^{\otimes n}}(x)=\prod
+_{i=1}^n L_{M_\theta }(x_i)\), hence \(\log L_{M_\theta ^{\otimes n}}(x)=\sum _1^n \log L_{M_\theta }(x_i)\). Taking \(X=(X_i)\sim M_\theta ^{\otimes n}\) so that \(X_i\sim M_\theta \)
+for all \(i\), we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                                 n
+                                                                                                        "                     #
+                                                                                      d                       d X
+                                                                                  E − 2 log LMθ⊗n (X) = E − 2      log LMθ (Xi )
+                                                                                     dθ                      dθ
+                                                                                                                 1
+                                                                                                         n                     
+                                                                                                                 d
+                                                                                                            E − 2 log LMθ (Xi ) .
+                                                                                                         X
+                                                                                                       =
+                                                                                                                dθ
+                                                                                                                     i=1
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E \l [-\frac {d}{d\theta ^2} \log L_{M_\theta ^{\otimes n}}(X)\r ] &amp;= \E \l [-\frac {d}{d\theta ^2} \sum _1^n \log L_{M_\theta }(X_i)\r ] \\ &amp;= \sum _{i=1}^n \E \l
+[-\frac {d}{d\theta ^2} \log L_{M_\theta }(X_i)\r ].
+\end{align*}
+Hence by <span class="textup">(<a href="Reference-priors.html#eq:reference_prior_d2">5.3</a>)</span>
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                      n
+                                                                                                      X
+                                                                                        fMθ⊗n (θ) ∝            fMθ (θ) ∝ nfMθ (θ) ∝ fMθ (θ)
+                                                                                                         i=1
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{M_\theta ^{\otimes n}}(\theta ) \propto \sum _{i=1}^n f_{M_\theta }(\theta ) \propto n f_{M_\theta }(\theta ) \propto f_{M_\theta }(\theta )
+\end{align*}
+as required.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<!--
+...... subsection Chapter <a href=Discussion.html#c:discussion>6</a> ......
+-->
+<h5 id="autosec-296">Chapter <a href="Discussion.html#c:discussion">6</a></h5>
+<a id="notes-autopage-296"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-discussion.html#ps:mode_gamma"><b>6.1</b></a></span> We have \(f_{\Gam (\alpha ,\beta )}(x)\propto x^{\alpha
+-1}e^{-\beta x}\) when \(x&gt;0\) and zero otherwise. Differentiating, we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+<!--
+
+                                 (α − 1)xα−2 e−βx + xα−1 (−β)e−βx = xα−2 e−βx (α − 1 − βx).                                                                                             --><a id="eq:gamma_pdf_diff"></a><!--
+
+-->
+<p>
+
+
+\begin{equation*}
+\label {eq:gamma_pdf_diff} (\alpha -1)x^{\alpha -2}e^{-\beta x}+x^{\alpha -1}(-\beta )e^{-\beta x}=x^{\alpha -2}e^{-\beta x}(\alpha -1-\beta x).
+\end{equation*}
+
+
+</p>
+<p>
+This takes the value zero when, and only when, \(\alpha -1-\beta x=0\), which gives \(x=\frac {\alpha -1}{\beta }\). If \(\alpha \geq 1\) then this value is within the range of \(\Gam (\alpha ,\beta
+)\). Since \(f_{\Gam (\alpha ,\beta )}(0)=0\) and \(\lim _{x\to \infty }f_{\Gam (\alpha ,\beta )}(x)=0\), and there is only one turning point, that turning point must be a global maximum. Hence it
+is also the mode, given by \(\frac {\alpha -1}{\beta }\).
+</p>
+<p>
+If \(\alpha \in (0,1)\) then from <span class="textup">(<a href="Solutions-exercises.html#eq:gamma_pdf_diff">C</a>)</span> we have that \(f_{\Gam (\alpha ,\beta )}(x)\) has negative
+derivative for all \(x&gt;0\). Hence it is a decreasing function, and the maximum will occur at \(x=0\). So the mode is zero, when \(\alpha \in (0,1)\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-discussion.html#ps:shorthand"><b>6.2</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> Lemma <a href="Conditioning-on-events-with-zero-probability.html#l:rv_from_conditioning_abs_cts">1.6.1</a>.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> Lemma <a href="Conjugate-priors.html#l:conj_bernoulli_beta">4.1.5</a>.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> If \(\lambda \sim \Gam (\alpha ,\beta )\) and \(x|\lambda \sim \Exp (\lambda )^{\otimes n}\) then \(\lambda |x\sim
+\Beta (\alpha +n,\beta +\sum _1^n x_i)\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(d)</span></span> If \((\mu ,\tau )\sim \NGam (m,p,a,b)\) then \(\tau \sim \Gam (a,b)\) and \(\mu |\tau \sim \Normal (m,\frac
+{1}{p\tau })\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-discussion.html#ps:shorthand_to_math"><b>6.3</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> If \(X\sim N(0,1)\) then \(X|_{\{X&gt;0\}}\eqd |X|\). This is the result of Exercise <a
+href="Exercises-on-Chapter-ref-c-conditioning.html#ps:N_conditioning_fold"><b>1.7</b></a>, which is closely related to Example <a
+href="Conditioning-on-location.html#ex:N_conditioning_fold">1.4.3</a>.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> If \(X\) and \(Y\) are independent random variables then \(X|_{\{Y=y\}}\eqd X\). This is true if the conditioning is well defined,
+as discussed (in more general terms) at the start of Section <a href="Conditioning-correlations.html#s:condition_with_correlations">1.5</a>.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-discussion.html#ps:conj_negbin_beta"><b>6.4</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> We have \(f_{\NBin (m,\theta )}(x_i)\propto \theta ^m(1-\theta )^{x_i}\), for \(x_i\in \{0,1,\ldots ,\}\). Hence
+</p>
+<p>
+\[f(x|\theta )=f_{\NBin (m,\theta )^{\otimes n}}(x)\propto \prod _{i=1}^n\theta ^m(1-\theta )^{x_i} \propto \theta ^{mn}(1-\theta )^{\sum _1^n x_i}.\]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+
+                                                                                                           f (θ|x) ∝ fNegBin(m,θ)⊗n (x)fBeta(α,β) (θ)
+                                                                                                                                                Pn
+                                                                                                                        ∝ θmn (1 − θ)               1 xi   θα−1 (1 − θ)β−1
+                                                                                                                                                               Pn
+                                                                                                                        ∝ θα+mn−1 (1 − θ)β+                        1 xi −1      .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\theta |x) &amp;\propto f_{\NBin (m,\theta )^{\otimes n}}(x)f_{\Beta (\alpha ,\beta )}(\theta ) \\ &amp;\propto \theta ^{mn}(1-\theta )^{\sum _1^n x_i}\theta ^{\alpha
+-1}(1-\theta )^{\beta -1} \\ &amp;\propto \theta ^{\alpha +mn-1}(1-\theta )^{\beta +\sum _1^n x_i-1}.
+\end{align*}
+By Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize \(\theta |x\sim \Beta (\alpha ^*,\beta ^*)\) with \(\alpha ^*=\alpha +mn\) and
+\(\beta ^*=\beta +\sum _1^n x_i\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(i)</span></span> The reference prior is given by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                                                          1/2
+                                                                                                                  d2
+                                                                                                              
+                                                                                                    f (θ) ∝ E − 2 log LNegBin(m,θ) (X)
+                                                                                                                  dθ
+                                                                                                              
+                                                                                                                  d2                        1/2
+                                                                                                          ∝ E − 2 log θ (1 − θ)
+                                                                                                                                       Pn
+                                                                                                                             mn         1 Xi
+                                                                                                                  dθ
+                                                                                                              "                      n
+                                                                                                                                                     !#1/2
+                                                                                                                   d2
+                                                                                                          ∝ E − 2 mn log θ +            Xi log(1 − θ)
+                                                                                                                                    X
+                                                                                                                  dθ
+                                                                                                                                     1
+                                                                                                                       Pn      1/2
+                                                                                                                mn         1 Xi
+                                                                                                          ∝E         +
+                                                                                                                θ2     (1 − θ)2
+                                                                                                                                         1/2
+                                                                                                              mn mn(1 − θ)           1
+                                                                                                          ∝        +
+                                                                                                               θ2          θ     (1 − θ)2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\theta ) &amp;\propto \E \l [-\frac {d^2}{d\theta ^2}\log L_{\NBin (m,\theta )}(X)\r ]^{1/2} \\ &amp;\propto \E \l [-\frac {d^2}{d\theta ^2}\log \l (\theta ^{mn}(1-\theta
+)^{\sum _1^n X_i}\r )\r ]^{1/2} \\ &amp;\propto \E \l [-\frac {d^2}{d\theta ^2}\l (mn\log \theta + \sum _1^n X_i\log (1-\theta )\r )\r ]^{1/2} \\ &amp;\propto \E \l [\frac
+{mn}{\theta ^2} + \frac {\sum _1^n X_i}{(1-\theta )^2}\r ]^{1/2} \\ &amp;\propto \l (\frac {mn}{\theta ^2} + \frac {mn(1-\theta )}{\theta }\frac {1}{(1-\theta )^2}\r )^{1/2}
+\end{align*}
+where we use that \(X_i\sim \NBin (m,\theta )\) has mean \(\frac {m(1-\theta )}{\theta }\). Hence
+</p>
+<p>
+\[f(\theta ) \propto \l (\frac {mn(1-\theta )+mn\theta }{\theta ^2(1-\theta )}\r )^{1/2} \propto \theta ^{-1}(1-\theta )^{-1/2}. \]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(ii)</span></span> \(f(\theta )\propto \theta ^{-1}(1-\theta )^{-1/2}\) not define a proper distribution. To see this,
+</p>
+<p>
+\[\int _0^\frac 12 \theta ^{-1}(1-\theta )^{-1/2}\,d\theta \geq \int _0^\frac 12 \theta ^{-1}(1/2)^{-1/2}\,d\theta =\infty .\]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(iii)</span></span> From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> the prior is given
+by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                                                                Pn
+                                                                                                           f (θ|x) ∝ θmn (1 − θ)                    1 xi   θ−1 (1 − θ)−1/2
+                                                                                                                                                    Pn        1
+                                                                                                                        ∝ θmn−1 (1 − θ)                1 xi − 2     .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\theta |x) &amp;\propto \theta ^{mn}(1-\theta )^{\sum _1^n x_i}\theta ^{-1}(1-\theta )^{-1/2} \\ &amp;\propto \theta ^{mn-1}(1-\theta )^{\sum _1^n x_i-\frac 12}.
+\end{align*}
+Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize \(\theta |x\sim \Beta (mn, \sum _1^n x_i+\frac 12).\)
+</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-discussion.html#ps:improper_to_proper_n"><b>6.5</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> By Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> the posterior
+distribution has p.d.f.
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                                                   n
+                                                                                                                                                               !
+                                                                                                                                   Y                               1
+                                                                                                           f (µ, τ |x) ∝                  fN(µ, 1 ) (xi )
+                                                                                                                                                τ                  τ
+                                                                                                                                   i=1
+                                                                                                                                   n
+                                                                                                                                                                        !
+                                                                                                                                   Y  1   1          2                      1
+                                                                                                                          ∝          √ e− 2 τ (xi −µ)
+                                                                                                                                       τ                                    τ
+                                                                                                                                   i=1
+                                                                                                                                                               n
+                                                                                                                                                                                    !
+                                                                                                                                                τX
+                                                                                                                                          exp −
+                                                                                                                                   n
+                                                                                                                                     −1
+                                                                                                                          ∝τ       2               (xi − µ)2
+                                                                                                                                                2
+                                                                                                                                                               1
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\mu ,\tau |x) &amp;\propto \l (\prod _{i=1}^n f_{\N (\mu ,\frac {1}{\tau })}(x_i)\r )\frac {1}{\tau } \\ &amp;\propto \l (\prod _{i=1}^n \frac {1}{\sqrt {\tau }}e^{-\frac
+12\tau (x_i-\mu )^2}\r )\frac {1}{\tau } \\ &amp;\propto \tau ^{\frac {n}{2}-1}\exp \l (-\frac {\tau }{2}\sum _1^n(x_i-\mu )^2\r )
+\end{align*}
+where \(s^2=\frac {1}{n}\sum _1^n(x_i-\mu )^2\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> To find the marginal distribution of \(\tau \) we must integrate over \(\mu \), giving
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                                                        n
+                                                                                                              Z                                        !
+                                                                                                                                    τX
+                                                                                                                         exp −
+                                                                                                                        n
+                                                                                                                          −1
+                                                                                                   f (τ |x) ∝     τ     2                  (xi − µ)2 dµ
+                                                                                                               R                    2
+                                                                                                                                        1
+                                                                                                              Z                τ                        
+                                                                                                                  τ 2 −1 exp − ns2 + (x̄ − µ)2 dµ
+                                                                                                                    n
+                                                                                                            ∝
+                                                                                                               R                    2
+                                                                                                                                    Z               τ      
+                                                                                                                                       τ 1/2 exp − (x̄ − µ)2 dµ
+                                                                                                                n      1    1     2
+                                                                                                            ∝ τ 2 −1− 2 e− 2 τ ns
+                                                                                                                                                       2
+                                                                                                                                   ZR
+                                                                                                                n−1       1     2
+                                                                                                            ∝ τ 2 −1 e− 2 τ ns        fN(x̄, 1 )(µ) dµ
+                                                                                                                                                           τ
+                                                                                                                                            R
+                                                                                                                  n−1          1      2
+                                                                                                           ∝ τ 2 −1 e− 2 τ ns .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\tau |x) &amp;\propto \int _\R \tau ^{\frac {n}{2}-1}\exp \l (-\frac {\tau }{2}\sum _1^n(x_i-\mu )^2\r )\,d\mu \\ &amp;\propto \int _\R \tau ^{\frac {n}{2}-1}\exp \l (-\frac
+{\tau }{2}\l (ns^2 + (\bar {x}-\mu )^2\r )\r )\,d\mu \\ &amp;\propto \tau ^{\frac {n}{2}-1-\frac 12}e^{-\frac 12\tau n s^2}\int _\R \tau ^{1/2}\exp \l (-\frac {\tau }{2}(\bar
+{x}-\mu )^2\r )\,d\mu \\ &amp;\propto \tau ^{\frac {n-1}{2}-1}e^{-\frac 12\tau n s^2}\int _\R f_{\Normal (\bar {x},\frac {1}{\tau })(\mu )}\,d\mu \\ &amp;\propto \tau ^{\frac
+{n-1}{2}-1}e^{-\frac 12\tau n s^2}.
+\end{align*}
+Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> for \(n\geq 2\) we recognize \(\tau |x\sim \Gam (a^*,b^*)\) where \(a^*=\frac {n-1}{2}\) and
+\(b^*=\frac 12ns^2\). If \(n=1\) then this does not correspond to a Gamma distribution, because in this case \(a^*=0\) and the Gamma distribution requires parameters in \((0,\infty )\).
+</p>
+<p>
+We have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                           Z ∞Z                                            Z ∞
+                                                                                                                         f (µ, τ |x) dµ dτ =                        f (τ |x) dτ
+                                                                                                             0       R
+                                                                                                                                                           Z0 ∞
+                                                                                                                                                     ∝              f (τ |x) dτ,
+                                                                                                                                                               0
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\int _0^\infty \int _{\R } f(\mu ,\tau |x)\,d\mu \,d\tau &amp;= \int _0^\infty f(\tau |x)\,d\tau \\ &amp;\propto \int _0^\infty f(\tau |x)\,d\tau ,
+\end{align*}
+which is finite if \(n\geq 2\) because the Gamma distribution is proper. If \(n=1\) then we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+<!--
+                          Z ∞Z                            Z ∞                                     Z 1
+                                                                                                        1
+                                    f (µ, τ |x) dµ dτ =         τ   −1 − 12 τ s2
+                                                                       e                − 12 sn
+                                                                                   dτ ≥ e                 dτ = ∞.                                                       (C.3)                                  --><a id="eq:improper_tau_gamma"></a><!--
+                            0   R                         0                                        0    τ
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:improper_tau_gamma} \int _0^\infty \int _{\R } f(\mu ,\tau |x)\,d\mu \,d\tau =\int _0^\infty \tau ^{-1}e^{-\frac 12\tau s^2}\,d\tau \geq e^{-\frac 12 s^n}\int _0^1
+\frac {1}{\tau }\,d\tau =\infty .
+\end{equation}
+
+
+</p>
+<p>
+Here we use that \(e^{-\frac 12\tau s^2}\geq e^{-\frac 12 s^n}\) for \(\tau \in [0,1]\). Hence \(f(\mu ,\tau |x)\) defines an improper distribution when \(n=1\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-discussion.html#ps:prior_mixture"><b>6.6</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> We have \(f_{\Theta _i}(\theta )\geq 0\) and \(\alpha ,\beta \geq 0\) so also \(f_{\Theta }(\theta )\geq 0\). Also,
+</p>
+<p>
+\[\int _\R f_{\Theta }(\theta )\,d\theta =\alpha \int _\R f_{\Theta _1}(\theta )\,d\theta +\beta \int _\R f_{\Theta _2}(\theta )\,d\theta =\alpha (1)+\beta (1)=1.\]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> By Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                                                      fMθ (x)fΘ (θ)
+                                                                                                fΘ|{X=x } (θ) = R
+                                                                                                                      f (x)fΘ (θ) dx
+                                                                                                                    Rn Mθ
+                                                                                                                       αfMθ (x)fΘ1 (θ) + βfMθ (x)fΘ2 (θ)
+                                                                                                                 =R                      R
+                                                                                                                      f (x)fΘ1 (θ) dx + Rn fMθ (x)fΘ2 (θ) dx
+                                                                                                                    Rn Mθ
+
+                                                                                                                 = α0 fΘ1 |{X1 =x} (θ) + β 0 fΘ1 |{X1 =x} (θ)
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x}\}}(\theta ) &amp;= \frac {f_{M_\theta }(x)f_{\Theta }(\theta )}{\int _{\R ^n}f_{M_\theta }(x)f_{\Theta }(\theta )\,dx} \\ &amp;=\frac {\alpha f_{M_\theta
+}(x)f_{\Theta _1}(\theta ) + \beta f_{M_\theta }(x)f_{\Theta _2}(\theta )} {\int _{\R ^n}f_{M_\theta }(x)f_{\Theta _1}(\theta )\,dx+\int _{\R ^n}f_{M_\theta }(x)f_{\Theta
+_2}(\theta )\,dx} \\ &amp;=\alpha &apos; f_{\Theta _1|_{\{X_1=x\}}}(\theta )+\beta &apos; f_{\Theta _1|_{\{X_1=x\}}}(\theta )
+\end{align*}
+where
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                                        R
+                                                                                            0          α Rn fMθ (x)fΘ1 (θ) dθ                  αZ1
+                                                                                        α = R                        R                     =
+                                                                                           α Rn fMθ (x)fΘ1 (θ) dx + β Rn fMθ (x)fΘ2 (θ) dx   αZ1 + βZ2
+                                                                                                        R
+                                                                                                       β Rn fMθ (x)fΘ2 (θ) dθ                  βZ2
+                                                                                        β= R                         R                     =
+                                                                                           α Rn fMθ (x)fΘ1 (θ) dx + β Rn fMθ (x)fΘ2 (θ) dx   αZ1 + βZ2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\alpha &apos; &amp;= \frac {\alpha \int _{\R ^n}f_{M_\theta }(x)f_{\Theta _1}(\theta )\,d\theta } {\alpha \int _{\R ^n}f_{M_\theta }(x)f_{\Theta _1}(\theta )\,dx+\beta \int _{\R
+^n}f_{M_\theta }(x)f_{\Theta _2}(\theta )\,dx} =\frac {\alpha Z_1}{\alpha Z_1+\beta Z_2} \\ \beta &amp;= \frac {\beta \int _{\R ^n}f_{M_\theta }(x)f_{\Theta _2}(\theta )\,d\theta
+} {\alpha \int _{\R ^n}f_{M_\theta }(x)f_{\Theta _1}(\theta )\,dx+\beta \int _{\R ^n}f_{M_\theta }(x)f_{\Theta _2}(\theta )\,dx} =\frac {\beta Z_2}{\alpha Z_1+\beta Z_2}
+\end{align*}
+where \(Z_1\) and \(Z_2\) are the normalizing constants (from Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>) for \(f_{\Theta _1|_{\{X_1=x\}}}\)
+and \(f_{\Theta _2|_{\{X_1=x\}}}\) respectively, as required.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> To cover discrete Bayesian models, instead of probability density functions \(f_{M_\theta }\) in (b) we can use probability mass
+functions \(p_{M_\theta }\). We then need Theorem <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> in place of Theorem <a
+href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>, but the argument is otherwise the same.
+</p>
+<p>
+We could also cover both cases at once by using likelihood functions and <span class="textup">(<a href="Discussion.html#eq:bayes_rule_combined">6.2</a>)</span>.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-discussion.html#ps:transitive_bayes"><b>6.7</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(i)</span></span> From the combined version of Bayes rule <span class="textup">(<a
+href="Discussion.html#eq:bayes_rule_combined">6.2</a>)</span> we have
+</p>
+<p>
+\[f_{\Theta |_{\{X=x\}}}(\theta ) \propto L_{M_\theta ^{\otimes n}}(x)f_{\Theta }(\theta ).\]
+</p>
+<p>
+Applying <span class="textup">(<a href="Discussion.html#eq:bayes_rule_combined">6.2</a>)</span> twice, we obtain
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                                            fΘ|{X1 =x(1)} (θ) ∝ LM ⊗n1 (x(1))fΘ (θ)
+                                                                                                                                                θ
+
+
+                                                                                                  f(Θ|{X1 =x(1)} )|{X2 =x(2)} (θ) ∝ LM ⊗n2 (x(2))LM ⊗n1 (x(1))fΘ (θ)
+                                                                                                                                                θ                           θ
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X_1=x(1)\}}}(\theta ) &amp;\propto L_{M_\theta ^{\otimes n_1}}(x(1)) f_{\Theta }(\theta ) \\ f_{(\Theta |_{\{X_1=x(1)\}})|_{\{X_2=x(2)\}}}(\theta ) &amp;\propto
+L_{M_\theta ^{\otimes n_2}}(x(2)) L_{M_\theta ^{\otimes n_1}}(x(1)) f_{\Theta }(\theta )
+\end{align*}
+We note that by independence
+</p>
+<p>
+\[L_{M_\theta ^{\otimes n_2}}(x(2)) L_{M_\theta ^{\otimes n_1}}(x(1)) =\l (\prod _{i=1}^{n_1}L_{M_\theta }(x_i)\r ) \l (\prod _{i=n_1+1}^{n_2}L_{M_\theta }(x_i)\r ) \\ =\l (\prod
+_{i=1}^{n_2}L_{M_\theta }(x_i)\r ) =L_{M_\theta ^{\otimes n}}(x). \]
+</p>
+<p>
+Hence \(f_{(\Theta |_{\{X_1=x(1)\}})|_{\{X_2=x(2)\}}}(\theta )\propto f_{\Theta |_{\{X=x\}}}(\theta )\), which by Lemma <a
+href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> implies that \((\Theta |_{\{X_1=x(1)\}})|_{\{X_2=x(2)\}}\eqd \Theta |_{\{X=x\}}\) as required.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(ii)</span></span> Applying a trivial induction to the result in part (a) we have shown that, in general for independent data, performing Bayesian
+updates in individual steps for each data point (or combinations of datapoints) will give the same results as performing one Bayesian update with all our data at once. This implies the result of Exercise <a
+href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:transitive_bayes_example"><b>4.6</b></a>.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> From Bayes rule we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+
+                                                                                                                         f (θ|x) ∝ f (x|θ)f (θ)
+
+                                                                                                                   f (θ|x(1)) ∝ f (x(1)|θ)f (θ)
+
+                                                                                                           f (θ|x(1), x(2)) ∝ f (x(2)|θ)f (x(1)|θ)f (θ).
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\theta |x) &amp;\propto f(x|\theta ) f(\theta ) \\ f(\theta |x(1)) &amp;\propto f(x(1)|\theta ) f(\theta ) \\ f(\theta |x(1),x(2)) &amp;\propto f(x(2)|\theta ) f(x(1)|\theta )
+f(\theta ).
+\end{align*}
+By independence (or more strictly, by conditional independence of \(x(1)\) and \(x(2)\) given \(\theta \)) we have
+</p>
+<p>
+\[f(x|\theta )=f(x(1),x(2)|\theta ) \propto f(x(1)|\theta )f(x(2)|\theta )\]
+</p>
+<p>
+hence \(f(\theta |x) \propto f(\theta |x(1),x(2))\). By Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we have \(\theta |x\eqd \theta
+|x(1),x(2)\).
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<!--
+...... subsection Chapter <a href=Testing-parameter-estimation.html#c:tests>7</a> ......
+-->
+<h5 id="autosec-297">Chapter <a href="Testing-parameter-estimation.html#c:tests">7</a></h5>
+<a id="notes-autopage-297"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-tests.html#ps:point_ests"><b>7.1</b></a></span> \(f_X\) can be reasonably approximated by its mode. The median and mean would
+not be particularly bad choices, but the mode is best because the long right-hand tail (that does not contain much mass) will pull the median and mean slightly rightwards, away from the from region of highest
+density.
+</p>
+<p>
+\(f_Y\) is tricky, because now the right hand tail contains substantial mass. It would be better not to approximate it with a point estimate, but if we had to do so then the median or mean would be reasonable
+choices, depending on the context. Alongside our point estimate, we should try to make sure the right-hand skew of the distribution is communicated in some way. The mode will be far below most of the mass of
+the distribution, so is a bad choice here.
+</p>
+<p>
+There is no reasonable way to approximate \(f_Z\) with a point estimate. We could not capture the key feature of the distribution: that it has two approximately evenly sized peaks in different regions.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-tests.html#ps:baby_bayes_hyp_test"><b>7.2</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> We find numerically that the prior and posterior odds ratios are
+</p>
+<p>
+\[ \frac {\P [\Beta (2,8)&gt;0.2]}{\P [\Beta (2,8)\leq 0.2]}=0.77 \qquad \text { and }\qquad \frac {\P [\Beta (11,19)&gt;0.2]}{\P [\Beta (11,19)\leq 0.2]}=49.75 \]
+</p>
+<p>
+to two decimal places. The Bayes factor is \(64.30\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> Note that \(L_{\Bin (m,p)^{\otimes n}}(x)\propto p^x(1-p)^{m-x}\) so \(\log L_{\Bin (m,p)}(x)= x\log p + (m-x)\log
+(1-p)=x\log p+m\log (1-p)-x\log (1-p)\). Hence \(\frac {d}{dp} \log L_{\Bin (m,p)}(x)=\frac {x}{p}+\frac {1-x}{1-p}\), which is equal to \(\frac {d}{dp} \log L_{\Bern (p)}(x)\) as
+obtained in Example <a href="Reference-priors.html#ex:bernoulli_reference_prior">5.3.4</a>. Hence the same calculation as in Example <a
+href="Reference-priors.html#ex:bernoulli_reference_prior">5.3.4</a> obtains the same reference prior.
+</p>
+<p>
+We find numerically that the prior and posterior odds ratios are
+</p>
+<p>
+\[ \frac {\P [\Beta (\frac 12,\frac 12)&gt;0.2]}{\P [\Beta (\frac 12,\frac 12)\leq 0.2]}=2.39 \qquad \text { and }\qquad \frac {\P [\Beta (\frac 12+9,\frac 12+11)&gt;0.2]}{\P
+[\Beta (\frac 12+9,\frac 12+11)\leq 0.2]}=191.15 \]
+</p>
+<p>
+to two decimal places. The Bayes factor is \(80.05\).
+</p>
+<p>
+The Bayes factor has not changed much, even though the odds ratios are quite different. For both choices of prior it suggests strong evidence for \(H_0\) over \(H_1\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> The regulator will be interested by both sets of analysis. In particular, by the fact that both Bayes factors (using the informative
+prior elicited from the scientist and the uninformative reference prior) point towards the hypothesis \(\theta &gt;0.2\), suggests that the analysis is robust i.e.&nbsp;is not overly sensitive to the particular
+methodology used.
+</p>
+<p>
+<em>This is a highly stylized example. Medical trials tend to be complex experiments with multiple subgroups, typically with outcomes that are not easily reducible to success vs.&nbsp;failure. The process of deciding
+what statistics will be reported is often done in negotiation with the regulator, before the trial begins.</em>
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-tests.html#ps:hyp_test_earthquakes"><b>7.3</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> The reference density \(f(\lambda )\) is not proper, so we cannot calculate the probabilities that \(\lambda \in [0,2)\) or
+\(\lambda \in [2,\infty )\) with respect to this density. The prior odds are not well-defined in this situation.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> The data given has \(n=40\) and \(\sum _1^n x_i=109\). Hence the posterior is \(\lambda |x\sim \Gam (\frac 54+18,\frac
+15+8)\eqd \Gam (23.5,8.2)\). We find numerically that the prior and posterior odd ratios are
+</p>
+<p>
+\[ \frac {\P [\Gam (\frac {5}{4},\frac {1}{5})\geq 2]}{\P [\Gam (\frac {5}{4},\frac {1}{5})&lt;2]}=3.42 \qquad \text { and }\qquad \frac {\P [\Gam (23.5,8.2)\geq 2]}{\P [\Gam
+(23.5,8.2)&lt;2]}=1093.84 \]
+</p>
+<p>
+to two decimal places. The Bayes factor is \(319.75\).
+</p>
+<p>
+We have (very) strong evidence for \(H_0\) over \(H_1\). A Poisson model is known to be reasonable, at least over large enough intervals of time, for large earthquakes. Assuming that we believe this model, we have
+strong evidence that Japan will, on average, experience two or more earthquakes of magnitude above \(7.5\) every year.
+</p>
+<p>
+<em>In case this sounds like unreasonably many earthquakes: earthquakes can occur deep underground, as well as offshore, and in such a case you may not hear much about them.</em>
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> For our new hypothesis \(H_0:\lambda \geq 3\), we find numerically that the prior and posterior odd ratios are
+</p>
+<p>
+\[ \frac {\P [\Gam (\frac {5}{4},\frac {1}{5})\geq 3]}{\P [\Gam (\frac {5}{4},\frac {1}{5})&lt;3]}=1.95 \qquad \text { and }\qquad \frac {\P [\Gam (23.5,8.2)\geq 3]}{\P [\Gam
+(23.5,8.2)&lt;3]}=0.19 \]
+</p>
+<p>
+to two decimal places. The Bayes factor is \(0.09\).
+</p>
+<p>
+There is no evidence here to favour \(H_0\) over the opposite hypothesis \(H_1:\lambda &lt;3\). In fact, swapping \(H_0\) and \(H_1\) will mean that the Bayes factor becomes \(1/B\), which in this case is
+\(1/0.09=10.14\), meaning that we have strong evidence to favour \(H_1\) over \(H_0\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-tests.html#ps:hpd_code"><b>7.4</b></a></span> You should obtain \(a=0.80\) and \(b=5.32\) to two decimal places, and the
+following figure.
+</p>
+<div class="center">
+<p>
+
+
+<a href="chi2_density_hpd.png" target="_blank" ><img
+      src="chi2_density_hpd.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-tests.html#ps:hpd_hurricanes"><b>7.5</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> I will spare you the details, but I have conducted an elicitation procedure on my wife who has (somewhat reluctantly) supplied us
+with the prior distribution \(\Exp (\frac {1}{1.7})\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> The dataset has \(n=8\) and \(\sum _1^nx_i=18\). Hence the posterior distribution is \(\Gam (1+18,\frac {1}{1.7}+8)=\Gam
+(19, 8.59)\) with parameters to two decimal places.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(c)</span></span> An equally tailed \(95\%\) HPD region is \([1.33,3.31]\), to two decimal places, and looks like
+</p>
+<div class="center">
+<p>
+
+
+<a href="gamma_hurricanes_density_hpd.png" target="_blank" ><img
+      src="gamma_hurricanes_density_hpd.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-tests.html#ps:hpd_wheat_yields"><b>7.6</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> From the dataset we have \(n=40\), \(\bar {x}=7.55\) and \(s^2=0.51\), to two decimal places. Hence \(t|x\sim \Studentt
+(39)\) with a \(95\%\) HPD region \([-2.02,2.02]\),
+</p>
+<div class="center">
+<p>
+
+
+<a href="wheat_yields_density_hpd.png" target="_blank" ><img
+      src="wheat_yields_density_hpd.png"
+      style="
+      width:304pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+<p>
+The relationship between \(\mu |x\) and \(t|x\) is that \(\mu |x=\bar {x}+(t|x)\frac {\sqrt {n}}{s}\). Note that the distribution of \(t|x\) is symmetric about \(0\), hence the distribution of \(\mu
+|x=\bar {x}+(t|x)\frac {\sqrt {n}}{s}\) will also be symmetric about its mean, and the mean of \(\mu |x\) will be \(\bar {x}\). An equally tailed \(95\%\) HPD region is given by \([\bar {x}-2.02\frac
+{\sqrt {n}}{s},\bar {x}+2.02\frac {\sqrt {n}}{s}]\). Putting in \(\bar {x}\), \(n\) and \(s\), and this comes out as \([7.33, 7.78]\) to two decimal places.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> The posterior density function is given by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                              n
+                                                                                                                  !
+                                                                                              Y                       1
+                                                                                f (µ, φ) =            fN(µ,φ) (xi )
+                                                                                                                      φ
+                                                                                              i=1
+                                                                                                            n
+                                                                                                                        !
+                                                                                                  1       1 X
+                                                                                           ∝ n/2+1 exp −      (xi − µ)2
+                                                                                            φ            2φ
+                                                                                                            1
+                                                                                                                              
+                                                                                              1           1
+                                                                                           ∝ n/2+1 exp −      2            2
+                                                                                                                             
+                                                                                                            ns + n(x̄ − µ)
+                                                                                            φ            2φ
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\mu ,\phi ) &amp;= \l (\prod _{i=1}^nf_{\Normal (\mu ,\phi )}(x_i)\r )\frac {1}{\phi } \\ &amp;\propto \frac {1}{\phi ^{n/2+1}}\exp \l (-\frac {1}{2\phi }\sum _1^n(x_i-\mu
+)^2\r ) \\ &amp;\propto \frac {1}{\phi ^{n/2+1}}\exp \l (-\frac {1}{2\phi }\l (ns^2+n(\bar {x}-\mu )^2\r )\r )
+\end{align*}
+where we have used <span class="textup">(<a href="The-normal-distribution-with-unknown-mean-variance.html#eq:sample-mean-variance">4.10</a>)</span> and the notation of that identity, \(\bar
+{x}=\sum _1^n x_i\) and \(s^2=\frac {1}{n}\sum _1^n(x_i-\bar {x})^2\). Hence the marginal density \(f(\mu |x)\) satisfies
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                       Z ∞                                    
+                                                                                               1           1
+                                                                                                    exp −      2           2
+                                                                                                                             
+                                                                           f (µ|x) ∝                         ns + n(x̄ − µ) ) dφ.
+                                                                                       0     φn/2+1       2φ
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\mu |x) &amp;\propto \int _0^\infty \frac {1}{\phi ^{n/2+1}}\exp \l (-\frac {1}{2\phi }\l (ns^2+n(\bar {x}-\mu )^2\r ))\r ) \,d\phi .
+\end{align*}
+To compute this integral we make the substitution \(\psi =\frac {1}{2\phi }(ns^2+n(\bar {x}-\mu )^2)\). We have \(\frac {d\psi }{d\phi }=\frac {-1}{2\phi ^2}(ns^2+n(\bar {x}-\mu )^2)\), and
+hence
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                            Z ∞
+                                                                                                       1        2φ2
+                                                                               f (µ|x) ∝                    e−ψ           dψ
+                                                                                          0   φ          ns2 + n(x̄ − µ)2
+                                                                                                      n/2+1
+                                                                                                                Z ∞
+                                                                                                   1
+                                                                                       ∝                    n/2
+                                                                                                                    ψ n/2−1 e−ψ dψ
+                                                                                            2            2
+                                                                                         (ns + n(x̄ − µ) )       0
+                                                                                                   1
+                                                                                       ∝
+                                                                                         (ns2 + n(x̄ − µ)2 )n/2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\mu |x) &amp;\propto \int _0^\infty \frac {1}{\phi ^{n/2+1}}e^{-\psi }\frac {2\phi ^2}{ns^2+n(\bar {x}-\mu )^2} \,d\psi \\ &amp;\propto \frac {1}{\l (ns^2+n(\bar {x}-\mu )^2\r
+)^{n/2}}\int _0^\infty \psi ^{n/2-1}e^{-\psi }\,d\psi \\ &amp;\propto \frac {1}{\l (ns^2+n(\bar {x}-\mu )^2\r )^{n/2}}
+\end{align*}
+where we use the fact that \(\int _0^\infty f_{\Gam (n/2,1)}(\psi )\,d\psi =1\). We lastly transform \(t=\frac {\mu -\bar {x}}{S/\sqrt {n}}\), to transform the probability density function of \(\mu
+|x\) into that of \(\tau |x\), giving
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                                                   dµ
+                                                                                                  f (τ |x) ∝ f (µ|x)
+                                                                                                                   dt
+                                                                                                             2 2
+                                                                                                                  n/2
+                                                                                                            S t
+                                                                                                  ∝ ns2 + n
+                                                                                                              n
+                                                                                                                −n/2
+                                                                                                           t2
+                                                                                                     
+                                                                                                   ∝ 1+
+                                                                                                         n−1
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\tau |x) \propto f(\mu |x)\l |\frac {d\mu }{dt}\r | \\ \propto \l (ns^2+n\frac {S^2t^2}{n}\r )^{n/2}\\ \propto \l (1+\frac {t^2}{n-1}\r )^{-n/2}
+\end{align*}
+Note that \(\l |\frac {d\mu }{dt}\r |\) is constant, so is absorbed by \(\propto \). In the last line we use that \(ns^2=(n-1)S^2\). By Lemma <a
+href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we identify \(\tau |x\sim \Studentt (n-1)\), as required.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-tests.html#ps:bayes_factor_likelihood_ratio_abs_cts"><b>7.7</b></a></span> We have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                                          1
+                                                                                                            R
+                                                                      P[Θ|{X=x} ∈ Π0 ]P[Θ ∈ H1 ]         Z Π0 fMθ (x)fΘ (θ) dθ P[Θ ∈ H1 ]
+                                                                   B=                                 = 1R
+                                                                      P[Θ|{X=x} ∈ Π1 ]P[Θ ∈ H0 ]         Z Π1 fMθ (x)fΘ (θ) dθ P[Θ ∈ H0 ]
+                                                                      R               fΘ (θ)      R
+                                                                        Π0 fMθ (x) P[Θ∈H0 ] dθ          fMθ (x)fΘ|{Θ∈H0 } (θ) dθ   fX|{Θ∈H0 } (x)
+                                                                    =R                fΘ (θ)
+                                                                                                = RΠ 0                           =                .
+                                                                           fM   (x)          dθ     Π   fMθ (x)fΘ|{Θ∈H1 } (θ) dθ   fX|{Θ∈H1 } (x)
+                                                                        Π1    θ     P[Θ∈H1 ]          1
+
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+B &amp;=\frac {\P [\Theta |_{\{X=x\}}\in \Pi _0]\P [\Theta \in H_1]}{\P [\Theta |_{\{X=x\}}\in \Pi _1]\P [\Theta \in H_0]} =\frac {\frac {1}{Z}\int _{\Pi _0}f_{M_\theta
+}(x)f_{\Theta }(\theta )\,d\theta \;\P [\Theta \in H_1]} {\frac {1}{Z}\int _{\Pi _1}f_{M_\theta }(x)f_{\Theta }(\theta )\;\,d\theta \P [\Theta \in H_0]} \\ &amp;=\frac {\int
+_{\Pi _0}f_{M_\theta }(x)\frac {f_{\Theta }(\theta )}{\P [\Theta \in H_0]}\,d\theta \;} {\int _{\Pi _1}f_{M_\theta }(x)\frac {f_{\Theta }(\theta )}{\P [\Theta \in
+H_1]}\;\,d\theta } =\frac {\int _{\Pi _0}f_{M_\theta }(x)f_{\Theta |_{\{\Theta \in H_0\}}}(\theta )\,d\theta \;} {\int _{\Pi _1}f_{M_\theta }(x)f_{\Theta |_{\{\Theta \in
+H_1\}}}(\theta )\;\,d\theta } =\frac {f_{X|_{\{\Theta \in H_0\}}}(x)}{f_{X|_{\{\Theta \in H_1\}}}(x)}.
+\end{align*}
+Here, the third equality is a consequence of Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>. The second-to-last inequality uses Exercise <a
+href="Exercises-on-Chapter-ref-c-conditioning.html#ps:rv_from_conditioning_pve_abs_cts"><b>1.8</b></a> and the final equality uses Exercise <a
+href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_condition_theta"><b>3.5</b></a>.
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<a id="notes-autofile-last"></a>
+</section>
+
+</main>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation"><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

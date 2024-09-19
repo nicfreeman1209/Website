@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Expectation</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,13 +901,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Expectation ......
 -->
 <h4 id="autosec-68"><span class="sectionnumber">2.4&#x2003;</span>Expectation</h4>
 <a id="notes_1-autopage-68"></a>
-<a id="notes_1-autofile-10"></a> <a id="s:expectation"></a>
+<a id="notes_1-autofile-10"></a>
+
+<a id="s:expectation"></a>
 
 <p>
 There is only one part of the ‘usual machinery’ for probability that we haven’t yet discussed, namely expectation.
@@ -949,8 +949,8 @@ For a continuous random variables, the expectation uses an integral against the 
 
 <!--
 
-                                                                             Z   ∞
-                                                                  E[X] =             x fX (x) dx.                                                    (2.5)                        --><a id="eq:E_cont"></a><!--
+                                                                             Z ∞
+                                                                  E[X] =           x fX (x) dx.                                                      (2.5)                        --><a id="eq:E_cont"></a><!--
                                                                              −∞
 
 -->
@@ -983,12 +983,12 @@ heavily on analysis and is well beyond the scope of this course. Instead, Lebesg
 <p>
 For purposes of this course, what you should know is: \(\E [X]\) is defined for all \(X\) such that either
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-1. \(X\geq 0\), in which case it is possible that \(\E [X]=\infty \),
+<span class="listmarker">1.</span> \(X\geq 0\), in which case it is possible that \(\E [X]=\infty \),
 </p>
 
 
@@ -997,7 +997,7 @@ For purposes of this course, what you should know is: \(\E [X]\) is defined for 
 
 
 <p>
-2. general \(X\) for which \(\E [|X|]&lt;\infty \).
+<span class="listmarker">2.</span> general \(X\) for which \(\E [|X|]&lt;\infty \).
 </p>
 </li>
 </ul>
@@ -1019,14 +1019,14 @@ discrete/continuous cases. You may also assume that all the ‘standard’ prope
 </p>
 <div class="theorembodyprop">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-42"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Proposition 2.4.1</span> <a id="autoid-43" ></a ><a id="p:E"></a> For random variables \(X,Y\):
+<span class="listmarker"> <span class="theoremheaderplain">Proposition 2.4.1</span></span> <a id="autoid-43" ></a ><a id="p:E"></a> For random variables \(X,Y\):
 </p>
 
 <p>
@@ -1079,14 +1079,15 @@ As usual, let \(\mc {G}\) denote a sub \(\sigma \)-field of \(\mc {F}\).
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-44"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 2.4.2</span> <a id="autoid-45" ></a ><a id="l:indicator_meas"></a> Let \(A\in \mc {G}\). Then the function \(\1_A\) is \(\mc {G}\)-measurable.
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 2.4.2</span></span> <a id="autoid-45" ></a ><a id="l:indicator_meas"></a> Let \(A\in \mc {G}\). Then the function
+\(\1_A\) is \(\mc {G}\)-measurable.
 </p>
 
 
@@ -1182,14 +1183,15 @@ We use some notation:
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-46"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 2.4.3</span> <a id="autoid-47" ></a >Let \(p\in [1,\infty )\). We say that \(X\in L^p\) if \(\E [|X|^p]&lt;\infty \).
+<span class="listmarker"> <span class="theoremheaderplain">Definition 2.4.3</span></span> <a id="autoid-47" ></a >Let \(p\in [1,\infty )\). We say that \(X\in L^p\) if \(\E
+[|X|^p]&lt;\infty \).
 </p>
 
 
@@ -1202,12 +1204,12 @@ We use some notation:
 <p>
 In this course, we will only be interested in the cases \(p=1\) and \(p=2\). These cases have the following set of useful properties:
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-1. By definition, \(L^1\) is the set of random variables for which \(\E [|X|]\) is finite.
+<span class="listmarker">1.</span> By definition, \(L^1\) is the set of random variables for which \(\E [|X|]\) is finite.
 </p>
 
 
@@ -1216,7 +1218,8 @@ In this course, we will only be interested in the cases \(p=1\) and \(p=2\). The
 
 
 <p>
-2. \(L^2\) is the set of random variables with finite variance. This comes from the fact that \(\var (X)=\E [X^2]-\E [X]^2\) (more strictly, it needs some integration theory from MAS31002/61022).
+<span class="listmarker">2.</span> \(L^2\) is the set of random variables with finite variance. This comes from the fact that \(\var (X)=\E [X^2]-\E [X]^2\) (more strictly, it needs some integration theory
+from MAS31002/61022).
 </p>
 
 
@@ -1225,7 +1228,7 @@ In this course, we will only be interested in the cases \(p=1\) and \(p=2\). The
 
 
 <p>
-3. From <span class="textup">(<a href="Expectation.html#eq:L1L2">2.7</a>)</span>, if \(X\in L^2\) then also \(X\in L^1\).
+<span class="listmarker">3.</span> From <span class="textup">(<a href="Expectation.html#eq:L1L2">2.7</a>)</span>, if \(X\in L^2\) then also \(X\in L^1\).
 </p>
 </li>
 </ul>
@@ -1235,14 +1238,15 @@ Often, to check if \(X\in L^p\) we must calculate \(\E [|X|^p]\). A special case
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-48"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 2.4.4</span> <a id="autoid-49" ></a >We say that a random variable \(X\) is bounded if there exists (deterministic) \(c\in \R \) such that \(|X|\leq c\).
+<span class="listmarker"> <span class="theoremheaderplain">Definition 2.4.4</span></span> <a id="autoid-49" ></a >We say that a random variable \(X\) is bounded if there exists (deterministic)
+\(c\in \R \) such that \(|X|\leq c\).
 </p>
 
 
@@ -1265,7 +1269,7 @@ If \(X\) is bounded, then using monotonicity we have \(\E [|X|^p]\leq \E [c^p]=c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

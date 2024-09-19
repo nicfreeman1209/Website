@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — A branching process</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,21 +901,23 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section A branching process ......
 -->
 <h4 id="autosec-124"><span class="sectionnumber">4.3&#x2003;</span>A branching process</h4>
 <a id="notes_1-autopage-124"></a>
-<a id="notes_1-autofile-18"></a> <a id="s:gw"></a>
+<a id="notes_1-autofile-18"></a>
+
+<a id="s:gw"></a>
 
 <p>
 Branching processes are stochastic processes that model objects which divide up into a random number of copies of themselves. They are particularly important in mathematical biology (think of cell division, the
-tree of life, etc). We won’t study any mathematical biology in this course, but we will look at one example of a branching process: the Galton-Watson process.
+tree of life, etc). We won’t study any mathematical biology in this course, but we will look at one example of a branching process: the Bienaymé-Galton-Watson process.
 </p>
 
 <p>
-The Galton-Watson process is parametrized by a random variable \(G\), which is known as the <i>offspring distribution</i>. It is simplest to understand the Galton-Watson process by drawing a tree, for example:
+The Bienaymé-Galton-Watson (BGW for short) process is parametrized by a random variable \(G\), which is known as the <i>offspring distribution</i>. It is simplest to understand the BGW process by drawing a
+tree, for example:
 </p>
 <div class="center">
 
@@ -935,13 +936,13 @@ The Galton-Watson process is parametrized by a random variable \(G\), which is k
 </div>
 
 <p>
-Each dot is a ‘parent’, which has a random number of child dots (indicated by arrows). Each parent choses how many children it will have independently of all else, by taking a random sample of \(G\). The
-Galton-Watson process is the process \(Z_n\), where \(Z_n\) is the number of dots in generation \(n\).
+Each dot is a ‘parent’, which has a random number of child dots (indicated by arrows). Each parent choses how many children it will have independently of all else, by taking a random sample of \(G\). The BGW
+process is the process \(Z_n\), where \(Z_n\) is the number of dots in generation \(n\).
 </p>
 
 <p>
-Formally, we define the Galton-Watson process as follows. Let \(X^n_i\), where \(n,i\ge 1\), be i.i.d.&nbsp;nonnegative integer-valued random variables with common distribution \(G\). Define a sequence
-\((Z_n)\) by \(Z_0=1\) and
+Formally, we define the BGW process as follows. Let \(X^n_i\), where \(n,i\ge 1\), be i.i.d.&nbsp;nonnegative integer-valued random variables with common distribution \(G\). Define a sequence \((Z_n)\) by
+\(Z_0=1\) and
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{4.}{4}\)</span>
@@ -950,8 +951,8 @@ Formally, we define the Galton-Watson process as follows. Let \(X^n_i\), where \
 
                          
                           X n+1 + . . . + X n+1 ,   if \(Z_n&gt;0\)
-                Zn+1   =      1             Zn
-                                                                               (4.5)                                                                                       --><a id="eq:gw_iterate"></a><!--
+                Zn+1 =          1            Zn
+                                                                                (4.5)                                                                                    --><a id="eq:gw_iterate"></a><!--
                           0,                        if \(Z_n=0\)
 
 -->
@@ -967,7 +968,7 @@ Formally, we define the Galton-Watson process as follows. Let \(X^n_i\), where \
 </p>
 
 <p>
-Then \(Z\) is the Galton-Watson process. The random variable \(X^n_i\) represents the number of children of the \(i^{th}\) parent in the \(n^{th}\) generation.
+Then \(Z\) is the BGW process. The random variable \(X^n_i\) represents the number of children of the \(i^{th}\) parent in the \(n^{th}\) generation.
 </p>
 
 <p>
@@ -975,20 +976,22 @@ Note that if \(Z_n=0\) for some \(n\), then for all \(m&gt;n\) we also have \(Z_
 </p>
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-84"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 4.3.1</span> <a id="autoid-85" ></a >The Galton-Watson process takes its name from Francis Galton (a statistician and social scientist) and Henry Watson (a
-mathematical physicist), who in 1874 were concerned that Victorian aristocratic surnames were becoming extinct. They tried to model how many children people had, which is also how many times a surname was
-passed on, per family. This allowed them to use the process \(Z_n\) to predict whether a surname would die out (i.e.&nbsp;if \(Z_n=0\) for some \(n\)) or become widespread (i.e.&nbsp;\(Z_n\to \infty \)).
+<span class="listmarker"> <span class="theoremheaderplain">Remark 4.3.1</span></span> <a id="autoid-85" ></a >The Bienaymé-Galton-Watson is commonly just called Galton-Watson process in
+the literature. It takes its name from Francis Galton (a statistician and social scientist) and Henry Watson (a mathematical physicist), who in 1874 were concerned that Victorian aristocratic surnames were
+becoming extinct. They tried to model how many children people had, which is also how many times a surname was passed on, per family. This allowed them to use the process \(Z_n\) to predict whether a
+surname would die out (i.e.&nbsp;if \(Z_n=0\) for some \(n\)) or become widespread (i.e.&nbsp;\(Z_n\to \infty \)). Unfortunately they made mistakes in their work, and in fact it turns out the French
+mathematician Irénée-Jules Bienaymé had entirely solved the question in 1845.
 </p>
 
 <p>
-(Since then, the Galton-Watson process has found more important uses.)
+(Since then, the BGW process has found more important uses.)
 </p>
 
 
@@ -1016,35 +1019,35 @@ Let us assume that \(G\in L^1\) and write \(\mu =\E [G]\). Let \(\mc {F}_n=\sigm
                                                                                                   X1n+1 + . . . + Xkn+1 1{Zn = k}
                                                                                               X                        
                                                                                          =E
-                                                                                               k=1
+                                                                                                  k=1
+                                                                                          ∞
+                                                                                            E X1n+1 + . . . + Xkn+1 1{Zn = k}
+                                                                                          X                                 
+                                                                                        =
+                                                                                            k=1
                                                                                              ∞
-                                                                                                                                       1{Zn = k}
-                                                                                             X
-                                                                                                           X1n+1 + . . . + Xkn+1
-                                                                                                                                                 
-                                                                                         =         E
-                                                                                             k=1
-                                                                                           ∞
-                                                                                             E X1n+1 + . . . + Xkn+1 E [1{Zn = k}]
-                                                                                           X                       
-                                                                                         =
-                                                                                             k=1
-                                                                                             ∞
-                                                                                             X
-                                                                                                    E X1n+1 + . . . + E Xkn+1 P [Zn = k]
-                                                                                                                          
-                                                                                         =
-                                                                                             k=1
-                                                                                             ∞
-                                                                                             X
-                                                                                         =         kµP[Zn = k]
-                                                                                             k=1
-                                                                                               ∞
-                                                                                               X
-                                                                                         =µ            k P[Zn = k]
-                                                                                                k=1
+                                                                                                                                       E [1{Zn = k}]
+                                                                                            X
+                                                                                                          X1n+1 + . . . + Xkn+1
+                                                                                                                                 
+                                                                                        =         E
+                                                                                            k=1
+                                                                                            ∞
+                                                                                            X
+                                                                                                   E X1n+1 + . . . + E Xkn+1 P [Zn = k]
+                                                                                                                         
+                                                                                        =
+                                                                                            k=1
+                                                                                            ∞
+                                                                                            X
+                                                                                        =         kµP[Zn = k]
+                                                                                            k=1
+                                                                                              ∞
+                                                                                              X
+                                                                                        =µ            k P[Zn = k]
+                                                                                              k=1
 
-                                                                                         = µ E[Zn ].                                   (4.6)                                 --><a id="eq:br_exp"></a><!--
+                                                                                        = µ E[Zn ].                                (4.6)                                          --><a id="eq:br_exp"></a><!--
 
 
 
@@ -1099,33 +1102,33 @@ steps are essentially the same, and we obtain
 <!--
 
 
+                                                                                              ∞
+                                                                                                E X1n+1 + . . . + Xkn+1 1{Zn = k} | Fn
+                                                                                              X                                      
+                                                                            E[Zn+1 | Fn ] =
+                                                                                              k=1
+                                                                                               ∞
+                                                                                                      1{Zn = k}E X1n+1 + . . . + Xkn+1 | Fn
+                                                                                              X                                                   
+                                                                                         =
+                                                                                              k=1
+                                                                                              ∞
+                                                                                                      1{Zn = k}E X1n+1 + . . . + Xkn+1
+                                                                                              X                                               
+                                                                                         =
+                                                                                              k=1
+                                                                                              ∞
+                                                                                                      kµ1{Zn = k}
+                                                                                              X
+                                                                                         =
+                                                                                              k=1
                                                                                                 ∞
-                                                                                                  E X1n+1 + . . . + Xkn+1 1{Zn = k} | Fn
-                                                                                                X                                      
-                                                                              E[Zn+1 | Fn ] =
-                                                                                                k=1
-                                                                                                ∞
-                                                                                                       1{Zn = k}E X1n+1 + . . . + Xkn+1 | Fn
-                                                                                                X                                                     
-                                                                                           =
-                                                                                                k=1
-                                                                                                ∞
-                                                                                                       1{Zn = k}E X1n+1 + . . . + Xkn+1
-                                                                                                X                                             
-                                                                                           =
-                                                                                                k=1
-                                                                                                ∞
-                                                                                                       kµ1{Zn = k}
+                                                                                                          k 1{Zn = k}
                                                                                                 X
-                                                                                           =
-                                                                                                k=1
-                                                                                                  ∞
-                                                                                                           k 1{Zn = k}
-                                                                                                  X
-                                                                                           =µ
-                                                                                                   k=1
+                                                                                         =µ
+                                                                                                  k=1
 
-                                                                                           = µZn .
+                                                                                         = µZn .
 
 
 
@@ -1153,7 +1156,7 @@ Here we use that \(Z_n\) is \(\mc {F}_n\) measurable to take out what is known, 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

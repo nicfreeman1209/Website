@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Exercises on Chapter <a href=Further-theory-stochastic-processes.html#c:stoch_procs_2>8</a> </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,11 +901,10 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Exercises on Chapter <a href=Further-theory-stochastic-processes.html#c:stoch_procs_2>8</a>    ......
 -->
-<h4 id="autosec-266"><span class="sectionnumber">8.6&#x2003;</span>Exercises on Chapter <a href="Further-theory-stochastic-processes.html#c:stoch_procs_2">8</a> \((\Delta )\)</h4>
+<h4 id="autosec-266"><span class="sectionnumber">8.6&#x2003;</span>Exercises on Chapter <a href="Further-theory-stochastic-processes.html#c:stoch_procs_2">8</a> \(\msconly \)</h4>
 <a id="notes_1-autopage-266"></a>
 <a id="notes_1-autofile-41"></a>
 <!--
@@ -917,19 +915,19 @@ Home</a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>8.1</b> <a id="ps:dct"></a> Let \(U\) be a random variable that takes values in \((1,\infty )\). Define \(X_n=U^{-n}\). Show that \(\E [X_n]\to 0\).
+<span class="listmarker"><b>8.1</b></span> <a id="ps:dct"></a> Let \(U\) be a random variable that takes values in \((1,\infty )\). Define \(X_n=U^{-n}\). Show that \(\E [X_n]\to 0\).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>8.2</b> <a id="ps:dct_L1"></a> Let \(X\) be a random variable in \(L^1\) and set
+<span class="listmarker"><b>8.2</b></span> <a id="ps:dct_L1"></a> Let \(X\) be a random variable in \(L^1\) and set
 </p>
 <p>
 \[X_n=X\1_{\{|X|\leq n\}}= \begin {cases} X &amp; \text { if }|X|\leq n, \\ 0 &amp; \text { otherwise.} \end {cases} \]
@@ -942,14 +940,14 @@ Show that \(\E [X_n]\to \E [X]\).
 
 
 <p>
-<b>8.3</b> <a id="ps:dct_necsuff"></a> Let \(Z\) be a random variable taking values in \([1,\infty )\) and for \(n\in \N \) define
+<span class="listmarker"><b>8.3</b></span> <a id="ps:dct_necsuff"></a> Let \(Z\) be a random variable taking values in \([1,\infty )\) and for \(n\in \N \) define
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{2}\)</span>
 <!--
                                                     
                                                     Z   if Z ∈ [n, n + 1)
                                                     
-                            Xn = Z 1{Z∈[n,n+1)} =                                                    (8.3)                                                           --><a id="eq:Xn"></a><!--
+                            Xn = Z 1{Z∈[n,n+1)} =                                                  (8.3)                                                               --><a id="eq:Xn"></a><!--
                                                     0   otherwise.
                                                     
 
@@ -963,12 +961,12 @@ Show that \(\E [X_n]\to \E [X]\).
 
 
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Suppose that \(Z\in L^1\). Use the dominated convergence theorem to show that \(\E [X_n]\to 0\) as \(n\to \infty \).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Suppose that \(Z\in L^1\). Use the dominated convergence theorem to show that \(\E [X_n]\to 0\) as \(n\to \infty \).
 </p>
 
 
@@ -977,7 +975,7 @@ Show that \(\E [X_n]\to \E [X]\).
 
 
 <p>
-<span class="textnormal">(b)</span> Suppose, instead, that \(Z\) is a continuous random variable with probability density function
+<span class="listmarker"><span class="textnormal">(b)</span></span> Suppose, instead, that \(Z\) is a continuous random variable with probability density function
 </p>
 <p>
 \[f(x)=\begin {cases} x^{-2} &amp; \text { if }x\geq 1,\\ 0 &amp; \text { otherwise}. \end {cases} \]
@@ -992,7 +990,7 @@ and define \(X_n\) using <span class="textup">(<a href="Exercises-on-Chapter-ref
 
 
 <p>
-<span class="textnormal">(c)</span> Comment on what part (b) tells us about the dominated convergence theorem.
+<span class="listmarker"><span class="textnormal">(c)</span></span> Comment on what part (b) tells us about the dominated convergence theorem.
 </p>
 </li>
 </ul>
@@ -1006,20 +1004,21 @@ and define \(X_n\) using <span class="textup">(<a href="Exercises-on-Chapter-ref
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>8.4</b> <a id="ps:stopping_time_defn_2"></a> Let \((\mc {F}_n)\) be a filtration. Check that \(T\) is a stopping time if and only if \(\{T=n\}\) is \(\mc {F}_n\) measurable for all \(n\).
+<span class="listmarker"><b>8.4</b></span> <a id="ps:stopping_time_defn_2"></a> Let \((\mc {F}_n)\) be a filtration. Check that \(T\) is a stopping time if and only if \(\{T=n\}\) is \(\mc {F}_n\)
+measurable for all \(n\).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>8.5</b> <a id="ps:return_time"></a> Let \((\mc {F}_n)\) be a filtration and let \((S_n)\) be an adapted process, with values in \(\Z \) and initial value \(S_0=0\). Show that \(R=\inf \{n\geq
-1\-S_n=0\}\) is a stopping time.
+<span class="listmarker"><b>8.5</b></span> <a id="ps:return_time"></a> Let \((\mc {F}_n)\) be a filtration and let \((S_n)\) be an adapted process, with values in \(\Z \) and initial value \(S_0=0\).
+Show that \(R=\inf \{n\geq 1\-S_n=0\}\) is a stopping time.
 </p>
 <p>
 <i>Note: \(R\) is known as the first return time of \((S_n)\) to \(0\).</i>
@@ -1029,29 +1028,29 @@ and define \(X_n\) using <span class="textup">(<a href="Exercises-on-Chapter-ref
 
 
 <p>
-<b>8.6</b> <a id="ps:stopping_time_sum"></a> Let \(S\) and \(T\) be stopping times with respect to the same filtration. Show that \(S+T\) is also a stopping time.
+<span class="listmarker"><b>8.6</b></span> <a id="ps:stopping_time_sum"></a> Let \(S\) and \(T\) be stopping times with respect to the same filtration. Show that \(S+T\) is also a stopping time.
 </p>
 </li>
 <li>
 
 
 <p>
-<b>8.7</b> <a id="ps:FS_FT"></a> Let \((\mc {F}_n)\) be a filtration. Let \(S\) and \(T\) be stopping times with \(S\leq T\). Show that \(\mc {F}_S\sw \mc {F}_T\).
+<span class="listmarker"><b>8.7</b></span> <a id="ps:FS_FT"></a> Let \((\mc {F}_n)\) be a filtration. Let \(S\) and \(T\) be stopping times with \(S\leq T\). Show that \(\mc {F}_S\sw \mc {F}_T\).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>8.8</b> <a id="ps:urn_sec"></a> Recall the Pólya urn process from Section <a href="Urn-processes.html#s:urn">4.2</a>. Recall that \(B_n\) is the number of black balls in the urn at time \(n\), and
-that \(M_n=\frac {B_n}{n+2}\) is the fraction of black balls in the urn at time \(n\). Let \(T\) be the first time at which a black ball is drawn from the urn.
+<span class="listmarker"><b>8.8</b></span> <a id="ps:urn_sec"></a> Recall the Pólya urn process from Section <a href="Urn-processes.html#s:urn">4.2</a>. Recall that \(B_n\) is the number of
+black balls in the urn at time \(n\), and that \(M_n=\frac {B_n}{n+2}\) is the fraction of black balls in the urn at time \(n\). Let \(T\) be the first time at which a black ball is drawn from the urn.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(\P [T\geq n]=\frac {1}{n}\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(\P [T\geq n]=\frac {1}{n}\).
 </p>
 
 
@@ -1060,7 +1059,7 @@ that \(M_n=\frac {B_n}{n+2}\) is the fraction of black balls in the urn at time 
 
 
 <p>
-<span class="textnormal">(b)</span> Use the optional stopping theorem to show that \(\E [M_T]=\frac 12\) and \(\E [\frac {1}{T+2}]=\frac 14\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Use the optional stopping theorem to show that \(\E [M_T]=\frac 12\) and \(\E [\frac {1}{T+2}]=\frac 14\).
 </p>
 </li>
 </ul>
@@ -1069,19 +1068,19 @@ that \(M_n=\frac {B_n}{n+2}\) is the fraction of black balls in the urn at time 
 
 
 <p>
-<b>8.9</b> <a id="ps:urn_moran_fixation"></a> <i>This question is a continuation of exercise <a href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#ps:urn_moran"><b>7.8</b></a> – recall the
-urn process from that exercise.</i>
+<span class="listmarker"><b>8.9</b></span> <a id="ps:urn_moran_fixation"></a> <i>This question is a continuation of exercise <a
+href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#ps:urn_moran"><b>7.8</b></a> – recall the urn process from that exercise.</i>
 </p>
 <p>
 Let \(T\) be the first time at which the urn contains only balls of one colour, and suppose that initially the urn contains \(r\) red balls and \(b\) black balls. Recall that \(M_n\) denotes the fraction of red balls in
 the urn at time \(n\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Deduce that \(\P [T&lt;\infty ]=1\), and that \(\P [M_T=0\text { or }M_T=1]=1\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Deduce that \(\P [T&lt;\infty ]=1\), and that \(\P [M_T=0\text { or }M_T=1]=1\).
 </p>
 
 
@@ -1090,7 +1089,7 @@ the urn at time \(n\).
 
 
 <p>
-<span class="textnormal">(b)</span> Show that \(\E [M_T]=\frac {r}{r+b}\) and hence deduce that \(\P [M_T=1]=\frac {r}{r+b}\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that \(\E [M_T]=\frac {r}{r+b}\) and hence deduce that \(\P [M_T=1]=\frac {r}{r+b}\).
 </p>
 <p>
 
@@ -1103,8 +1102,9 @@ the urn at time \(n\).
 
 
 <p>
-<b>8.10</b> <a id="ps:urn_remove"></a> Let \(m\in \N \) and \(m\geq 2\). At time \(n=0\), an urn contains \(2m\) balls, of which \(m\) are red and \(m\) are blue. At each time \(n=1,\ldots ,2m\) we
-draw a single ball from the urn; we discard this ball and do not replace it. We continue until the urn is empty. Therefore, at time \(n\in \{0,\ldots ,2m\}\) the urn contains \(2m-n\) balls.
+<span class="listmarker"><b>8.10</b></span> <a id="ps:urn_remove"></a> Let \(m\in \N \) and \(m\geq 2\). At time \(n=0\), an urn contains \(2m\) balls, of which \(m\) are red and \(m\) are blue. At
+each time \(n=1,\ldots ,2m\) we draw a single ball from the urn; we discard this ball and do not replace it. We continue until the urn is empty. Therefore, at time \(n\in \{0,\ldots ,2m\}\) the urn contains
+\(2m-n\) balls.
 </p>
 <p>
 Let \(N_n\) denote the number of red balls remaining in the urn at time \(n\). For \(n=0,\ldots ,2m-1\) let
@@ -1115,12 +1115,12 @@ Let \(N_n\) denote the number of red balls remaining in the urn at time \(n\). F
 <p>
 be the fraction of red balls remaining after time \(n\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(P_n\) is a martingale, with respect to a natural filtration that you should specify.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(P_n\) is a martingale, with respect to a natural filtration that you should specify.
 </p>
 
 
@@ -1129,8 +1129,8 @@ be the fraction of red balls remaining after time \(n\).
 
 
 <p>
-<span class="textnormal">(b)</span> <b>[Challenge question]</b> Let \(T\) be the first time at which we draw a red ball. Note that a \((T+1)^{st}\) ball will be drawn, because the urn initially contains
-at least two red balls. Show that the probability that the \((T+1)^{st}\) ball is red is \(\frac {1}{2}\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> <b>[Challenge question]</b> Let \(T\) be the first time at which we draw a red ball. Note that a \((T+1)^{st}\) ball will be
+drawn, because the urn initially contains at least two red balls. Show that the probability that the \((T+1)^{st}\) ball is red is \(\frac {1}{2}\).
 </p>
 </li>
 </ul>
@@ -1146,7 +1146,7 @@ at least two red balls. Show that the probability that the \((T+1)^{st}\) ball i
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

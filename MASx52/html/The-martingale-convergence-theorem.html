@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — The martingale convergence theorem</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,13 +901,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section The martingale convergence theorem ......
 -->
 <h4 id="autosec-210"><span class="sectionnumber">7.3&#x2003;</span>The martingale convergence theorem</h4>
 <a id="notes_1-autopage-210"></a>
-<a id="notes_1-autofile-33"></a> <a id="s:martconv"></a>
+<a id="notes_1-autofile-33"></a>
+
+<a id="s:martconv"></a>
 
 <p>
 In this section, we are concerned with almost sure convergence of supermartingales \((M_n)\) as \(n\to \infty \). Naturally, martingales are a special case and submartingales can be handled through multiplying
@@ -916,15 +916,15 @@ by \(-1\). We’ll need the following definition:
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-146"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 7.3.1</span> <a id="autoid-147" ></a >Let \(p\in [1,\infty )\). We say that a stochastic process \((X_n)\) is uniformly bounded in \(L^p\) if there exists
-some \(M&lt;\infty \) such that, for all \(n\),
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.3.1</span></span> <a id="autoid-147" ></a >Let \(p\in [1,\infty )\). We say that a stochastic process \((X_n)\) is
+uniformly bounded in \(L^p\) if there exists some \(M&lt;\infty \) such that, for all \(n\),
 </p>
 
 <p>
@@ -1015,14 +1015,14 @@ This is an almost surely limit, since it holds for each \(\omega \in \Omega \). 
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-148"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 7.3.2</span> <a id="autoid-149" ></a ><a id="l:Doobup"></a> Let \(M\) be a supermartingale. Then
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 7.3.2</span></span> <a id="autoid-149" ></a ><a id="l:Doobup"></a> Let \(M\) be a supermartingale. Then
 </p>
 
 <p>
@@ -1088,15 +1088,15 @@ result. &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-150"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 7.3.3</span> <a id="autoid-151" ></a ><a id="l:Doobup2"></a> Suppose \(M\) is a supermartingale and uniformly bounded in \(L^1\). Then \(P[U_\infty
-[a,b]=\infty ]=0.\)
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 7.3.3</span></span> <a id="autoid-151" ></a ><a id="l:Doobup2"></a> Suppose \(M\) is a supermartingale and uniformly
+bounded in \(L^1\). Then \(P[U_\infty [a,b]=\infty ]=0.\)
 </p>
 
 
@@ -1153,15 +1153,15 @@ convergence theorem.
 </p>
 <div class="theorembodythm">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-152"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 7.3.4 (Martingale Convergence Theorem I)</span> <a id="autoid-153" ></a ><a id="t:mart_conv"></a> Suppose \(M\) is a supermartingale and uniformly
-bounded in \(L^1\). Then the limit \(M_n\stackrel {a.s.}{\to }M_\infty \) exists and \(\P [|M_\infty |&lt;\infty ]=1\).
+<span class="listmarker"> <span class="theoremheaderplain">Theorem 7.3.4 (Martingale Convergence Theorem I)</span></span> <a id="autoid-153" ></a ><a id="t:mart_conv"></a> Suppose \(M\)
+is a supermartingale and uniformly bounded in \(L^1\). Then the limit \(M_n\stackrel {a.s.}{\to }M_\infty \) exists and \(\P [|M_\infty |&lt;\infty ]=1\).
 </p>
 
 
@@ -1240,16 +1240,16 @@ more information about \(M_\infty \), we need an extra condition.
 </p>
 <div class="theorembodycor">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-154"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Corollary 7.3.5 (Martingale Convergence Theorem II)</span> <a id="autoid-155" ></a ><a id="t:mart_conv2"></a> In the setting of Theorem <a
-href="The-martingale-convergence-theorem.html#t:mart_conv">7.3.4</a>, suppose additionally that \((M_n)\) is uniformly bounded in \(L^2\). Then \(M_n\to M_\infty \) in both \(L^1\) and \(L^2\),
-and
+<span class="listmarker"> <span class="theoremheaderplain">Corollary 7.3.5 (Martingale Convergence Theorem II)</span></span> <a id="autoid-155" ></a ><a id="t:mart_conv2"></a> In the
+setting of Theorem <a href="The-martingale-convergence-theorem.html#t:mart_conv">7.3.4</a>, suppose additionally that \((M_n)\) is uniformly bounded in \(L^2\). Then \(M_n\to M_\infty \) in both
+\(L^1\) and \(L^2\), and
 </p>
 
 <p>
@@ -1281,7 +1281,7 @@ The proof of Corollary <a href="The-martingale-convergence-theorem.html#t:mart_c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Exercises on Chapter <a href=The-binomial-model.html#c:bin_model>5</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Exercises on Chapter <a href=The-binomial-model.html#c:bin_model>5</a> ......
 -->
@@ -921,26 +919,26 @@ All questions use the notation \(u,d,p_u,p_d,s\) and \(r\), which has been used 
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>5.1</b> <a id="ps:portfolio_recap"></a> Suppose that we hold the portfolio \((1,3)\) at time \(0\). What is the value of this portfolio at time \(1\)?
+<span class="listmarker"><b>5.1</b></span> <a id="ps:portfolio_recap"></a> Suppose that we hold the portfolio \((1,3)\) at time \(0\). What is the value of this portfolio at time \(1\)?
 </p>
 </li>
 <li>
 
 
 <p>
-<b>5.2</b> <a id="ps:contingent_1"></a> Find portfolios that replicate the following contingent claims.
+<span class="listmarker"><b>5.2</b></span> <a id="ps:contingent_1"></a> Find portfolios that replicate the following contingent claims.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> \(\Phi (S_1)=1\)
+<span class="listmarker"><span class="textnormal">(a)</span></span> \(\Phi (S_1)=1\)
 </p>
 
 
@@ -949,7 +947,7 @@ All questions use the notation \(u,d,p_u,p_d,s\) and \(r\), which has been used 
 
 
 <p>
-<span class="textnormal">(b)</span> \(\Phi (S_1)=\begin {cases} 3 &amp; \text { if }S_1=su,\\ 1 &amp; \text { if }S_1=sd. \end {cases}\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> \(\Phi (S_1)=\begin {cases} 3 &amp; \text { if }S_1=su,\\ 1 &amp; \text { if }S_1=sd. \end {cases}\).
 </p>
 </li>
 </ul>
@@ -961,23 +959,14 @@ Hence, write down the values of these contingent claims at time \(0\).
 
 
 <p>
-<b>5.3</b> <a id="ps:contingent_2"></a> Find the contingent claims \(\Phi (S_1)\) for the following derivatives.
+<span class="listmarker"><b>5.3</b></span> <a id="ps:contingent_2"></a> Find the contingent claims \(\Phi (S_1)\) for the following derivatives.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> A contract in which the holder promises to buy two units of stock at time \(t=1\), each for strike price \(K\).
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-<span class="textnormal">(b)</span> A European put option with strike price \(K\in (sd,su)\) (see Section <a href="Types-financial-derivative.html#s:options_1">5.3</a>).
+<span class="listmarker"><span class="textnormal">(a)</span></span> A contract in which the holder promises to buy two units of stock at time \(t=1\), each for strike price \(K\).
 </p>
 
 
@@ -986,8 +975,8 @@ Hence, write down the values of these contingent claims at time \(0\).
 
 
 <p>
-<span class="textnormal">(c)</span> A contract in which we promise that, if \(S_1=su\), we will sell one unit of stock at time \(t=1\) for strike price \(K\in (sd,su)\) (and otherwise, if \(S_1=sd\) we do
-nothing).
+<span class="listmarker"><span class="textnormal">(b)</span></span> A European put option with strike price \(K\in (sd,su)\) (see Section <a
+href="Types-financial-derivative.html#s:options_1">5.3</a>).
 </p>
 
 
@@ -996,7 +985,17 @@ nothing).
 
 
 <p>
-<span class="textnormal">(d)</span> Holding both the contracts in (b) and (c) at once.
+<span class="listmarker"><span class="textnormal">(c)</span></span> A contract in which we promise that, if \(S_1=su\), we will sell one unit of stock at time \(t=1\) for strike price \(K\in (sd,su)\)
+(and otherwise, if \(S_1=sd\) we do nothing).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(d)</span></span> Holding both the contracts in (b) and (c) at once.
 </p>
 </li>
 </ul>
@@ -1005,15 +1004,15 @@ nothing).
 
 
 <p>
-<b>5.4</b> <a id="ps:put_call_parity"></a> Let \(\Pi ^{call}_t\) and \(\Pi ^{put}_t\) be the price of European call and put options, both with the same strike price \(K\in (sd,su)\), at times
-\(t=0,1\).
+<span class="listmarker"><b>5.4</b></span> <a id="ps:put_call_parity"></a> Let \(\Pi ^{call}_t\) and \(\Pi ^{put}_t\) be the price of European call and put options, both with the same strike
+price \(K\in (sd,su)\), at times \(t=0,1\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Write down formulae for \(\Pi ^{call}_0\) and \(\Pi ^{put}_0\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Write down formulae for \(\Pi ^{call}_0\) and \(\Pi ^{put}_0\).
 </p>
 
 
@@ -1022,7 +1021,7 @@ nothing).
 
 
 <p>
-<span class="textnormal">(b)</span> Show that \(\Pi ^{call}_0-\Pi ^{put}_0=s-\frac {K}{1+r}\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that \(\Pi ^{call}_0-\Pi ^{put}_0=s-\frac {K}{1+r}\).
 </p>
 </li>
 </ul>
@@ -1036,20 +1035,21 @@ nothing).
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>5.5</b> <a id="ps:contingent_3"></a> Write down the contingent claim of a European call option (that matures at time \(T\)).
+<span class="listmarker"><b>5.5</b></span> <a id="ps:contingent_3"></a> Write down the contingent claim of a European call option (that matures at time \(T\)).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>5.6</b> <a id="ps:binomial_hedging"></a> Let \(T=2\) and let the initial value of a single unit of stock be \(S_0=100\). Suppose that \(p_u=0.25\) and \(p_d=0.75\), that \(u=2.0\) and \(d=0.5\), and
-that \(r=0.25\). Draw out, in a tree-like diagram, the possible values of the stock price at times \(t=0,1,2\). Find the price, at time \(0\), of a European put option with strike price \(K=100\).
+<span class="listmarker"><b>5.6</b></span> <a id="ps:binomial_hedging"></a> Let \(T=2\) and let the initial value of a single unit of stock be \(S_0=100\). Suppose that \(p_u=0.25\) and
+\(p_d=0.75\), that \(u=2.0\) and \(d=0.5\), and that \(r=0.25\). Draw out, in a tree-like diagram, the possible values of the stock price at times \(t=0,1,2\). Find the price, at time \(0\), of a European put
+option with strike price \(K=100\).
 </p>
 <p>
 Suppose instead that \(p_u=0.1\) and \(p_d=0.9\). Does this change the value of our put option?
@@ -1059,18 +1059,18 @@ Suppose instead that \(p_u=0.1\) and \(p_d=0.9\). Does this change the value of 
 
 
 <p>
-<b>5.7</b> <a id="ps:binomial_hedging_3"></a> Let \(T=2\) and let the initial value of a single unit of stock be \(S_0=120\). Suppose that \(p_u=0.5\) and \(p_d=0.5\), that \(u=1.5\) and \(d=0.5\), and
-that \(r=0.0\). Draw out, in a tree-like diagram, the possible values of the stock price at times \(t=0,1,2\). Annotate your tree to show a hedging strategy for a European call option with strike price \(K=60\).
-Hence, write down the value of this option at time \(0\).
+<span class="listmarker"><b>5.7</b></span> <a id="ps:binomial_hedging_3"></a> Let \(T=2\) and let the initial value of a single unit of stock be \(S_0=120\). Suppose that \(p_u=0.5\) and
+\(p_d=0.5\), that \(u=1.5\) and \(d=0.5\), and that \(r=0.0\). Draw out, in a tree-like diagram, the possible values of the stock price at times \(t=0,1,2\). Annotate your tree to show a hedging strategy for a
+European call option with strike price \(K=60\). Hence, write down the value of this option at time \(0\).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>5.8</b> <a id="ps:binomial_hedging_2"></a> Let \(T=2\) and let the initial value of a single unit of stock be \(S_0=480\). Suppose that \(p_u=0.5\) and \(p_d=0.5\), that \(u=1.5\) and \(d=0.75\), and
-that \(r=0\). Draw out, in a tree-like diagram, the possible values of the stock price at times \(t=0,1,2\). Annotate your tree to show a hedging strategy for a European call option with strike price \(K=60\).
-Hence, write down the value of this option at time \(0\).
+<span class="listmarker"><b>5.8</b></span> <a id="ps:binomial_hedging_2"></a> Let \(T=2\) and let the initial value of a single unit of stock be \(S_0=480\). Suppose that \(p_u=0.5\) and
+\(p_d=0.5\), that \(u=1.5\) and \(d=0.75\), and that \(r=0\). Draw out, in a tree-like diagram, the possible values of the stock price at times \(t=0,1,2\). Annotate your tree to show a hedging strategy for a
+European call option with strike price \(K=60\). Hence, write down the value of this option at time \(0\).
 </p>
 <p>
 Comment on the values obtained for the hedging portfolios.
@@ -1080,14 +1080,14 @@ Comment on the values obtained for the hedging portfolios.
 
 
 <p>
-<b>5.9</b> <a id="ps:bin_mart_2"></a> Recall that \((S_t)_{t=1}^T\) is the price of a single unit of stock.
+<span class="listmarker"><b>5.9</b></span> <a id="ps:bin_mart_2"></a> Recall that \((S_t)_{t=1}^T\) is the price of a single unit of stock.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Find a condition on \(p_u,p_d,u,d\) that is equivalent to saying that \(S_t\) is a martingale under \(\P \).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Find a condition on \(p_u,p_d,u,d\) that is equivalent to saying that \(S_t\) is a martingale under \(\P \).
 </p>
 
 
@@ -1096,7 +1096,7 @@ Comment on the values obtained for the hedging portfolios.
 
 
 <p>
-<span class="textnormal">(b)</span> When is \(M_t=\log S_t\) is a martingale under \(\P \)?
+<span class="listmarker"><span class="textnormal">(b)</span></span> When is \(M_t=\log S_t\) is a martingale under \(\P \)?
 </p>
 </li>
 </ul>
@@ -1110,12 +1110,13 @@ Comment on the values obtained for the hedging portfolios.
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>5.10</b> <a id="ps:bin_compute"></a> Write a computer program (in a language of your choice) that carries out the pricing algorithm for the binomial model, for a general number \(n\) of time-steps.
+<span class="listmarker"><b>5.10</b></span> <a id="ps:bin_compute"></a> Write a computer program (in a language of your choice) that carries out the pricing algorithm for the binomial model, for a
+general number \(n\) of time-steps.
 </p>
 </li>
 </ul>
@@ -1129,7 +1130,7 @@ Comment on the values obtained for the hedging portfolios.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

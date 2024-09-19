@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Probability spaces and random variables</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... chapter Probability spaces and random variables ......
 -->
@@ -937,31 +935,22 @@ the event that our dice roll is an odd number.
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-8"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 2.1.1</span> <a id="autoid-9" ></a ><a id="d:sigma_field"></a> Let \(\mc {F}\) be a set of subsets of \(\Omega \). We say \(\mc {F}\) is a \(\sigma
-\)-field if it satisfies the following properties:
+<span class="listmarker"> <span class="theoremheaderplain">Definition 2.1.1</span></span> <a id="autoid-9" ></a ><a id="d:sigma_field"></a> Let \(\mc {F}\) be a set of subsets of \(\Omega
+\). We say \(\mc {F}\) is a \(\sigma \)-field if it satisfies the following properties:
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-1. \(\emptyset \in \mc {F}\) and \(\Omega \in \mc {F}\).
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-2. if \(A\in \mc {F}\) then \(\Omega \sc A\in \mc {F}\).
+<span class="listmarker">1.</span> \(\emptyset \in \mc {F}\) and \(\Omega \in \mc {F}\).
 </p>
 
 
@@ -970,7 +959,16 @@ the event that our dice roll is an odd number.
 
 
 <p>
-3. if \(A_1,A_2,\ldots \in \mc {F}\) then \(\bigcup _{i=1}^\infty A_i\in \mc {F}\).
+<span class="listmarker">2.</span> if \(A\in \mc {F}\) then \(\Omega \sc A\in \mc {F}\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">3.</span> if \(A_1,A_2,\ldots \in \mc {F}\) then \(\bigcup _{i=1}^\infty A_i\in \mc {F}\).
 </p>
 </li>
 </ul>
@@ -998,22 +996,22 @@ definition, we sometimes write that an event is \(\mc {F}\)-measurable.
 </p>
 <div class="theorembodyexample">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-10"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 2.1.2</span> <a id="autoid-11" ></a ><a id="ex:sigma_field"></a> Some examples of experiments and the \(\sigma \)-fields we might choose for them are
-the following:
+<span class="listmarker"> <span class="theoremheaderplain">Example 2.1.2</span></span> <a id="autoid-11" ></a ><a id="ex:sigma_field"></a> Some examples of experiments and the \(\sigma
+\)-fields we might choose for them are the following:
 </p>
-<ul style="list-style-type:none">
+<ul class="itemize" style="list-style-type:none">
 
 
 <li>
 <p>
-• We toss a coin, which might result in heads \(H\) or tails \(T\). We take \(\Omega =\{H,T\}\) and \(\mc {F}=\big \{\emptyset ,\{H\},\{T\},\Omega \big \}\).
+<span class="listmarker">•</span> We toss a coin, which might result in heads \(H\) or tails \(T\). We take \(\Omega =\{H,T\}\) and \(\mc {F}=\big \{\emptyset ,\{H\},\{T\},\Omega \big \}\).
 </p>
 
 
@@ -1022,8 +1020,8 @@ the following:
 
 
 <p>
-• We toss two coins, both of which might result in heads \(H\) or tails \(T\). We take \(\Omega =\{HH,TT,HT,TH\}\). However, we are only interested in the outcome that both coins are heads. We take \(\mc
-{F}=\big \{\emptyset ,\{HH\},\Omega \sc \{HH\},\Omega \big \}\).
+<span class="listmarker">•</span> We toss two coins, both of which might result in heads \(H\) or tails \(T\). We take \(\Omega =\{HH,TT,HT,TH\}\). However, we are only interested in the outcome that
+both coins are heads. We take \(\mc {F}=\big \{\emptyset ,\{HH\},\Omega \sc \{HH\},\Omega \big \}\).
 </p>
 </li>
 </ul>
@@ -1045,21 +1043,22 @@ Given \(\Omega \) and \(\mc {F}\), the final ingredient of a probability space i
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-12"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 2.1.3</span> <a id="autoid-13" ></a ><a id="d:P_meas"></a> A probability measure \(\P \) is a function \(\P :\F \to [0,1]\) satisfying:
+<span class="listmarker"> <span class="theoremheaderplain">Definition 2.1.3</span></span> <a id="autoid-13" ></a ><a id="d:P_meas"></a> A probability measure \(\P \) is a function \(\P :\F
+\to [0,1]\) satisfying:
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-1. \(\P [\Omega ]=1\).
+<span class="listmarker">1.</span> \(\P [\Omega ]=1\).
 </p>
 
 
@@ -1068,7 +1067,7 @@ Given \(\Omega \) and \(\mc {F}\), the final ingredient of a probability space i
 
 
 <p>
-2. If \(A_1,A_2,\ldots \in \F \) are pair-wise disjoint (i.e.&nbsp;\(A_i\cap A_j=\emptyset \) for all \(i,j\) such that \(i\ne j\)) then
+<span class="listmarker">2.</span> If \(A_1,A_2,\ldots \in \F \) are pair-wise disjoint (i.e.&nbsp;\(A_i\cap A_j=\emptyset \) for all \(i,j\) such that \(i\ne j\)) then
 </p>
 <p>
 \[ \P \left [ \bigcup _{i=1}^\infty A_i \right ] = \sum _{i=1}^\infty \P [A_i]. \]
@@ -1093,15 +1092,15 @@ Definion <a href="Probability-spaces-random-variables.html#d:P_meas">2.1.3</a>, 
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-14"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 2.1.4</span> <a id="autoid-15" ></a >A probability space is a triple \((\Omega ,\F ,\P )\), where \(\mc {F}\) is a \(\sigma \)-field and \(\P \) is a
-probability measure.
+<span class="listmarker"> <span class="theoremheaderplain">Definition 2.1.4</span></span> <a id="autoid-15" ></a >A probability space is a triple \((\Omega ,\F ,\P )\), where \(\mc {F}\) is a
+\(\sigma \)-field and \(\P \) is a probability measure.
 </p>
 
 
@@ -1121,15 +1120,15 @@ way of doing so, for which we need the following technical lemma.
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-16"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 2.1.5</span> <a id="autoid-17" ></a ><a id="l:sigma_intersect"></a> Let \(I\) be any set and for each \(i\in I\) let \(\mc {F}_i\) be a \(\sigma
-\)-field. Then
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 2.1.5</span></span> <a id="autoid-17" ></a ><a id="l:sigma_intersect"></a> Let \(I\) be any set and for each \(i\in I\)
+let \(\mc {F}_i\) be a \(\sigma \)-field. Then
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{2.}{0}\)</span>
@@ -1186,14 +1185,15 @@ A_j\in \cap _i \mc {F}_i\). &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodycor">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-18"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Corollary 2.1.6</span> <a id="autoid-19" ></a >In particular, if \(\mc {F}_1\) and \(\mc {F}_2\) are \(\sigma \)-fields, so is \(\mc {F}_1\cap \mc {F}_2\).
+<span class="listmarker"> <span class="theoremheaderplain">Corollary 2.1.6</span></span> <a id="autoid-19" ></a >In particular, if \(\mc {F}_1\) and \(\mc {F}_2\) are \(\sigma \)-fields, so is
+\(\mc {F}_1\cap \mc {F}_2\).
 </p>
 
 
@@ -1216,15 +1216,15 @@ events.
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-20"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 2.1.7</span> <a id="autoid-21" ></a ><a id="d:sigma_event"></a> Let \(E_1,E_2,\ldots \) be subsets of \(\Omega \). We write \(\sigma
-(E_1,E_2,\ldots ,)\) for the smallest \(\sigma \)-field containing \(E_1,E_2,\ldots \).
+<span class="listmarker"> <span class="theoremheaderplain">Definition 2.1.7</span></span> <a id="autoid-21" ></a ><a id="d:sigma_event"></a> Let \(E_1,E_2,\ldots \) be subsets of \(\Omega
+\). We write \(\sigma (E_1,E_2,\ldots ,)\) for the smallest \(\sigma \)-field containing \(E_1,E_2,\ldots \).
 </p>
 
 
@@ -1248,12 +1248,12 @@ In the same style, if \(\mc {F}_1,\mc {F}_2\ldots \) are \(\sigma \)-fields then
 From Definition <a href="Probability-spaces-random-variables.html#d:sigma_field">2.1.1</a> and <a href="Probability-spaces-random-variables.html#d:P_meas">2.1.3</a> we can deduce all the
 ‘usual’ properties of probability. For example:
 </p>
-<ul style="list-style-type:none">
+<ul class="itemize" style="list-style-type:none">
 
 
 <li>
 <p>
-• If \(A\in \mc {F}\) then \(\Omega \sc A\in \mc {F}\), and since \(\Omega =A\cup (\Omega \sc A)\) we have \(\P [\Omega ]=1=\P [A]+\P [\Omega \sc A].\)
+<span class="listmarker">•</span> If \(A\in \mc {F}\) then \(\Omega \sc A\in \mc {F}\), and since \(\Omega =A\cup (\Omega \sc A)\) we have \(\P [\Omega ]=1=\P [A]+\P [\Omega \sc A].\)
 </p>
 
 
@@ -1262,7 +1262,8 @@ From Definition <a href="Probability-spaces-random-variables.html#d:sigma_field"
 
 
 <p>
-• If \(A,B\in \mc {F}\) and \(A\sw B\) then we can write \(B=A\cup (B\sc A)\), which gives us that \(\P [B]=\P [B\sc A]+P[A]\), which implies that \(\P [A]\leq \P [B]\).
+<span class="listmarker">•</span> If \(A,B\in \mc {F}\) and \(A\sw B\) then we can write \(B=A\cup (B\sc A)\), which gives us that \(\P [B]=\P [B\sc A]+P[A]\), which implies that \(\P [A]\leq \P
+[B]\).
 </p>
 </li>
 </ul>
@@ -1278,15 +1279,15 @@ unions. It is convenient to be able to use countable intersections too, for whic
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-22"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 2.1.8</span> <a id="autoid-23" ></a ><a id="l:sigma_field_intersection_closed"></a> Let \(A_1,A_2,\ldots \in \mc {F}\), where \(\mc {F}\) is a
-\(\sigma \)-field. Then \(\bigcap _{i=1}^\infty A_i\in \mc {F}\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 2.1.8</span></span> <a id="autoid-23" ></a ><a id="l:sigma_field_intersection_closed"></a> Let \(A_1,A_2,\ldots \in
+\mc {F}\), where \(\mc {F}\) is a \(\sigma \)-field. Then \(\bigcap _{i=1}^\infty A_i\in \mc {F}\).
 </p>
 
 
@@ -1329,7 +1330,7 @@ Definition <a href="Probability-spaces-random-variables.html#d:P_meas">2.1.3</a>
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

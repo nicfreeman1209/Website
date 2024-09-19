@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, September 19, 2024." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MAS364/61006 — Conditioning and correlations</title>
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
+
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
+
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
+         },
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
+}
+</script>
+
+<script
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J4222H8D03');
+</script>
+<!-- Google tag (gtag.js) -->
+
+
+</head>
+<body>
+
+
+
+<a id="notes-autopage-42"></a>
+<nav class="topnavigation"><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: September 19, 2024
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
+
+
+
+<nav class="sidetoc">
+
+
+
+<div class="sidetoctitle">
+
+<p>
+<span class="sidetocthetitle">Bayesian Statistics</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents">
+
+<p>
+<a href="notes.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber">0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Outline-course.html#autosec-13" class="tocsection" >
+<span class="sectionnumber">0.2</span>&#x2003;Outline of the course</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning.html#autosec-15" class="tocchapter" >
+<span class="sectionnumber">1</span>&#x2003;Conditioning</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning.html#autosec-16" class="tocsection" >
+<span class="sectionnumber">1.1</span>&#x2003;Random variables</a>
+</p>
+
+
+
+<p>
+<a href="Equality-in-distribution.html#autosec-21" class="tocsection" >
+<span class="sectionnumber">1.2</span>&#x2003;Equality in distribution</a>
+</p>
+
+
+
+<p>
+<a href="Families-random-variables.html#autosec-31" class="tocsection" >
+<span class="sectionnumber">1.3</span>&#x2003;Families of random variables</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-on-location.html#autosec-35" class="tocsection" >
+<span class="sectionnumber">1.4</span>&#x2003;Conditioning on location</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-correlations.html#autosec-43" class="tocsection" >
+<span class="sectionnumber">1.5</span>&#x2003;Conditioning and correlations</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-on-events-with-zero-probability.html#autosec-50" class="tocsection" >
+<span class="sectionnumber">1.6</span>&#x2003;Conditioning on events with zero probability</a>
+</p>
+
+
+
+<p>
+<a href="Families-with-random-parameters.html#autosec-57" class="tocsection" >
+<span class="sectionnumber">1.7</span>&#x2003;Families with random parameters</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-conditioning.html#autosec-60" class="tocsection" >
+<span class="sectionnumber">1.8</span>&#x2003;Exercises on Chapter 1</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-discrete-data.html#autosec-65" class="tocchapter" >
+<span class="sectionnumber">2</span>&#x2003;Bayesian models: discrete data</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-discrete-data.html#autosec-66" class="tocsection" >
+<span class="sectionnumber">2.1</span>&#x2003;Models with random parameters</a>
+</p>
+
+
+
+<p>
+<a href="Discrete-Bayesian-models.html#autosec-70" class="tocsection" >
+<span class="sectionnumber">2.2</span>&#x2003;Discrete Bayesian models</a>
+</p>
+
+
+
+<p>
+<a href="The-posterior-distribution.html#autosec-75" class="tocsection" >
+<span class="sectionnumber">2.3</span>&#x2003;The posterior distribution</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-updates.html#autosec-83" class="tocsection" >
+<span class="sectionnumber">2.4</span>&#x2003;Bayesian updates</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#autosec-87" class="tocsection" >
+<span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-continuous-data.html#autosec-90" class="tocchapter" >
+<span class="sectionnumber">3</span>&#x2003;Bayesian models: continuous data</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-continuous-data.html#autosec-91" class="tocsection" >
+<span class="sectionnumber">3.1</span>&#x2003;Continuous Bayesian models</a>
+</p>
+
+
+
+<p>
+<a href="Notation-independent-data.html#autosec-97" class="tocsection" >
+<span class="sectionnumber">3.2</span>&#x2003;Notation: independent data</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#autosec-107" class="tocsection" >
+<span class="sectionnumber">3.3</span>&#x2003;Exercises on Chapter 3</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-priors.html#autosec-110" class="tocchapter" >
+<span class="sectionnumber">4</span>&#x2003;Conjugate priors</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-priors.html#autosec-112" class="tocsection" >
+<span class="sectionnumber">4.1</span>&#x2003;Notation: proportionality</a>
+</p>
+
+
+
+<p>
+<a href="Two-more-examples-conjugate-pairs.html#autosec-122" class="tocsection" >
+<span class="sectionnumber">4.2</span>&#x2003;Two more examples of conjugate pairs</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-pairs-exponential-family.html#autosec-132" class="tocsection" >
+<span class="sectionnumber">4.3</span>&#x2003;Conjugate pairs and the exponential family \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="What-if.html#autosec-137" class="tocsection" >
+<span class="sectionnumber">4.4</span>&#x2003;What if?</a>
+</p>
+
+
+
+<p>
+<a href="The-normal-distribution-with-unknown-mean-variance.html#autosec-150" class="tocsection" >
+<span class="sectionnumber">4.5</span>&#x2003;The normal distribution with unknown mean and variance</a>
+</p>
+
+
+
+<p>
+<a href="The-limitations-conjugate-pairs.html#autosec-158" class="tocsection" >
+<span class="sectionnumber">4.6</span>&#x2003;The limitations of conjugate pairs</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#autosec-160" class="tocsection" >
+<span class="sectionnumber">4.7</span>&#x2003;Exercises on Chapter 4</a>
+</p>
+
+
+
+<p>
+<a href="The-prior.html#autosec-163" class="tocchapter" >
+<span class="sectionnumber">5</span>&#x2003;The prior</a>
+</p>
+
+
+
+<p>
+<a href="The-prior.html#autosec-164" class="tocsection" >
+<span class="sectionnumber">5.1</span>&#x2003;Elicitation</a>
+</p>
+
+
+
+<p>
+<a href="Uninformative-priors.html#autosec-172" class="tocsection" >
+<span class="sectionnumber">5.2</span>&#x2003;Uninformative priors</a>
+</p>
+
+
+
+<p>
+<a href="Reference-priors.html#autosec-180" class="tocsection" >
+<span class="sectionnumber">5.3</span>&#x2003;Reference priors</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-prior.html#autosec-186" class="tocsection" >
+<span class="sectionnumber">5.4</span>&#x2003;Exercises on Chapter 5</a>
+</p>
+
+
+
+<p>
+<a href="Discussion.html#autosec-189" class="tocchapter" >
+<span class="sectionnumber">6</span>&#x2003;Discussion</a>
+</p>
+
+
+
+<p>
+<a href="Discussion.html#autosec-190" class="tocsection" >
+<span class="sectionnumber">6.1</span>&#x2003;Bayesian shorthand notation</a>
+</p>
+
+
+
+<p>
+<a href="The-connection-maximum-likelihood.html#autosec-195" class="tocsection" >
+<span class="sectionnumber">6.2</span>&#x2003;The connection to maximum likelihood</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-discussion.html#autosec-202" class="tocsection" >
+<span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
+</p>
+
+
+
+<p>
+<a href="Testing-parameter-estimation.html#autosec-205" class="tocchapter" >
+<span class="sectionnumber">7</span>&#x2003;Testing and parameter estimation</a>
+</p>
+
+
+
+<p>
+<a href="Testing-parameter-estimation.html#autosec-206" class="tocsection" >
+<span class="sectionnumber">7.1</span>&#x2003;Hypothesis testing</a>
+</p>
+
+
+
+<p>
+<a href="High-posterior-density-regions.html#autosec-214" class="tocsection" >
+<span class="sectionnumber">7.2</span>&#x2003;High posterior density regions</a>
+</p>
+
+
+
+<p>
+<a href="Point-estimates.html#autosec-223" class="tocsection" >
+<span class="sectionnumber">7.3</span>&#x2003;Point estimates</a>
+</p>
+
+
+
+<p>
+<a href="Comparison-classical-methods.html#autosec-228" class="tocsection" >
+<span class="sectionnumber">7.4</span>&#x2003;Comparison to classical methods</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-tests.html#autosec-234" class="tocsection" >
+<span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
+</p>
+
+
+
+<p>
+<a href="Computational-methods.html#autosec-237" class="tocchapter" >
+<span class="sectionnumber">8</span>&#x2003;Computational methods</a>
+</p>
+
+
+
+<p>
+<a href="Computational-methods.html#autosec-238" class="tocsection" >
+<span class="sectionnumber">8.1</span>&#x2003;Approximate Bayesian computation \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Metropolis-Hastings.html#autosec-241" class="tocsection" >
+<span class="sectionnumber">8.2</span>&#x2003;Metropolis-Hastings</a>
+</p>
+
+
+
+<p>
+<a href="Markov-chain-Monte-Carlo.html#autosec-255" class="tocsection" >
+<span class="sectionnumber">8.3</span>&#x2003;Markov chain Monte Carlo</a>
+</p>
+
+
+
+<p>
+<a href="Gibbs-sampling.html#autosec-260" class="tocsection" >
+<span class="sectionnumber">8.4</span>&#x2003;Gibbs sampling</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-computational.html#autosec-267" class="tocsection" >
+<span class="sectionnumber">8.5</span>&#x2003;Exercises on Chapter 8</a>
+</p>
+
+
+
+<p>
+<a href="Reference-Sheets.html#autosec-269" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Reference Sheets</a>
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-277" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-281" class="tocchapter" >
+<span class="sectionnumber">C</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<main class="bodycontainer">
+
+
+
+<section class="textbody">
+
+<h1>Bayesian Statistics</h1>
+
+<!--MathJax customizations:-->
+<div data-nosnippet
+      style="display:none"
+>
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
+
+\(\require {colortbl}\)
+
+\(\let \LWRorigcolumncolor \columncolor \)
+
+\(\renewcommand {\columncolor }[2][named]{\LWRorigcolumncolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\let \LWRorigrowcolor \rowcolor \)
+
+\(\renewcommand {\rowcolor }[2][named]{\LWRorigrowcolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\let \LWRorigcellcolor \cellcolor \)
+
+\(\renewcommand {\cellcolor }[2][named]{\LWRorigcellcolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\require {mathtools}\)
+
+\(\newenvironment {crampedsubarray}[1]{}{}\)
+
+\(\newcommand {\smashoperator }[2][]{#2\limits }\)
+
+\(\newcommand {\SwapAboveDisplaySkip }{}\)
+
+\(\newcommand {\LaTeXunderbrace }[1]{\underbrace {#1}}\)
+
+\(\newcommand {\LaTeXoverbrace }[1]{\overbrace {#1}}\)
+
+\(\newcommand {\LWRmultlined }[1][]{\begin {multline*}}\)
+
+\(\newenvironment {multlined}[1][]{\LWRmultlined }{\end {multline*}}\)
+
+\(\let \LWRorigshoveleft \shoveleft \)
+
+\(\renewcommand {\shoveleft }[1][]{\LWRorigshoveleft }\)
+
+\(\let \LWRorigshoveright \shoveright \)
+
+\(\renewcommand {\shoveright }[1][]{\LWRorigshoveright }\)
+
+\(\newcommand {\shortintertext }[1]{\text {#1}\notag \\}\)
+
+\(\newcommand {\vcentcolon }{\mathrel {\unicode {x2236}}}\)
+
+\(\renewcommand {\intertext }[2][]{\text {#2}\notag \\}\)
+
+\(\newenvironment {fleqn}[1][]{}{}\)
+
+\(\newenvironment {ceqn}{}{}\)
+
+\(\newenvironment {darray}[2][c]{\begin {array}[#1]{#2}}{\end {array}}\)
+
+\(\newcommand {\dmulticolumn }[3]{#3}\)
+
+\(\newcommand {\LWRnrnostar }[1][0.5ex]{\\[#1]}\)
+
+\(\newcommand {\nr }{\ifstar \LWRnrnostar \LWRnrnostar }\)
+
+\(\newcommand {\mrel }[1]{\begin {aligned}#1\end {aligned}}\)
+
+\(\newcommand {\underrel }[2]{\underset {#2}{#1}}\)
+
+\(\newcommand {\medmath }[1]{#1}\)
+
+\(\newcommand {\medop }[1]{#1}\)
+
+\(\newcommand {\medint }[1]{#1}\)
+
+\(\newcommand {\medintcorr }[1]{#1}\)
+
+\(\newcommand {\mfrac }[2]{\frac {#1}{#2}}\)
+
+\(\newcommand {\mbinom }[2]{\binom {#1}{#2}}\)
+
+\(\newenvironment {mmatrix}{\begin {matrix}}{\end {matrix}}\)
+
+\(\newcommand {\displaybreak }[1][]{}\)
+
+\( \def \offsyl {(\oslash )} \def \msconly {(\Delta )} \)
+
+\( \DeclareMathOperator {\var }{var} \DeclareMathOperator {\cov }{cov} \DeclareMathOperator {\Bin }{Bin} \DeclareMathOperator {\Geo }{Geometric} \DeclareMathOperator {\Beta
+}{Beta} \DeclareMathOperator {\Unif }{Uniform} \DeclareMathOperator {\Gam }{Gamma} \DeclareMathOperator {\Normal }{N} \DeclareMathOperator {\Exp }{Exp} \DeclareMathOperator
+{\Cauchy }{Cauchy} \DeclareMathOperator {\Bern }{Bernoulli} \DeclareMathOperator {\Poisson }{Poisson} \DeclareMathOperator {\Weibull }{Weibull} \DeclareMathOperator {\IGam
+}{IGamma} \DeclareMathOperator {\NGam }{NGamma} \DeclareMathOperator {\ChiSquared }{ChiSquared} \DeclareMathOperator {\Pareto }{Pareto} \DeclareMathOperator {\NBin }{NegBin}
+\DeclareMathOperator {\Studentt }{Student-t} \DeclareMathOperator *{\argmax }{arg\,max} \DeclareMathOperator *{\argmin }{arg\,min} \)
+
+\( \def \to {\rightarrow } \def \iff {\Leftrightarrow } \def \ra {\Rightarrow } \def \sw {\subseteq } \def \mc {\mathcal } \def \mb {\mathbb } \def \sc {\setminus } \def \wt
+{\widetilde } \def \v {\textbf } \def \E {\mb {E}} \def \P {\mb {P}} \def \R {\mb {R}} \def \C {\mb {C}} \def \N {\mb {N}} \def \Q {\mb {Q}} \def \Z {\mb {Z}} \def \B {\mb {B}}
+\def \~{\sim } \def \-{\,;\,} \def \qed {$\blacksquare $} \def \1{\mathbbm {1}} \def \cadlag {c\&grave;{a}dl\&grave;{a}g} \def \p {\partial } \def \l {\left } \def \r {\right }
+\def \Om {\Omega } \def \om {\omega } \def \eps {\epsilon } \def \de {\delta } \def \ov {\overline } \def \sr {\stackrel } \def \Lp {\mc {L}^p} \def \Lq {\mc {L}^p} \def \Lone
+{\mc {L}^1} \def \Ltwo {\mc {L}^2} \def \toae {\sr {\rm a.e.}{\to }} \def \toas {\sr {\rm a.s.}{\to }} \def \top {\sr {\mb {\P }}{\to }} \def \tod {\sr {\rm d}{\to }} \def \toLp
+{\sr {\Lp }{\to }} \def \toLq {\sr {\Lq }{\to }} \def \eqae {\sr {\rm a.e.}{=}} \def \eqas {\sr {\rm a.s.}{=}} \def \eqd {\sr {\rm d}{=}} \def \approxd {\sr {\rm d}{\approx }}
+\def \Sa {(S1)\xspace } \def \Sb {(S2)\xspace } \def \Sc {(S3)\xspace } \)
+
+</div>
+
+<!--
+...... section Conditioning and correlations ......
+-->
+<h4 id="autosec-43"><span class="sectionnumber">1.5&#x2003;</span>Conditioning and correlations</h4>
+<a id="notes-autopage-43"></a>
+<a id="notes-autofile-7"></a>
+
+<a id="s:condition_with_correlations"></a>
+
+<p>
+This section demonstrates the effect of taking a jointly distributed random variable \((X,Y)\in \R ^2\), and conditioning \(X\) to be within a particular location. If \(X\) and \(Y\) are independent then
+conditioning \(X\) will have no effect on \(Y\) (see Exercise <a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:indep_conditioning"><b>1.10</b></a> for details), but if they are dependent then
+conditioning on the location of \(X\) will <em>change</em> the distribution of the \(y\) coordinate. This is because \(X\) and \(Y\) affect each other so, if we force \(X\) to do something, it will also have some
+effect on \(Y\).
+</p>
+
+<p>
+Let us introduce some notation for these ideas.
+</p>
+<ul class="itemize" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker">•</span> We write \((X,Y)|_{\{X\in A\}}\) as a shorthand for \((X,Y)|_{\{(X,Y)\in A\times \R ^d\}}\), where we restrict the location of \(X\) (to be inside \(A\)) but we do
+not restrict the location of \(Y\) (because \(Y\in \R ^d\) is true anyway).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">•</span> We write \(Y|_{\{X\in A\}}\) for the \(y\) coordinate of \((X,Y)|_{\{X\in A\}}\).
+</p>
+</li>
+</ul>
+
+<p>
+In this notation, we idea we described above is that, if \(X\) and \(Y\) are dependent, the random variables \(Y\) and \(Y|_{\{X\in A\}}\) will have different distributions.
+</p>
+<div class="theorembodylemma">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-29"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 1.5.1</span></span> <a id="autoid-30" ></a ><a id="l:cond_corr"></a> Let \(X\) and \(Y\) be random variables, with \(A\sw
+R_X\), \(B\sw R_Y\) and \(\P [X\in A]&gt;0\). Then
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{1.}{6}\)</span>
+
+<!--
+
+                                                    P[X ∈ A, Y ∈ B]
+                                P[Y |{X∈A} ∈ B] =                   .                                (1.7)                                                                  --><a id="eq:cond_corr"></a><!--
+                                                       P[X ∈ A]
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:cond_corr} \P [Y|_{\{X\in A\}}\in B]=\frac {\P [X\in A,Y\in B]}{\P [X\in A]}.
+\end{equation}
+
+
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> From part 2 of Lemma <a
+href="Conditioning-on-location.html#l:rv_from_conditioning_pve">1.4.1</a>,
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{1.}{7}\)</span>
+
+<!--
+
+                                           P[(X, Y ) ∈ A × B]    P[X ∈ A, Y ∈ B]
+              P[(X, Y )|{X∈A} ∈ A × B] =                    d
+                                                               =                 .              (1.8)                                                                  --><a id="eq:cond_corr_pre"></a><!--
+                                           P[(X, Y ) ∈ A × R ]      P[X ∈ A]
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:cond_corr_pre} \P [(X,Y)|_{\{X\in A\}}\in A\times B]=\frac {\P [(X,Y)\in A\times B]}{\P [(X,Y)\in A\times \R ^d]}=\frac {\P [X\in A,Y\in B]}{\P [X\in A]}.
+\end{equation}
+
+
+</p>
+
+<p>
+Part 1 of Lemma <a href="Conditioning-on-location.html#l:rv_from_conditioning_pve">1.4.1</a> tells us that \((X,Y)|_{\{X\in A\}}\) has range \(A\times R_Y\). Hence \(X|_{\{X\in A\}}\) has
+range \(A\), which means that \(\P [Y|_{\{X\in A\}}\in B]=\P [(X,Y)|_{\{X\in A\}}\in A\times B]\). Combining this fact with <span class="textup">(<a
+href="Conditioning-correlations.html#eq:cond_corr_pre">1.8</a>)</span> completes the proof. &#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+If \(X\) and \(Y\) are discrete then taking \(A=\{x\}\) and \(B=\{y\}\) gives us \(\P [Y|_{\{X=x\}}=y]=\frac {\P [X=x,Y=y]}{\P [X=x]}.\) This formula, and more generally <span class="textup">(<a
+href="Conditioning-correlations.html#eq:cond_corr">1.7</a>)</span>, should feel familiar. In earlier courses you will probably have seen equations like \(\P [Y=y\,|\,X=x]=\frac {\P [X=x,Y=y]}{\P
+[X=x]}\), which has essentially the same meaning but different notation. The reason for introducing \(Y|_{\{X=A\}}\) is simply that it is easier to understand probability when we can imagine random objects.
+</p>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-31"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 1.5.2</span></span> <a id="autoid-32" ></a ><a id="ex:cond_corr"></a> Suppose that we roll a fair dice, with outcomes
+\(Z=1,2,\ldots ,6\). Define the random variables
+</p>
+
+<p>
+\[X= \begin {cases} 0 &amp; \text { if $Z$ is even,} \\ 1 &amp; \text { if $Z$ is odd,} \end {cases} \qquad Y= \begin {cases} 0 &amp; \text { if }Z\leq 3, \\ 1 &amp; \text { if
+}Z\geq 4, \end {cases} \]
+</p>
+
+<p>
+which are dependent. We can illustrate their joint distribution with a table of values:
+</p>
+<div class="center">
+<table>
+
+<tr style="display:none"><th>.</th></tr>
+
+
+<tr class="hline">
+<td class="tdr tvertbarl tvertbarrdouble" style="border-left: 1px solid black; border-right: 4px double black">\(Z\)</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >1</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">2</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >3</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">4</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >5</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">6</td>
+</tr>
+
+
+<tr>
+<td class="tdr tvertbarl tvertbarrdouble" style="border-left: 1px solid black; border-right: 4px double black">\(X\)</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >1</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >1</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >1</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0</td>
+</tr>
+
+
+<tr>
+<td class="tdr tvertbarl tvertbarrdouble" style="border-left: 1px solid black; border-right: 4px double black">\(Y\)</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >0</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">0</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >0</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">1</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >1</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">1</td>
+</tr>
+
+
+<tr class="hline">
+<td class="tdr tvertbarl tvertbarrdouble" style="border-left: 1px solid black; border-right: 4px double black">\(\P [\text {column}]\)</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >\(\frac 16\)</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">\(\frac 16\)</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >\(\frac 16\)</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">\(\frac 16\)</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black"><div class="cellcolor" style="background:#CCCCCC " >\(\frac 16\)</div>
+</td>
+<td class="tdc tvertbarr" style="border-right: 1px solid black">\(\frac 16\)</td>
+</tr>
+
+
+<tr class="hline" aria-hidden="true">
+<td class="tdr"></td>
+<td class="tdc"></td>
+<td class="tdc"></td>
+<td class="tdc"></td>
+<td class="tdc"></td>
+<td class="tdc"></td>
+<td class="tdc"></td>
+</tr>
+</table>
+
+</div>
+
+<p>
+Each column is a possible outcome, each of which has probability \(\tfrac 16\). Conditioning on the event \(X=1\) forces the outcome to be within the shaded columns.
+</p>
+
+<p>
+The distribution of \(Y\) is easily found:
+</p>
+<span class="hidden"> \(\seteqnumber{0}{1.}{8}\)</span>
+
+
+
+<!--
+
+                                                                                     P[Y = 0] = P[Z ∈ {1, 2, 3}] = 16 + 16 + 16 = 12 ,
+
+                                                                                     P[Y = 1] = P[Z ∈ {4, 5, 6}] = 16 + 16 + 16 = 12 .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\P [Y=0]&amp;=\P [Z\in \{1,2,3\}]=\tfrac 16+\tfrac 16+\tfrac 16 = \tfrac 12, \\ \P [Y=1]&amp;=\P [Z\in \{4,5,6\}]=\tfrac 16+\tfrac 16+\tfrac 16 = \tfrac 12.
+\end{align*}
+By Lemma <a href="Conditioning-correlations.html#l:cond_corr">1.5.1</a> we have
+</p>
+
+<p>
+\[\P [Y|_{\{X=1\}}=0]=\frac {\P [Y=0,X=1]}{\P [X=1]}=\frac {\P [Z\in \{1,3\}]}{\P [Z\in \{1,3,5\}]} =\frac {\tfrac 16+\tfrac 16}{\tfrac 16+\tfrac 16+\tfrac 16}=\frac {2}{3}\]
+</p>
+
+<p>
+and so \(\P [Y|_{\{X=1\}}=1]=1-\frac 23=\frac 13\). As we expected, the distributions of \(Y\) and \(Y|_{\{X=1\}}\) are different.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+Compare the situation of Example <a href="Conditioning-correlations.html#ex:cond_corr">1.5.2</a> to that of a random variable \((X,Y)\) taking values in \(\R ^n\times \R ^d\equiv \R ^{n+d}\).
+Here, \(X\) takes values in \(\R ^n\) and \(Y\) takes values in \(\R ^d\). If \(X\) and \(Y\) are dependent, then we should still expect that conditioning one affects the distribution of the other. This is the key
+fact that we take away from this section.
+</p>
+<div class="theorembodyremark">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-33"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Remark 1.5.3</span></span> <a id="autoid-34" ></a ><a id="r:conditioning_notation"></a> In a multivariate situation, say
+\((X,Y_1,Y_2)\), we could do something similar and find the conditional distributions of \((Y_1,Y_2)|_{\{X\in A\}}\) as well as \(Y_1|_{\{X\in A\}}\) and \(Y_2|_{\{X\in A\}}\). A slightly subtle point is
+that
+</p>
+
+<p>
+\[(Y_1,Y_2)|_{\{X\in A\}}\eqd \l (Y_1|_{\{X\in A\}}, Y_2|_{\{X\in A\}}\r ).\]
+</p>
+
+<p>
+In words, conditioning two coordinates on the same event, is equivalent to conditioning each coordinate individually on that event – as we would intuitively expect.
+</p>
+
+<p>
+We will use this fact later on when we work with multivariate situations, but we won’t include a proof within our course. It isn’t difficult to check, but it wouldn’t help us understand anything more than we already
+do.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation"><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>

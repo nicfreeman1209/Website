@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Infinite </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Infinite      ......
 -->
@@ -1019,12 +1017,12 @@ href="Infinite.html#Pfinitedef">2.3</a>)</span> simply would not make sense; the
 To define a probability measure in this case requires a significant amount of machinery from measure theory. It is outside of the scope of this course. For our purposes, whenever we need to use an infinite \(\Omega
 \) you will be <i>given</i> a probability measure and some of its helpful properties. For example, in this case there exists a probability measure \(\P :\mc {F}\to [0,1]\) such that
 </p>
-<ul style="list-style-type:none">
+<ul class="itemize" style="list-style-type:none">
 
 
 <li>
 <p>
-• The \(X_n\) are independent random variables.
+<span class="listmarker">•</span> The \(X_n\) are independent random variables.
 </p>
 
 
@@ -1033,7 +1031,7 @@ To define a probability measure in this case requires a significant amount of ma
 
 
 <p>
-• \(\P [X_n=H]=\P [X_n=T]=\frac {1}{2}\) for all \(n\in \N \).
+<span class="listmarker">•</span> \(\P [X_n=H]=\P [X_n=T]=\frac {1}{2}\) for all \(n\in \N \).
 </p>
 </li>
 </ul>
@@ -1044,16 +1042,17 @@ href="Random-variables.html#p:its_all_meas">2.2.6</a> gives you access to plenty
 </p>
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-38"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 2.3.1</span> <a id="autoid-39" ></a >(\(\star \)) In this case it turns out that \(\mc {F}\) is much smaller than \(\mc {P}(\Omega )\). In fact, if we tried to
-take \(\mc {F}=\mc {P}(\Omega )\), we would (after some significant effort) discover that there is no probability measure \(\P :\mc {P}(\Omega )\to [0,1]\) (i.e.&nbsp;satisfying Definition <a
-href="Probability-spaces-random-variables.html#d:P_meas">2.1.3</a>) in which the coin tosses are independent. This is irritating, and surprising, and we just have to live with it.
+<span class="listmarker"> <span class="theoremheaderplain">Remark 2.3.1</span></span> <a id="autoid-39" ></a >\(\offsyl \) In this case it turns out that \(\mc {F}\) is much smaller than \(\mc
+{P}(\Omega )\). In fact, if we tried to take \(\mc {F}=\mc {P}(\Omega )\), we would (after some significant effort) discover that there is no probability measure \(\P :\mc {P}(\Omega )\to [0,1]\)
+(i.e.&nbsp;satisfying Definition <a href="Probability-spaces-random-variables.html#d:P_meas">2.1.3</a>) in which the coin tosses are independent. This is irritating, and surprising, and we just have to live
+with it.
 </p>
 
 
@@ -1116,14 +1115,14 @@ So, the event \(\{\text {for some }n, X_n=H\}\) has probability \(1\), but is <i
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-40"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 2.3.2</span> <a id="autoid-41" ></a >If the event \(E\) has \(\P [E]=1\), then we say \(E\) occurs almost surely.
+<span class="listmarker"> <span class="theoremheaderplain">Definition 2.3.2</span></span> <a id="autoid-41" ></a >If the event \(E\) has \(\P [E]=1\), then we say \(E\) occurs almost surely.
 </p>
 
 
@@ -1179,7 +1178,7 @@ There are many many examples of sequences (e.g. \(HHTHHTHHT\ldots \)) that don�
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

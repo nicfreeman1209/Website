@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Long term behaviour: asymmetric case </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,13 +901,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Long term behaviour: asymmetric case             ......
 -->
-<h4 id="autosec-288"><span class="sectionnumber">9.4&#x2003;</span>Long term behaviour: asymmetric case \((\Delta )\)</h4>
+<h4 id="autosec-288"><span class="sectionnumber">9.4&#x2003;</span>Long term behaviour: asymmetric case \(\msconly \)</h4>
 <a id="notes_1-autopage-288"></a>
-<a id="notes_1-autofile-45"></a> <a id="s:rw_long_term_asym"></a>
+<a id="notes_1-autofile-45"></a>
+
+<a id="s:rw_long_term_asym"></a>
 
 <p>
 We will now move on to study the simple asymmetric random walk. We’ll recycle some of our previous notation. Let \(S_n=\sum _{i=1}^n\) where the \((X_i)\) are independent and have identical distribution
@@ -921,15 +921,15 @@ Like the symmetric random walk, the asymmetric case sees oscillations, but they 
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-216"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.4.1</span> <a id="autoid-217" ></a ><a id="l:rw_asym_to_infty"></a> It holds that \(\P [R&lt;\infty ]&lt;1\) and \(S_n\stackrel {a.s.}{\to
-}\infty \).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.4.1</span></span> <a id="autoid-217" ></a ><a id="l:rw_asym_to_infty"></a> It holds that \(\P [R&lt;\infty ]&lt;1\)
+and \(S_n\stackrel {a.s.}{\to }\infty \).
 </p>
 
 
@@ -954,16 +954,16 @@ times. We have shown above that this is not the case. Hence \(\P [R&lt;\infty ]&
 </p>
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-218"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 9.4.2</span> <a id="autoid-219" ></a ><a id="r:rw_geometric_returns"></a> By the strong Markov property and the same argument as in the proof of
-Lemma <a href="Long-term-behaviour-symmetric-case.html#l:rw_symm_return_finite">9.3.1</a> (except that there it was part of a proof by contradiction) the number of times that \((S_n)\) returns to
-the origin is a Geometric(\(\hat {p}\)) random variable, where \(\hat {p}=\P [R&lt;\infty ]\).
+<span class="listmarker"> <span class="theoremheaderplain">Remark 9.4.2</span></span> <a id="autoid-219" ></a ><a id="r:rw_geometric_returns"></a> By the strong Markov property and the
+same argument as in the proof of Lemma <a href="Long-term-behaviour-symmetric-case.html#l:rw_symm_return_finite">9.3.1</a> (except that there it was part of a proof by contradiction) the number of
+times that \((S_n)\) returns to the origin is a Geometric(\(\hat {p}\)) random variable, where \(\hat {p}=\P [R&lt;\infty ]\).
 </p>
 
 
@@ -980,14 +980,14 @@ showed that \(\E [T_1]=\infty \), but here in the asymmetric case the opposite i
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-220"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.4.3</span> <a id="autoid-221" ></a ><a id="l:rw_asym_T1"></a> It holds that \(\E [T_1]=\frac {p}{2p-1}\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.4.3</span></span> <a id="autoid-221" ></a ><a id="l:rw_asym_T1"></a> It holds that \(\E [T_1]=\frac {p}{2p-1}\).
 </p>
 
 
@@ -1044,14 +1044,14 @@ required result. &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-222"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 9.4.4</span> <a id="autoid-223" ></a >Using a similar argument to that used within the proof of Lemma <a
+<span class="listmarker"> <span class="theoremheaderplain">Remark 9.4.4</span></span> <a id="autoid-223" ></a >Using a similar argument to that used within the proof of Lemma <a
 href="Long-term-behaviour-symmetric-case.html#l:rw_hitting_time_finite">9.3.2</a>, for \(k\in \N \) we have that \(T_k\) is the sum of \(k\) i.i.d.&nbsp;copies of \(T_1\), hence \(\E [T_k]=\frac
 {kp}{2p-1}\).
 </p>
@@ -1078,7 +1078,7 @@ we have \(\E [T_1]\to \infty \), which also makes sense because as \(p\) gets cl
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

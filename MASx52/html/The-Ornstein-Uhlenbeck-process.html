@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — The Ornstein–Uhlenbeck process </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -651,10 +651,9 @@ Home</a>
 (part two)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -874,13 +873,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
-......     section The Ornstein--Uhlenbeck process           ......
+...... section The Ornstein–Uhlenbeck process            ......
 -->
-<h4 id="autosec-85"><span class="sectionnumber">13.3&#x2003;</span>The Ornstein–Uhlenbeck process \((\Delta )\)</h4>
+<h4 id="autosec-85"><span class="sectionnumber">13.3&#x2003;</span>The Ornstein–Uhlenbeck process \(\msconly \)</h4>
 <a id="notes_2-autopage-85"></a>
-<a id="notes_2-autofile-14"></a> <a id="s:ou_proc"></a>
+<a id="notes_2-autofile-14"></a>
+
+<a id="s:ou_proc"></a>
 
 <p>
 The Ornstein-Uhlenbeck<sup>3</sup> process is another example of an Ito process that can be described using a particular SDE. It is often known as the OU process, for short. In this case the equation is
@@ -892,7 +892,7 @@ The Ornstein-Uhlenbeck<sup>3</sup> process is another example of an Ito process 
 
 
 
-                                                        dXt = θ(µ − Xt ) dt + σdBt .                                                                              (13.11)        --><a id="eq:ou_proc"></a><!--
+                                                     dXt = θ(µ − Xt ) dt + σdBt .                                                            (13.11)                             --><a id="eq:ou_proc"></a><!--
 
 -->
 
@@ -913,8 +913,8 @@ The parameters here are \(\mu \in \R \), \(\theta &gt;0\) and \(\sigma &gt;0\).
 <p>
 We’ll start our analysis of the OU process by calculating \(\E [X_t]\), in similar style to Exercises <a href="Exercises-on-Chapter-ref-c-sdes.html#ps:sde_Evar_ode"><b>13.7</b></a>-<a
 href="Exercises-on-Chapter-ref-c-sdes.html#ps:sde_Evar_ode_2"><b>13.9</b></a>. Writing equation <span class="textup">(<a
-href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.11</a>)</span> in integral form, we have \(X_t-X_0=\int _0^t(\mu -X_s)\,ds + \int _0^t \sigma dB_s\). Taking expectations and noting
-that Ito integrals are zero mean martingales, we have
+href="The-Ornstein-Uhlenbeck-process.html#eq:ou_proc">13.11</a>)</span> in integral form, we have \(X_t-X_0=\theta \int _0^t(\mu -X_s)\,ds + \int _0^t \sigma dB_s\). Taking expectations
+and noting that Ito integrals are zero mean martingales, we have
 </p>
 <span class="hidden"> \(\seteqnumber{0}{13.}{11}\)</span>
 
@@ -923,12 +923,12 @@ that Ito integrals are zero mean martingales, we have
 <!--
 
 
-                                                                                                             Z       t                     Z   t           
-                                                                                       E[Xt ] − E[X0 ] = E                (µ − Xs ) ds + E            σ dBs
-                                                                                                                  0                           0
-                                                                                                         Z   t
-                                                                                                     =           (µ − E[Xs ]) ds + 0.
-                                                                                                         0
+                                                                                                   Z t                      Z t           
+                                                                                E[Xt ] − E[X0 ] = E      θ(µ − Xs ) ds + E           σ dBs
+                                                                                                       0                        0
+                                                                                                  Z t
+                                                                                                =     θ(µ − E[Xs ]) ds + 0.
+                                                                                                  0
 
 
 
@@ -941,10 +941,10 @@ that Ito integrals are zero mean martingales, we have
 
 
 \begin{align*}
-\E [X_t]-\E [X_0] &amp;=\E \l [\int _0^t(\mu -X_s)\,ds\r ]+\E \l [\int _0^t \sigma \, dB_s\r ] \\ &amp;=\int _0^t(\mu -\E [X_s])\,ds + 0.
+\E [X_t]-\E [X_0] &amp;=\E \l [\int _0^t\theta (\mu -X_s)\,ds\r ]+\E \l [\int _0^t \sigma \, dB_s\r ] \\ &amp;=\int _0^t\theta (\mu -\E [X_s])\,ds + 0.
 \end{align*}
-Writing \(f(t)=\E [X_t]\) and using the fundamental theorem of calculus, we obtain that \(f&apos;(t)=\mu -f(s)\). The (unique) solution of this ordinary differential equation is \(f(t)=\mu + (f(0)-\mu
-)e^{-t}\). Noting that \(e^{-t}\to 0\) as \(t\to \infty \), we obtain that \(\E [X_t]\to \mu \) as \(t\to \infty \).
+Writing \(f(t)=\E [X_t]\) and using the fundamental theorem of calculus, we obtain that \(f&apos;(t)=\theta (\mu -f(s))\). The (unique) solution of this ordinary differential equation is \(f(t)=\mu +
+(f(0)-\mu )e^{-\theta t}\). Noting that \(e^{-\theta t}\to 0\) as \(t\to \infty \), we obtain that \(\E [X_t]\to \mu \) as \(t\to \infty \).
 </p>
 
 <p>
@@ -992,14 +992,12 @@ We can solve <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#
 <!--
 
 
-
-                                                                                                                1
-                                                                                                                          
-                                                                                       dZt = θe Yt + e (−θYt ) + (0)(σ)2
-                                                                                                θt      θt
-                                                                                                                               dt + (eθt )(σ) dBt
-                                                                                                                2
-                                                                                          = 0 dt + σeθt dBt .
+                                                                                                                                    
+                                                                                                                          1
+                                                                                           dZt =         θt    θt
+                                                                                                       θe Yt + e (−θYt ) + (0)(σ)2       dt + (eθt )(σ) dBt
+                                                                                                                          2
+                                                                                              = 0 dt + σeθt dBt .
 
 
 
@@ -1014,16 +1012,17 @@ We can solve <span class="textup">(<a href="The-Ornstein-Uhlenbeck-process.html#
 dZ_t &amp;= \l (\theta e^{\theta t}Y_t + e^{\theta t}(-\theta Y_t) + \frac {1}{2}(0)(\sigma )^2\r )\,dt + (e^{\theta t})(\sigma )\,dB_t \\ &amp;=0\,dt + \sigma e^{\theta
 t}\,dB_t.
 \end{align*}
-In integral form we have \(Z_t-Z_0=\int _0^t \sigma e^{\theta t}\,dB_t\), and using that \(Z_t=e^{\theta t}(X_t-\mu )\) gives us
+In integral form we have \(Z_t-Z_0=\int _0^t \sigma e^{\theta s}\,dB_s\), and using that \(Z_t=e^{\theta t}(X_t-\mu )\) gives us
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{13.}{11}\)</span>
 
 <!--
 
-                                                              Z   t
-                                     Xt = e−θt (Xt − µ) + σ           e−θ(t−s) dBs .                              (13.12)                                       --><a id="eq:ou_solution"></a><!--
-                                                              0
+                                                                    Z t
+                                  Xt = µ + e   −θt
+                                                     (X0 − µ) + σ         e−θ(t−s) dBs .                                   (13.12)                              --><a id="eq:ou_solution"></a><!--
+                                                                     0
 
 -->
 
@@ -1031,7 +1030,7 @@ In integral form we have \(Z_t-Z_0=\int _0^t \sigma e^{\theta t}\,dB_t\), and us
 
 
 \begin{equation}
-\label {eq:ou_solution} X_t=e^{-\theta t}(X_t-\mu ) + \sigma \int _0^t e^{-\theta (t-s)}\,dB_s.
+\label {eq:ou_solution} X_t=\mu + e^{-\theta t}(X_0-\mu ) + \sigma \int _0^t e^{-\theta (t-s)}\,dB_s.
 \end{equation}
 
 
@@ -1056,15 +1055,15 @@ This is not quite an explicit formula, but it is still a useful representation o
 
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-69"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 13.3.1</span> <a id="autoid-70" ></a >Those of you studying time series may recognize a similarity between the AR(1) process and the OU process. More
-specifically, the OU process is a continuous time version of AR(1).
+<span class="listmarker"> <span class="theoremheaderplain">Remark 13.3.1</span></span> <a id="autoid-70" ></a >Those of you studying time series may recognize a similarity between the AR(1)
+process and the OU process. More specifically, the OU process is a continuous time version of AR(1).
 </p>
 
 
@@ -1074,7 +1073,7 @@ specifically, the OU process is a continuous time version of AR(1).
 
 </div>
 <!--
-......    subsection Modelling interest rates ......
+...... subsection Modelling interest rates ......
 -->
 <h5 id="autosec-88">Modelling interest rates</h5>
 <a id="notes_2-autopage-88"></a>
@@ -1082,9 +1081,9 @@ specifically, the OU process is a continuous time version of AR(1).
 
 
 <p>
-The Ornstein-Uhlenbeck process is sometimes thought of as a model for interest rates, because of the mean reversion property. In this context it is often referred to as the Vasicek model. We won’t discuss the
-reasons why interest rates display mean reversion here, save for noting that in many countries the central bank has a mandate to target a particular inflation rate (in the UK it is \(2\%\) per year). They have
-various tools available to try and achieve this, including increasing or decreasing the supply of money available.
+The Ornstein-Uhlenbeck process is sometimes thought of as a model for interest rates, because of the mean reversion property. In this context it is known as the Vasicek model. We won’t discuss the reasons why
+interest rates display mean reversion here, save for noting that in many countries the central bank has a mandate to target a particular inflation rate (in the UK it is \(2\%\) per year). They have various tools
+available to try and achieve this, including increasing or decreasing the supply of money available.
 </p>
 
 <p>
@@ -1102,7 +1101,7 @@ unlikely in some cases) for all choices of the model parameters. Various models 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

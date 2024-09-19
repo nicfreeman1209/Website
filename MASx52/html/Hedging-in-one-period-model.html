@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Hedging in the one-period model</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Hedging in the one-period model ......
 -->
@@ -920,15 +918,15 @@ First, let us write down exactly what it is that we need to price.
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-96"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 5.2.1</span> <a id="autoid-97" ></a >A <b>contingent claim</b> is any random variable of the form \(X=\Phi (S_1)\), where \(\Phi \) is a deterministic
-function.
+<span class="listmarker"> <span class="theoremheaderplain">Definition 5.2.1</span></span> <a id="autoid-97" ></a >A <b>contingent claim</b> is any random variable of the form \(X=\Phi
+(S_1)\), where \(\Phi \) is a deterministic function.
 </p>
 
 
@@ -952,15 +950,15 @@ the value of a unit of stock at time \(1\) minus the price paid for it. We will 
 </p>
 <div class="theorembodyexample">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-98"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 5.2.2</span> <a id="autoid-99" ></a ><a id="ex:eu_call_op"></a> A <b>European call option</b> gives its holder the right (but not the obligation) to
-buy, at time \(1\), a single unit of stock for a fixed price \(K\) that is agreed at time \(0\). As for futures, \(K\) is known as the strike price.
+<span class="listmarker"> <span class="theoremheaderplain">Example 5.2.2</span></span> <a id="autoid-99" ></a ><a id="ex:eu_call_op"></a> A <b>European call option</b> gives its holder
+the right (but not the obligation) to buy, at time \(1\), a single unit of stock for a fixed price \(K\) that is agreed at time \(0\). As for futures, \(K\) is known as the strike price.
 </p>
 
 <p>
@@ -979,7 +977,7 @@ Since \(S_1\) is equal to either to either \(su\) or \(sd\), the only interestin
                                                 
                                                 su − K     if S1 = su
                                                 
-                                     Φ(S1 ) =                                                               (5.5)                                                    --><a id="eq:eu_call_op_contigent"></a><!--
+                                     Φ(S1 ) =                                                               (5.5)                                                       --><a id="eq:eu_call_op_contigent"></a><!--
                                                 0          if S1 = sd.
                                                 
 
@@ -1005,7 +1003,7 @@ In the first case our right to buy is worth exercising; in the second case it is
 
 
 
-                                        Φ(S1 ) = max(S1 − K, 0).                                          (5.6)                                                    --><a id="eq:eu_call_op_contigent_2"></a><!--
+                                        Φ(S1 ) = max(S1 − K, 0).                                          (5.6)                                                       --><a id="eq:eu_call_op_contigent_2"></a><!--
 
 -->
 
@@ -1038,15 +1036,15 @@ section is to find a general way of constructing trading strategies.
 </p>
 <div class="theorembodydefn">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-100"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Definition 5.2.3</span> <a id="autoid-101" ></a >We say that a portfolio \(h\) is a <b>replicating portfolio</b> or <b>hedging portfolio</b> for the contingent
-claim \(\Phi (S_1)\) if \(V^h_1=\Phi (S_1)\).
+<span class="listmarker"> <span class="theoremheaderplain">Definition 5.2.3</span></span> <a id="autoid-101" ></a >We say that a portfolio \(h\) is a <b>replicating portfolio</b> or <b>hedging
+portfolio</b> for the contingent claim \(\Phi (S_1)\) if \(V^h_1=\Phi (S_1)\).
 </p>
 
 
@@ -1072,15 +1070,15 @@ We say that a market is <b>complete</b> if every contingent claim can be replica
 </p>
 <div class="theorembodyexample">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-102"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 5.2.4</span> <a id="autoid-103" ></a ><a id="ex:contingent_claim_1"></a> Suppose that \(s=1,d=\frac 12,u=2\) and \(r=\frac 14\), and that we are
-looking at the contingent claim
+<span class="listmarker"> <span class="theoremheaderplain">Example 5.2.4</span></span> <a id="autoid-103" ></a ><a id="ex:contingent_claim_1"></a> Suppose that \(s=1,d=\frac 12,u=2\)
+and \(r=\frac 14\), and that we are looking at the contingent claim
 </p>
 
 <p>
@@ -1212,14 +1210,14 @@ It is an assumption of the model that \(d\leq u\), so we have that our one-perio
 </p>
 <div class="theorembodyprop">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-104"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Proposition 5.2.5</span> <a id="autoid-105" ></a >If the one-period model is arbitrage free then it is complete.
+<span class="listmarker"> <span class="theoremheaderplain">Proposition 5.2.5</span></span> <a id="autoid-105" ></a >If the one-period model is arbitrage free then it is complete.
 </p>
 
 
@@ -1335,15 +1333,15 @@ To sum up:
 </p>
 <div class="theorembodyprop">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-106"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Proposition 5.2.6</span> <a id="autoid-107" ></a ><a id="p:one_period_pricing"></a> Let \(\Phi (S_1)\) be a contingent claim. Then the (unique) replicating
-portfolio \(h=(x,y)\) for \(\Phi (S_1)\) can be found by solving \(V^h_1=\Phi (S_1)\), which can be written as a pair of linear equations:
+<span class="listmarker"> <span class="theoremheaderplain">Proposition 5.2.6</span></span> <a id="autoid-107" ></a ><a id="p:one_period_pricing"></a> Let \(\Phi (S_1)\) be a contingent
+claim. Then the (unique) replicating portfolio \(h=(x,y)\) for \(\Phi (S_1)\) can be found by solving \(V^h_1=\Phi (S_1)\), which can be written as a pair of linear equations:
 </p>
 <span class="hidden"> \(\seteqnumber{0}{5.}{9}\)</span>
 
@@ -1393,14 +1391,14 @@ For example, we can now both price and hedge the European call option.
 </p>
 <div class="theorembodyexample">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-108"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 5.2.7</span> <a id="autoid-109" ></a >In <span class="textup">(<a
+<span class="listmarker"> <span class="theoremheaderplain">Example 5.2.7</span></span> <a id="autoid-109" ></a >In <span class="textup">(<a
 href="Hedging-in-one-period-model.html#eq:eu_call_op_contigent">5.5</a>)</span> we found the contingent claim of a European call option with strike price \(K\in (sd,su)\) to be \(\Phi (S_T)=\max
 (S_T-K,0)\). By the first part of Proposition <a href="Hedging-in-one-period-model.html#p:one_period_pricing">5.2.6</a>, to find a replicating portfolio \(h=(x,y)\) we must solve \(V^h_1=\Phi
 (S_1)\), which is
@@ -1484,7 +1482,7 @@ href="Hedging-in-one-period-model.html#p:one_period_pricing">5.2.6</a> the value
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

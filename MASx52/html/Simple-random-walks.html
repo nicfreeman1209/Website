@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Simple random walks </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,11 +901,10 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... chapter Simple random walks        ......
 -->
-<h3 id="autosec-270">Chapter&nbsp;<span class="sectionnumber">9&#x2003;</span>Simple random walks \((\Delta )\)</h3>
+<h3 id="autosec-270">Chapter&nbsp;<span class="sectionnumber">9&#x2003;</span>Simple random walks \(\msconly \)</h3>
 <a id="notes_1-autopage-270"></a>
 <a id="notes_1-autofile-42"></a>
 
@@ -919,15 +917,15 @@ will focus on the case of <i>simple</i> random walks, which means that they move
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-198"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.0.1</span> <a id="autoid-199" ></a >Let \(S_n=\sum _{i=1}^n X_i\) where \(\P [X_i=1]=p\) and \(\P [X_i=-1]=1-p\), and the \((X_i)\) are
-independent of each other. Then \((S_n)\) does not converge almost surely to a real valued random variable and \((S_n)\) is not uniformly bounded in \(L^1\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.0.1</span></span> <a id="autoid-199" ></a >Let \(S_n=\sum _{i=1}^n X_i\) where \(\P [X_i=1]=p\) and \(\P
+[X_i=-1]=1-p\), and the \((X_i)\) are independent of each other. Then \((S_n)\) does not converge almost surely to a real valued random variable and \((S_n)\) is not uniformly bounded in \(L^1\).
 </p>
 
 
@@ -963,7 +961,7 @@ solutions to all of the end-of-chapter exercises can be found within the online 
 <!--
 ...... section Exit probabilities        ......
 -->
-<h4 id="autosec-272"><span class="sectionnumber">9.1&#x2003;</span>Exit probabilities \((\Delta )\)</h4>
+<h4 id="autosec-272"><span class="sectionnumber">9.1&#x2003;</span>Exit probabilities \(\msconly \)</h4>
 <a id="notes_1-autopage-272"></a>
 
 
@@ -972,7 +970,7 @@ solutions to all of the end-of-chapter exercises can be found within the online 
 
 <p>
 We recall the asymmetric random walk from Section <a href="Stochastic-processes.html#s:asrw">4.1</a>. Let \((X_i)_{i=1}^\infty \) be a sequence of i.i.d.&nbsp;random variables. Let \(p+q=1\) with
-\(p,q\in [0,1]\), \(p\neq q\) and suppose that
+\(p,q\in (0,1)\), \(p\neq q\) and suppose that
 </p>
 
 <p>
@@ -1019,14 +1017,14 @@ We now look to apply the optional stopping theorem, using the (b) conditions. Fo
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-200"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.1.1</span> <a id="autoid-201" ></a ><a id="l:E_T_biased"></a> It holds that \(\E [T]&lt;\infty \).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.1.1</span></span> <a id="autoid-201" ></a ><a id="l:E_T_biased"></a> It holds that \(\E [T]&lt;\infty \).
 </p>
 
 
@@ -1107,12 +1105,30 @@ By independence, \(\P [E_k]=p^m\). Hence, the random variable \(K=\inf \{k\in \N
 <p>
 From above, we have that \(M\) is a martingale. Hence by Lemma <a href="The-optional-stopping-theorem.html#l:stopped_martingale">8.2.4</a>, \(M^T\) is also a martingale. By definition of \(T\),
 </p>
+<span class="hidden"> \(\seteqnumber{0}{9.}{1}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                        if \(q&gt;p\) then (q/p)a ≤ MnT ≤ (q/p)b
+
+                                                                                        if \(p&gt;q\) then (q/p)a ≥ MnT ≥ (q/p)b
+
+
+
+-->
+
+
 
 <p>
-\[(q/p)^a\leq M^T_n\leq (q/p)^b\]
-</p>
 
-<p>
+
+\begin{align*}
+\text {if $q&gt;p$ then }&amp;(q/p)^a\leq M^T_n\leq (q/p)^b \\ \text {if $p&gt;q$ then }&amp;(q/p)^a\geq M^T_n\geq (q/p)^b
+\end{align*}
 for all \(n\), hence \(M^T\) is a bounded martingale. Lemma <a href="Simple-random-walks.html#l:E_T_biased">9.1.1</a> implies that \(\P [T&lt;\infty ]=1\), so we have that condition (b) of the
 optional stopping theorem holds for the martingale \(M^T\) and the stopping time \(T\). Therefore,
 </p>
@@ -1144,7 +1160,7 @@ Since \(\P [T&lt;\infty ]=1\), we must hit one or other boundary, so we have tha
 
 
 
-                            P[T = Ta ] + P[T = Tb ] = 1.                              (9.2)                                                                        --><a id="eq:asym_rw_stopped_lin_1"></a><!--
+                                            P[T = Ta ] + P[T = Tb ] = 1.                                            (9.2)                                          --><a id="eq:asym_rw_stopped_lin_1"></a><!--
 
 -->
 
@@ -1260,7 +1276,7 @@ way, in Exercise <a href="Exercises-on-Chapter-ref-c-rws.html#ps:rw_sym_hitting_
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Long term behaviour: symmetric case </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,13 +901,14 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Long term behaviour: symmetric case             ......
 -->
-<h4 id="autosec-279"><span class="sectionnumber">9.3&#x2003;</span>Long term behaviour: symmetric case \((\Delta )\)</h4>
+<h4 id="autosec-279"><span class="sectionnumber">9.3&#x2003;</span>Long term behaviour: symmetric case \(\msconly \)</h4>
 <a id="notes_1-autopage-279"></a>
-<a id="notes_1-autofile-44"></a> <a id="s:rw_long_term_sym"></a>
+<a id="notes_1-autofile-44"></a>
+
+<a id="s:rw_long_term_sym"></a>
 
 <p>
 In this section we study the simple symmetric random walk. Our goal is to show that \((S_n)\) not only oscillates as \(n\to \infty \), but in fact \((S_n)\) visits every \(k\in Z\) infinitely many times. This
@@ -938,14 +938,15 @@ href="Exercises-on-Chapter-ref-c-stoch_procs_2.html#ps:return_time"><b>8.5</b></
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-204"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.3.1</span> <a id="autoid-205" ></a ><a id="l:rw_symm_return_finite"></a> It holds that \(\P [R&lt;\infty ]=1\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.3.1</span></span> <a id="autoid-205" ></a ><a id="l:rw_symm_return_finite"></a> It holds that \(\P [R&lt;\infty
+]=1\).
 </p>
 
 
@@ -1034,14 +1035,15 @@ We had deduced above that \(\E [G]\) was finite, so we have reached a contradict
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-206"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.3.2</span> <a id="autoid-207" ></a ><a id="l:rw_hitting_time_finite"></a> For all \(k\in \N \) we have that \(\P [T_k&lt;\infty ]=1\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.3.2</span></span> <a id="autoid-207" ></a ><a id="l:rw_hitting_time_finite"></a> For all \(k\in \N \) we have that
+\(\P [T_k&lt;\infty ]=1\).
 </p>
 
 
@@ -1073,15 +1075,15 @@ Lastly, we consider \(k&lt;0\). By symmetry of the walk about zero, \(T_k\) and 
 </p>
 <div class="theorembodytheorem">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-208"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 9.3.3</span> <a id="autoid-209" ></a ><a id="t:rw_oscillations"></a> Almost surely, for all \(k\in \Z \) there are infinitely many \(n\in \N \) such
-that \(S_n=k\).
+<span class="listmarker"> <span class="theoremheaderplain">Theorem 9.3.3</span></span> <a id="autoid-209" ></a ><a id="t:rw_oscillations"></a> Almost surely, for all \(k\in \Z \) there are
+infinitely many \(n\in \N \) such that \(S_n=k\).
 </p>
 
 
@@ -1113,14 +1115,14 @@ optional stopping theorem to <i>deduce</i> that \(\E [T_1]=\infty \), as follows
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-210"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.3.4</span> <a id="autoid-211" ></a ><a id="l:rw_sym_T1"></a> It holds that \(\E [T_1]=\infty \).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.3.4</span></span> <a id="autoid-211" ></a ><a id="l:rw_sym_T1"></a> It holds that \(\E [T_1]=\infty \).
 </p>
 
 
@@ -1137,15 +1139,15 @@ we have \(\P [T_1&lt;\infty ]=1\) which means, by definition of \(T_1\), that \(
 </p>
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-212"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 9.3.5</span> <a id="autoid-213" ></a ><a id="r:op_stop_careful"></a> More generally, we have to be very careful about using the optional stopping
-theorem. The conditions fail in many situations, and there are many examples of stopping times \(T\) and martingales \((M_n)\) for which \(\E [M_T]\neq \E [M_0]\).
+<span class="listmarker"> <span class="theoremheaderplain">Remark 9.3.5</span></span> <a id="autoid-213" ></a ><a id="r:op_stop_careful"></a> More generally, we have to be very careful
+about using the optional stopping theorem. The conditions fail in many situations, and there are many examples of stopping times \(T\) and martingales \((M_n)\) for which \(\E [M_T]\neq \E [M_0]\).
 </p>
 
 
@@ -1163,15 +1165,15 @@ the next lemma, with a careful calculation we will find out the exact distributi
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-214"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 9.3.6</span> <a id="autoid-215" ></a ><a id="l:rw_sym_T1_dist"></a> It holds that \(\P [T_1=2n-1]=\binom {2n}{n}2^{-2n}\frac {1}{2n-1}\sim
-\tfrac {1}{2n\sqrt {\pi n}}\).
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 9.3.6</span></span> <a id="autoid-215" ></a ><a id="l:rw_sym_T1_dist"></a> It holds that \(\P [T_1=2n-1]=\binom
+{2n}{n}2^{-2n}\frac {1}{2n-1}\sim \tfrac {1}{2n\sqrt {\pi n}}\).
 </p>
 
 
@@ -1194,10 +1196,14 @@ the next lemma, with a careful calculation we will find out the exact distributi
 
 
                                                                                  P[S2n > 0] = P[T1 ≤ 2n − 1, S2n > 0]
-                                                                                                h             h                      ii
+
+                                                                                            = E 1{T1 ≤2n−1} 1{S2n >0}
+                                                                                                                     
+
+                                                                                            = E E 1{T1 ≤2n−1} 1{S2n >0} | FT1
+                                                                                                                            
+                                                                                                h             h                    ii
                                                                                             = E 1{T1 ≤2n−1} E 1{S2n −ST1 >0} | FT1
-                                                                                                h                                   i
-                                                                                            = E 1{T1 ≤2n−1} E[1{S2n −ST1 >0} | FT1 ]
                                                                                                                  
                                                                                                                 1
                                                                                             = E 1{T1 ≤2n−1} ×
@@ -1216,14 +1222,14 @@ the next lemma, with a careful calculation we will find out the exact distributi
 
 
 \begin{align}
-\P [S_{2n}&gt;0] &amp;= \P [T_1\leq 2n-1, S_{2n}&gt;0] \notag \\ &amp;= \E \l [\1_{\{T_1\leq 2n-1\}}\E \l [\1_{\{S_{2n}-S_{T_1}&gt;0\}}\|\mc {F}_{T_1}\r ]\r ] \notag \\ &amp;= \E
-\l [\1_{\{T_1\leq 2n-1\}}\E [\1_{\{S_{2n}-S_{T_1}&gt;0\}}\|\mc {F}_{T_1}]\r ] \notag \\ &amp;= \E \l [\1_{\{T_1\leq 2n-1\}}\times \frac 12\r ] \notag \\ &amp;= \frac 12 \P
-[T_1\leq 2n-1]. \label {eq:T1S2n}
+\P [S_{2n}&gt;0] &amp;= \P [T_1\leq 2n-1, S_{2n}&gt;0] \notag \\ &amp;= \E \l [\1_{\{T_1\leq 2n-1\}}\1_{\{S_{2n}&gt;0\}}\r ] \notag \\ &amp;= \E \l [\E \l [\1_{\{T_1\leq
+2n-1\}}\1_{\{S_{2n}&gt;0\}}\|\mc {F}_{T_1}\r ]\r ] \notag \\ &amp;= \E \l [\1_{\{T_1\leq 2n-1\}}\E \l [\1_{\{S_{2n}-S_{T_1}&gt;0\}}\|\mc {F}_{T_1}\r ]\r ] \notag \\ &amp;= \E \l
+[\1_{\{T_1\leq 2n-1\}}\times \frac 12\r ] \notag \\ &amp;= \frac 12 \P [T_1\leq 2n-1]. \label {eq:T1S2n}
 \end{align}
-In the above, the first line follows because if \(S_{2n}&gt;0\) then \(T_1\leq 2n-1\). The second line uses the relationship between expectation and conditional expectation, and the third line uses that \(T_1\) is
-a stopping time, hence \(\{T_1\leq 2n-1\}\in \mc {F}_{T_1}\). The fourth line uses the strong Markov property, which gives that \(S_{2n}-S_{T_1}\) is independent of \(\mc {F}_{T_1}\) and behaves like a
-random walk with \(2n-T_1\) steps. Since \(T_1\) is odd, this is an odd number of steps, which means that \(S_{2n}-S_{T_1}\) takes odd values and has a distribution that is symmetric about \(0\), hence \(\E
-[\1_{\{S_{2n}-S_{T_1}&gt;0\}}\|\mc {F}_{T_1}]=\frac 12\).
+In the above, the first line follows because if \(S_{2n}&gt;0\) then \(T_1\leq 2n-1\). The second and third lines use the relationship between expectation and conditional expectation, and the fourth line uses that
+\(T_1\) is a stopping time, hence \(\{T_1\leq 2n-1\}\in \mc {F}_{T_1}\). The fifth line uses the strong Markov property, which gives that \(S_{2n}-S_{T_1}\) is independent of \(\mc {F}_{T_1}\) and
+behaves like a random walk with \(2n-T_1\) steps. Since \(T_1\) is odd, this is an odd number of steps, which means that \(S_{2n}-S_{T_1}\) takes odd values and has a distribution that is symmetric about
+\(0\), hence \(\E [\1_{\{S_{2n}-S_{T_1}&gt;0\}}\|\mc {F}_{T_1}]=\frac 12\).
 </p>
 
 <p>
@@ -1236,7 +1242,7 @@ From the above calculation, and using the symmetry of the random walk about zero
 
 
 
-                  P[T ≤ 2n − 1] = 2P[S2n > 0] = P[S2n > 0] + P[S2n < 0] = 1 − P[S2n = 0].                       (9.11)                                                 --><a id="eq:rw_sym_T1_dist_1"></a><!--
+                  P[T ≤ 2n − 1] = 2P[S2n > 0] = P[S2n > 0] + P[S2n < 0] = 1 − P[S2n = 0].                      (9.11)                                                  --><a id="eq:rw_sym_T1_dist_1"></a><!--
 
 -->
 
@@ -1306,7 +1312,7 @@ one another i.e.&nbsp;a reflection about height \(k\).
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

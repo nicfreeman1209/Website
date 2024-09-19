@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Exercises on Chapter <a href=Convergence-random-variables.html#c:rv_conv>6</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Exercises on Chapter <a href=Convergence-random-variables.html#c:rv_conv>6</a> ......
 -->
@@ -917,12 +915,12 @@ Home</a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>6.1</b> <a id="ps:conv_simple"></a> Let \((X_n)\) be a sequence of independent random variables such that
+<span class="listmarker"><b>6.1</b></span> <a id="ps:conv_simple"></a> Let \((X_n)\) be a sequence of independent random variables such that
 </p>
 <p>
 \[ X_n= \begin {cases} 2^{-n} &amp; \text { with probability }\frac {1}{2}\\ 0 &amp; \text { with probability }\frac {1}{2}.\\ \end {cases} \]
@@ -935,14 +933,14 @@ Show that \(X_n\to 0\) in \(L^1\) and almost surely. Deduce that also \(X_n\to 0
 
 
 <p>
-<b>6.2</b> <a id="ps:conv_simple_3"></a> Let \(X_n,X\) be random variables.
+<span class="listmarker"><b>6.2</b></span> <a id="ps:conv_simple_3"></a> Let \(X_n,X\) be random variables.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Suppose that \(X_n\stackrel {L^1}{\to } X\) as \(n\to \infty \). Show that \(\E [X_n]\to \E [X]\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Suppose that \(X_n\stackrel {L^1}{\to } X\) as \(n\to \infty \). Show that \(\E [X_n]\to \E [X]\).
 </p>
 
 
@@ -951,7 +949,7 @@ Show that \(X_n\to 0\) in \(L^1\) and almost surely. Deduce that also \(X_n\to 0
 
 
 <p>
-<span class="textnormal">(b)</span> Give an example where \(\E [X_n]\to \E [X]\) but \(X_n\) does not converge to \(X\) in \(L^1\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Give an example where \(\E [X_n]\to \E [X]\) but \(X_n\) does not converge to \(X\) in \(L^1\).
 </p>
 </li>
 </ul>
@@ -960,7 +958,7 @@ Show that \(X_n\to 0\) in \(L^1\) and almost surely. Deduce that also \(X_n\to 0
 
 
 <p>
-<b>6.3</b> <a id="ps:conv_simple_4"></a> Let \(U\) be a random variable such that \(\P [U=0]=\P [U=1]=\P [U=2]=\frac 13\). Let \(X_n\) and \(X\) be given by
+<span class="listmarker"><b>6.3</b></span> <a id="ps:conv_simple_4"></a> Let \(U\) be a random variable such that \(\P [U=0]=\P [U=1]=\P [U=2]=\frac 13\). Let \(X_n\) and \(X\) be given by
 </p>
 <p>
 \[ X_n= \begin {cases} 1+\frac {1}{n} &amp; \text { if }U=0\\ 1-\frac {1}{n} &amp; \text { if }U=1\\ 0 &amp; \text { if }U=2, \end {cases} \quad \quad \quad \quad X= \begin
@@ -974,32 +972,23 @@ Show that \(X_n\to X\) both almost surely and in \(L^1\). Deduce that also \(X_n
 
 
 <p>
-<b>6.4</b> <a id="ps:D_notP"></a> Let \(X_1\) be a random variable with distribution given by \(\P [X_1=1]=\P [X_1=0]=\frac 12\). Set \(X_n=X_1\) for all \(n\geq 2\). Set \(Y=1-X_1\). Show that
-\(X_n\to Y\) in distribution, but not in probability.
+<span class="listmarker"><b>6.4</b></span> <a id="ps:D_notP"></a> Let \(X_1\) be a random variable with distribution given by \(\P [X_1=1]=\P [X_1=0]=\frac 12\). Set \(X_n=X_1\) for all \(n\geq
+2\). Set \(Y=1-X_1\). Show that \(X_n\to Y\) in distribution, but not in probability.
 </p>
 </li>
 <li>
 
 
 <p>
-<b>6.5</b> <a id="ps:conv_simple_2"></a> Let \((X_n)\) be the sequence of random variables from <a href="Exercises-on-Chapter-ref-c-rv_conv.html#ps:conv_simple"><b>6.1</b></a>. Define
-\(Y_n=X_1+X_2+\ldots +X_n\).
+<span class="listmarker"><b>6.5</b></span> <a id="ps:conv_simple_2"></a> Let \((X_n)\) be the sequence of random variables from <a
+href="Exercises-on-Chapter-ref-c-rv_conv.html#ps:conv_simple"><b>6.1</b></a>. Define \(Y_n=X_1+X_2+\ldots +X_n\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that, for all \(\omega \in \Omega \), the sequence \(Y_n(\omega )\) is increasing and bounded.
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-<span class="textnormal">(b)</span> Deduce that there exists a random variable \(Y\) such that \(Y_n\stackrel {a.s.}{\to }Y\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that, for all \(\omega \in \Omega \), the sequence \(Y_n(\omega )\) is increasing and bounded.
 </p>
 
 
@@ -1008,7 +997,7 @@ Show that \(X_n\to X\) both almost surely and in \(L^1\). Deduce that also \(X_n
 
 
 <p>
-<span class="textnormal">(c)</span> Write down the distribution of \(Y_1,Y_2\) and \(Y_3\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Deduce that there exists a random variable \(Y\) such that \(Y_n\stackrel {a.s.}{\to }Y\).
 </p>
 
 
@@ -1017,7 +1006,7 @@ Show that \(X_n\to X\) both almost surely and in \(L^1\). Deduce that also \(X_n
 
 
 <p>
-<span class="textnormal">(d)</span> Suggest why we might guess that \(Y\) has a uniform distribution on \([0,1]\).
+<span class="listmarker"><span class="textnormal">(c)</span></span> Write down the distribution of \(Y_1,Y_2\) and \(Y_3\).
 </p>
 
 
@@ -1026,7 +1015,7 @@ Show that \(X_n\to X\) both almost surely and in \(L^1\). Deduce that also \(X_n
 
 
 <p>
-<span class="textnormal">(e)</span> Prove that \(Y_n\) has a uniform distribution on \(\{k2^{-n}\-k=0,1,\ldots ,2^n-1\}\).
+<span class="listmarker"><span class="textnormal">(d)</span></span> Suggest why we might guess that \(Y\) has a uniform distribution on \([0,1]\).
 </p>
 
 
@@ -1035,7 +1024,16 @@ Show that \(X_n\to X\) both almost surely and in \(L^1\). Deduce that also \(X_n
 
 
 <p>
-<span class="textnormal">(f)</span> Prove that \(Y\) has a uniform distribution on \([0,1]\).
+<span class="listmarker"><span class="textnormal">(e)</span></span> Prove that \(Y_n\) has a uniform distribution on \(\{k2^{-n}\-k=0,1,\ldots ,2^n-1\}\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(f)</span></span> Prove that \(Y\) has a uniform distribution on \([0,1]\).
 </p>
 </li>
 </ul>
@@ -1049,20 +1047,20 @@ Show that \(X_n\to X\) both almost surely and in \(L^1\). Deduce that also \(X_n
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>6.6</b> <a id="ps:mct_down"></a> Let \(Y_n\) be a sequence of random variables such that \(Y_{n+1}\leq Y_n\leq 0\), almost surely, for all \(n\). Show that there exists a random variable \(Y\) such
-that \(Y_n\stackrel {a.s.}{\to }Y\) and \(\E [Y_n]\to \E [Y]\).
+<span class="listmarker"><b>6.6</b></span> <a id="ps:mct_down"></a> Let \(Y_n\) be a sequence of random variables such that \(Y_{n+1}\leq Y_n\leq 0\), almost surely, for all \(n\). Show that there
+exists a random variable \(Y\) such that \(Y_n\stackrel {a.s.}{\to }Y\) and \(\E [Y_n]\to \E [Y]\).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>6.7</b> <a id="ps:mct_reveal_tail"></a> Let \(X\) be a random variable such that \(X\geq 0\) and \(\P [X&lt;\infty ]=1\). Define
+<span class="listmarker"><b>6.7</b></span> <a id="ps:mct_reveal_tail"></a> Let \(X\) be a random variable such that \(X\geq 0\) and \(\P [X&lt;\infty ]=1\). Define
 </p>
 <p>
 \[ X_n= \begin {cases} X &amp; \text { if }X\leq n\\ 0 &amp; \text {otherwise.} \end {cases} \]
@@ -1075,15 +1073,15 @@ Equivalently, \(X_n=X\1\{X\leq n\}\). Show that \(\E [X_n]\to \E [X]\) as \(n\to
 
 
 <p>
-<b>6.8</b> <a id="ps:mct_fubini"></a> Let \((X_n)\) be a sequence of random variables.
+<span class="listmarker"><b>6.8</b></span> <a id="ps:mct_fubini"></a> Let \((X_n)\) be a sequence of random variables.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Explain briefly why \(\E \big [\sum _{i=1}^n X_i\big ]=\sum _{i=1}^n \E [X_i]\) follows from the linearity of \(\E \), for \(n\in \N \). Explain briefly why
-linearity alone does not allow us to deduce the same equation with \(n=\infty \).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Explain briefly why \(\E \big [\sum _{i=1}^n X_i\big ]=\sum _{i=1}^n \E [X_i]\) follows from the linearity of \(\E \), for
+\(n\in \N \). Explain briefly why linearity alone does not allow us to deduce the same equation with \(n=\infty \).
 </p>
 
 
@@ -1092,15 +1090,15 @@ linearity alone does not allow us to deduce the same equation with \(n=\infty \)
 
 
 <p>
-<span class="textnormal">(b)</span> Suppose that \(X_n\geq 0\) almost surely, for all \(n\). Show that
+<span class="listmarker"><span class="textnormal">(b)</span></span> Suppose that \(X_n\geq 0\) almost surely, for all \(n\). Show that
 </p>
 <span class="hidden"> \(\seteqnumber{0}{6.}{0}\)</span>
 <!--
-                                        "∞     #     ∞
-                                                                                             (6.1)                                                                   --><a id="eq:mct_fubini"></a><!--
-                                         X           X
-                                    E         Xi =         E[Xi ].
-                                        i=1          i=1
+                                       "∞     #     ∞
+                                                                                               (6.1)                                                            --><a id="eq:mct_fubini"></a><!--
+                                        X           X
+                                   E         Xi =         E[Xi ].
+                                       i=1          i=1
 -->
 <p>
 
@@ -1116,8 +1114,8 @@ linearity alone does not allow us to deduce the same equation with \(n=\infty \)
 
 
 <p>
-<span class="textnormal">(c)</span> Suppose, instead, that the \(X_i\) are independent and that \(\P [X_i=1]=\P [X_i=-1]=\frac 12\). Explain briefly why <span class="textup">(<a
-href="Exercises-on-Chapter-ref-c-rv_conv.html#eq:mct_fubini">6.1</a>)</span> fails to hold, in this case.
+<span class="listmarker"><span class="textnormal">(c)</span></span> Suppose, instead, that the \(X_i\) are independent and that \(\P [X_i=1]=\P [X_i=-1]=\frac 12\). Explain briefly why <span
+class="textup">(<a href="Exercises-on-Chapter-ref-c-rv_conv.html#eq:mct_fubini">6.1</a>)</span> fails to hold, in this case.
 </p>
 </li>
 </ul>
@@ -1131,19 +1129,19 @@ href="Exercises-on-Chapter-ref-c-rv_conv.html#eq:mct_fubini">6.1</a>)</span> fai
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>6.6</b> <a id="ps:unique_limit"></a> Let \((X_n)\) be a sequence of random variables, and let \(X\) and \(Y\) be random variables.
+<span class="listmarker"><b>6.6</b></span> <a id="ps:unique_limit"></a> Let \((X_n)\) be a sequence of random variables, and let \(X\) and \(Y\) be random variables.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that if \(X_n\stackrel {d}{\to }X\) and \(X_n\stackrel {d}{\to }Y\) then \(X\) and \(Y\) have the same distribution.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that if \(X_n\stackrel {d}{\to }X\) and \(X_n\stackrel {d}{\to }Y\) then \(X\) and \(Y\) have the same distribution.
 </p>
 
 
@@ -1152,7 +1150,7 @@ href="Exercises-on-Chapter-ref-c-rv_conv.html#eq:mct_fubini">6.1</a>)</span> fai
 
 
 <p>
-<span class="textnormal">(b)</span> Show that if \(X_n\stackrel {\P }{\to }X\) and \(X_n\stackrel {\P }{\to }Y\) then \(X=Y\) almost surely.
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that if \(X_n\stackrel {\P }{\to }X\) and \(X_n\stackrel {\P }{\to }Y\) then \(X=Y\) almost surely.
 </p>
 </li>
 </ul>
@@ -1161,8 +1159,8 @@ href="Exercises-on-Chapter-ref-c-rv_conv.html#eq:mct_fubini">6.1</a>)</span> fai
 
 
 <p>
-<b>6.7</b> <a id="ps:not_conv"></a> Let \((X_n)\) be a sequence of independent random variables such that \(\P [X_n=1]=\P [X_n=0]=\frac 12\). Show that \((X_n)\) does not converge in probability and
-deduce that \((X_n)\) also does not converge in \(L^1\), or almost surely. Does \(X_n\) converge in distribution?
+<span class="listmarker"><b>6.7</b></span> <a id="ps:not_conv"></a> Let \((X_n)\) be a sequence of independent random variables such that \(\P [X_n=1]=\P [X_n=0]=\frac 12\). Show that
+\((X_n)\) does not converge in probability and deduce that \((X_n)\) also does not converge in \(L^1\), or almost surely. Does \(X_n\) converge in distribution?
 </p>
 <p>
 
@@ -1180,7 +1178,7 @@ deduce that \((X_n)\) also does not converge in \(L^1\), or almost surely. Does 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

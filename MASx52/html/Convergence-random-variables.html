@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Convergence of random variables</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,7 +901,6 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... chapter Convergence of random variables ......
 -->
@@ -938,12 +936,12 @@ later chapters.
 We say:
 </p>
 
-<ul style="list-style-type:none">
+<ul class="itemize" style="list-style-type:none">
 
 
 <li>
 <p>
-• \(X_n\stackrel {d}{\to } X\), known as convergence <b>in distribution</b>, if for every \(x\in \R \) at which \(\P [X=x]=0\),
+<span class="listmarker">•</span> \(X_n\stackrel {d}{\to } X\), known as convergence <b>in distribution</b>, if for every \(x\in \R \) at which \(\P [X=x]=0\),
 </p>
 <p>
 \[\lim _{n\to \infty }\P [X_n\leq x]=\P [X\leq x].\]
@@ -953,7 +951,7 @@ We say:
 
 
 <p>
-• \(X_n\stackrel {\P }{\to } X\), known as convergence <b>in probability</b>, if given any \(a&gt;0\),
+<span class="listmarker">•</span> \(X_n\stackrel {\P }{\to } X\), known as convergence <b>in probability</b>, if given any \(a&gt;0\),
 </p>
 <p>
 \[\lim _{n\to \infty }\P [|X_n-X|&gt;a]=0.\]
@@ -963,7 +961,7 @@ We say:
 
 
 <p>
-• \(X_n\stackrel {a.s.}{\to } X\), known as <b>almost sure</b> convergence, if
+<span class="listmarker">•</span> \(X_n\stackrel {a.s.}{\to } X\), known as <b>almost sure</b> convergence, if
 </p>
 <p>
 \[\P \l [X_n\to X\text { as }n\to \infty \r ]=1.\]
@@ -973,7 +971,7 @@ We say:
 
 
 <p>
-• \(X_n\stackrel {L^p}{\to } X\), known as <b>convergence in \(L^p\)</b>, if
+<span class="listmarker">•</span> \(X_n\stackrel {L^p}{\to } X\), known as <b>convergence in \(L^p\)</b>, if
 </p>
 <p>
 \[\E \l [|X_n-X|^p\r ]\to 0\text { as }n\to \infty .\]
@@ -995,14 +993,15 @@ It is common for random variables to converge in some modes but not others, as t
 </p>
 <div class="theorembodyexample">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-130"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Example 6.1.1</span> <a id="autoid-131" ></a ><a id="ex:rv_conv"></a> Let \(U\) be a uniform random variable on \([0,1]\) and set
+<span class="listmarker"> <span class="theoremheaderplain">Example 6.1.1</span></span> <a id="autoid-131" ></a ><a id="ex:rv_conv"></a> Let \(U\) be a uniform random variable on \([0,1]\)
+and set
 </p>
 
 <p>
@@ -1012,19 +1011,20 @@ It is common for random variables to converge in some modes but not others, as t
 <p>
 Our candidate limit is \(X=0\), the random variable that takes the deterministic value \(0\). We’ll check each of the types of convergence in turn.
 </p>
-<ul style="list-style-type:none">
+<ul class="itemize" style="list-style-type:none">
 
 
 <li>
 <p>
-• For convergence in distribution, we note that \(\P [X\leq x]=\big \{\begin {smallmatrix}0&amp;\text { if }x&lt;0\\1&amp;\text { if }x\geq 0\end {smallmatrix}\). We consider these two cases:
+<span class="listmarker">•</span> For convergence in distribution, we note that \(\P [X\leq x]=\big \{\begin {smallmatrix}0&amp;\text { if }x&lt;0\\1&amp;\text { if }x\geq 0\end
+{smallmatrix}\). We consider these two cases:
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-1. Firstly, if \(x&lt;0\) then \(\P [X_n\leq x]=0\) so \(\P [X_n\leq x]\to 0\).
+<span class="listmarker">1.</span> Firstly, if \(x&lt;0\) then \(\P [X_n\leq x]=0\) so \(\P [X_n\leq x]\to 0\).
 </p>
 
 
@@ -1033,8 +1033,8 @@ Our candidate limit is \(X=0\), the random variable that takes the deterministic
 
 
 <p>
-2. Secondly, consider \(x\geq 0\). By definition \(\P [X_n=0]=1-\frac {1}{n}\), so we have that \(1-\frac {1}{n}=\P [X_n=0]\leq \P [X\leq x]\leq 1\), and the sandwich rule tells us that \(\P
-[X_n\leq x]\to 1\).
+<span class="listmarker">2.</span> Secondly, consider \(x\geq 0\). By definition \(\P [X_n=0]=1-\frac {1}{n}\), so we have that \(1-\frac {1}{n}=\P [X_n=0]\leq \P [X\leq x]\leq 1\), and the
+sandwich rule tells us that \(\P [X_n\leq x]\to 1\).
 </p>
 </li>
 </ul>
@@ -1048,8 +1048,8 @@ Hence, \(\P [X_n\leq x]\to \P [X\leq x]\) in both cases, which means that \(X_n\
 
 
 <p>
-• For any \(0&lt;a\leq n^2\) we have \(\P [|X_n-0|&gt;a]=\P [X_n&gt;a]\leq \P [X_n=n^2]=\frac {1}{n}\), so as \(n\to \infty \) we have \(\P [|X_n-0|&gt;a]\to 0\), which means that we do have
-\(X_n\stackrel {\P }{\to } 0\).
+<span class="listmarker">•</span> For any \(0&lt;a\leq n^2\) we have \(\P [|X_n-0|&gt;a]=\P [X_n&gt;a]\leq \P [X_n=n^2]=\frac {1}{n}\), so as \(n\to \infty \) we have \(\P
+[|X_n-0|&gt;a]\to 0\), which means that we do have \(X_n\stackrel {\P }{\to } 0\).
 </p>
 
 
@@ -1058,7 +1058,7 @@ Hence, \(\P [X_n\leq x]\to \P [X\leq x]\) in both cases, which means that \(X_n\
 
 
 <p>
-• If \(X_m=0\) for some \(m\in \N \) then \(X_n=0\) for all \(n\geq m\), which implies that \(X_n\to 0\) as \(n\to \infty \). So, we have
+<span class="listmarker">•</span> If \(X_m=0\) for some \(m\in \N \) then \(X_n=0\) for all \(n\geq m\), which implies that \(X_n\to 0\) as \(n\to \infty \). So, we have
 </p>
 <p>
 \[\P \l [\lim _{n\to \infty }X_n=0\r ]\geq \P [X_m=0]=1-\frac {1}{m}.\]
@@ -1073,7 +1073,7 @@ Since this is true for any \(m\in \N \), we have \(\P [\lim _{n\to \infty }X_n=0
 
 
 <p>
-• Lastly, \(\E [|X_n-0|]=\E [X_n]=n^2\frac {1}{n}=n\), which does not tend to \(0\) as \(n\to \infty \). So \(X_n\) does not converge to \(0\) in \(L^1\).
+<span class="listmarker">•</span> Lastly, \(\E [|X_n-0|]=\E [X_n]=n^2\frac {1}{n}=n\), which does not tend to \(0\) as \(n\to \infty \). So \(X_n\) does not converge to \(0\) in \(L^1\).
 </p>
 </li>
 </ul>
@@ -1090,30 +1090,21 @@ As we might hope, there are relationships between the different modes of converg
 </p>
 <div class="theorembodylemma">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-132"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Lemma 6.1.2</span> <a id="autoid-133" ></a ><a id="l:conv_modes"></a> Let \(X_n,X\) be random variables.
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 6.1.2</span></span> <a id="autoid-133" ></a ><a id="l:conv_modes"></a> Let \(X_n,X\) be random variables.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-1. If \(X_n\stackrel {\P }{\to } X\) then \(X_n\stackrel {d}{\to } X\).
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-2. If \(X_n\stackrel {a.s.}{\to } X\) then \(X_n\stackrel {\P }{\to } X\).
+<span class="listmarker">1.</span> If \(X_n\stackrel {\P }{\to } X\) then \(X_n\stackrel {d}{\to } X\).
 </p>
 
 
@@ -1122,7 +1113,7 @@ As we might hope, there are relationships between the different modes of converg
 
 
 <p>
-3. If \(X_n\stackrel {L^p}{\to } X\) then \(X_n\stackrel {\P }{\to } X\).
+<span class="listmarker">2.</span> If \(X_n\stackrel {a.s.}{\to } X\) then \(X_n\stackrel {\P }{\to } X\).
 </p>
 
 
@@ -1131,7 +1122,16 @@ As we might hope, there are relationships between the different modes of converg
 
 
 <p>
-4. Let \(1\leq p&lt; q\). If \(X_n\stackrel {L^q}{\to } X\) then \(X_n\stackrel {L^p}{\to } X\).
+<span class="listmarker">3.</span> If \(X_n\stackrel {L^p}{\to } X\) then \(X_n\stackrel {\P }{\to } X\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">4.</span> Let \(1\leq p&lt; q\). If \(X_n\stackrel {L^q}{\to } X\) then \(X_n\stackrel {L^p}{\to } X\).
 </p>
 </li>
 </ul>
@@ -1167,18 +1167,18 @@ The proofs are not part of our course (they are part of MAS31002/61022). We can 
 </div>
 <div class="theorembodyremark">
 
-<ul style="list-style-type:none">
+<ul class="list" style="list-style-type:none">
 
 
 
 <a id="autoid-134"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Remark 6.1.3</span> <a id="autoid-135" ></a >For convergence of real numbers, it was shown in MAS221 that if \(a_n\to a\) and \(a_n\to b\) then \(a=b\), which is
-known as uniqueness of limits. For random variables, the situation is a little more complicated: if \(X_n\stackrel {\P }{\to } X\) and \(X_n\stackrel {\P }{\to } Y\) then \(X=Y\) almost surely. By Lemma
-<a href="Convergence-random-variables.html#l:conv_modes">6.1.2</a>, this result also applies to \(\stackrel {L^p}{\to }\) and \(\stackrel {a.s.}{\to }\). However, if we have only \(X_n\stackrel
-{d}{\to } X\) and \(X_n\stackrel {d}{\to } Y\) then we can only conclude that \(X\) and \(Y\) have the same distribution function. Proving these facts is one of the challenge exercises, <a
-href="Exercises-on-Chapter-ref-c-rv_conv.html#ps:unique_limit"><b>6.6</b></a>.
+<span class="listmarker"> <span class="theoremheaderplain">Remark 6.1.3</span></span> <a id="autoid-135" ></a >For convergence of real numbers, it was shown in MAS221 that if \(a_n\to a\)
+and \(a_n\to b\) then \(a=b\), which is known as uniqueness of limits. For random variables, the situation is a little more complicated: if \(X_n\stackrel {\P }{\to } X\) and \(X_n\stackrel {\P }{\to }
+Y\) then \(X=Y\) almost surely. By Lemma <a href="Convergence-random-variables.html#l:conv_modes">6.1.2</a>, this result also applies to \(\stackrel {L^p}{\to }\) and \(\stackrel {a.s.}{\to }\).
+However, if we have only \(X_n\stackrel {d}{\to } X\) and \(X_n\stackrel {d}{\to } Y\) then we can only conclude that \(X\) and \(Y\) have the same distribution function. Proving these facts is one of the
+challenge exercises, <a href="Exercises-on-Chapter-ref-c-rv_conv.html#ps:unique_limit"><b>6.6</b></a>.
 </p>
 
 
@@ -1197,7 +1197,7 @@ href="Exercises-on-Chapter-ref-c-rv_conv.html#ps:unique_limit"><b>6.6</b></a>.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>

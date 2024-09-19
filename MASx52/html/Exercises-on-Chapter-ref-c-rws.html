@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, February 12, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — Exercises on Chapter <a href=Simple-random-walks.html#c:rws>9</a> </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: February 12, 2024
+last updated: September 19, 2024
 </p>
 
 </header>
@@ -707,10 +707,9 @@ Home</a>
 (part one)</h1>
 
 <!--MathJax customizations:-->
-
-
-
-<div class="hidden">
+<div data-nosnippet
+      style="display:none"
+>
 
 \(\newcommand{\footnotename}{footnote}\)
 
@@ -902,11 +901,10 @@ Home</a>
 
 </div>
 
-<p>
 <!--
 ...... section Exercises on Chapter <a href=Simple-random-walks.html#c:rws>9</a>                ......
 -->
-<h4 id="autosec-298"><span class="sectionnumber">9.6&#x2003;</span>Exercises on Chapter <a href="Simple-random-walks.html#c:rws">9</a> \((\Delta )\)</h4>
+<h4 id="autosec-298"><span class="sectionnumber">9.6&#x2003;</span>Exercises on Chapter <a href="Simple-random-walks.html#c:rws">9</a> \(\msconly \)</h4>
 <a id="notes_1-autopage-298"></a>
 <a id="notes_1-autofile-47"></a>
 
@@ -921,20 +919,21 @@ In all questions below \((S_n)\) denotes a random walk started at the origin, bu
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>9.1</b> <a id="ps:biased_walk"></a> Let \((S_n)\) be the simple asymmetric random walk, as in Section <a href="Simple-random-walks.html#s:rw_exit">9.1</a>. Let \(a&lt;0&lt;b\) be integers
-and define the hitting times \(T_a=\inf \{n\in \N \-S_n=a\}\), \(T_b=\inf \{n\in \N \-S_n=b\}\) and \(T=T_a\wedge T_b\).
+<span class="listmarker"><b>9.1</b></span> <a id="ps:biased_walk"></a> Let \((S_n)\) be the simple asymmetric random walk, as in Section <a
+href="Simple-random-walks.html#s:rw_exit">9.1</a>. Let \(a&lt;0&lt;b\) be integers and define the hitting times \(T_a=\inf \{n\in \N \-S_n=a\}\), \(T_b=\inf \{n\in \N \-S_n=b\}\) and
+\(T=T_a\wedge T_b\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(\E [S_T]=(p-q)\E [T]\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(\E [S_T]=(p-q)\E [T]\).
 </p>
 
 
@@ -943,8 +942,9 @@ and define the hitting times \(T_a=\inf \{n\in \N \-S_n=a\}\), \(T_b=\inf \{n\in
 
 
 <p>
-<span class="textnormal">(b)</span> Calculate \(\E [S_T]\) directly using <span class="textup">(<a href="Simple-random-walks.html#eq:asym_rw_stopped_1">9.5</a>)</span> and <span
-class="textup">(<a href="Simple-random-walks.html#eq:asym_rw_stopped_2">9.6</a>)</span> and hence calculate \(\E [T]\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Calculate \(\E [S_T]\) directly using <span class="textup">(<a
+href="Simple-random-walks.html#eq:asym_rw_stopped_1">9.5</a>)</span> and <span class="textup">(<a href="Simple-random-walks.html#eq:asym_rw_stopped_2">9.6</a>)</span> and hence
+calculate \(\E [T]\).
 </p>
 </li>
 </ul>
@@ -953,17 +953,18 @@ class="textup">(<a href="Simple-random-walks.html#eq:asym_rw_stopped_2">9.6</a>)
 
 
 <p>
-<b>9.2</b> <a id="ps:rw_sym_hitting_probs"></a> <i>This question applies some of the techniques from Section <a href="Simple-random-walks.html#s:rw_exit">9.1</a> to the symmetric case.</i>
+<span class="listmarker"><b>9.2</b></span> <a id="ps:rw_sym_hitting_probs"></a> <i>This question applies some of the techniques from Section <a
+href="Simple-random-walks.html#s:rw_exit">9.1</a> to the symmetric case.</i>
 </p>
 <p>
 Let \((S_n)\) denote the simple symmetric random walk and let \(T_k\) be the hitting time of \(k\in \Z \). Let \(a&lt;0&lt;b\) be integers and let \(T=T_a\wedge T_b\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Explain carefully why both
+<span class="listmarker"><span class="textnormal">(a)</span></span> Explain carefully why both
 </p>
 <span class="hidden"> \(\seteqnumber{0}{9.}{12}\)</span>
 
@@ -996,7 +997,7 @@ Let \((S_n)\) denote the simple symmetric random walk and let \(T_k\) be the hit
 
 
 <p>
-<span class="textnormal">(b)</span> Solve these equations to find explicit formulae for \(\P [T=T_a]\) and \(\P [T=T_b]\) in terms of \(a\) and \(b\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Solve these equations to find explicit formulae for \(\P [T=T_a]\) and \(\P [T=T_b]\) in terms of \(a\) and \(b\).
 </p>
 
 
@@ -1005,7 +1006,7 @@ Let \((S_n)\) denote the simple symmetric random walk and let \(T_k\) be the hit
 
 
 <p>
-<span class="textnormal">(c)</span> Show that \(\E [T]=-ab\).
+<span class="listmarker"><span class="textnormal">(c)</span></span> Show that \(\E [T]=-ab\).
 </p>
 <p>
 <i>Hint: Can you think of a useful martingale?</i>
@@ -1017,7 +1018,8 @@ Let \((S_n)\) denote the simple symmetric random walk and let \(T_k\) be the hit
 
 
 <p>
-<b>9.3</b> <a id="ps:rw_twoup_onedown"></a> Let \((X_i)\) be a sequence of independent, identically distributed random variables with \(\P [X_i=2]=\frac 13\) and \(\P [X_i=-1]=\frac 23\). Set
+<span class="listmarker"><b>9.3</b></span> <a id="ps:rw_twoup_onedown"></a> Let \((X_i)\) be a sequence of independent, identically distributed random variables with \(\P [X_i=2]=\frac 13\) and
+\(\P [X_i=-1]=\frac 23\). Set
 </p>
 <p>
 \[S_n=\sum _{i=1}^n X_i\]
@@ -1025,13 +1027,14 @@ Let \((S_n)\) denote the simple symmetric random walk and let \(T_k\) be the hit
 <p>
 and define the stopping time \(R=\inf \{n\geq 1\-S_n=0\}\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Modify the argument in Exercise <a href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#ps:rw_to_zero"><b>7.11</b></a> to calculate \(\P [S_n=0]\)
-explicitly. Hence show that \(\P [S_{3n}=0] \sim \frac {\sqrt {3}}{2\sqrt {\pi n}}\) as \(n\to \infty \).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Modify the argument in Exercise <a
+href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#ps:rw_to_zero"><b>7.11</b></a> to calculate \(\P [S_n=0]\) explicitly. Hence show that \(\P [S_{3n}=0] \sim \frac {\sqrt {3}}{2\sqrt
+{\pi n}}\) as \(n\to \infty \).
 </p>
 
 
@@ -1040,8 +1043,8 @@ explicitly. Hence show that \(\P [S_{3n}=0] \sim \frac {\sqrt {3}}{2\sqrt {\pi n
 
 
 <p>
-<span class="textnormal">(b)</span> Explain how to modify the proof of Lemma <a href="Long-term-behaviour-symmetric-case.html#l:rw_symm_return_finite">9.3.1</a> to deduce that \(\P
-[R&lt;\infty ]=1\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Explain how to modify the proof of Lemma <a
+href="Long-term-behaviour-symmetric-case.html#l:rw_symm_return_finite">9.3.1</a> to deduce that \(\P [R&lt;\infty ]=1\).
 </p>
 </li>
 </ul>
@@ -1050,8 +1053,8 @@ explicitly. Hence show that \(\P [S_{3n}=0] \sim \frac {\sqrt {3}}{2\sqrt {\pi n
 
 
 <p>
-<b>9.4</b> <a id="ps:rw_asym_T1_3options"></a> Let \(p\in (\frac 35,1]\). Let \((X_i)\) be a sequence of independent, identically distributed random variables with \(\P [X_i=1]=p\) and \(\P
-[X_i=-1]=\P [X_i=-2]=\frac {1-p}{2}\). Set
+<span class="listmarker"><b>9.4</b></span> <a id="ps:rw_asym_T1_3options"></a> Let \(p\in (\frac 35,1]\). Let \((X_i)\) be a sequence of independent, identically distributed random variables with
+\(\P [X_i=1]=p\) and \(\P [X_i=-1]=\P [X_i=-2]=\frac {1-p}{2}\). Set
 </p>
 <p>
 \[S_n=\sum _{i=1}^n X_i\]
@@ -1059,13 +1062,14 @@ explicitly. Hence show that \(\P [S_{3n}=0] \sim \frac {\sqrt {3}}{2\sqrt {\pi n
 <p>
 and let \(T_1=\inf \{n\geq 1\-S_n=1\}\).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Explain how to modify the argument in Lemma <a href="Long-term-behaviour-asymmetric-case.html#l:rw_asym_to_infty">9.4.1</a> to show that \(S_n\stackrel
-{a.s.}{\to }\infty \) as \(n\to \infty \). Hence show that \(\P [T_1&lt;\infty ]=1\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Explain how to modify the argument in Lemma <a
+href="Long-term-behaviour-asymmetric-case.html#l:rw_asym_to_infty">9.4.1</a> to show that \(S_n\stackrel {a.s.}{\to }\infty \) as \(n\to \infty \). Hence show that \(\P [T_1&lt;\infty
+]=1\).
 </p>
 
 
@@ -1074,7 +1078,8 @@ and let \(T_1=\inf \{n\geq 1\-S_n=1\}\).
 
 
 <p>
-<span class="textnormal">(b)</span> Modify the argument in Lemma <a href="Long-term-behaviour-asymmetric-case.html#l:rw_asym_T1">9.4.3</a> to calculate \(\E [T_1]\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Modify the argument in Lemma <a href="Long-term-behaviour-asymmetric-case.html#l:rw_asym_T1">9.4.3</a> to calculate
+\(\E [T_1]\).
 </p>
 </li>
 </ul>
@@ -1083,16 +1088,17 @@ and let \(T_1=\inf \{n\geq 1\-S_n=1\}\).
 
 
 <p>
-<b>9.5</b> <a id="ps:rw_sym_ET1_infty_again"></a> For the simple symmetric random walk, in Lemma <a href="Long-term-behaviour-symmetric-case.html#l:rw_sym_T1_dist">9.3.6</a> we showed
-that \(\P [T_1=2n-1]\sim \frac {1}{2n\sqrt {\pi n}}\). Use this fact to give a second proof (alongside that of Lemma <a href="Long-term-behaviour-symmetric-case.html#l:rw_sym_T1">9.3.4</a>)
-that \(\E [T_1]=\infty \).
+<span class="listmarker"><b>9.5</b></span> <a id="ps:rw_sym_ET1_infty_again"></a> For the simple symmetric random walk, in Lemma <a
+href="Long-term-behaviour-symmetric-case.html#l:rw_sym_T1_dist">9.3.6</a> we showed that \(\P [T_1=2n-1]\sim \frac {1}{2n\sqrt {\pi n}}\). Use this fact to give a second proof (alongside that
+of Lemma <a href="Long-term-behaviour-symmetric-case.html#l:rw_sym_T1">9.3.4</a>) that \(\E [T_1]=\infty \).
 </p>
 </li>
 <li>
 
 
 <p>
-<b>9.6</b> <a id="ps:rw_sym_hitting_probs_cosh"></a> Let \((S_n)\) denote the simple symmetric random walk and let \(T_m=\inf \{n\geq 0\-S_n=m\}\) be the first hitting time of \(m\in \Z \). Let
+<span class="listmarker"><b>9.6</b></span> <a id="ps:rw_sym_hitting_probs_cosh"></a> Let \((S_n)\) denote the simple symmetric random walk and let \(T_m=\inf \{n\geq 0\-S_n=m\}\) be the
+first hitting time of \(m\in \Z \). Let
 </p>
 <p>
 \[M^{(\theta )}_n = \frac {e^{\theta S_n}}{(\cosh \theta )^n}\]
@@ -1100,12 +1106,12 @@ that \(\E [T_1]=\infty \).
 <p>
 where \(\theta \in \R \).
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Show that \(M^{(\theta )}_n\) is a martingale.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Show that \(M^{(\theta )}_n\) is a martingale.
 </p>
 
 
@@ -1114,7 +1120,8 @@ where \(\theta \in \R \).
 
 
 <p>
-<span class="textnormal">(b)</span> Check that none of the conditions (a)-(c) of the optional stopping theorem apply to the martingale \((M^{(\theta )}_n)\) at the stopping time \(T_m\).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Check that none of the conditions (a)-(c) of the optional stopping theorem apply to the martingale \((M^{(\theta )}_n)\) at the
+stopping time \(T_m\).
 </p>
 
 
@@ -1123,7 +1130,7 @@ where \(\theta \in \R \).
 
 
 <p>
-<span class="textnormal">(c)</span> <b>[Challenge question]</b> Show that
+<span class="listmarker"><span class="textnormal">(c)</span></span> <b>[Challenge question]</b> Show that
 </p>
 <p>
 \[\E \l [\frac {1}{(\cosh \theta )^{T}}\r ]=\frac {1}{\cosh (m\theta )}\]
@@ -1136,20 +1143,20 @@ where \(T=T_m\wedge T_{-m}\). You should start by applying the optional stopping
 </li>
 </ul>
 <!--
-...... subsection On random walks in two and three dimensions             ......
+...... subsection On random walks in two and three dimensions            ......
 -->
-<h5 id="autosec-300">On random walks in two and three dimensions \((\star )\)</h5>
+<h5 id="autosec-300">On random walks in two and three dimensions \(\offsyl \)</h5>
 <a id="notes_1-autopage-300"></a>
 
 
 
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<b>9.7</b> <a id="ps:rw_2d_long_term"></a> Let \((S_n)\) denote the two dimensional simple symmetric random walk, as defined in Section <a href="In-higher-dimensions.html#s:rw_2d_3d">9.5</a>.
-Prove that, almost surely, for each \(z\in \Z ^2\) there are infinitely many \(n\in \N \) such that \(S_n=z\).
+<span class="listmarker"><b>9.7</b></span> <a id="ps:rw_2d_long_term"></a> Let \((S_n)\) denote the two dimensional simple symmetric random walk, as defined in Section <a
+href="In-higher-dimensions.html#s:rw_2d_3d">9.5</a>. Prove that, almost surely, for each \(z\in \Z ^2\) there are infinitely many \(n\in \N \) such that \(S_n=z\).
 </p>
 <p>
 <i>Hint: You can re-use some of the ideas from proof of Theorem <a href="Long-term-behaviour-symmetric-case.html#t:rw_oscillations">9.3.3</a>.</i>
@@ -1159,16 +1166,17 @@ Prove that, almost surely, for each \(z\in \Z ^2\) there are infinitely many \(n
 
 
 <p>
-<b>9.8</b> <a id="ps:rw_3d_last_return"></a> Let \((S_n)\) denote the three dimensional simple symmetric random walk, as defined in Section <a
+<span class="listmarker"><b>9.8</b></span> <a id="ps:rw_3d_last_return"></a> Let \((S_n)\) denote the three dimensional simple symmetric random walk, as defined in Section <a
 href="In-higher-dimensions.html#s:rw_2d_3d">9.5</a>. Let \(G=\sum _{n=0}^\infty \1_{\{S_{2n}=0\}}\) denote the total number of visits to the origin. Let \(R=\min \{n=1,2,\ldots \-S_{n}=0\}\)
 and \(L=\max \{n=0,1,2,\ldots \-S_n=0\}\) denote, respectively, the first return time and the last visiting time of \((S_n)\) to the origin.
 </p>
-<ul style="list-style-type:none">
+<ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="textnormal">(a)</span> Explain why \(\P [L&lt;\infty ]=1\), as a consequence of Lemma <a href="In-higher-dimensions.html#l:rw_return_time_d_3">9.5.2</a>.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Explain why \(\P [L&lt;\infty ]=1\), as a consequence of Lemma <a
+href="In-higher-dimensions.html#l:rw_return_time_d_3">9.5.2</a>.
 </p>
 
 
@@ -1177,7 +1185,7 @@ and \(L=\max \{n=0,1,2,\ldots \-S_n=0\}\) denote, respectively, the first return
 
 
 <p>
-<span class="textnormal">(b)</span> Is \(L\) is a stopping time? Give a brief reason for your answer.
+<span class="listmarker"><span class="textnormal">(b)</span></span> Is \(L\) is a stopping time? Give a brief reason for your answer.
 </p>
 
 
@@ -1186,7 +1194,7 @@ and \(L=\max \{n=0,1,2,\ldots \-S_n=0\}\) denote, respectively, the first return
 
 
 <p>
-<span class="textnormal">(c)</span> Show that \(\P [L=2n]=\P [S_{2n}=0]\P [R=\infty ]\) and hence prove that \(\E [G]=\frac {1}{1-\P [R&lt;\infty ]}.\)
+<span class="listmarker"><span class="textnormal">(c)</span></span> Show that \(\P [L=2n]=\P [S_{2n}=0]\P [R=\infty ]\) and hence prove that \(\E [G]=\frac {1}{1-\P [R&lt;\infty ]}.\)
 </p>
 
 
@@ -1195,7 +1203,7 @@ and \(L=\max \{n=0,1,2,\ldots \-S_n=0\}\) denote, respectively, the first return
 
 
 <p>
-<span class="textnormal">(d)</span> We already came close to deducing this exact formula for \(\E [G]\), more than once, within the current chapter. Can you see where?
+<span class="listmarker"><span class="textnormal">(d)</span></span> We already came close to deducing this exact formula for \(\E [G]\), more than once, within the current chapter. Can you see where?
 </p>
 </li>
 </ul>
@@ -1204,8 +1212,8 @@ and \(L=\max \{n=0,1,2,\ldots \-S_n=0\}\) denote, respectively, the first return
 
 
 <p>
-<b>9.9</b> <a id="ps:rw_d_3_to_infty"></a> Let \((S_n)\) denote the three dimensional simple symmetric random walk, as defined in Section <a href="In-higher-dimensions.html#s:rw_2d_3d">9.5</a>.
-Prove that \(|S_n|\stackrel {a.s.}{\to }\infty \) as \(n\to \infty \).
+<span class="listmarker"><b>9.9</b></span> <a id="ps:rw_d_3_to_infty"></a> Let \((S_n)\) denote the three dimensional simple symmetric random walk, as defined in Section <a
+href="In-higher-dimensions.html#s:rw_2d_3d">9.5</a>. Prove that \(|S_n|\stackrel {a.s.}{\to }\infty \) as \(n\to \infty \).
 </p>
 <p>
 
@@ -1223,7 +1231,7 @@ Prove that \(|S_n|\stackrel {a.s.}{\to }\infty \) as \(n\to \infty \).
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated February 12, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
 </p>
 
 </footer>
