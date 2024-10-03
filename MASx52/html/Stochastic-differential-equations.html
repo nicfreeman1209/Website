@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, July 26, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Stochastic differential equations</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 19, 2024
+last updated: July 26, 2024
 </p>
 
 </header>
@@ -874,7 +874,7 @@ Home</a>
 </div>
 
 <!--
-...... chapter Stochastic differential equations ......
+......     chapter Stochastic differential equations ......
 -->
 <h3 id="autosec-71">Chapter&nbsp;<span class="sectionnumber">13&#x2003;</span>Stochastic differential equations</h3>
 <a id="notes_2-autopage-71"></a>
@@ -896,7 +896,7 @@ We now understand how to make sense of equations of the form
 <!--
 
                                                              Z t             Z t
-                                                 Xt = X0 +         Fu du +         Gu dBt                                           (13.1)                                   --><a id="eq:example_sde"></a><!--
+                                                 Xt = X0 +         Fu du +         Gu dBt                                            (13.1)                                  --><a id="eq:example_sde"></a><!--
                                                               0               0
 
 -->
@@ -933,8 +933,8 @@ guarantee that a solution for \(X_t\) exists.
 <a id="autoid-53"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Remark 13.0.1</span></span> <a id="autoid-54" ></a >\(\offsyl \) The theory of existence and uniqueness of solutions to SDEs relies
-on analysis in more delicate ways than we have time to discuss in this course. We use the term ‘solution’ for what is usually referred to in the theory of SDEs as a ‘strong solution’.
+<span class="listmarker"> <span class="theoremheaderplain">Remark 13.0.1</span></span> <a id="autoid-54" ></a >(\(\star \)) The theory of existence and uniqueness of solutions to SDEs relies on
+analysis in more delicate ways than we have time to discuss in this course. We use the term ‘solution’ for what is usually referred to in the theory of SDEs as a ‘strong solution’.
 </p>
 
 <p>
@@ -961,7 +961,7 @@ href="Stochastic-differential-equations.html#eq:example_sde">13.1</a>)</span> as
 
 
 
-                                                                                                  dXt = Ft dt + Gt dBt                      (13.2)                     --><a id="eq:example_stoch_diff"></a><!--
+                                                                                                  dXt = Ft dt + Gt dBt                      (13.2)                      --><a id="eq:example_stoch_diff"></a><!--
 
 
 
@@ -1062,9 +1062,9 @@ which (as a definition) we interpret to mean that
 
 
 
-                                                                                       dZt = Ht (Ft dt + Gt dBt )
+                                                                                        dZt = Ht (Ft dt + Gt dBt )
 
-                                                                                           = Ht Ft dt + Ht Gt dBt .
+                                                                                            = Ht Ft dt + Ht Gt dBt .
 
 
 
@@ -1097,7 +1097,7 @@ Of course, it is much neater to write <span class="textup">(<a href="Stochastic-
 <a id="autoid-57"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Remark 13.0.3</span></span> <a id="autoid-58" ></a >\(\offsyl \) There is a limiting procedure that can extend the Ito integral, for a
+<span class="listmarker"> <span class="theoremheaderplain">Remark 13.0.3</span></span> <a id="autoid-58" ></a >(\(\star \)) There is a limiting procedure that can extend the Ito integral, for a
 suitable class of stochastic processes \(Z\), to define \(\int _0^t H_u\,dZ_u\) directly: in similar style to <span class="textup">(<a
 href="Existence-Ito-integrals.html#eq:ito_simple_limit">12.12</a>)</span> but with increments of \(Z_t\) in place of increments of \(B_t\). This approach relies on some difficult analysis, and we won’t
 discuss it in this course.
@@ -1110,7 +1110,7 @@ discuss it in this course.
 
 </div>
 <!--
-...... section Ito's formula ......
+......    section Ito’s formula ......
 -->
 <h4 id="autosec-75"><span class="sectionnumber">13.1&#x2003;</span>Ito’s formula</h4>
 <a id="notes_2-autopage-75"></a>
@@ -1144,7 +1144,7 @@ As in Definition <a href="Ito-processes.html#d:ito_proc">12.4.1</a>, let \(X\) b
 
 
 
-                                                           dXt = Ft dt + Gt dBt                                                              (13.4)                             --><a id="eq:ito_differential"></a><!--
+                                                            dXt = Ft dt + Gt dBt                                                              (13.4)                            --><a id="eq:ito_differential"></a><!--
 
 -->
 
@@ -1218,8 +1218,58 @@ As in classical calculus, it is common to suppress the arguments \((t,X_t)\) of 
 
 
                                                                       1 ∂2f
-                                                                                                                                                 2
-                                                                                   = 1 dt + 2Bt dBt .
+                                                      (                        )
+                                                          ∂f      ∂f                         ∂f
+                                              dZt =          + Ft    + G2t 2       dt + Gt      dBt .                                         (13.5)                           --><a id="eq:ito_formula"></a><!--
+                                                          ∂t      ∂x 2 ∂x                    ∂x
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:ito_formula} dZ_t=\l \{\frac {\p f}{\p t} + F_t\frac {\p f}{\p x} + \frac {1}{2}G_t^2\frac {\p ^2 f}{\p x^2}\r \}\,dt+ G_t\frac {\p f}{\p x}\,dB_t.
+\end{equation}
+
+
+</p>
+
+<p>
+which is the notation we’ll usually use. It is sometimes helpful to simplify the expression even further, using <span class="textup">(<a
+href="Stochastic-differential-equations.html#eq:example_stoch_diff_2">13.3</a>)</span> and <span class="textup">(<a
+href="Stochastic-differential-equations.html#eq:ito_differential">13.4</a>)</span>, to \(dZ_t=\{\frac {\p f}{\p t} + \frac {1}{2}G_t^2\frac {\p ^2 f}{\p x^2}\}\,dt+ \frac {\p f}{\p
+x}\,dX_t.\)
+</p>
+
+<p>
+Before we say a few words about the proof, let us practice using Ito’s formula. We will need it repeatedly throughout the whole of remainder of the course.
+</p>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-61"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 13.1.2</span></span> <a id="autoid-62" ></a ><a id="ex:intBtBt"></a> Let us apply Ito’s formula to calculate \(dZ_t\)
+where \(Z_t=B_t^2\). We have \(Z_t=f(t,B_t)\) where \(f(t,x)=x^2\), which gives \(\frac {\p f}{\p t}=0\), \(\frac {\p f}{\p x}=2x\) and \(\frac {\p ^2f}{\p x^2}=2\). We’ll also use that \(B_t\)
+is an Ito process satisfying \(dB_t=0\,dt+1\,dB_t\). From Ito’s formula,
+</p>
+<span class="hidden"> \(\seteqnumber{0}{13.}{5}\)</span>
+
+
+
+<!--
+
+
+
+                                                                                                     1
+                                                                                                              
+                                                                                dZt = 0 + (0)(2Bt ) + (12 )(2)     dt + (1)(2Bt ) dBt
+                                                                                                     2
+                                                                                    = 1 dt + 2Bt dBt .
 
 
 
@@ -1248,10 +1298,12 @@ Rearranging, we obtain that
 
 <!--
 
+
+                                                                 Bt2
                                                 Z t
-                                                                 Bt2  t
-                                                      Bu dBu =       − .                                                (13.6)                                   --><a id="eq:intBtBt"></a><!--
-                                                 0               2    2
+                                                                      t
+                                                      Bu dBu =       − .                                                 (13.6)                                  --><a id="eq:intBtBt"></a><!--
+                                                  0              2    2
 -->
 
 <p>
@@ -1297,12 +1349,14 @@ We have \(Z_t=f(t,X_t)\) where \(f(t,x)=xe^t\), and \(F_t=\mu \), \(G_t=\sigma \
 <!--
 
 
-                                                                                                               
-                                                                                                        1 2
-                                                                            dZt =          t       t
-                                                                                        Xt e + (µ)(e ) + (σ )(0) dt + (σ)(et ) dBt
-                                                                                                        2
-                                                                               = (Xt + µ) et dt + σet dBt .
+
+                                                                                                  1
+                                                                                                              
+                                                                            dZt = Xt e + (µ)(e ) + (σ 2 )(0)
+                                                                                        t        t
+                                                                                                                   dt + (σ)(et ) dBt
+                                                                                                  2
+                                                                                = (Xt + µ) et dt + σet dBt .
 
 
 
@@ -1353,11 +1407,12 @@ We define \(Z_t=B_t^4\) and use Ito’s formula to find \(dZ_t\). We have \(Z_t=
 <!--
 
 
-                                                                                                                 
-                                                                                                     1
-                                                                         dZt =       0 + (0)(4Bt3 ) + (12 )(12Bt2 )   dt + (1)(4Bt3 ) dBt
-                                                                                                     2
-                                                                             = 6Bt2 dt + 4Bt3 dBt .
+
+                                                                                                1
+                                                                                                                        
+                                                                          dZt = 0 + (0)(4Bt3 ) + (12 )(12Bt2 )                dt + (1)(4Bt3 ) dBt
+                                                                                                2
+                                                                              = 6Bt2 dt + 4Bt3 dBt .
 
 
 
@@ -1388,20 +1443,19 @@ Taking expectations, and noting that \(Z_0=B_0^4=0\),
 <!--
 
 
-                                                                                            Z t              Z t          
-                                                                                 E[Zt ] = E       6Bu2 du] + E      4Bu3 dBu
-                                                                                               0                 0
-                                                                                          Z t
-                                                                                                  2
-                                                                                        =     E 6Bu du + 0
-                                                                                           0
-                                                                                          Z t
-                                                                                        =     6u du
-                                                                                              0
-                                                                                             6t2
-                                                                                         =
-                                                                                              2
-                                                                                         = 3t2 .
+                                                                                              Z t                     Z t              
+                                                                                 E[Zt ] = E              6Bu2 du] + E          4Bu3 dBu
+                                                                                                 0                        0
+                                                                                           Z t       h      i
+                                                                                       =         E 6Bu2 du + 0
+                                                                                            0
+                                                                                           Z t
+                                                                                       =         6u du
+                                                                                            0
+                                                                                           6t2
+                                                                                       =
+                                                                                            2
+                                                                                       = 3t2 .
 
 
 
@@ -1431,9 +1485,9 @@ The result we have obtained matches that from exercise <a href="Exercises-on-Cha
 
 </div>
 <!--
-...... subsection Sketch proof of Ito's formula              ......
+......    subsection Sketch proof of Ito’s formula             ......
 -->
-<h5 id="autosec-80">Sketch proof of Ito’s formula \(\offsyl \)</h5>
+<h5 id="autosec-80">Sketch proof of Ito’s formula \((\star )\)</h5>
 <a id="notes_2-autopage-80"></a>
 
 
@@ -1464,11 +1518,11 @@ integrals. We’ll use the notation (just in this section)
 
 
 
-                                                                                                            ∆t = tk+1 − tk
+                                                                                                             ∆t = tk+1 − tk
 
-                                                                                                           ∆B = Btk+1 − Btk
+                                                                                                            ∆B = Btk+1 − Btk
 
-                                                                                                           ∆X = Xtk+1 − Xtk .
+                                                                                                            ∆X = Xtk+1 − Xtk .
 
 
 
@@ -1506,10 +1560,11 @@ Then, we apply the two dimensional version of Taylor’s Theorem to \(f\) on the
 
 
 
-                                                                                                       ∂f      ∂f      1 ∂2f     2   ∂2f        1 ∂2f
-                                                                 f (tk+1 , Xtk+1 ) − f (tk , Xtk ) =      ∆t +    ∆X +       (∆X)  +     ∆X∆t +       (∆t)2
-                                                                                                       ∂t      ∂x      2 ∂x2         ∂x2        2 ∂x2
-                                                                                     (13.7)                + [higher order terms]                                               --><a id="eq:ito_taylor"></a><!--
+                                                                                                        ∂f      ∂f      1 ∂2f         ∂2f        1 ∂2f
+                                                                  f (tk+1 , Xtk+1 ) − f (tk , Xtk ) =      ∆t +    ∆X +       (∆X)2
+                                                                                                                                    +     ∆X∆t +       (∆t)2
+                                                                                                        ∂t      ∂x      2 ∂x2         ∂x2        2 ∂x2
+                                                                                       (13.7)               + [higher order terms]                                              --><a id="eq:ito_taylor"></a><!--
 
 
 
@@ -1534,11 +1589,11 @@ class="textup">(<a href="Stochastic-differential-equations.html#eq:ito_different
 <!--
 
 
-                                                                                                                  Z tk+1             Z tk+1
-                                                                                        ∆X = Xtk+1 − Xtk =                 Fu du +            Gu dBu
-                                                                                                                   tk                 tk
+                                                                                                                   Z tk+1             Z tk+1
+                                                                                         ∆X = Xtk+1 − Xtk =                 Fu du +            Gu dBu
+                                                                                                                    tk                 tk
 
-                                                                                                               ≈ Ftk ∆t + Gtk ∆B.
+                                                                                                                ≈ Ftk ∆t + Gtk ∆B.
 
 
 
@@ -1601,7 +1656,7 @@ After the limit has been taken, Ito’s formula is obtained by collecting the no
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
+Copyright Nic Freeman, Sheffield University, last updated July 26, 2024
 </p>
 
 </footer>

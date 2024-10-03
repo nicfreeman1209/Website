@@ -4,9 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS31002/61022 Probability with Measure, Sheffield University, May 9, 2024." />
+<meta name="description" content="MAS350/61022 Probability with Measure, Sheffield University, September 19, 2023." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MAS31002/61022 — Liminf and limsup</title>
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<title>MAS350/61022 — Liminf and limsup</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -40,173 +43,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -239,7 +242,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: May 9, 2024
+last updated: September 19, 2023
 </p>
 
 </header>
@@ -563,126 +566,126 @@ Home</a>
 
 
 <p>
-<a href="The-cumulative-distribution-function.html#autosec-211" class="tocsection" >
+<a href="The-cumulative-distribution-function.html#autosec-208" class="tocsection" >
 <span class="sectionnumber">5.2</span>&#x2003;The cumulative distribution function</a>
 </p>
 
 
 
 <p>
-<a href="Discrete-continuous-random-variables.html#autosec-217" class="tocsection" >
+<a href="Discrete-continuous-random-variables.html#autosec-214" class="tocsection" >
 <span class="sectionnumber">5.3</span>&#x2003;Discrete and continuous random variables</a>
 </p>
 
 
 
 <p>
-<a href="Independence.html#autosec-221" class="tocsection" >
+<a href="Independence.html#autosec-218" class="tocsection" >
 <span class="sectionnumber">5.4</span>&#x2003;Independence</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#autosec-225" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-prob_with_meas.html#autosec-222" class="tocsection" >
 <span class="sectionnumber">5.5</span>&#x2003;Exercises on Chapter 5</a>
 </p>
 
 
 
 <p>
-<a href="Inequalities-Random-Variables.html#autosec-231" class="tocchapter" >
+<a href="Inequalities-Random-Variables.html#autosec-228" class="tocchapter" >
 <span class="sectionnumber">6</span>&#x2003;Inequalities for Random Variables \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Inequalities-Random-Variables.html#autosec-232" class="tocsection" >
+<a href="Inequalities-Random-Variables.html#autosec-229" class="tocsection" >
 <span class="sectionnumber">6.1</span>&#x2003;Chernoff bounds \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="The-Paley-Zygmund-inequality.html#autosec-236" class="tocsection" >
+<a href="The-Paley-Zygmund-inequality.html#autosec-233" class="tocsection" >
 <span class="sectionnumber">6.2</span>&#x2003;The Paley-Zygmund inequality \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Jensen-inequality.html#autosec-240" class="tocsection" >
+<a href="Jensen-inequality.html#autosec-237" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Jensen’s inequality \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-ineqs.html#autosec-247" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-ineqs.html#autosec-244" class="tocsection" >
 <span class="sectionnumber">6.4</span>&#x2003;Exercises on Chapter 6 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-Random-Variables.html#autosec-251" class="tocchapter" >
+<a href="Sequences-Random-Variables.html#autosec-248" class="tocchapter" >
 <span class="sectionnumber">7</span>&#x2003;Sequences of Random Variables</a>
 </p>
 
 
 
 <p>
-<a href="Sequences-Random-Variables.html#autosec-252" class="tocsection" >
+<a href="Sequences-Random-Variables.html#autosec-249" class="tocsection" >
 <span class="sectionnumber">7.1</span>&#x2003;The Borel-Cantelli lemmas</a>
 </p>
 
 
 
 <p>
-<a href="Convergence-random-variables.html#autosec-256" class="tocsection" >
+<a href="Convergence-random-variables.html#autosec-253" class="tocsection" >
 <span class="sectionnumber">7.2</span>&#x2003;Convergence of random variables</a>
 </p>
 
 
 
 <p>
-<a href="Laws-large-numbers.html#autosec-265" class="tocsection" >
+<a href="Laws-large-numbers.html#autosec-262" class="tocsection" >
 <span class="sectionnumber">7.3</span>&#x2003;Laws of large numbers</a>
 </p>
 
 
 
 <p>
-<a href="Characteristic-functions.html#autosec-271" class="tocsection" >
+<a href="Characteristic-functions.html#autosec-268" class="tocsection" >
 <span class="sectionnumber">7.4</span>&#x2003;Characteristic functions (\(\Delta \))</a>
 </p>
 
 
 
 <p>
-<a href="The-central-limit-theorem.html#autosec-281" class="tocsection" >
+<a href="The-central-limit-theorem.html#autosec-278" class="tocsection" >
 <span class="sectionnumber">7.5</span>&#x2003;The central limit theorem (\(\Delta \))</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-rv_sequences.html#autosec-287" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-rv_sequences.html#autosec-284" class="tocsection" >
 <span class="sectionnumber">7.6</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Advice-revision-exams.html#autosec-293" class="tocchapter" >
+<a href="Advice-revision-exams.html#autosec-290" class="tocchapter" >
 <span class="sectionnumber">A</span>&#x2003;Advice for revision/exams</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises.html#autosec-297" class="tocchapter" >
+<a href="Solutions-exercises.html#autosec-294" class="tocchapter" >
 <span class="sectionnumber">B</span>&#x2003;Solutions to exercises</a>
 </p>
 
@@ -918,7 +921,7 @@ Home</a>
 
 \(\def \Lp {\mc {L}^p}\)
 
-\(\def \Lq {\mc {L}^q}\)
+\(\def \Lq {\mc {L}^p}\)
 
 \(\def \Lone {\mc {L}^1}\)
 
@@ -968,7 +971,7 @@ Home</a>
 
 <p>
 <!--
-...... section Liminf and limsup ......
+......     section Liminf and limsup ......
 -->
 <h4 id="autosec-77"><span class="sectionnumber">2.2&#x2003;</span>Liminf and limsup</h4>
 <a id="notes-autopage-77"></a>
@@ -981,17 +984,17 @@ work with but they take more care to define.
 
 <p>
 Let \((a_n)\) be a sequence of real numbers. Note that the sequence \(b_n=\sup _{k\geq n} a_k\) is monotone decreasing, because as \(n\) gets larger the set \(\{a_k\-k\geq n\}\) contains less terms. Lemma
-<a href="Real-Analysis.html#l:ovR_monotone_seq">2.1.1</a> implies that this sequence has a limit, with the caveat that the limit might be infinite. The sequence \((b_n)\) is monotone decreasing, so its
-limit is equal to \(\inf _{n\in \N } b_n\). With this is mind we make the following definition:
+<a href="Real-Analysis.html#l:ovR_monotone_seq">2.1.1</a> implies that this sequence has a limit, with the caveat that the limit might be infinite. The sequence \((b_n)\) is monotone decreasing, so its limit
+is equal to \(\inf _{n\in \N } b_n\). With this is mind we make the following definition:
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{1}\)</span>
 
 <!--
 
-                                                                     !                    !
-                                         lim sup an = lim   sup ak       = inf   sup ak       .                                (2.3)                                          --><a id="eq:limsup_def"></a><!--
-                                          n→∞         n→∞   k≥n            n∈N   k≥n
+                                                                      !                 !
+                                         lim sup an = lim    sup ak       = inf   sup ak .                                      (2.2)                                         --><a id="eq:limsup_def"></a><!--
+                                           n→∞        n→∞    k≥n            n∈N   k≥n
 
 -->
 
@@ -1012,13 +1015,13 @@ Heuristically, \(\limsup _n a_n\) is the smallest value that the tail of the seq
 <p>
 We can do the same construction the other way up, which gives
 </p>
-<span class="hidden"> \(\seteqnumber{0}{2.}{3}\)</span>
 
+<span class="hidden"> \(\seteqnumber{0}{2.}{2}\)</span>
 <!--
 
-                                                                                         
-                                      lim inf an = lim       inf ak       = sup       inf ak .                         (2.4)                                      --><a id="eq:liminf_def"></a><!--
-                                       n→∞        n→∞        k≥n            n∈N       k≥n
+                                                                                      
+                                       lim inf an = lim       inf ak       = sup inf ak .                              (2.3)                                      --><a id="eq:liminf_def"></a><!--
+                                        n→∞        n→∞        k≥n            n∈N   k≥n
 
 -->
 
@@ -1033,8 +1036,8 @@ We can do the same construction the other way up, which gives
 </p>
 
 <p>
-Heuristically, \(\liminf _n a_n\) is the largest value that the tail of the sequence \((a_n)\) stays above. Note that <span class="textup">(<a href="Liminf-limsup.html#eq:limsup_def">2.3</a>)</span>
-and <span class="textup">(<a href="Liminf-limsup.html#eq:liminf_def">2.4</a>)</span> are always well defined, as extended real numbers, and that \(\liminf _n a_n\leq \limsup _n a_n\).
+Heuristically, \(\liminf _n a_n\) is the largest value that the tail of the sequence \((a_n)\) stays above. Note that <span class="textup">(<a href="Liminf-limsup.html#eq:limsup_def">2.2</a>)</span>
+and <span class="textup">(<a href="Liminf-limsup.html#eq:liminf_def">2.3</a>)</span> are always well defined, as extended real numbers, and that \(\liminf _n a_n\leq \limsup _n a_n\).
 </p>
 <div class="theorembodyexample">
 
@@ -1104,7 +1107,7 @@ We will spend the rest of this section making connections between \(\liminf \), 
 
 
 <p>
-2. If \((a_n)\) converges then \(\liminf \limits _{n\to \infty } a_n=\limsup \limits _{n\to \infty } a_n=\lim \limits _{n\to \infty } a_n\).
+2. If \((a_n)\) converges then \(\liminf \limits _{n\to \infty } a_n=\limsup \limits _{n\to \infty } a_n=\lim \limits _{n\to \infty } a\).
 </p>
 </li>
 </ul>
@@ -1117,8 +1120,8 @@ We will spend the rest of this section making connections between \(\liminf \), 
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Suppose first that \((a_n)\) converges, say \(a_n\to a\). We will consider the case \(a\in \R
-\) here; the case \(a=\pm \infty \) is similar and we will omit it, as discussed in Remark <a href="Real-Analysis.html#r:ovR_metric_space">2.1.2</a>. For all \(\eps &gt;0\) there exists \(n\in \N \)
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Suppose first that \((a_n)\) converges, say \(a_n\to a\). We will consider the case \(a\in
+\R \) here; the case \(a=\pm \infty \) is similar and we will omit it, as discussed in Remark <a href="Real-Analysis.html#r:ovR_metric_space">2.1.2</a>. For all \(\eps &gt;0\) there exists \(n\in \N \)
 such that \(|a_k-a|\leq \eps \) for all \(k\geq n\). Hence \(a-\eps \leq a_k\leq a+\eps \) for all \(k\geq n\), which implies that
 </p>
 
@@ -1139,17 +1142,17 @@ We have therefore proved both part 2 and the forwards implication of part 1.
 </p>
 
 <p>
-We need to prove the reverse implication from part 1. Suppose that \(\liminf _n a_n=\limsup _n a_n\in \R \) (and we don’t yet know that \((a_n)\) converges). For all \(n\in \N \) we have
+We need to prove the reserve implication from part 1. Suppose that \(\liminf _n a_n=\limsup _n a_n\) (and we don’t yet know that \((a_n)\) converges). For all \(n\in \N \) we have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{2.}{4}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{3}\)</span>
 
 <!--
 
 
 
-                                                0 ≤ an − inf ak ≤ sup ak − inf ak .                                           (2.5)                                       --><a id="eq:lsli1"></a><!--
-                                                            k≥n         k≥n          k≥n
+                                                 0 ≤ an − inf ak ≤ sup ak − inf ak .                                          (2.4)                                       --><a id="eq:lsli1"></a><!--
+                                                            k≥n          k≥n         k≥n
 
 -->
 
@@ -1167,13 +1170,13 @@ We need to prove the reverse implication from part 1. Suppose that \(\liminf _n 
 Note also that
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{2.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{4}\)</span>
 
 <!--
 
                                                                  !
-                                        lim   sup ak − inf ak        = lim sup an − lim inf an = 0.                           (2.6)                                       --><a id="eq:lsli2"></a><!--
-                                       n→∞    k≥n      k≥n              n→∞               n→∞
+                                        lim   sup ak − inf ak        = lim sup an − lim inf an = 0.                           (2.5)                                       --><a id="eq:lsli2"></a><!--
+                                        n→∞   k≥n      k≥n              n→∞               n→∞
 
 
 -->
@@ -1189,17 +1192,17 @@ Note also that
 </p>
 
 <p>
-Combining <span class="textup">(<a href="Liminf-limsup.html#eq:lsli1">2.5</a>)</span> with <span class="textup">(<a href="Liminf-limsup.html#eq:lsli2">2.6</a>)</span> and using the
+Combining <span class="textup">(<a href="Liminf-limsup.html#eq:lsli1">2.4</a>)</span> with <span class="textup">(<a href="Liminf-limsup.html#eq:lsli2">2.5</a>)</span> and using the
 sandwich rule, we have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{2.}{6}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{2.}{5}\)</span>
 
 <!--
 
                                                                               
-                                                      lim        an − inf ak       = 0.                                       (2.7)                                       --><a id="eq:lsli3"></a><!--
-                                                     n→∞              k≥n
+                                                      lim        an − inf ak       = 0.                                       (2.6)                                       --><a id="eq:lsli3"></a><!--
+                                                      n→∞              k≥n
 
 -->
 
@@ -1215,7 +1218,7 @@ sandwich rule, we have
 
 <p>
 We can write \(a_{n} = \left (a_{n} - \inf _{k \geq n}a_{k}\right ) + \inf _{k \geq n}a_{k}\), and we know that both of these terms have a limit as \(n\to \infty \). The first tends to zero by
-<span class="textup">(<a href="Liminf-limsup.html#eq:lsli3">2.7</a>)</span> and the second converges to \(\liminf _n a_n\). From the algebra of limits we thus obtain that \((a_n)\) converges and
+<span class="textup">(<a href="Liminf-limsup.html#eq:lsli3">2.6</a>)</span> and the second converges to \(\liminf _n a_n\). From the algebra of limits we thus obtain that \((a_n)\) converges and
 \(\lim _n a_n=\liminf _n a_n\). Since \(\liminf _n a_n=\limsup _n a_n\) was our assumption, this completes the proof. &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodylemma">
@@ -1239,9 +1242,9 @@ _n a_n\).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> You already know from real analysis that \(\sup _n (-a_n)=-\inf _n a_n\) for real \(a_n\).
-This equation also holds for extended reals, but we’ll omit checking the extra cases involving infinities here. The result follows from this along with <span class="textup">(<a
-href="Liminf-limsup.html#eq:limsup_def">2.3</a>)</span> for \(\limsup \), and with <span class="textup">(<a href="Liminf-limsup.html#eq:liminf_def">2.4</a>)</span> for \(\liminf \).
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> You already know from real analysis that \(\sup _n (-a_n)=-\inf _n a_n\) for real
+\(a_n\). This equation also holds for extended reals, but we’ll omit checking the extra cases involving infinities here. The result follows from this along with <span class="textup">(<a
+href="Liminf-limsup.html#eq:limsup_def">2.2</a>)</span> for \(\limsup \), and with <span class="textup">(<a href="Liminf-limsup.html#eq:liminf_def">2.3</a>)</span> for \(\liminf \).
 &#x2003;&#x2003;&#x220E;
 </p>
 
@@ -1254,7 +1257,7 @@ href="Liminf-limsup.html#eq:limsup_def">2.3</a>)</span> for \(\limsup \), and wi
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated May 9, 2024
+Copyright Nic Freeman, Sheffield University, last updated September 19, 2023
 </p>
 
 </footer>

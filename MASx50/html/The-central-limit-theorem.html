@@ -9,7 +9,7 @@
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<title>MAS350/61022 — Product measures</title>
+<title>MAS350/61022 — The central limit theorem ()</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -235,7 +235,7 @@ MathJax = {
 
 
 
-<a id="notes-autopage-60"></a>
+<a id="notes-autopage-277"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
@@ -971,24 +971,55 @@ Home</a>
 
 <p>
 <!--
-......     section Product measures ......
+......     section The central limit theorem () ......
 -->
-<h4 id="autosec-61"><span class="sectionnumber">1.9&#x2003;</span>Product measures</h4>
-<a id="notes-autopage-61"></a>
-<a id="notes-autofile-11"></a> <a id="s:prod_meas"></a>
+<h4 id="autosec-278"><span class="sectionnumber">7.5&#x2003;</span>The central limit theorem (\(\Delta \))</h4>
+<a id="notes-autopage-278"></a>
+<a id="notes-autofile-48"></a> <a id="s:clt"></a>
 
 <p>
-We calculate areas of rectangles by multiplying products of lengths of their sides. This suggests trying to formulate a theory of products of measures. Let \((S_{1}, \Sigma _{1}, m_{1})\) and \((S_{2}, \Sigma
-_{2}, m_{2})\) be two measure spaces. Form the Cartesian product \(S_{1} \times S_{2}\). We can similarly try to form a product of \(\sigma \)-fields
+The law of large numbers in Section <a href="Laws-large-numbers.html#s:lln">7.3</a> told us that if \((X_n)\) was an i.i.d.&nbsp;sequence of \(\mc {L}^1\) random variables then the sample mean
+\(\overline {X_n}\) because close to \(\mu =\E [X_n]\), for large \(n\). The central limit theorem, which we study in this section, examines how close they become.
 </p>
 
 <p>
-\[ \Sigma _{1} \times \Sigma _{2} = \{A \times B; A \in \Sigma _{1}, B \in \Sigma _{2}\},\]
+Let \(S_n=\sum _{i=1}^n X_n\), and let us write
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{7}\)</span>
+
+<!--
+
+
+                                                          Xn − µ
+                                                   Yn =     √                                                      (7.8)                                                     --><a id="eq:standardize"></a><!--
+                                                          σ/ n
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:standardize} Y_{n} = \ds \frac {\overline {X_{n}} - \mu }{\sigma /\sqrt {n}}
+\end{equation}
+
+
 </p>
 
 <p>
-but it turns out that \(\Sigma _{1} \times \Sigma _{2}\) is not a \(\sigma \)-field in general e.g.&nbsp;take \(\Sigma _{1} = \Sigma _{2} = \R \) and note that \(((0,1) \times (0, 1))^{c}\) is not a
-rectangle. Instead the object we want is \(\Sigma _{1} \otimes \Sigma _{2}\), which is defined to be the smallest \(\sigma \)-field containing all the sets in \(\Sigma _{1} \times \Sigma _{2}\).
+where \(\mu =\E [X_n]\) and \(\sigma =\var (X_n)\), both assumed to be finite. We saw in Section <a href="Laws-large-numbers.html#s:lln">7.3</a> that \(\E [\ov {X_n}]=\mu \), \(\var (\ov
+{X_n})=\sigma ^2/n\), which means that \(\E [Y_{n}] = 0\) and \(\var (Y_{n}) = 1\) for all \(\nN \). For this reason <span class="textup">(<a
+href="The-central-limit-theorem.html#eq:standardize">7.8</a>)</span> is often known as a <i>standardization</i> of \(\ov {X_n}\). If \(\overline {X}_n=\mu \) then \(Y_n=0\). More generally, how
+far away \(Y_n\) is from zero corresponds to how far \(\overline {X_n}\) is away from \(\mu \).
+</p>
+
+<p>
+Its difficult to underestimate the importance of the next result. It shows that if the \(X_n\) have finite variance then \(Y_n\tod N(0,1)\), where \(N(0,1)\) denotes the standard normal distribution, regardless of
+the distribution of the i.i.d.&nbsp;random variables \(X_n\). This is extraordinarily useful from an experimental point of view, because it tells you something that you should expect to see happen in <i>every</i>
+experiment – provided you can take repeated independent samples and they have finite variance. It allows statistical tests to be constructed without knowing the precise distribution of the random quantities
+involved, and that allows experimental science to quantify how likely a particular experiment (repeated sufficiently many times) is to have observed some important fact and not just random chance. In
+<em>uncertain</em> situations, the scientific basis for how well we understand the world around us comes primarily from the central limit theorem. We will discuss its history in Section <a
+href="The-central-limit-theorem.html#s:clt_extensions">7.5.1</a>.
 </p>
 <div class="theorembodytheorem">
 
@@ -996,20 +1027,97 @@ rectangle. Instead the object we want is \(\Sigma _{1} \otimes \Sigma _{2}\), wh
 
 
 
-<a id="autoid-49"></a>
+<a id="autoid-244"></a>
 <li>
 <p>
-<span class="theoremheaderplain">Theorem 1.9.1</span> <a id="autoid-50" ></a ><a id="t:product_meas"></a> There exists a measure \(m_{1} \times m_{2}\) on \((S_{1} \times S_{2}, \Sigma
-_{1} \otimes \Sigma _{2})\) such that
+<span class="theoremheaderplain">Theorem 7.5.1 (Central Limit Theorem)</span> <a id="autoid-245" ></a ><a id="t:clt"></a> Let \((X_{n})\) be a sequence of i.i.d. random variables each having
+finite mean \(\mu \) and finite variance \(\sigma ^{2}\). Let \(Y_n\) be given by <span class="textup">(<a href="The-central-limit-theorem.html#eq:standardize">7.8</a>)</span>. Then \(Y_n\)
+converges in distribution to the \(N(0,1)\) distribution, as \(n\to \infty \).
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{1.}{9}\)</span>
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+Our proof will be based on Lemma <a href="Characteristic-functions.html#l:char_vs_poly">7.4.7</a> and the following lemma, which is a slight extension of the famous result that \(\lim _{n\to \infty
+}(1+\frac {x}{n})^n\to e^x\).
+</p>
+<div class="theorembodylemma">
+
+<ul style="list-style-type:none">
+
+
+
+<a id="autoid-246"></a>
+<li>
+<p>
+<span class="theoremheaderplain">Lemma 7.5.2</span> <a id="autoid-247" ></a ><a id="l:e_lim_with_error"></a> Let \(y \in \R \) and let \(\alpha _{n}\) be a sequence of real or complex
+numbers such that \(\lim _{n \rightarrow \infty }\alpha _{n}(y) = 0\). Then for all \(y\in \R \), as \(n\to \infty \) we have
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{8}\)</span>
+
+<!--
+
+                                                                       n
+                                                              y + αn
+                                                     
+                                                         1+                 → ey                                          (7.9)                                             --><a id="eq:e_lim"></a><!--
+                                                                 n
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:e_lim} \l (1 + \frac {y + \alpha _{n}}{n}\r )^{n} \to e^{y}
+\end{equation}
+
+
+</p>
+
+<p>
+
+
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+The proof of Lemma <a href="The-central-limit-theorem.html#l:e_lim_with_error">7.5.2</a> is an exercise in real analysis, which is included as Problem <a
+href="Exercises-on-Chapter-ref-c-rv_sequences.html#ps:e_lim_with_error"><b>7.11</b></a>. We are now ready to prove the central limit theorem.
+</p>
+
+<p>
+<span class="textsc">Proof of Theorem <a href="The-central-limit-theorem.html#t:clt">7.5.1</a>:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Without
+loss of generality we assume that \(\mu = 0\) and \(\sigma = 1\). We can recover the general result from this special case by replacing \(X_{n}\) by \((X_{n} - \mu )/\sigma \). Hence \(\E [X_1]=\mu =0\)
+and \(\E [X_1^2]=1\). We have also that \(\var (X_1)\) and \(\E [X_1^1]\) are finite.
+</p>
+
+<p>
+Our strategy is to show that the characteristic function of \(\phi \) converges to the characteristic function of the \(N(0,1)\) distribution, and then apply Theorem <a
+href="Characteristic-functions.html#t:char_func_conv_D">7.4.5</a>. Let \(\psi \) be the common characteristic function of the \(X_{n}\), given by \(\psi (u) = \E [e^{iuX_{1}}]\) for all \(u \in \R
+\). Let \(\phi _{n}\) be the characteristic function of \(Y_{n}\) for each \(\nN \). Using independence and Lemma <a href="Characteristic-functions.html#l:char_func_indep">7.4.3</a> we have that
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{9}\)</span>
 
 <!--
 
 
-
-                 (m1 × m2 )(A × B) = m1 (A)m2 (B)             (1.10)                                                                                   --><a id="eq:prod_meas"></a><!--
+                                               h
+                                                    i √un (X1 +X2 +···+Xn )
+                                                                              i         √
+                                     ϕn (u) = E e                                 = ψ(u/ n)n .                        (7.10)                                               --><a id="eq:phinu_1"></a><!--
 
 -->
 
@@ -1017,92 +1125,170 @@ _{1} \otimes \Sigma _{2})\) such that
 
 
 \begin{equation}
-\label {eq:prod_meas} (m_{1} \times m_{2})(A \times B) = m_{1}(A)m_{2}(B)
+\label {eq:phinu_1} \phi _{n}(u) = \E \l [e^{i\frac {u}{\sqrt {n}}(X_{1} + X_{2} + \cdots + X_{n})}\r ] = \psi (u/\sqrt {n})^{n}.
 \end{equation}
 
 
 </p>
 
 <p>
-for all \(A \in \Sigma _{1}, B \in \Sigma _{2}\).
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-<div class="theorembodydefn">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-51"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Definition 1.9.2</span> <a id="autoid-52" ></a >The measure \(m_{1} \times m_{2}\) is called the product measure of \(m_{1}\) and \(m_{2}\).
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-We won’t include a proof of Theorem <a href="Product-measures.html#t:product_meas">1.9.1</a> within this course. For example, consider \(\R ^{2} = \R \times \R \). We equip it with the Borel
-\(\sigma \)-field, \({\cal B}(\R ^{2}) = {\cal B}(\R ) \otimes {\cal B}(\R )\). Then the product Lebesgue measure \(\lambda _{2} = \lambda \times \lambda \) has the property that
+Applying Lemma <a href="Characteristic-functions.html#l:char_vs_poly">7.4.7</a> to \(\psi \), for all \(y\in \R \) we have
 </p>
 
 <p>
-\[ \lambda _{2}((a,b) \times (c,d)) = (b-a)(d-c).\]
+\[\l |\psi (y)-\l (1+iy\E [X_1]-y^2\E [X_1^2]\r )\r |\leq \E \l [\max \l \{|yX_1|^2,\frac {|yX_1|^3}{6}\r \}\r ].\]
 </p>
 
 <p>
-Of course, \((b-a)(d-c)\) is the area of the rectangle \((a,b)\times (c,d)\). In fact, from a mathematical point of view the measure \(\lambda _2\) is the <i>definition</i> of area. Similarly, \(\lambda
-_3=\lambda \times \lambda \times \lambda \) is how we define volume, in three dimensions.
-</p>
-<div class="theorembodyremark">
-
-<ul style="list-style-type:none">
-
-
-
-<a id="autoid-53"></a>
-<li>
-<p>
-<span class="theoremheaderplain">Remark 1.9.3</span> <a id="autoid-54" ></a >After thinking about \(\lambda \times \lambda \times \lambda \), we might ask if, given measures \(m_1,m_2,m_3\),
-we have \((m_1\times m_2)\times m_3=m_1\times (m_2\times m_3)\). It is true, but we won’t prove it. Consequently we write both these as simply \(m_1\times m_2\times m_3\), without any ambiguity.
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
-
-<p>
-We can go beyond 3 dimensions. Given \(n\)-measure spaces \((S_{1}, \Sigma _{1}, m_{1}), (S_{2}, \Sigma _{2}, m_{2}), \ldots , (S_{n}, \Sigma _{n}, m_{n})\), we can iterate the above
-procedure to define the product \(\sigma \)-field \(\Sigma _{1} \otimes \Sigma _{2} \otimes \cdots \otimes \Sigma _{n}\) and the product measure \(m_{1} \times m_{2} \times \cdots \times
-m_{n}\) so that for \(A_{i} \in \Sigma _{i}, 1 \leq i \leq n\),
+Setting \(y=u/\sqrt {n}\), using that \(\E [X_1]=0\) and \(\E [X_1^2]=1\),
 </p>
 
 <p>
-\[ (m_{1} \times m_{2} \times \cdots \times m_{n})(A_{1} \times A_{2} \times \cdots \times A_{n}) = m_{1}(A_{1})m_{2}(A_{2}) \cdots m_{n}(A_{n}).\]
+\[\l |\psi (u/\sqrt {n})-\l (1-\frac {u^2}{2n}\r )\r |\leq \E \l [\max \l \{\frac {|X_1|^2}{n},\frac {|X_1|^3}{6n^{3/2}}\r \}\r ].\]
 </p>
 
 <p>
-In particular \(n\)-dimensional Lebesgue measure on \(\R ^{n}\) may be defined in this way.
+Let us write \(\theta _n(u)=\E \l [\max \l \{\frac {|X_1|^2}{n},\frac {|X_1|^3}{6n^{3/2}}\r \}\r ]\). Putting the above into <span class="textup">(<a
+href="The-central-limit-theorem.html#eq:phinu_1">7.10</a>)</span>, we obtain
 </p>
 
 <p>
-Of course there are many measures that one can construct on \((S_{1} \times S_{2}, \Sigma _{1} \times \Sigma _{2})\) and not all of these will be product measures. In probability spaces, product
-measures are closely related to the notion of independence, as we will see later. If you write \(m_1=m_2=\P \) in <span class="textup">(<a href="Product-measures.html#eq:prod_meas">1.10</a>)</span>
-you might be able to see why.
+\[\l (1-\frac {u^2/2}{n}-\theta _n(u)\r )^n\leq \phi _n(u)\leq \l (1-\frac {u^2/2}{n}+\theta _n(u)\r )^n\]
+</p>
+
+<p>
+and thus
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{10}\)</span>
+
+<!--
+
+                                                    !n                                           !n
+                                −u2 /2 − nθn (u)                        −u2 /2 + nθn (u)
+                             1+                          ≤ ϕn (u) ≤ 1 +                               .               (7.11)                                               --><a id="eq:phinu_2"></a><!--
+                                       n                                       n
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:phinu_2} \l (1+\frac {-u^2/2-n\theta _n(u)}{n}\r )^n\leq \phi _n(u)\leq \l (1+\frac {-u^2/2+n\theta _n(u)}{n}\r )^n.
+\end{equation}
+
+
+</p>
+
+<p>
+We have \(n\theta _n(u)=\E \l [\max \l \{|X_1|^2,\frac {|X_1|^3}{6n^{2/2}}\r \}\r ]\). Note that \(\max \l \{|X_1|^2,\frac {|X_1|^3}{6n^{2/2}}\r \}\in \Lone \) by Lemma <a
+href="The-dominated-convergence-theorem.html#l:dom_int">4.6.1</a> because \(|X_1|^2 \in \Lone \), and that \(\max \l \{|X_1|^2,\frac {|X_1|^3}{6n^{2/2}}\r \}\to 0\) pointwise as \(n\to
+\infty \). By the dominated convergence theorem \(n\theta _n(u)\to 0\) as \(n\to \infty \). From <span class="textup">(<a href="The-central-limit-theorem.html#eq:phinu_2">7.11</a>)</span>
+and Lemma <a href="The-central-limit-theorem.html#l:e_lim_with_error">7.5.2</a> we thus have \(\phi _n(u)\to e^{-\frac {u^2}{2}}\) for all \(u\in \R \). In Exercise <a
+href="Exercises-on-Chapter-ref-c-rv_sequences.html#ps:N_char_func"><b>7.9</b></a> we showed that \(e^{-\frac {u^2}{2}}\) is the characteristic function of the \(N(0,1)\) distribution. Hence from
+Theorem <a href="Characteristic-functions.html#t:char_func_conv_D">7.4.5</a> we have \(Y_n\tod N(0,1)\), as required. &#x2003;&#x2003;&#x220E;
+</p>
+<!--
+......    subsection Further discussion () ......
+-->
+<h5 id="autosec-282"><span class="sectionnumber">7.5.1&#x2003;</span>Further discussion (\(\star \))</h5>
+<a id="notes-autopage-282"></a>
+
+
+
+<a id="s:clt_extensions"></a>
+
+<p>
+The central limit theorem is arguably the single most important result in probability and statistics. It is likely to be one of the earliest things you learned about, even though we could not give a rigorous proof until
+now.
+</p>
+
+<p>
+The picture we know today was pieced together gradually by many different people. The sheer number of mathematicians that were involved in efforts to prove central limit theorems, particularly in the late
+19<sup>th</sup> and early 20<sup>th</sup> century, makes a concise description of its history all but impossible. The modern statement of Theorem <a
+href="The-central-limit-theorem.html#t:clt">7.5.1</a> is not attributed to any single author. The term ‘central limit’ is generally thought to have been introduced by Hungarian mathematian George
+Po&#x0301;lya in 1920.
+</p>
+
+<p>
+One of the first examples is the case of tosses of a fair coin (taking e.g.&nbsp;taking \(+1\) for heads and \(-1\) for tails), studied by de Moivre in 1733 and later extended by Laplace – see Exercise <a
+href="Exercises-on-Chapter-ref-c-rv_sequences.html#ps:clt_bernoulli"><b>7.10</b></a> for this case. Around 1890, Chebyshev was the first mathematician to consider formulating the central limit
+theorem in terms of a sequence of independent random variables. Before that point, the results were formulated in terms of the convergence of particular probabilities. As we noted at the start of Chapter <a
+href="Probability-with-Measure.html#c:prob_with_meas">5</a>, the foundation of probability theory in terms of Lebesgue measure was also not established at that time. In fact, early proofs of what became
+the central limit theorem were based on extremely difficult calculations. Substantial effort was made to find less convoluted proofs, eventually leading to the argument given in these notes.
+</p>
+
+<p>
+The version given in Theorem <a href="The-central-limit-theorem.html#t:clt">7.5.1</a> has been extensively generalised during the 20<sup>th</sup> century. For example, conditions are known under
+which the central limit theorem holds for dependent sequences of random variables, for martingales, for stochastic processes with independent increments, and for cases where the normalization differs from that of
+subtracting the mean and dividing by the standard deviation.
+</p>
+
+<p>
+We will discuss only a few such results here. If the i.i.d.&nbsp;sequence \((X_{n})\) is such that \(\mu = 0\) and \(\E [|X_{n}|^{3}] = \rho ^{3} &lt; \infty \), the Berry-Esseen theorem gives a useful
+bound for the difference between the cdf of the normalised sum and the cdf \(\Phi \) of the standard normal. To be precise we have that for all \(x \in \R , \nN \):
+</p>
+
+<p>
+\[ \left |\P \left (\frac {S_{n}}{\sigma \sqrt {n}} \leq x\right ) - \Phi (x)\right | \leq C\frac {\rho }{\sqrt {n}\sigma ^{3}},\]
+</p>
+
+<p>
+where \(C &gt; 0\).
+</p>
+
+<p>
+We can also relax the requirement that the sequence \((X_{n})\) be independent. Consider the triangular array \((X_{nk}, k=1,\ldots ,n, \nN )\) of random variables which we may list as follows:
+</p>
+
+<p>
+\[\begin {array}{c c c c c } X_{11} &amp; ~ &amp; ~ &amp; ~ &amp; ~\\ X_{21} &amp; X_{22} &amp; ~ &amp; ~ &amp; ~\\ X_{31} &amp; X_{32} &amp; X_{33} &amp; ~ &amp; ~\\ \vdots &amp;
+\vdots &amp; \vdots &amp; ~ &amp; ~ \\ X_{n1} &amp; X_{n2} &amp; X_{n3} &amp; \ldots &amp; X_{nn}\\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \end {array}\]
+</p>
+
+<p>
+We assume that each row comprises independent random variables, but we allow random variables within each row to have dependences. Assume further that \(\E [X_{nk}] = 0\) and \(\sigma _{nk}^{2} = \E
+[X_{nk}^{2}] &lt; \infty \) for all \(k,n\). Define the row sums \(S_{n} = X_{n1} + X_{n2} + \cdots + X_{nn}\) for all \(\nN \) and define \(\tau _{n} = \var (S_{n}) = \sum _{k=1}^{n}\sigma
+_{nk}^{2}\). Lindeburgh’s central limit theorem states that if we have the asymptotic tail condition
+</p>
+
+<p>
+\[ \lim _{n \rightarrow \infty }\sum _{k=1}^{n}\frac {1}{\tau _{n}^{2}}\int _{|X_{nk}| \geq \eps \tau _{n}}X_{nk}^{2}(\omega )\,d\P (\omega ) = 0,\]
+</p>
+
+<p>
+for all \(\eps &gt; 0\) then \(\frac {S_{n}}{\tau _{n}}\) converges in distribution to a standard normal as \(n \rightarrow \infty \).
+</p>
+
+<p>
+The highlights of this chapter have been the proofs of the law of large numbers and central limit theorem. There is a third result that is often grouped together with the other two as one of the key results about
+sums of i.i.d.&nbsp;random variables. It is called the law of the iterated logarithm and it gives bounds on the fluctuations of \(S_{n}\) for an i.i.d sequence with \(\mu = 0\) and \(\sigma = 1\). The result is quite
+remarkable. It states that almost surely,
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{11}\)</span>
+
+<!--
+
+
+                                                                                           Sn                                   Sn
+                                                                              lim inf p              = −1,      lim sup p                 = 1.
+                                                                               n→∞     2n log log(n)             n→∞        2n log log(n)
+-->
+
+<p>
+
+
+\begin{equation*}
+\ds \li \frac {S_{n}}{\sqrt {2n \log \log (n)}} = -1, \quad \quad \ds \ls \frac {S_{n}}{\sqrt {2n \log \log (n)}} = 1.
+\end{equation*}
+
+
+</p>
+
+<p>
+This means that (with probability one) if \(c &gt; 1\) then only finitely many of the events \(S_{n} &gt; c\sqrt {2n \log \log (n)}\) occur but if \(c &lt; 1\) then infinitely many of such events occur.
+Similarly, the other way up, at \(-1\). This gives a <i>very</i> precise description of the long-term behaviour of \(S_n\).
 </p>
 
 </section>
