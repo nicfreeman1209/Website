@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Equality in distribution</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -920,6 +920,34 @@ within the set \(A\sw \R ^d\).
 </ul>
 
 </div>
+
+<p>
+In the case \(d=1\) we also have the <em>cumulative distribution function</em> \(F_X(x)=\P [X\leq x]\) which tells us how likely the value of \(X\) is to be less than or equal to \(x\in \R \). For random
+variables \(X\) and \(Y\) taking values in \(\R \),
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{1.}{1}\)</span>
+
+<!--
+
+                                                                                                                   d
+                                                                                         FX = FY if and only if X = Y.                                               (1.2)--><a id="eq:cdf_df_d=1"></a><!--
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:cdf_df_d=1} F_X=F_Y\text { if and only if }X\eqd Y.
+\end{equation}
+
+
+</p>
+
+<p>
+We won’t prove <span class="textup">(<a href="Equality-in-distribution.html#eq:cdf_df_d=1">1.2</a>)</span> within this course, although it is hopefully not surprising to you.
+</p>
 <div class="theorembodyexample">
 
 <ul class="list" style="list-style-type:none">
@@ -953,34 +981,6 @@ A perhaps simpler example: if \(X\) and \(Y\) are independent \(\Normal (0,1)\) 
 </ul>
 
 </div>
-
-<p>
-In the case \(d=1\) we also have the <em>cumulative distribution function</em> \(F_X(x)=\P [X\leq x]\) which tells us how likely the value of \(X\) is to be less than or equal to \(x\in \R \). For random
-variables \(X\) and \(Y\) taking values in \(\R \),
-</p>
-
-<span class="hidden"> \(\seteqnumber{0}{1.}{1}\)</span>
-
-<!--
-
-                                                                                                                      d
-                                                                                          FX = FY if and only if X = Y.                                              (1.2)--><a id="eq:cdf_df_d=1"></a><!--
-
--->
-
-<p>
-
-
-\begin{equation}
-\label {eq:cdf_df_d=1} F_X=F_Y\text { if and only if }X\eqd Y.
-\end{equation}
-
-
-</p>
-
-<p>
-We won’t prove <span class="textup">(<a href="Equality-in-distribution.html#eq:cdf_df_d=1">1.2</a>)</span> within this course, although it is hopefully not surprising to you.
-</p>
 
 <p>
 Note that we have used the notation \(\sim \Normal (0,1)\) in Example <a href="Equality-in-distribution.html#ex:eqd_vs_eq">1.2.2</a>. We might wonder what the difference between the symbols
@@ -1167,7 +1167,7 @@ Y\).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Note that in <span class="textup">(<a
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> \(\offsyl \) Note that in <span class="textup">(<a
 href="Equality-in-distribution.html#eq:normalizing_constants">1.3</a>)</span> the normalizing constant \(Z\) is determined by \(g(x)\); in the discrete case we have \(Z=\sum _{x\in R}g(x)\) and
 in the continuous case we have \(Z=\int _\R g(x)\,dx\). Hence in both cases, the fact that \(X\) and \(Y\) are random variables implies that \(Z=Z&apos;\). The lemma now follows from Lemma <a
 href="Equality-in-distribution.html#l:eqd_pmf">1.2.3</a> for the discrete case, and from our discussion below Lemma <a href="Equality-in-distribution.html#l:eqd_pmf">1.2.3</a> for the
@@ -1212,7 +1212,7 @@ href="Conjugate-priors.html#s:propto">4.1</a>, where it will become very helpful
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>

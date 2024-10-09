@@ -483,7 +483,7 @@ Dr Nic Freeman
 <div class="titledate">
 
 <p>
-October 3, 2024
+October 9, 2024
 </p>
 </div>
 
@@ -897,7 +897,7 @@ October 3, 2024
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Introduction</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -1132,7 +1132,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -1923,7 +1923,7 @@ Further information, including the timetable, can be found on
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -1942,7 +1942,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Outline of the course</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -2177,7 +2177,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -2907,7 +2907,7 @@ branches of statistics can be viewed as simplifications of Bayesian methods. In 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -2926,7 +2926,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Conditioning</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -3161,7 +3161,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -4006,7 +4006,7 @@ Taking care of these issues rigorously requires some background on Lebesgue inte
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -4025,7 +4025,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Equality in distribution</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -4260,7 +4260,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -4941,6 +4941,34 @@ within the set \(A\sw \R ^d\).
 </ul>
 
 </div>
+
+<p>
+In the case \(d=1\) we also have the <em>cumulative distribution function</em> \(F_X(x)=\P [X\leq x]\) which tells us how likely the value of \(X\) is to be less than or equal to \(x\in \R \). For random
+variables \(X\) and \(Y\) taking values in \(\R \),
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{1.}{1}\)</span>
+
+<!--
+
+                                                                                                                   d
+                                                                                         FX = FY if and only if X = Y.                                               (1.2)--><a id="eq:cdf_df_d=1"></a><!--
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:cdf_df_d=1} F_X=F_Y\text { if and only if }X\eqd Y.
+\end{equation}
+
+
+</p>
+
+<p>
+We won’t prove <span class="textup">(<a href="Equality-in-distribution.html#eq:cdf_df_d=1">1.2</a>)</span> within this course, although it is hopefully not surprising to you.
+</p>
 <div class="theorembodyexample">
 
 <ul class="list" style="list-style-type:none">
@@ -4974,34 +5002,6 @@ A perhaps simpler example: if \(X\) and \(Y\) are independent \(\Normal (0,1)\) 
 </ul>
 
 </div>
-
-<p>
-In the case \(d=1\) we also have the <em>cumulative distribution function</em> \(F_X(x)=\P [X\leq x]\) which tells us how likely the value of \(X\) is to be less than or equal to \(x\in \R \). For random
-variables \(X\) and \(Y\) taking values in \(\R \),
-</p>
-
-<span class="hidden"> \(\seteqnumber{0}{1.}{1}\)</span>
-
-<!--
-
-                                                                                                                      d
-                                                                                          FX = FY if and only if X = Y.                                              (1.2)--><a id="eq:cdf_df_d=1"></a><!--
-
--->
-
-<p>
-
-
-\begin{equation}
-\label {eq:cdf_df_d=1} F_X=F_Y\text { if and only if }X\eqd Y.
-\end{equation}
-
-
-</p>
-
-<p>
-We won’t prove <span class="textup">(<a href="Equality-in-distribution.html#eq:cdf_df_d=1">1.2</a>)</span> within this course, although it is hopefully not surprising to you.
-</p>
 
 <p>
 Note that we have used the notation \(\sim \Normal (0,1)\) in Example <a href="Equality-in-distribution.html#ex:eqd_vs_eq">1.2.2</a>. We might wonder what the difference between the symbols
@@ -5188,7 +5188,7 @@ Y\).
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Note that in <span class="textup">(<a
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> \(\offsyl \) Note that in <span class="textup">(<a
 href="Equality-in-distribution.html#eq:normalizing_constants">1.3</a>)</span> the normalizing constant \(Z\) is determined by \(g(x)\); in the discrete case we have \(Z=\sum _{x\in R}g(x)\) and
 in the continuous case we have \(Z=\int _\R g(x)\,dx\). Hence in both cases, the fact that \(X\) and \(Y\) are random variables implies that \(Z=Z&apos;\). The lemma now follows from Lemma <a
 href="Equality-in-distribution.html#l:eqd_pmf">1.2.3</a> for the discrete case, and from our discussion below Lemma <a href="Equality-in-distribution.html#l:eqd_pmf">1.2.3</a> for the
@@ -5233,7 +5233,7 @@ href="Conjugate-priors.html#s:propto">4.1</a>, where it will become very helpful
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -5252,7 +5252,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Families of random variables</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -5487,7 +5487,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -6193,6 +6193,10 @@ For example:
 We say that a family is <em>discrete</em> if it is made up of (exclusively) discrete random variables, and <em>continuous</em> if is it made up of (exclusively) continuous random variables. So the Beta family is an
 continuous family and the Binomial family is a discrete family.
 </p>
+
+<p>
+We will use this term for statistical models, written \((M_\theta )_{\theta \in \Pi }\) with parameter \(\theta \). For this reason we will often refer to \((M_\theta )\) as a <em>model family</em>.
+</p>
 <div class="theorembodyassumption">
 
 <ul class="list" style="list-style-type:none">
@@ -6227,7 +6231,7 @@ holds for most common families of random variables, including all of those liste
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -6246,7 +6250,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Conditioning on location</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -6481,7 +6485,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -7515,7 +7519,7 @@ To prove part 2, put \(A=\R ^d\) in Lemma <a href="Conditioning-on-location.html
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -7534,7 +7538,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Conditioning and correlations</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -7769,7 +7773,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -8556,7 +8560,7 @@ href="Conditioning-correlations.html#eq:cond_corr">1.7</a>)</span>, should feel 
 </p>
 
 <p>
-\[X= \begin {cases} 0 &amp; \text { if $Z$ is even,} \\ 1 &amp; \text { if $Z$ is odd,} \end {cases} \qquad Y= \begin {cases} 0 &amp; \text { if }Z\leq 3, \\ 1 &amp; \text { if
+\[X= \begin {cases} 1 &amp; \text { if $Z$ is odd,} \\ 0 &amp; \text { if $Z$ is even,} \end {cases} \qquad Y= \begin {cases} 0 &amp; \text { if }Z\leq 3, \\ 1 &amp; \text { if
 }Z\geq 4, \end {cases} \]
 </p>
 
@@ -8733,7 +8737,7 @@ do.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -8752,7 +8756,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Conditioning on events with zero probability</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -8987,7 +8991,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -9678,7 +9682,7 @@ that
 </p>
 
 <p>
-for all \(A\sw \R ^n\), then we extend Definition <a href="Conditioning-on-location.html#d:cond_rv">1.4.2</a>: we say that \(Z^*\) is the conditional distribution of \(Z\) given \(\{Y=y\}\), written
+for all \(A\sw \R ^n\), then we extend Definition <a href="Conditioning-on-location.html#d:cond_rv">1.4.2</a>; we say that \(Z^*\) is the conditional distribution of \(Z\) given \(\{Y=y\}\), written
 \(Z^*\eqd Z|_{\{Y=y\}}\). There are many examples of random variables \((Y,Z)\) for which the limit in <span class="textup">(<a
 href="Conditioning-on-events-with-zero-probability.html#eq:conditioning_eps_to_0">1.9</a>)</span> does not exist, or fails to behave like a conditional probability. There are, also, many examples
 where <span class="textup">(<a href="Conditioning-on-events-with-zero-probability.html#eq:conditioning_eps_to_0">1.9</a>)</span> results in a random variable \(Y\) that behaves exactly like
@@ -9939,7 +9943,7 @@ which we recognize as \(Z|_{\{Y=1\}}\sim \Cauchy (1,1)\). We can plot \(f_{Y,Z}(
 </div>
 
 <p>
-The line on the left hand picture corresponds to \(y=1\). You can see that it has the shape of the \(\Cauchy (0,1)\) p.d.f.&nbsp;in the right hand picture.
+The line on the left hand picture corresponds to \(y=1\). You can see that it has the shape of the \(\Cauchy (1,1)\) p.d.f.&nbsp;in the right hand picture.
 </p>
 
 
@@ -10001,7 +10005,7 @@ believe. We record this fact because we will need it in Chapter <a href="Computa
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -10020,7 +10024,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Families with random parameters</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -10255,7 +10259,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -10928,8 +10932,8 @@ To make sense of the idea, let us state it more precisely. We want random variab
 
 <!--
                                                    Z
-                               P[X ∈ A, Θ ∈ B] =        P[Mθ ∈ A]fΘ (θ) dy.                           (1.13)                                                         --><a id="eq:bayes_model_pre"></a><!--
-                                                    B
+                               P[X ∈ A, Θ ∈ B] =           P[Mθ ∈ A]fΘ (θ) dθ.                        (1.13)                                                         --><a id="eq:bayes_model_pre"></a><!--
+                                                       B
 
 -->
 
@@ -10937,7 +10941,7 @@ To make sense of the idea, let us state it more precisely. We want random variab
 
 
 \begin{equation}
-\label {eq:bayes_model_pre} \P [X\in A,\Theta \in B]=\int _B\P [M_\theta \in A]f_\Theta (\theta )\,dy.
+\label {eq:bayes_model_pre} \P [X\in A,\Theta \in B]=\int _B\P [M_\theta \in A]f_\Theta (\theta )\,d\theta .
 \end{equation}
 
 
@@ -10956,7 +10960,7 @@ distribution of \(X\), by setting \(B=\R ^d\), giving
 </p>
 
 <p>
-\[\P [X\in A]=\P [X\in A, \Theta \in \R ^d]=\int _{\R ^d}\P [M_\theta \in A]f_\Theta (\theta )\,dy,\]
+\[\P [X\in A]=\P [X\in A, \Theta \in \R ^d]=\int _{\R ^d}\P [M_\theta \in A]f_\Theta (\theta )\,d\theta ,\]
 </p>
 
 <p>
@@ -11012,8 +11016,10 @@ href="Conditioning-on-events-with-zero-probability.html#l:rv_from_conditioning_a
 </p>
 
 <p>
-Using continuity, from the statement of the lemma and from Assumption <a href="Families-random-variables.html#ass:model_family_cts">1.3.2</a>, for \(|\theta -t|\leq \eps \) we can approximate
-\(f_\Theta (t)\approx f_\Theta (\theta )\) and \(\P [M_t\in A]\approx \P [M_\theta \in A]\). This gives
+The second equality follows from <span class="textup">(<a href="Families-with-random-parameters.html#eq:bayes_model_pre">1.13</a>)</span>, for the numerator, and from the fact that \(f_\Theta
+\) is the p.d.f.&nbsp;of\(\Theta \), for the denominator. Using continuity, from the statement of the lemma and from Assumption <a
+href="Families-random-variables.html#ass:model_family_cts">1.3.2</a>, for \(|\theta -t|\leq \eps \) we can approximate \(f_\Theta (t)\approx f_\Theta (\theta )\) and \(\P [M_t\in
+A]\approx \P [M_\theta \in A]\). This gives
 </p>
 
 <p>
@@ -11036,7 +11042,7 @@ class="textup">(<a href="Conditioning-on-events-with-zero-probability.html#eq:co
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -11055,7 +11061,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Exercises on Chapter <a href=Conditioning.html#c:conditioning>1</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -11290,7 +11296,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -12044,15 +12050,15 @@ continuous uniform distribution on \([a,c]\) and let \(U&apos;\eqd U|_{\{U\in [a
 
 
 <p>
-<span class="listmarker"><b>1.4</b></span> <a id="ps:conditioning_geometric_on_start"></a> Suppose that \(G\) has the \(\Geo (p)\) distribution, that is \(\P [G=g]=p^{g}(1-p)\) for \(g\in
-\{0,1,\ldots \}\), where \(p\in [0,1]\). Let \(G&apos;\eqd G|_{\{G\geq n\}}\), where \(n\in \N \).
+<span class="listmarker"><b>1.4</b></span> <a id="ps:conditioning_geometric_on_start"></a> \(\star \,\star \) Suppose that \(G\) has the \(\Geo (p)\) distribution, that is \(\P
+[G=g]=p^{g}(1-p)\) for \(g\in \{0,1,\ldots \}\), where \(p\in [0,1]\). Let \(G&apos;\eqd G|_{\{G\geq n\}}\), where \(n\in \N \).
 </p>
 <ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="listmarker"><span class="textnormal">(a)</span></span> \(\star \,\star \) Find the distribution of \(G&apos;\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> Find the distribution of \(G&apos;\).
 </p>
 
 
@@ -12061,7 +12067,7 @@ continuous uniform distribution on \([a,c]\) and let \(U&apos;\eqd U|_{\{U\in [a
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> Consider the following claim. \(\star \star \star \)
+<span class="listmarker"><span class="textnormal">(b)</span></span> Consider the following claim.
 </p>
 <blockquote>
 <p>
@@ -12092,7 +12098,7 @@ Record the time it takes for the code to obtain some samples, for \(k=2^n\) for 
 
 
 <p>
-<span class="listmarker"><b>1.6</b></span> <a id="ps:cond_corr"></a> Let \((X,Y)\) be a discrete random variable with values in \(\R ^2\) (so \(n=d=1\)) with distribution given by
+<span class="listmarker"><b>1.6</b></span> <a id="ps:cond_corr"></a> \(\star \,\star \) Let \((X,Y)\) be a discrete random variable with values in \(\R ^2\) (so \(n=d=1\)) with distribution given by
 </p>
 <span class="hidden"> \(\seteqnumber{0}{1.}{13}\)</span>
 <!--
@@ -12135,7 +12141,7 @@ Here is a plot of this function, with shading to indicate regions for which \(x\
 
 <li>
 <p>
-<span class="listmarker"><span class="textnormal">(a)</span></span> \(\star \) Check that the function given in <span class="textup">(<a
+<span class="listmarker"><span class="textnormal">(a)</span></span> Check that the function given in <span class="textup">(<a
 href="Exercises-on-Chapter-ref-c-conditioning.html#eq:cond_corr_ps">1.14</a>)</span> is a probability mass function with range \(\N ^2\) i.e.&nbsp;check that summing over its range gives \(1\). Are
 \(X\) and \(Y\) independent?
 </p>
@@ -12153,7 +12159,7 @@ href="Exercises-on-Chapter-ref-c-conditioning.html#eq:cond_corr_ps">1.14</a>)</s
 
 <li>
 <p>
-<span class="listmarker"><span class="textnormal">(i)</span></span> \(\star \,\star \) Show that for \(y\in \N \) we have \(\P [Y=y]=\l (\frac 12\r )^y\).
+<span class="listmarker"><span class="textnormal">(i)</span></span> Show that for \(y\in \N \) we have \(\P [Y=y]=\l (\frac 12\r )^y\).
 </p>
 
 
@@ -12202,7 +12208,7 @@ href="Conditioning-on-location.html#ex:N_conditioning_fold">1.4.3</a>. Let \(Y&a
 
 
 <p>
-<span class="listmarker"><b>1.9</b></span> <a id="ps:eqd_pmf"></a> \(\star \,\star \) Prove Lemma <a href="Equality-in-distribution.html#l:eqd_pmf">1.2.3</a>.
+<span class="listmarker"><b>1.9</b></span> <a id="ps:eqd_pmf"></a> \(\star \star \star \) Prove Lemma <a href="Equality-in-distribution.html#l:eqd_pmf">1.2.3</a>.
 </p>
 </li>
 <li>
@@ -12228,7 +12234,7 @@ A]&gt;0\). Show that \(Y\eqd Y|_{\{X\in A\}}\).
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -12247,7 +12253,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Bayesian models: discrete data</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -12482,7 +12488,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -13291,7 +13297,7 @@ place of \(P\). We will handle the case of continuous data later on, in Chapter 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -13310,7 +13316,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Discrete Bayesian models</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -13545,7 +13551,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -14314,7 +14320,7 @@ href="Discrete-Bayesian-models.html#eq:bayes_discrete_general">2.3</a>)</span> a
 <p>
 From Section <a href="Families-with-random-parameters.html#s:bayes_models_pre">1.7</a> and Lemma <a
 href="Families-with-random-parameters.html#l:rv_from_conditioning_bayes_on_param">1.7.1</a> we know that \(\Theta \) has p.d.f.&nbsp;\(f_\Theta \) and that \(X|_{\{\Theta =\theta \}}\sim
-M_\theta \) whenever \(f_\Theta \) is continuous at \(\theta \). To find the (marginal) distribution of the data \(X\) we set \(B=\R ^d\) in <span class="textup">(<a
+M_\theta \) whenever \(f_\Theta \) is continuous at \(\theta \). To find the (marginal) distribution of the data \(X\) we set \(A=\R ^d\) in <span class="textup">(<a
 href="Discrete-Bayesian-models.html#eq:bayes_discrete_general">2.3</a>)</span>, giving the probability mass function
 </p>
 
@@ -14450,7 +14456,7 @@ calculations easier in Chapter <a href="Conjugate-priors.html#c:conjugate_priors
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -14469,7 +14475,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — The posterior distribution</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -14704,7 +14710,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -15705,7 +15711,7 @@ other exercises too.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -15724,7 +15730,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Bayesian updates</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -15959,7 +15965,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -16772,7 +16778,7 @@ numerically without relying on families of well-known distributions. This provid
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -16791,7 +16797,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Exercises on Chapter <a href=Bayesian-models-discrete-data.html#c:bayes_models_discrete>2</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -17026,7 +17032,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -17823,7 +17829,7 @@ predictive distribution.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -17842,7 +17848,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Bayesian models: continuous data</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -18077,7 +18083,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -19067,7 +19073,7 @@ href="Bayesian-models-continuous-data.html#eq:bayes_continuous_sampling_pdf">3.2
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -19086,7 +19092,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Notation: independent data</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -19321,7 +19327,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -20298,7 +20304,7 @@ and in practice we rarely have a reason to want models of this type. We won’t 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -20317,7 +20323,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Exercises on Chapter <a href=Bayesian-models-continuous-data.html#c:bayes_models_continuous>3</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -20552,7 +20558,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -21454,7 +21460,7 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#eq:model_convoluti
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -21473,7 +21479,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Conjugate priors</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -21708,7 +21714,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -22753,7 +22759,7 @@ can have many possible outcomes. It involves the Dirichlet and multinomial distr
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -22772,7 +22778,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Two more examples of conjugate pairs</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -23007,7 +23013,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -24148,7 +24154,7 @@ We’ll return to this data again in Example <a href="The-normal-distribution-wi
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -24167,7 +24173,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Conjugate pairs and the exponential family </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -24402,7 +24408,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -25252,7 +25258,7 @@ applies to discrete Bayesian models, but we won’t detail that either.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -25271,7 +25277,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — What if?</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -25506,7 +25512,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -26393,7 +26399,7 @@ might occur.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -26412,7 +26418,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — The normal distribution with unknown mean and variance</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -26647,7 +26653,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -27734,7 +27740,7 @@ href="Computational-methods.html#c:computational">8</a>.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -27753,7 +27759,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — The limitations of conjugate pairs</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -27988,7 +27994,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -28689,7 +28695,7 @@ help if we need to manufacture a prior distribution to reflect particular proper
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -28708,7 +28714,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Exercises on Chapter <a href=Conjugate-priors.html#c:conjugate_priors>4</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -28943,7 +28949,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -29800,7 +29806,7 @@ be functions with the same domain. Explain briefly why (a) \(f\propto f\); (b) i
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -29819,7 +29825,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — The prior</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -30054,7 +30060,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -31006,7 +31012,7 @@ probabilistic statements, as well as making elicitees aware of potential sources
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -31025,7 +31031,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Uninformative priors</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -31260,7 +31266,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -32101,7 +32107,7 @@ measure, more generally).
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -32120,7 +32126,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Reference priors</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -32355,7 +32361,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -33375,7 +33381,7 @@ href="Exercises-on-Chapter-ref-c-prior.html#ps:reference_prior_otimes"><b>5.8</b
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -33394,7 +33400,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Exercises on Chapter <a href=The-prior.html#c:prior>5</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -33629,7 +33635,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -34505,7 +34511,7 @@ You should start by finding an expression for the p.d.f.&nbsp;of \(h(\Theta )\),
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -34524,7 +34530,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Discussion</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -34759,7 +34765,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -35670,7 +35676,7 @@ href="Bayesian-models-continuous-data.html#c:bayes_models_continuous">3</a>. Tha
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -35689,7 +35695,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — The connection to maximum likelihood</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -35924,7 +35930,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -36856,7 +36862,7 @@ href="The-connection-maximum-likelihood.html#eq:bvm">6.6</a>)</span> will fail: 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -36875,7 +36881,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Exercises on Chapter <a href=Discussion.html#c:discussion>6</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -37110,7 +37116,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -38057,7 +38063,7 @@ href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:transitive_bayes_examp
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -38076,7 +38082,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Testing and parameter estimation</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -38311,7 +38317,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -39311,7 +39317,7 @@ Note that we have used a small amount of Bayesian shorthand in this example, by 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -39330,7 +39336,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — High posterior density regions</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -39565,7 +39571,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -40418,7 +40424,7 @@ this type in Example <a href="The-prior.html#ex:elicitation_bisection">5.1.1</a>
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -40437,7 +40443,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Point estimates</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40672,7 +40678,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -41444,7 +41450,7 @@ There is no reasonable way to summarize this distribution with a point estimate.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -41463,7 +41469,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Comparison to classical methods</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -41698,7 +41704,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -42553,7 +42559,7 @@ Figure&nbsp;7.1:&nbsp;Hans the horse in 1904, correctly answering arithmetic que
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -42572,7 +42578,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Exercises on Chapter <a href=Testing-parameter-estimation.html#c:tests>7</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -42807,7 +42813,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -43686,7 +43692,7 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -43705,7 +43711,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Computational methods</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -43940,7 +43946,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -44774,7 +44780,7 @@ accepting the same \(x_0\) becomes small. To get handle this difficulty, various
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -44793,7 +44799,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Metropolis-Hastings</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -45028,7 +45034,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -46443,7 +46449,7 @@ consequence that we won’t need the discrete case of Metropolis-Hastings within
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -46462,7 +46468,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Markov chain Monte Carlo</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -46697,7 +46703,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -47542,7 +47548,7 @@ Repeating the whole procedure obtains multiple samples of \(\Theta |_{\{X=x\}}\)
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -47561,7 +47567,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Gibbs sampling</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -47796,7 +47802,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -48822,7 +48828,7 @@ _{i+1})\). Hence, in this situation we have all the necessary ingredients to use
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -48841,7 +48847,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Exercises on Chapter <a href=Computational-methods.html#c:computational>8</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -49076,7 +49082,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -49751,7 +49757,7 @@ in lectures at the appropriate time.</em>
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -49770,7 +49776,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Reference Sheets</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -50005,7 +50011,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -50778,7 +50784,7 @@ The reference sheets displayed on the following pages will be provided in the ex
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -50797,7 +50803,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Advice for revision/exams</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -51032,7 +51038,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -51794,7 +51800,7 @@ In all cases, you are welcome to come and discuss any questions/comments/typos. 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>
@@ -51813,7 +51819,7 @@ Home</a></nav>
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 3, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Solutions to exercises</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -52048,7 +52054,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 3, 2024
+last updated: October 9, 2024
 </p>
 
 </header>
@@ -52879,7 +52885,7 @@ that is accepted.
 _{y=1}^\infty 2^{-y}=\frac {1/2}{1-1/2}=1 \]
 </p>
 <p>
-as required. Note that here we use that the summations are geometric sums.
+as required. Here we use that the summations are geometric sums.
 </p>
 <p>
 The random variables \(X\) and \(Y\) are not independent because <span class="textup">(<a href="Exercises-on-Chapter-ref-c-conditioning.html#eq:cond_corr_ps">1.14</a>)</span> does not
@@ -55743,7 +55749,7 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 3, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
 </p>
 
 </footer>

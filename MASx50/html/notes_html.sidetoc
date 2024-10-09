@@ -54,24 +54,24 @@
 \contentsline {section}{\numberline {4.11}{\ignorespaces Exercises on Chapter \ref {c:lebesgue_integration}\relax }}{195}{}
 \contentsline {chapter}{\numberline {5}{\ignorespaces Probability with Measure\relax }}{203}{}
 \contentsline {section}{\numberline {5.1}{\ignorespaces Probability\relax }}{205}{}
-\contentsline {section}{\numberline {5.2}{\ignorespaces The cumulative distribution function\relax }}{208}{}
-\contentsline {section}{\numberline {5.3}{\ignorespaces Discrete and continuous random variables\relax }}{214}{}
-\contentsline {section}{\numberline {5.4}{\ignorespaces Independence\relax }}{218}{}
-\contentsline {section}{\numberline {5.5}{\ignorespaces Exercises on Chapter \ref {c:prob_with_meas}\relax }}{222}{}
-\contentsline {chapter}{\numberline {6}{\ignorespaces Inequalities for Random Variables \((\Delta )\)\relax }}{228}{}
-\contentsline {section}{\numberline {6.1}{\ignorespaces Chernoff bounds \((\Delta )\)\relax }}{229}{}
-\contentsline {section}{\numberline {6.2}{\ignorespaces The Paley-Zygmund inequality \((\Delta )\)\relax }}{233}{}
-\contentsline {section}{\numberline {6.3}{\ignorespaces Jensen's inequality \((\Delta )\)\relax }}{237}{}
-\contentsline {section}{\numberline {6.4}{\ignorespaces Exercises on Chapter \ref {c:ineqs} \((\Delta )\)\relax }}{244}{}
-\contentsline {chapter}{\numberline {7}{\ignorespaces Sequences of Random Variables\relax }}{248}{}
-\contentsline {section}{\numberline {7.1}{\ignorespaces The Borel-Cantelli lemmas\relax }}{249}{}
-\contentsline {section}{\numberline {7.2}{\ignorespaces Convergence of random variables\relax }}{253}{}
-\contentsline {section}{\numberline {7.3}{\ignorespaces Laws of large numbers\relax }}{262}{}
-\contentsline {section}{\numberline {7.4}{\ignorespaces Characteristic functions (\(\Delta \))\relax }}{268}{}
-\contentsline {subsection}{\numberline {7.4.1}{\ignorespaces Approximating characteristic functions with polynomials \((\Delta )\)\relax }}{274}{}
-\contentsline {section}{\numberline {7.5}{\ignorespaces The central limit theorem (\(\Delta \))\relax }}{278}{}
-\contentsline {subsection}{\numberline {7.5.1}{\ignorespaces Further discussion (\(\star \))\relax }}{282}{}
-\contentsline {section}{\numberline {7.6}{\ignorespaces Exercises on Chapter \ref {c:rv_sequences}\relax }}{284}{}
-\contentsline {chapter}{\numberline {A}{\ignorespaces Advice for revision/exams\relax }}{290}{}
-\contentsline {chapter}{\numberline {B}{\ignorespaces Solutions to exercises\relax }}{294}{}
+\contentsline {section}{\numberline {5.2}{\ignorespaces The cumulative distribution function\relax }}{211}{}
+\contentsline {section}{\numberline {5.3}{\ignorespaces Discrete and continuous random variables\relax }}{217}{}
+\contentsline {section}{\numberline {5.4}{\ignorespaces Independence\relax }}{221}{}
+\contentsline {section}{\numberline {5.5}{\ignorespaces Exercises on Chapter \ref {c:prob_with_meas}\relax }}{225}{}
+\contentsline {chapter}{\numberline {6}{\ignorespaces Inequalities for Random Variables \((\Delta )\)\relax }}{231}{}
+\contentsline {section}{\numberline {6.1}{\ignorespaces Chernoff bounds \((\Delta )\)\relax }}{232}{}
+\contentsline {section}{\numberline {6.2}{\ignorespaces The Paley-Zygmund inequality \((\Delta )\)\relax }}{236}{}
+\contentsline {section}{\numberline {6.3}{\ignorespaces Jensen's inequality \((\Delta )\)\relax }}{240}{}
+\contentsline {section}{\numberline {6.4}{\ignorespaces Exercises on Chapter \ref {c:ineqs} \((\Delta )\)\relax }}{247}{}
+\contentsline {chapter}{\numberline {7}{\ignorespaces Sequences of Random Variables\relax }}{251}{}
+\contentsline {section}{\numberline {7.1}{\ignorespaces The Borel-Cantelli lemmas\relax }}{252}{}
+\contentsline {section}{\numberline {7.2}{\ignorespaces Convergence of random variables\relax }}{256}{}
+\contentsline {section}{\numberline {7.3}{\ignorespaces Laws of large numbers\relax }}{265}{}
+\contentsline {section}{\numberline {7.4}{\ignorespaces Characteristic functions (\(\Delta \))\relax }}{271}{}
+\contentsline {subsection}{\numberline {7.4.1}{\ignorespaces Approximating characteristic functions with polynomials \((\Delta )\)\relax }}{277}{}
+\contentsline {section}{\numberline {7.5}{\ignorespaces The central limit theorem (\(\Delta \))\relax }}{281}{}
+\contentsline {subsection}{\numberline {7.5.1}{\ignorespaces Further discussion (\(\star \))\relax }}{285}{}
+\contentsline {section}{\numberline {7.6}{\ignorespaces Exercises on Chapter \ref {c:rv_sequences}\relax }}{287}{}
+\contentsline {chapter}{\numberline {A}{\ignorespaces Advice for revision/exams\relax }}{293}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Solutions to exercises\relax }}{297}{}
 
