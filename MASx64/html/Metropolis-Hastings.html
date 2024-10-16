@@ -880,11 +880,11 @@ Home</a>
 
 \( \def \to {\rightarrow } \def \iff {\Leftrightarrow } \def \ra {\Rightarrow } \def \sw {\subseteq } \def \mc {\mathcal } \def \mb {\mathbb } \def \sc {\setminus } \def \wt
 {\widetilde } \def \v {\textbf } \def \E {\mb {E}} \def \P {\mb {P}} \def \R {\mb {R}} \def \C {\mb {C}} \def \N {\mb {N}} \def \Q {\mb {Q}} \def \Z {\mb {Z}} \def \B {\mb {B}}
-\def \~{\sim } \def \-{\,;\,} \def \qed {$\blacksquare $} \def \1{\mathbbm {1}} \def \cadlag {c\&grave;{a}dl\&grave;{a}g} \def \p {\partial } \def \l {\left } \def \r {\right }
-\def \Om {\Omega } \def \om {\omega } \def \eps {\epsilon } \def \de {\delta } \def \ov {\overline } \def \sr {\stackrel } \def \Lp {\mc {L}^p} \def \Lq {\mc {L}^p} \def \Lone
-{\mc {L}^1} \def \Ltwo {\mc {L}^2} \def \toae {\sr {\rm a.e.}{\to }} \def \toas {\sr {\rm a.s.}{\to }} \def \top {\sr {\mb {\P }}{\to }} \def \tod {\sr {\rm d}{\to }} \def \toLp
-{\sr {\Lp }{\to }} \def \toLq {\sr {\Lq }{\to }} \def \eqae {\sr {\rm a.e.}{=}} \def \eqas {\sr {\rm a.s.}{=}} \def \eqd {\sr {\rm d}{=}} \def \approxd {\sr {\rm d}{\approx }}
-\def \Sa {(S1)\xspace } \def \Sb {(S2)\xspace } \def \Sc {(S3)\xspace } \)
+\def \~{\sim } \def \-{\,;\,} \def \qed {$\blacksquare $} \CustomizeMathJax {\def \1{\unicode {x1D7D9}}} \def \cadlag {c\&grave;{a}dl\&grave;{a}g} \def \p {\partial } \def \l
+{\left } \def \r {\right } \def \Om {\Omega } \def \om {\omega } \def \eps {\epsilon } \def \de {\delta } \def \ov {\overline } \def \sr {\stackrel } \def \Lp {\mc {L}^p} \def
+\Lq {\mc {L}^p} \def \Lone {\mc {L}^1} \def \Ltwo {\mc {L}^2} \def \toae {\sr {\rm a.e.}{\to }} \def \toas {\sr {\rm a.s.}{\to }} \def \top {\sr {\mb {\P }}{\to }} \def \tod {\sr
+{\rm d}{\to }} \def \toLp {\sr {\Lp }{\to }} \def \toLq {\sr {\Lq }{\to }} \def \eqae {\sr {\rm a.e.}{=}} \def \eqas {\sr {\rm a.s.}{=}} \def \eqd {\sr {\rm d}{=}} \def \approxd
+{\sr {\rm d}{\approx }} \def \Sa {(S1)\xspace } \def \Sb {(S2)\xspace } \def \Sc {(S3)\xspace } \)
 
 </div>
 
@@ -1189,7 +1189,40 @@ because the terms on top and bottom involving conditional densities then cancel.
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{3}\)</span>
 <!--
-                                                        ample, Suppose that \(Y\) is any random variable with range \(\R \)
+                                                                                                                  yn   with probability 1 − α.
+                                                                                              
+
+-->
+<p>
+
+
+\begin{equation*}
+y_{n+1}=\begin{cases} \tilde {y} &amp; \text { with probability }\alpha , \\ y_n &amp; \text { with probability }1-\alpha . \end {cases}
+\end{equation*}
+
+
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+
+<p>
+This is known as the <em>Metropolis</em> algorithm, or sometimes as the <em>symmetric Metropolis-Hastings</em> algorithm.
+</p>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-176"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 8.2.4</span></span> <a id="autoid-177" ></a ><a id="ex:mh_ingredient_normal_walk_2"></a> It is often straightforward to
+write down a \(Q\) such that <span class="textup">(<a href="Metropolis-Hastings.html#eq:mh_sym_YQ">8.3</a>)</span> holds. For example, Suppose that \(Y\) is any random variable with range \(\R \)
 and take \(Q=Y+\Normal (0,\sigma ^2)\) as in Example <a href="Metropolis-Hastings.html#ex:mh_ingredient_normal_walk">8.2.1</a>. Then from Remark <a
 href="Conditioning-on-events-with-zero-probability.html#r:conditioning_to_be_det">1.6.4</a> we have
 </p>
