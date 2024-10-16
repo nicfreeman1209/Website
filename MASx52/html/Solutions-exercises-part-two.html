@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, September 19, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 16, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Solutions to exercises (part two)</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: September 19, 2024
+last updated: October 16, 2024
 </p>
 
 </header>
@@ -306,7 +306,7 @@ Home</a>
 
 <p>
 <a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
-<span class="sectionnumber">11.3</span>&#x2003;Brownian motion and the heat equation \((\star )\)</a>
+<span class="sectionnumber">11.3</span>&#x2003;Brownian motion and the heat equation \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
@@ -348,7 +348,7 @@ Home</a>
 
 <p>
 <a href="Existence-Ito-integrals.html#autosec-55" class="tocsection" >
-<span class="sectionnumber">12.3</span>&#x2003;Existence of Ito integrals \((\star )\)</a>
+<span class="sectionnumber">12.3</span>&#x2003;Existence of Ito integrals \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
@@ -523,49 +523,49 @@ Home</a>
 
 <p>
 <a href="Further-topics-on-Black-Scholes-model.html#autosec-175" class="tocchapter" >
-<span class="sectionnumber">17</span>&#x2003;Further topics on Black-Scholes model \((\star )\)</a>
+<span class="sectionnumber">17</span>&#x2003;Further topics on the Black-Scholes model \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
 <a href="Further-topics-on-Black-Scholes-model.html#autosec-176" class="tocsection" >
-<span class="sectionnumber">17.1</span>&#x2003;Time inhomogeneity \((\star )\)</a>
+<span class="sectionnumber">17.1</span>&#x2003;Time inhomogeneity \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
 <a href="American-Exotic-options.html#autosec-178" class="tocsection" >
-<span class="sectionnumber">17.2</span>&#x2003;American and Exotic options \((\star )\)</a>
+<span class="sectionnumber">17.2</span>&#x2003;American and Exotic options \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
 <a href="Discontinuous-stock-prices-heavy-tails.html#autosec-182" class="tocsection" >
-<span class="sectionnumber">17.3</span>&#x2003;Discontinuous stock prices and heavy tails \((\star )\)</a>
+<span class="sectionnumber">17.3</span>&#x2003;Discontinuous stock prices and heavy tails \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
 <a href="Volatility.html#autosec-186" class="tocsection" >
-<span class="sectionnumber">17.4</span>&#x2003;Volatility \((\star )\)</a>
+<span class="sectionnumber">17.4</span>&#x2003;Volatility \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
 <a href="Incomplete-markets.html#autosec-192" class="tocsection" >
-<span class="sectionnumber">17.5</span>&#x2003;Incomplete markets \((\star )\)</a>
+<span class="sectionnumber">17.5</span>&#x2003;Incomplete markets \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
 <a href="The-financial-crisis-2007-8.html#autosec-194" class="tocchapter" >
-<span class="sectionnumber">18</span>&#x2003;The financial crisis of 2007/8 \((\star )\)</a>
+<span class="sectionnumber">18</span>&#x2003;The financial crisis of 2007/8 \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
@@ -1117,10 +1117,53 @@ where \(Y\sim N(0,\sigma ^2)\). Then, \(e^Z=e^\mu e^Y\) and
                                                                                              Y
                                                                                         E[e ] = √         ey e− 2σ2 dy
                                                                                                   2πσ −∞
-                                                                                                      Z ∞                                                                                          
-                                                                                              =√                                         dy
-                                                                                                  2πσ −∞            2σ
-                                                                                                      Z ∞     Bu − σ t | Fu
+                                                                                                      Z ∞                                                                                                          2πσ −∞               2σ 2
+                                                                                                        σ2
+                                                                                                  =e2 .
+
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+\E [e^Y] &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty e^y e^{-\frac {y^2}{2\sigma ^2}}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l
+\{-\frac {1}{2\sigma ^2}\l (y^2-2\sigma ^2y\r )\r \}\,dy\\ &amp;=\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {1}{2\sigma ^2}\l ((y-\sigma ^2)^2-\sigma
+^4\r )\r \}\,dy\\ &amp;=e^{\frac {\sigma ^2}{2}}\frac {1}{\sqrt {2\pi }\sigma }\int _{-\infty }^\infty \exp \l \{-\frac {(y-\sigma ^2)^2}{2\sigma ^2}\r \}\,dy\\ &amp;=e^{\frac
+{\sigma ^2}{2}}.
+\end{align*}
+Here, to deduce the third line we complete the square, and to deduce the final line we use that the p.d.f.&nbsp;of a \(N(\sigma ^2,\sigma )\) random variable integrates to \(1\). Therefore,
+</p>
+<p>
+\[\E [e^Z]=e^\mu \E [e^Y]=e^{\mu +\frac {\sigma ^2}{2}}.\]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bm.html#ps:mart_bm"><b>11.6</b></a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> Since \(B_t\) is adapted, \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is also adapted. By <span class="textup">(<a
+href="Brownian-motion-definition.html#eq:lognormal_mean">11.2</a>)</span> and scaling of normal random variables we have that \(e^{\sigma B_t-\frac 12\sigma ^2 t}\) is in \(L^1\). It remains
+only to check that
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{0}\)</span>
+
+
+<!--
+
+                                                                                                                               
+                                                                                  1 2                                     1 2
+                                                                       E exp σBt − σ t | Fu = E exp σ(Bt − Bu ) + σBu − σ t | Fu
                                                                                   2                                       2
                                                                                                              
                                                                                                         1
@@ -2257,11 +2300,11 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 <!--
 
-                                                                                                                     1
-                                                                                               dZt =  3t2 Xt + (α)(t3 ) + (β)(0) dt + βt3 dBt
-                                                                                                                         2
-                                                                                                   = 3t2 Xt + αt3 dt + βt3 dBt .
-                                                                                                                 
+                                                                                                            2     −1    1       2    2                  −1
+                                                                                 dZt = (0) + (t )           + (Bt )             dt + (Bt )         Bt
+                                                                                                      Xt2    2           Xt3                 Xt2
+                                                                                     = Bt2 Zt3 − t2 Zt2 dt − Bt Zt2 dBt .
+                                                                                                       
 
 
 
@@ -2272,25 +2315,12 @@ which is not differentiable because \(B_t\) is not differentiable.
 
 
 \begin{align*}
-dZ_t&amp;=\l \{3t^2X_t+(\alpha )(t^3)+\frac 12(\beta )(0)\r \}\,dt+\beta t^3\,dB_t\\ &amp;=\l (3t^2X_t+\alpha t^3\r )\,dt+\beta t^3\,dB_t.
+dZ_t &amp;=\l \{(0)+(t^2)\l (\frac {-1}{X_t^2}\r )+\frac 12(B_t)^2\l (\frac {2}{X_t^3}\r )\r \}\,dt+(B_t)\l (\frac {-1}{X_t^2}\r )\,B_t\\ &amp;=\l (B_t^2Z_t^{3}-t^2Z_t^2\r
+)\,dt-B_tZ_t^2\,dB_t.
 \end{align*}
 
 
 </p>
-</li>
-<li>
-
-
-<p>
-<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-sdes.html#ps:various_diff"><b>13.3</b></a></span> By Ito’s formula, using that \(dB_t=0\,dt+1\,dB_t\), we have
-</p>
-<ul class="enumerate" style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="listmarker"><span class="textnormal">(a)</span></span> \(dZ_t=\l \{B_t^2+(0)(2tB_t)+\frac 12(1^2)(2t)\r \}\,dt+(1)(2tB_t)\,dB_t=\l (B_t^2+t\r )\,dt+2tB_t\,dB_t\).
-</p>
 
 
 </li>
@@ -2298,57 +2328,14 @@ dZ_t&amp;=\l \{3t^2X_t+(\alpha )(t^3)+\frac 12(\beta )(0)\r \}\,dt+\beta t^3\,dB
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> \(dZ_t=\l \{\alpha e^{\alpha t}+(0)(0)+\frac 12(1^2)(0)\r \}\,dt+(1)(0)\,dB_t=\alpha e^{\alpha t}\,dt\).
-</p>
-
-
-</li>
-<li>
-
-
-<p>
-<span class="listmarker"><span class="textnormal">(c)</span></span> We have
+<span class="listmarker"><span class="textnormal">(d)</span></span> We have
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
 
 
 <!--
 
-                                                                                                                                                                                                                            
-                                                                                                                1
-                                                                               dFt =          0 + (0)(nBtn−1 ) + (12 )(n(n − 1)Btn−2                             dt + (1)nBtn−1 dBt
-                                                                                                                        2
-                                                                                          n(n − 1)Btn−2
-                                                                                     =                  dt + nBtn−1 dBt .
-                                                                                                2
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dF_t &amp;=\l (0+(0)(nB_{t}^{n-1})+\frac 12(1^2)(n(n-1)B_t^{n-2}\r )\,dt+(1) n B_t^{n-1}\,dB_t\\ &amp;=\frac {n(n-1)B_t^{n-2}}{2}\,dt+nB_t^{n-1}\,dB_t.
-\end{align*}
-Written out in integral form this gives
-</p>
-<p>
-\[B^t_n=\int _0^t\frac {n(n-1)B_u^{n-2}}{2}\,du+\int _0^t nB_u^{n-1}\,dB_u.\]
-</p>
-<p>
-Taking expectations, swapping \(\int \,du\) with \(\E \), and recalling from Theorem <a href="Ito-integrals.html#t:stoch_int_final">12.2.1</a> that integrals with respect to \(dB_t\) have zero mean,
-we obtain
-</p>
-<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
-
-
-<!--
-
-                                                                                                                    Z t
-                                                                                                                      n(n − 1)E[Bun−2 ]
-                                                                                                        E[Btn ] =                       du + 0
+                                                                                                                                                             E[Btn ] =                       du + 0
                                                                                                                     0        2
                                                                                                                    n(n − 1) t
                                                                                                                            Z
@@ -2450,70 +2437,7 @@ Hence \(X_t=X_0-\int _0^te^{u/2}\sin (B_u)\,dB_u\), which is martingale by Theor
 
 <!--
 
-                                                                                     3.6</b></a></span> We apply Ito’s formula with \(f(t,x)=tx\) to \(Z_t=f(t,B_t)=tB_t\) and obtain
-</p>
-<p>
-\[dZ_t=\l (B_t+(0)(t)+\frac 12(1^2)(0)\r )\,dt+(1)(t)\,dB_t\]
-</p>
-<p>
-so we obtain
-</p>
-<p>
-\[tB_t=0B_0+\int _0^tB_u\,du+\int _0^t u\,dB_u,\]
-</p>
-<p>
-as required.
-</p>
-</li>
-<li>
-
-
-<p>
-<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-sdes.html#ps:sde_Evar_ode"><b>13.7</b></a></span>
-</p>
-<ul class="enumerate" style="list-style-type:none">
-
-
-<li>
-<p>
-<span class="listmarker"><span class="textnormal">(a)</span></span> We have \(X_t=X_0+\int _0^t 2+2s\,ds+\int _0^t B_s\,dB_s\). Taking expectations, and recalling that Ito integrals have zero
-mean, we obtain that
-</p>
-<p>
-\[\E [X_t]=X_0+\int _0^t 2+2s\,ds+0=1+\l [2s+s^2\r ]_{s=0}^t=1+2t+t^2=(1+t)^2.\]
-</p>
-</li>
-<li>
-
-
-<p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> From Ito’s formula,
-</p>
-<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
-
-
-<!--
-
-
-
-                                                                                         dYt = 0 + (2 + 2t)(2Xt ) + 12 (Bt )2 (2) dt + Bt (2Xt ) dBt
-                                                                                                                                 
-
-                                                                                             = 4(1 + t)Xt + (Bt )2 dt + 2Xt Bt dBt .
-                                                                                                                  
-
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-dY_t&amp;=\l (0+(2+2t)(2X_t)+\tfrac 12(B_t)^2(2)\r )\,dt+B_t (2X_t)\,dB_t\\ &amp;=\l (4(1+t)X_t+(B_t)^2\r )\,dt+ 2X_t B_t\,dB_t.
-\end{align*}
-Writing in integral form, taking expectations, and using that Ito integrals have zero mean, we obtain
+                                                                                     we obtain
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
 
@@ -4679,7 +4603,7 @@ Stage 3: Finally, considering these three cases in turn, the probability that \(
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated September 19, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 16, 2024
 </p>
 
 </footer>

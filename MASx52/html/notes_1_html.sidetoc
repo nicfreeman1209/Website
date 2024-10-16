@@ -28,7 +28,7 @@
 \contentsline {section}{\numberline {2.5}{\ignorespaces Exercises on Chapter \ref {c:prob_meas}\relax }}{77}{}
 \contentsline {chapter}{\numberline {3}{\ignorespaces Conditional expectation and martingales\relax }}{82}{}
 \contentsline {section}{\numberline {3.1}{\ignorespaces Conditional expectation\relax }}{83}{}
-\contentsline {subsection}{Relationship to the naive definition $(\star )$}{86}{}
+\contentsline {subsection}{Relationship to the naive definition ${\color {darkred}(\mathbf {\oslash })}$}{86}{}
 \contentsline {section}{\numberline {3.2}{\ignorespaces Properties of conditional expectation\relax }}{89}{}
 \contentsline {subsection}{Conditional expectation as an estimator}{92}{}
 \contentsline {section}{\numberline {3.3}{\ignorespaces Martingales\relax }}{95}{}
@@ -65,7 +65,7 @@
 \contentsline {subsubsection}{Extensions and applications of urn processes}{226}{}
 \contentsline {subsection}{Long term behaviour of Galton-Watson processes}{227}{}
 \contentsline {subsubsection}{Extensions and applications of the Galton-Watson process}{231}{}
-\contentsline {subsection}{Long term behaviour of random walks \((\star )\)}{232}{}
+\contentsline {subsection}{Long term behaviour of random walks \({\color {darkred}(\mathbf {\oslash })}\)}{232}{}
 \contentsline {subsubsection}{Extensions and applications of random walks}{235}{}
 \contentsline {section}{\numberline {7.5}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_1}\relax }}{237}{}
 \contentsline {chapter}{\numberline {8}{\ignorespaces Further theory of stochastic processes \((\Delta )\)\relax }}{242}{}
@@ -73,7 +73,7 @@
 \contentsline {section}{\numberline {8.2}{\ignorespaces The optional stopping theorem \((\Delta )\)\relax }}{248}{}
 \contentsline {section}{\numberline {8.3}{\ignorespaces The stopped \(\sigma \)-field \((\Delta )\)\relax }}{255}{}
 \contentsline {section}{\numberline {8.4}{\ignorespaces The strong Markov property \((\Delta )\)\relax }}{259}{}
-\contentsline {section}{\numberline {8.5}{\ignorespaces Kolmogorov's 0-1 law \((\star )\)\relax }}{262}{}
+\contentsline {section}{\numberline {8.5}{\ignorespaces Kolmogorov's 0-1 law \({\color {darkred}(\mathbf {\oslash })}\)\relax }}{262}{}
 \contentsline {section}{\numberline {8.6}{\ignorespaces Exercises on Chapter \ref {c:stoch_procs_2} \((\Delta )\)\relax }}{266}{}
 \contentsline {chapter}{\numberline {9}{\ignorespaces Simple random walks \((\Delta )\)\relax }}{270}{}
 \contentsline {section}{\numberline {9.1}{\ignorespaces Exit probabilities \((\Delta )\)\relax }}{272}{}
@@ -81,8 +81,8 @@
 \contentsline {section}{\numberline {9.3}{\ignorespaces Long term behaviour: symmetric case \((\Delta )\)\relax }}{279}{}
 \contentsline {subsection}{How long does the simple symmetric random walk take to reach $1$?}{283}{}
 \contentsline {section}{\numberline {9.4}{\ignorespaces Long term behaviour: asymmetric case \((\Delta )\)\relax }}{288}{}
-\contentsline {section}{\numberline {9.5}{\ignorespaces In higher dimensions \((\star )\)\relax }}{294}{}
+\contentsline {section}{\numberline {9.5}{\ignorespaces In higher dimensions \({\color {darkred}(\mathbf {\oslash })}\)\relax }}{294}{}
 \contentsline {section}{\numberline {9.6}{\ignorespaces Exercises on Chapter \ref {c:rws} \((\Delta )\)\relax }}{298}{}
 \contentsline {chapter}{\numberline {A}{\ignorespaces Solutions to exercises (part one)\relax }}{302}{}
-\contentsline {chapter}{\numberline {B}{\ignorespaces Formula Sheet (part one)\relax }}{320}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Formula Sheet (part one)\relax }}{304}{}
 

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 9, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 16, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Solutions to exercises</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 9, 2024
+last updated: October 16, 2024
 </p>
 
 </header>
@@ -1208,11 +1208,11 @@ Example <a href="Conditioning-on-location.html#ex:N_conditioning_fold">1.4.3</a>
 Note that \(\P [Y&apos;\geq 0]=1\). For \(y&gt; 0\) we can calculate,
 </p>
 <p>
-\[\P [Y&apos;\leq y] =\P [X\leq -y\text { or }X\geq y] =\P [X\leq -y]+\P [X\geq y] =\int _{-\infty }^y f_X(x)\,dx + \int _y^\infty f_X(x)\,dx =2\int _{-\infty }^{-y} f_X(x).\]
+\[\P [Y&apos;\leq y] =\P [X\geq -y\text { or }X\leq y] =\int _{-y}^y f_X(x)\,dx =\int _{-y}^0 f_X(x)\,dx + \int _0^y f_X(x)\,dx =2\int _0^y f_X(x).\]
 </p>
 <p>
-The last equality follows by symmetry (or a \(v=-y\) substitution) because \(f_X(x)=f_X(-x)\). Differentiating, for \(y&gt;0\) we have \(f_{Y&apos;}(y)=2f_X(y)\). Hence \(Y&apos;\) is absolutely continuous
-with p.d.f.
+The last equality follows by symmetry (or a \(v=-y\) substitution) because \(f_X(x)=f_X(-x)\). Differentiating, for \(y&gt;0\) we have \(f_{Y&apos;}(y)=2f_X(y)\). Hence \(Y&apos;\) is a continuous random
+variable with p.d.f.
 </p>
 <p>
 \[f_{Y&apos;}(y)=\begin {cases} 2f_X(y) &amp; \text { for }y&gt;0 \\ 0 &amp; \text { otherwise}. \end {cases} \]
@@ -3934,7 +3934,7 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 9, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 16, 2024
 </p>
 
 </footer>
