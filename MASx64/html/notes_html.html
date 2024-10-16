@@ -21272,20 +21272,34 @@ and prior \(\Theta \sim \Normal (0,1)\).
 
 <li>
 <p>
-<span class="listmarker"><span class="textnormal">(a)</span></span> Show that the sampling distribution of the model has p.d.f.
+<span class="listmarker"><span class="textnormal">(a)</span></span> Given the single data point \(x=2\), show that the posterior \(\Theta |_{\{X=2\}}\) has the \(\Gam (3,5)\) distribution.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(i)</span></span> Show that the sampling distribution of the model has p.d.f.
 </p>
 <span class="hidden"> \(\seteqnumber{0}{3.}{7}\)</span>
 <!--
-                                                         
-                                                               18
-                                                                      for x > 0
-                                                         
-                                                         
+                                                       
+                                                             18
+                                                                    for x > 0
+                                                       
+                                                       
                                                                                                                       (3.8)
-                                                             (x+3)3
-                                              fX (x) =                                                                                                                --><a id="eq:lomax_1"></a><!--
-                                                         0           otherwise.
-                                                         
+                                                           (x+3)3
+                                            fX (x) =                                                                                                                  --><a id="eq:lomax_1"></a><!--
+                                                       0           otherwise.
+                                                       
 
 -->
 <p>
@@ -21298,18 +21312,18 @@ and prior \(\Theta \sim \Normal (0,1)\).
 
 </p>
 <p>
-<em>Hint: Use the \(\Gam (a,b)\) p.d.f.&nbsp;to help with the integral.</em>
+<em>Hint: Use that \(\int _0^\infty f_{\Gam (3,x+3)}(\theta )d\theta =1\) to help with the integral.</em>
 </p>
-
-
 </li>
 <li>
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> Find the posterior distribution \(\Theta |_{\{X=2\}}\), given the single data point \(x=2\), and obtain the resulting predictive
-distribution in similar form to <span class="textup">(<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#eq:lomax_1">3.8</a>)</span>
+<span class="listmarker"><span class="textnormal">(ii)</span></span> Find the predictive distribution in similar form to <span class="textup">(<a
+href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#eq:lomax_1">3.8</a>)</span>.
 </p>
+</li>
+</ul>
 </li>
 <li>
 
@@ -52761,8 +52775,8 @@ as required.
 <span class="listmarker"><a href="Exercises-on-Chapter-ref-c-conditioning.html#ps:not_disc_absc"><b>1.2</b></a></span> Neither.
 </p>
 <p>
-To see that \(Z\) is not absolutely continuous: recall that for any absolutely continuous random variable \(Z&apos;\) we have \(\P [Z&apos;=z]=0\) for all \(z&apos;\). However, \(\P [Z=0]=\P [Y=0]+\P
-[Y=1,X=0]=\frac 12+\frac 12(0)=\frac 12\).
+To see that \(Z\) is not continuous: recall that for any continuous random variable \(Z&apos;\) we have \(\P [Z&apos;=z]=0\) for all \(z&apos;\). However, \(\P [Z=0]=\P [Y=0]+\P [Y=1,X=0]=\frac
+12+\frac 12(0)=\frac 12\).
 </p>
 <p>
 To see that \(Z\) is not discrete: note that \(Z\) takes values across all of \(\R \), coming from the case where \(Y=1\), which has probability \(\frac 12\).
@@ -52796,7 +52810,7 @@ To see that \(Z\) is not discrete: note that \(Z\) takes values across all of \(
 _B \frac {1}{b-a}\,dx.\]
 </p>
 <p>
-Hence \(U&apos;\) is an absolutely continuous random variable with p.d.f.
+Hence \(U&apos;\) is a continuous random variable with p.d.f.
 </p>
 <p>
 \[f_{U&apos;}(u)=\begin {cases} \frac {1}{b-a} &amp; \text { for }x\in [a,b] \\ 0 &amp; \text { otherwise}. \end {cases} \]
@@ -53051,7 +53065,7 @@ A]}\,dx.\]
 </p>
 <p>
 By part 1 of Lemma <a href="Conditioning-on-location.html#l:rv_from_conditioning_pve">1.4.1</a> we have \(\P [X|_{\{X\in A\}}\in B]=1\). By Definition <a
-href="Conditioning.html#d:rv_types">1.1.1</a> \(X\) is absolutely continuous with p.d.f.&nbsp;
+href="Conditioning.html#d:rv_types">1.1.1</a> \(X\) is a continuous random variable with p.d.f.&nbsp;
 </p>
 <p>
 \[f_{X|_{\{X\in A\}}}(x)= \begin {cases} \frac {f_X(x)}{\P [X\in A]} &amp; \text { if } x\in A \\ 0 &amp; \text {otherwise.} \end {cases} \]
@@ -53387,45 +53401,76 @@ target="_blank" >2_dist_sketching_solution.ipynb</a> or <a href="2_dist_sketchin
 
 
 <p>
-<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:exp_gamma"><b>3.2</b></a></span> <em>In this solution and that of Exercise <a
-href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:uniform_pareto"><b>3.4</b></a> we keep track of the normalizing constants. If you prefer to write them as \(\frac {1}{Z}\) in the
-style of e.g.&nbsp;<span class="textup">(<a href="Notation-independent-data.html#eq:social_post_pdf">3.7</a>)</span> and use Lemma <a
-href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> to recognize the distributions, or to use \(\propto \) as introduced in Chapter <a
-href="Conjugate-priors.html#c:conjugate_priors">4</a>, that is fine.</em>
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:exp_gamma"><b>3.2</b></a></span>
 </p>
 <ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="listmarker"><span class="textnormal">(a)</span></span> From <span class="textup">(<a
+<span class="listmarker"><span class="textnormal">(a)</span></span> From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> the posterior
+distribution has p.d.f.
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
+
+
+<!--
+                                                                                                    1
+                                                                                     fΘ|{X=2} =       f      (2)fGamma(2,3) (θ)
+                                                                                                    Z Exp(θ)
+                                                                                                    1 32
+                                                                                                  =        θe−2θ θe−3θ
+                                                                                                    Z Γ(2)
+                                                                                                    1
+                                                                                                  = 0 θ2 e−5θ
+                                                                                                    Z
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=2\}}} &amp;=\frac {1}{Z} f_{\Exp (\theta )}(2)f_{\Gam (2,3)}(\theta ) \\ &amp;=\frac {1}{Z}\frac {3^2}{\Gamma (2)} \theta e^{-2\theta }\theta e^{-3\theta } \\
+&amp;=\frac {1}{Z&apos;}\theta ^2 e^{-5\theta }
+\end{align*}
+for \(\theta &gt;0\) and zero otherwise, where \(\frac {1}{Z&apos;}=\frac {1}{Z}\frac {3^2}{\Gamma (2)}\). We recognize \(\Theta |_{\{X=2\}}\sim \Gam (3,5)\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> From <span class="textup">(<a
 href="Bayesian-models-continuous-data.html#eq:bayes_continuous_sampling_pdf">3.2</a>)</span> the sampling distribution has p.d.f.&nbsp;
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
 
 
 <!--
+                                                                                            Z ∞
+                                                                                fX (x) =      fExp(θ) (x)fGamma(2,3) (θ) dθ
+                                                                                             0
+                                                                                               Z ∞
+                                                                                          32
+                                                                                       =            θe−θx θe−3θ dθ
+                                                                                         Γ(2) 0
                                                                                           Z ∞
-                                                                             fX (x) =        fExp(θ) (x)fGamma(2,3) (θ) dθ
-                                                                                           0
-                                                                                              Z ∞
-                                                                                         32
-                                                                                      =            θe−θx θe−3θ dθ
-                                                                                        Γ(2) 0
-                                                                                         Z ∞
-                                                                                      =9       θ2 e−θ(x+3) dθ
-                                                                                           0
-                                                                                                    Z ∞
-                                                                                             2           (x + 3)3 2 −θ(x+3)
-                                                                                      =9                         θ e         dθ
-                                                                                         (x + 3)3 0         2
-                                                                                                    Z ∞
-                                                                                             2
-                                                                                      =9                fGamma(3,x+3) (θ) dθ
-                                                                                         (x + 3)3 0
-                                                                                           18
-                                                                                      =
-                                                                                        (x + 3)3
+                                                                                       =9       θ2 e−θ(x+3) dθ
+                                                                                            0
+                                                                                                     Z ∞
+                                                                                              2           (x + 3)3 2 −θ(x+3)
+                                                                                       =9                         θ e         dθ
+                                                                                          (x + 3)3 0         2
+                                                                                                     Z ∞
+                                                                                              2
+                                                                                       =9                fGamma(3,x+3) (θ) dθ
+                                                                                          (x + 3)3 0
+                                                                                            18
+                                                                                       =
+                                                                                         (x + 3)3
 
 
 -->
@@ -53441,64 +53486,16 @@ f_{X}(x) &amp;=\int _0^\infty f_{\Exp (\theta )}(x)f_{\Gam (2,3)}(\theta )\,d\th
 \end{align*}
 for \(x&gt;0\) and zero otherwise.
 </p>
-
-
-</li>
-<li>
-
-
 <p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> From Theorem <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> the posterior
-distribution has p.d.f.
+From <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:bayes_continuous_predictive_pdf">3.5</a>)</span> and part (a), the corresponding predictive distribution has p.d.f.
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
 
 
 <!--
-                                                                                                  1
-                                                                     fΘ|{X=2} = R ∞                                 fExp(θ) (2)fGamma(2,3) (θ)
-                                                                                  0   fExp(t) (2)fGamma(2,3) (t) dt
-                                                                               32 /Γ(2)      1
-                                                                             = 2        R∞           θe−2θ θe−3θ
-                                                                                            −2t
-                                                                               3 /Γ(2) 0 te te−3t dt
-                                                                                     1
-                                                                             = R ∞ 2 −5t θ2 e−5θ
-                                                                                0 t e    dt
-                                                                                          1           53 2 −5θ
-                                                                             = R ∞ 53       2 −5t dt Γ(3)
-                                                                                                          θ e
-                                                                                  0   Γ(3) t e
-                                                                                               1          53 2 −5θ
-                                                                             = R∞                             θ e
-                                                                                  0   fGamma(3,5) (t) dt Γ(3)
-                                                                                  53 2 −5θ
-                                                                             =        θ e
-                                                                                 Γ(3)
-
-
--->
-
-
-<p>
-
-
-\begin{align*}
-f_{\Theta |_{\{X=2\}}} &amp;=\frac {1}{\int _0^\infty f_{\Exp (t)}(2)f_{\Gam (2,3)}(t)\,dt} f_{\Exp (\theta )}(2)f_{\Gam (2,3)}(\theta ) \\ &amp;=\frac {3^2/\Gamma
-(2)}{3^2/\Gamma (2)}\frac {1}{\int _0^\infty te^{-2t}te^{-3t}\,dt} \theta e^{-2\theta }\theta e^{-3\theta } \\ &amp;=\frac {1}{\int _0^\infty t^2e^{-5t}\,dt}\theta ^2 e^{-5\theta
-} \\ &amp;=\frac {1}{\int _0^\infty \frac {5^3}{\Gamma (3)}t^2e^{-5t}\,dt} \frac {5^3}{\Gamma (3)} \theta ^2 e^{-5\theta } \\ &amp;=\frac {1}{\int _0^\infty f_{\Gam
-(3,5)}(t)\,dt} \frac {5^3}{\Gamma (3)} \theta ^2 e^{-5\theta } \\ &amp;=\frac {5^3}{\Gamma (3)} \theta ^2 e^{-5\theta }
-\end{align*}
-for \(\theta &gt;0\) and zero otherwise. We recognize \(\Theta |_{\{X=2\}}\sim \Gam (3,5)\). From <span class="textup">(<a
-href="Bayesian-models-continuous-data.html#eq:bayes_continuous_predictive_pdf">3.5</a>)</span> the corresponding predictive distribution has p.d.f.
-</p>
-<span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
-
-
-<!--
-                                                                                          Z ∞
-                                                                            fX 0 (x) =        fExp(θ) (x)fGamma(3,5) (θ) dθ
-                                                                                           0
+                                                                                            Z ∞
+                                                                               fX 0 (x) =     fExp(θ) (x)fGamma(3,5) (θ) dθ
+                                                                                            0
                                                                                                Z ∞
                                                                                           53
                                                                                       =             θe−θx θ2 e−5θ dθ
@@ -53507,8 +53504,9 @@ href="Bayesian-models-continuous-data.html#eq:bayes_continuous_predictive_pdf">3
                                                                                             Z
                                                                                       =           θ e         dθ
                                                                                          2 0
-                                                                                                       Z ∞
+                                                                                                         ∞
                                                                                         53 Γ(4)            (x + 5)4 3 −θ(x+5)
+                                                                                                       Z
                                                                                       =                              θ e        dθ
                                                                                          2 (x + 5)4 0         Γ(4)
                                                                                                        Z ∞
@@ -53552,26 +53550,15 @@ Let us write \(z=\sum _1^n x_i\). From Theorem <a href="Bayesian-models-continuo
 
 
 <!--
-                                                                                                 1
-                                                                    fΘ|{X=x} (θ) = R ∞                         fM (x)fΓ(2,3) (θ)
-                                                                                      0   fMt (x)fΓ(2,3) (t) dt θ
-                                                                                   32 /Γ(2)       1
-                                                                                 = 2        R∞            θn e−θz θe−3θ
-                                                                                                 −tz
-                                                                                   3 /Γ(2) 0 t e te−3t dt
-                                                                                               n
-
-                                                                                            1
-                                                                                 = R ∞ n+1 −t(3+z) θn+1 e−θ(3+z)
-                                                                                    0 t     e     dt
-                                                                                                    1               (3 + z)n+2 n+1 −θ(3+z)
-                                                                                 = R ∞ (3+z)n+2                               θ   e
-                                                                                      0    Γ(n+2)   tn+1 e−t(3+z) dt Γ(n + 2)
-                                                                                                    1
-                                                                                 = R∞                              fGamma(n+2,3+z) (θ)
-                                                                                      0   fGamma(n+2,3+z) (t) dt
-                                                                                 = fGamma(n+2,3+z) (θ).
-
+                                                                                                        1
+                                                                                      fΘ|{X=x} (θ) =      fM (x)fΓ(2,3) (θ)
+                                                                                                        Z θ
+                                                                                                        1 32 n −θz −3θ
+                                                                                                      =        θ e θe
+                                                                                                        Z Γ(2)
+                                                                                                        1
+                                                                                                      = 0 θn+1 e−θ(3+z)
+                                                                                                        Z
 
 
 -->
@@ -53581,12 +53568,10 @@ Let us write \(z=\sum _1^n x_i\). From Theorem <a href="Bayesian-models-continuo
 
 
 \begin{align*}
-f_{\Theta |_{\{X=x\}}}(\theta ) &amp;= \frac {1}{\int _0^\infty f_{M_t}(x)f_{\Gamma (2,3)}(t)\,dt} f_{M_\theta }(x)f_{\Gamma (2,3)}(\theta ) \\ &amp;= \frac {3^2/\Gamma
-(2)}{3^2/\Gamma (2)}\frac {1}{\int _0^\infty t^n e^{-tz} t e^{-3t}\,dt} \theta ^n e^{-\theta z} \theta e^{-3\theta } \\ &amp;= \frac {1}{\int _0^\infty t^{n+1} e^{-t(3+z)} \,dt}
-\theta ^{n+1} e^{-\theta (3+z)} \\ &amp;= \frac {1}{\int _0^\infty \frac {(3+z)^{n+2}}{\Gamma (n+2)} t^{n+1} e^{-t(3+z)} \,dt} \frac {(3+z)^{n+2}}{\Gamma (n+2)}\theta ^{n+1}
-e^{-\theta (3+z)} \\ &amp;= \frac {1}{\int _0^\infty f_{\Gam (n+2,3+z)}(t) \,dt} f_{\Gam (n+2,3+z)}(\theta ) \\ &amp;= f_{\Gam (n+2,3+z)}(\theta ).
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp;= \frac {1}{Z} f_{M_\theta }(x)f_{\Gamma (2,3)}(\theta ) \\ &amp;= \frac {1}{Z}\frac {3^2}{\Gamma (2)} \theta ^n e^{-\theta z} \theta
+e^{-3\theta } \\ &amp;= \frac {1}{Z&apos;} \theta ^{n+1} e^{-\theta (3+z)}
 \end{align*}
-for \(\theta &gt;0\) and zero otherwise.
+for \(\theta &gt;0\) and zero otherwise. We recognize the \(\Gam (n+2,3+z)\) distribution.
 </p>
 </li>
 </ul>
@@ -53624,9 +53609,14 @@ for \(\theta &gt;0\) and zero otherwise.
 
 
 <p>
-<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:uniform_pareto"><b>3.4</b></a></span> In this question we need to be very careful with the limits
-of integrals. The \(\Unif ([0,\theta ])\) p.d.f.&nbsp;is zero outside of \([0,\theta ]\) and the \(\Pareto (a,b)\) p.d.f.&nbsp;is zero outside of \((a,\infty )\). This matters particularly for the integrals in
-part (b).
+<span class="listmarker"><a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:uniform_pareto"><b>3.4</b></a></span> <em>In this solution we will keep track of the normalizing
+constants. If you prefer to write them as \(\frac {1}{Z}\) in the style of e.g.&nbsp;<span class="textup">(<a href="Notation-independent-data.html#eq:social_post_pdf">3.7</a>)</span> and use
+Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> to recognize the distributions, or to use \(\propto \) as introduced in Chapter <a
+href="Conjugate-priors.html#c:conjugate_priors">4</a>, that is fine – but it is difficult to make that approach work for the predictive distribution in part (b)!</em>
+</p>
+<p>
+In this question we need to be very careful with the limits of integrals. The \(\Unif ([0,\theta ])\) p.d.f.&nbsp;is zero outside of \([0,\theta ]\) and the \(\Pareto (a,b)\) p.d.f.&nbsp;is zero outside of
+\((b,\infty )\). This matters particularly for the integrals in part (b).
 </p>
 <ul class="enumerate" style="list-style-type:none">
 
@@ -53725,46 +53715,48 @@ From <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:baye
 
 <!--
                                                                                                    Z ∞
-                                                                                      fX 0 (x) =       fUniform([0,θ]) (x)fPareto(5,4) (θ) dθ
-                                                                                                 5
-                                                                                                  ∞ 1 54 4θ−5 dθ for x > 5
-                                                                                                  R
-                                                                                                     x θ
-                                                                                               = R
+                                                                                      fX 0 (x) =               fUniform([0,θ]) (x)fPareto(5,4) (θ) dθ
+                                                                                                       5
+                                                                                                   
+                                                                                                    ∞ 1 54 4θ−5 dθ   for x > 5
+                                                                                                   R
+                                                                                                    x θ
+                                                                                               =
                                                                                                   ∞ 1 54 4θ−5 dθ for x ∈ [0, 5]
-                                                                                                 
-                                                                                                     5 θ
+                                                                                                 R
+                                                                                                    5 θ
                                                                                                  
                                                                                                   ∞ 1x≤θ 54 4θ−6 dθ for x > 5
-                                                                                                  R
-                                                                                                     x
+                                                                                                 R
+                                                                                                    x
                                                                                                = R
-                                                                                                  ∞ 54 4θ−6 dθ              for x ∈ [0, 5]
-                                                                                                 
-                                                                                                     5
+                                                                                                                           for x ∈ [0, 5]
+                                                                                                  ∞ 4 −6
+                                                                                                    5 5 4θ     dθ
+                                                                                                 
                                                                                                  
                                                                                                  54 4[ θ−5 ]∞ for x > 5
                                                                                                  
-                                                                                                          −5 x
+                                                                                                         −5 x
                                                                                                =
                                                                                                  54 4[ θ−5 ]∞ for x ∈ [0, 5]
                                                                                                  
-                                                                                                          −5 5
+                                                                                                         −5 5
                                                                                                  
                                                                                                  54 4 1 x−5 for x > 5
                                                                                                  
-                                                                                                        5
+                                                                                                       5
                                                                                                =
                                                                                                  54 4 1 5−5 for x ∈ [0, 5]
                                                                                                  
-                                                                                                        5
+                                                                                                       5
                                                                                                  
                                                                                                  53 4x−5 for x > 5
                                                                                                  
                                                                                                =
-                                                                                                  42          for x ∈ [0, 5]
+                                                                                                  42         for x ∈ [0, 5]
                                                                                                  
-                                                                                                    5
+                                                                                                   5
 
 
 -->
@@ -53797,13 +53789,13 @@ A]&gt;0]\), we will use Lemma <a href="Conditioning-correlations.html#l:cond_cor
 
 
 <!--
-                                                                                        P[X ∈ B, Θ ∈ A]
-                                                                                                                       Z Z
-                                                                                                                 1
-                                                                       P[X|{Θ∈A} ∈ B] =                  =                 fM (x)fΘ (θ) dθ dx
-                                                                                           P[Θ ∈ A]         P[Θ ∈ A] B A θ
-                                                                                        Z Z
-                                                                                      =      fMθ (x)fΘ|{Θ∈A} (θ) dθ dx.
+                                                                                           P[X ∈ B, Θ ∈ A]
+                                                                                                                          Z Z
+                                                                                                                    1
+                                                                       P[X|{Θ∈A} ∈ B] =                     =                 fM (x)fΘ (θ) dθ dx
+                                                                                              P[Θ ∈ A]         P[Θ ∈ A] B A θ
+                                                                                           Z Z
+                                                                                         =      fMθ (x)fΘ|{Θ∈A} (θ) dθ dx.
                                                                                               B    A
 
 
@@ -53818,7 +53810,7 @@ A]&gt;0]\), we will use Lemma <a href="Conditioning-correlations.html#l:cond_cor
 \P [X|_{\{\Theta \in A\}}\in B] &amp;=\frac {\P [X\in B, \Theta \in A]}{\P [\Theta \in A]} =\frac {1}{\P [\Theta \in A]}\int _B\int _A f_{M_\theta }(x)f_\Theta (\theta )\,d\theta
 \,dx\\ &amp;=\int _B\int _A f_{M_\theta }(x)f_{\Theta |_{\{\Theta \in A\}}}(\theta )\,d\theta \,dx.
 \end{align*}
-It follows from Definition <a href="Conditioning.html#d:rv_types">1.1.1</a> that \(X|_{\{\Theta \in A\}}\) is absolutely continuous with p.d.f.
+It follows from Definition <a href="Conditioning.html#d:rv_types">1.1.1</a> that \(X|_{\{\Theta \in A\}}\) is a continuous random variable with p.d.f.
 </p>
 <p>
 \[f_{X|_{\{\Theta \in A\}}}(x)=\int _A f_{M_\theta }(x)f_{\Theta |_{\{\Theta \in A\}}}(\theta )\,d\theta .\]
@@ -53858,10 +53850,10 @@ Here we used that \(f_{M_\theta }\) is a p.d.f.&nbsp;which integrates to \(1\), 
 
 
 <!--
-                                                                                                       Z                                        Z
-                                                                               1                  1                                  Z
-                                                             fΘ|{X 0 =x} (θ) = 0 fMθ0 (x)fΘ (θ) = 0        fMθ (x − y)κ(y)fΘ (θ) dy = 0               fΘ|{X=x−y} (θ)κ(y) dy
-                                                                              Z                  Z       R                           Z            R
+                                                                                                           Z                                            Z
+                                                                               1                  1                                    Z
+                                                             fΘ|{X 0 =x} (θ) = 0 fMθ0 (x)fΘ (θ) = 0          fMθ (x − y)κ(y)fΘ (θ) dy = 0                   fΘ|{X=x−y} (θ)κ(y) dy
+                                                                              Z                  Z         R                           Z                R
 
 
 
