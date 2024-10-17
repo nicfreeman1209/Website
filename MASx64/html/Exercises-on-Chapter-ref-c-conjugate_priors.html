@@ -911,8 +911,8 @@ Home</a>
 
 <li>
 <p>
-<span class="listmarker"><span class="textnormal">(a)</span></span> \(\star \) Consider the Bayesian model \((X,\Theta )\) with model family \(M_\theta \sim \Normal (\theta ,2^2)^{\otimes
-3}\) and prior \(\Theta \sim \Normal (0,1)\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> \(\color {blue}\star \) Consider the Bayesian model \((X,\Theta )\) with model family \(M_\theta \sim \Normal (\theta
+,2^2)^{\otimes 3}\) and prior \(\Theta \sim \Normal (0,1)\).
 </p>
 <ul class="enumerate" style="list-style-type:none">
 
@@ -951,9 +951,9 @@ the code given to sketch the sampling and predictive distributions from (a), on 
 
 
 <p>
-<span class="listmarker"><b>4.2</b></span> <a id="ps:conj_beta_geom"></a> \(\star \,\star \) Let \(\alpha ,\beta &gt;0\). Let \((X,\Theta )\) be a discrete Bayesian model with model family
-\(M_\theta \sim \Geo (\theta )^{\otimes n}\) and parameter \(\theta \in [0,1]\). Suppose that the prior is \(\Theta \sim \Beta (\alpha ,\beta )\) and let \(x=(x_1,\ldots ,x_n)\) where
-\(x_i\in \{0,1,\ldots ,\}\). Show that the posterior is
+<span class="listmarker"><b>4.2</b></span> <a id="ps:conj_beta_geom"></a> \(\color {blue}\star \,\star \) Let \(\alpha ,\beta &gt;0\). Let \((X,\Theta )\) be a discrete Bayesian model with
+model family \(M_\theta \sim \Geo (\theta )^{\otimes n}\) and parameter \(\theta \in [0,1]\). Suppose that the prior is \(\Theta \sim \Beta (\alpha ,\beta )\) and let \(x=(x_1,\ldots ,x_n)\)
+where \(x_i\in \{0,1,\ldots ,\}\). Show that the posterior is
 </p>
 <p>
 \[\Theta |_{\{X=x\}}\sim \Beta \l (\alpha +n,\, \beta +\sum _{i=1}^n x_i\r ).\]
@@ -963,9 +963,9 @@ the code given to sketch the sampling and predictive distributions from (a), on 
 
 
 <p>
-<span class="listmarker"><b>4.3</b></span> <a id="ps:conj_gamma_poisson"></a> \(\star \,\star \) Let \(\alpha ,\beta &gt;0\). Let \((X,\Theta )\) be a discrete Bayesian model with model
-family \(M_\theta \sim \Poisson (\theta )^{\otimes n}\) and parameter \(\theta \in (0,\infty )\). Suppose that the prior is \(\Theta \sim \Gam (\alpha ,\beta )\) and let \(x=(x_1,\ldots
-,x_n)\) where \(x_i\in \{0,1,\ldots ,\}\). Show that the posterior is
+<span class="listmarker"><b>4.3</b></span> <a id="ps:conj_gamma_poisson"></a> \(\color {blue}\star \,\star \) Let \(\alpha ,\beta &gt;0\). Let \((X,\Theta )\) be a discrete Bayesian model
+with model family \(M_\theta \sim \Poisson (\theta )^{\otimes n}\) and parameter \(\theta \in (0,\infty )\). Suppose that the prior is \(\Theta \sim \Gam (\alpha ,\beta )\) and let
+\(x=(x_1,\ldots ,x_n)\) where \(x_i\in \{0,1,\ldots ,\}\). Show that the posterior is
 </p>
 <p>
 \[\Theta |_{\{X=x\}}\sim \Gam \l (\alpha +\sum _{i=1}^n x_i,\, \beta +n\r ).\]
@@ -975,9 +975,9 @@ family \(M_\theta \sim \Poisson (\theta )^{\otimes n}\) and parameter \(\theta \
 
 
 <p>
-<span class="listmarker"><b>4.4</b></span> <a id="ps:conj_gamma_normal_prec"></a> \(\star \,\star \) Let \(\mu \in \R \) and \(\alpha ,\beta &gt;0\). Let \((X,T)\) be a discrete Bayesian
-model with model family \(M_\theta \sim \Normal (\mu ,\frac {1}{\tau })^{\otimes n}\) and parameter \(\tau \in (0,\infty )\). Suppose that the prior is \(T\sim \Gam (\alpha ,\beta )\) and let
-\(x=(x_1,\ldots ,x_n)\) where \(x_i\in (0,\infty )\). Show that the posterior is
+<span class="listmarker"><b>4.4</b></span> <a id="ps:conj_gamma_normal_prec"></a> \(\color {blue}\star \,\star \) Let \(\mu \in \R \) and \(\alpha ,\beta &gt;0\). Let \((X,T)\) be a
+discrete Bayesian model with model family \(M_\theta \sim \Normal (\mu ,\frac {1}{\tau })^{\otimes n}\) and parameter \(\tau \in (0,\infty )\). Suppose that the prior is \(T\sim \Gam (\alpha
+,\beta )\) and let \(x=(x_1,\ldots ,x_n)\) where \(x_i\in (0,\infty )\). Show that the posterior is
 </p>
 <p>
 \[T|_{\{X=x\}}\sim \Gam \l (\alpha +\frac {n}{2},\, \beta +\frac 12\sum _{i=1}^n(x_i-\mu )^2\r ).\]
@@ -987,7 +987,7 @@ model with model family \(M_\theta \sim \Normal (\mu ,\frac {1}{\tau })^{\otimes
 
 
 <p>
-<span class="listmarker"><b>4.5</b></span> <a id="ps:conj_update_with_data"></a> \(\star \) Using the model from Exercise <a
+<span class="listmarker"><b>4.5</b></span> <a id="ps:conj_update_with_data"></a> \(\color {blue}\star \) Using the model from Exercise <a
 href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_gamma_normal_prec"><b>4.4</b></a>, with \(\mu =0\) and prior \(\Gam (2,2)\), use a computer package of your choice to produce a
 graph of the prior and posterior density functions, given the data
 </p>
@@ -1016,8 +1016,8 @@ This data satisfies \(\sum _1^{10} x_i= 133.19\).
 
 <li>
 <p>
-<span class="listmarker"><span class="textnormal">(a)</span></span> \(\star \) Use Lemma <a href="Two-more-examples-conjugate-pairs.html#l:conj_normal_normal">4.2.2</a> to find the
-posterior distribution \(\Theta |_{\{X=x\}}\).
+<span class="listmarker"><span class="textnormal">(a)</span></span> \(\color {blue}\star \) Use Lemma <a href="Two-more-examples-conjugate-pairs.html#l:conj_normal_normal">4.2.2</a>
+to find the posterior distribution \(\Theta |_{\{X=x\}}\).
 </p>
 
 
@@ -1026,7 +1026,7 @@ posterior distribution \(\Theta |_{\{X=x\}}\).
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> \(\star \) Using a computer package of your choice, implement the Bayesian update given by Lemma <a
+<span class="listmarker"><span class="textnormal">(b)</span></span> \(\color {blue}\star \) Using a computer package of your choice, implement the Bayesian update given by Lemma <a
 href="Two-more-examples-conjugate-pairs.html#l:conj_normal_normal">4.2.2</a> with \(n=1\), and use it to perform \(10\) Bayesian update steps, one for each \(x_i\), on the model \((X&apos;,\Theta
 )\) with model family \(M_{\theta }\sim \Normal (\theta ,2)\). Write down the resulting posterior distribution.
 </p>
@@ -1037,8 +1037,8 @@ href="Two-more-examples-conjugate-pairs.html#l:conj_normal_normal">4.2.2</a> wit
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(c)</span></span> \(\star \,\star \) What do you notice? Investigate this as you vary the data and prior parameters. Would the same thing happen
-with the other families of conjugate pairs in this chapter?
+<span class="listmarker"><span class="textnormal">(c)</span></span> \(\color {blue}\star \,\star \) What do you notice? Investigate this as you vary the data and prior parameters. Would the
+same thing happen with the other families of conjugate pairs in this chapter?
 </p>
 </li>
 </ul>
@@ -1047,9 +1047,9 @@ with the other families of conjugate pairs in this chapter?
 
 
 <p>
-<span class="listmarker"><b>4.7</b></span> <a id="ps:conj_gamma_weibull"></a> \(\star \,\star \) Let \(a,b,\beta &gt;0\). Let \((X,\Theta )\) be a discrete Bayesian model with model family
-\(M_\theta \sim \Weibull (\theta ,\beta )^{\otimes n}\) and parameter \(\theta \in (0,\infty )\). Suppose that the prior is \(\Theta \sim \IGam (a,b)\) and let \(x=(x_1,\ldots ,x_n)\) where
-\(x_i\in \{0,1,\ldots ,\}\). Show that the posterior is
+<span class="listmarker"><b>4.7</b></span> <a id="ps:conj_gamma_weibull"></a> \(\color {blue}\star \,\star \) Let \(a,b,\beta &gt;0\). Let \((X,\Theta )\) be a discrete Bayesian model with
+model family \(M_\theta \sim \Weibull (\theta ,\beta )^{\otimes n}\) and parameter \(\theta \in (0,\infty )\). Suppose that the prior is \(\Theta \sim \IGam (a,b)\) and let \(x=(x_1,\ldots
+,x_n)\) where \(x_i\in \{0,1,\ldots ,\}\). Show that the posterior is
 </p>
 <p>
 \[\Theta |_{\{X=x\}}\sim \IGam \l (a+n,\, b+\sum _{i=1}^nx_i^\beta \r ).\]
@@ -1059,10 +1059,10 @@ with the other families of conjugate pairs in this chapter?
 
 
 <p>
-<span class="listmarker"><b>4.8</b></span> <a id="ps:conj_sheet_match"></a> \(\star \) Match each of Lemmas <a href="Conjugate-priors.html#l:conj_bernoulli_beta">4.1.5</a>, <a
-href="Conjugate-priors.html#l:conj_binomial_beta">4.1.6</a>, <a href="Two-more-examples-conjugate-pairs.html#l:conj_gamma_exp">4.2.1</a>, <a
-href="The-normal-distribution-with-unknown-mean-variance.html#l:conj_normal_both_params">4.5.2</a> and Exercises <a
-href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_beta_geom"><b>4.2</b></a>, <a
+<span class="listmarker"><b>4.8</b></span> <a id="ps:conj_sheet_match"></a> \(\color {blue}\star \) Match each of Lemmas <a
+href="Conjugate-priors.html#l:conj_bernoulli_beta">4.1.5</a>, <a href="Conjugate-priors.html#l:conj_binomial_beta">4.1.6</a>, <a
+href="Two-more-examples-conjugate-pairs.html#l:conj_gamma_exp">4.2.1</a>, <a href="The-normal-distribution-with-unknown-mean-variance.html#l:conj_normal_both_params">4.5.2</a> and
+Exercises <a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_beta_geom"><b>4.2</b></a>, <a
 href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_gamma_poisson"><b>4.3</b></a>, <a
 href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_gamma_normal_prec"><b>4.4</b></a>, <a
 href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:conj_gamma_weibull"><b>4.7</b></a> to their corresponding rows on the reference sheet of conjugate pairs given in Appendix <a
@@ -1073,8 +1073,8 @@ href="Reference-Sheets.html#a:reference_sheets">A</a>
 
 
 <p>
-<span class="listmarker"><b>4.9</b></span> <a id="ps:propto"></a> \(\star \) Recall the relation \(\propto \) from Definition <a href="Conjugate-priors.html#d:propto">4.1.1</a>. Let \(f,g,h\)
-be functions with the same domain. Explain briefly why (a) \(f\propto f\); (b) if \(f\propto g\) then \(g\propto f\); (c) if \(f\propto g\) and \(g\propto h\) then \(f\propto h\).
+<span class="listmarker"><b>4.9</b></span> <a id="ps:propto"></a> \(\color {blue}\star \) Recall the relation \(\propto \) from Definition <a href="Conjugate-priors.html#d:propto">4.1.1</a>.
+Let \(f,g,h\) be functions with the same domain. Explain briefly why (a) \(f\propto f\); (b) if \(f\propto g\) then \(g\propto f\); (c) if \(f\propto g\) and \(g\propto h\) then \(f\propto h\).
 </p>
 <p>
 <i>\(\offsyl \) Remark: These three properties are the definition of an equivalence relation.</i>
