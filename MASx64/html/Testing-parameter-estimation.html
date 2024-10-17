@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 16, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 17, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Testing and parameter estimation</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 16, 2024
+last updated: October 17, 2024
 </p>
 
 </header>
@@ -932,8 +932,8 @@ Hypothesis testing is surprisingly simple within the Bayesian framework. We firs
 <a id="autoid-141"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.1</span></span> <a id="autoid-142" ></a >Let \(A\) and \(B\) be events such that \(\P [A\cup B]=1\) and \(A\cap
-B=\emptyset \). The <em>odds ratio</em> of \(A\) against \(B\) is
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.1</span></span> <a id="autoid-142" ></a ><a id="d:odds_ratios"></a> Let \(A\) and \(B\) be events such that \(\P
+[A\cup B]=1\) and \(A\cap B=\emptyset \). The <em>odds ratio</em> of \(A\) against \(B\) is
 </p>
 
 <p>
@@ -1002,8 +1002,24 @@ defined for proper prior and posterior distributions, or else we cannot make sen
 It is often helpful to get a feel for how much the data has influenced the result of the test. For these purposes we also define the <em>Bayes factor</em>
 </p>
 
+<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+
+<!--
+
+                                                   posterior odds
+                                              B=                  .                                              (7.1)                                                 --><a id="eq:bayes_factor"></a><!--
+                                                     prior odds
+
+-->
+
 <p>
-\[B=\frac {\text {posterior odds}}{\text {prior odds}}.\]
+
+
+\begin{equation}
+\label {eq:bayes_factor} B=\frac {\text {posterior odds}}{\text {prior odds}}.
+\end{equation}
+
+
 </p>
 
 <p>
@@ -1132,7 +1148,7 @@ speed to cars. According to our posterior, a car travelling at exactly 30mph wil
 The speed camera on average overestimates the speed when \(\mu &gt;30\), and underestimates when \(\mu &lt;30\). The probability that \(\mu \) is exactly \(30\) is zero, because our posterior \(\NGam \) is
 a continuous distribution, so we will simply ignore that possibility. We don’t care about the location of \(\tau \) here so we simply allow it to take any value \(\tau \in (0,\infty )\). This gives us hypothesis
 </p>
-<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
 
 
 
@@ -1157,7 +1173,7 @@ H_0&amp;:\text { that }(\mu ,\tau )\sw \Pi _0=(30,\infty )\times (0,\infty ), \\
 We have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
 
 <!--
                                                                                              Z ∞Z ∞
@@ -1190,12 +1206,12 @@ distribution (this symmetry is visible in the sketch in Example <a href="The-nor
 {1}{10^2},1,\frac 15)\in \Pi _1]=\P [\NGam (30,\frac {1}{10^2},1,\frac 15)\in \Pi _0]=\frac 12\). Hence the Bayes factor for this hypothesis test is
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
 
 <!--
 
                                                                                                             4.56
-                                                                                                      B=         = 4.56.                                                                                           (7.1)
+                                                                                                      B=         = 4.56.                                                                                           (7.2)
                                                                                                             1.00
 
 -->
@@ -1239,7 +1255,7 @@ Note that we have used a small amount of Bayesian shorthand in this example, by 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 16, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 17, 2024
 </p>
 
 </footer>
