@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 17, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 24, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Two more examples of conjugate pairs</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 17, 2024
+last updated: October 24, 2024
 </p>
 
 </header>
@@ -960,8 +960,7 @@ f_{\Lambda |_{\{X=x\}}}(\lambda ) &amp;\propto f_{\Exp (\lambda )^{\otimes n}}(x
 )\l (\frac {\beta ^\alpha }{\Gamma (\alpha )}\lambda ^{\alpha -1}e^{-\beta \lambda }\r ) \\ &amp;\propto \lambda ^n e^{-\lambda \sum _1^n x_i}\lambda ^{\alpha -1}e^{-\beta
 \lambda }. \\ &amp;\propto \lambda ^{\alpha +n-1}e^{-\lambda (\beta +\sum _1^n x_i)},
 \end{align*}
-Note that, if we were to write the normalizing constants in, between the second and third lines the normalizing constant would change to absorb the term \(\frac {\beta ^\alpha }{\Gamma (\alpha )}\). By
-Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize this p.d.f.&nbsp;as \(\Theta |_{\{X=x\}}\sim \Gam (\alpha +n,\beta +\sum _1^n x_i)\).
+By Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize this p.d.f.&nbsp;as \(\Theta |_{\{X=x\}}\sim \Gam (\alpha +n,\beta +\sum _1^n x_i)\).
 &#x2003;&#x2003;&#x220E;
 </p>
 
@@ -991,7 +990,7 @@ unknown parameters. For now we view \(\sigma \) as fixed, so the mean \(\mu \) i
                                                   1 Pn         u
                                                         1 xi + s2       1
                                    Θ|{X=x} ∼ N    σ2
-                                                     n       1    , n     1        .                                                   (4.1)                            --><a id="eq:conj_normal_normal"></a><!--
+                                                     n       1    , n     1        .                                               (4.1)                       --><a id="eq:conj_normal_normal"></a><!--
                                                      σ 2 + s2       σ 2 + s2
 
 -->
@@ -1038,7 +1037,7 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
                                                                                                         i=1
                                                                                                                2π                   2π
                                                                                                                           n
-                                                                                                                                                                    !
+                                                                                                                                                          !
                                                                                                              1 X                1
                                                                                                     ∝ exp − 2       (xi − θ)2 − 2 (θ − u)2
                                                                                                             2σ                 2s
@@ -1069,14 +1068,14 @@ where
 
 <!--
 
-                                                                                               A                               B                                    C
+                                                                                               A                               B                          C
                                                                                        z      }|                 z          }|      !{ z        }|      !{
                                                                                                        {                  n                   n
                                                                                              n     1                   1 X         u       1 X 2      u2
                                                                      Q(θ) = θ2                 2
                                                                                                  + 2        −2θ               xi + 2 +            xi + 2 .
                                                                                             2σ    2s                  2σ 2        2s      2σ 2        2s
-                                                                                                                         i=1                                  i=1
+                                                                                                                         i=1                        i=1
 
 -->
 
@@ -1100,16 +1099,19 @@ href="Reference-Sheets.html#a:reference_sheets">A</a>), we have that
 
 
 <!--
-                                                                                                                                              2 !
-                                                                                                                          B
-                                                                                                fΘ|{X=x} (θ) ∝ exp −A θ −
-                                                                                                                          A
-                                                                                                                                                      !
-                                                                                                                                   1
-                                                                                                              ∝ exp −                           B 2
-                                                                                                                                                 
-                                                                                                                                   1     θ− A             .
-                                                                                                                               2( 2A )
+                                                                                                                                     2             !
+                                                                                                                                               B2
+                                                                                                                           
+                                                                                                                       B
+                                                                                             fΘ|{X=x} (θ) ∝ exp −A θ −                  +C −
+                                                                                                                       A                       A
+                                                                                                                                           !
+                                                                                                                           1
+                                                                                                            ∝ exp −
+                                                                                                                                        2
+                                                                                                                             1     θ− B
+                                                                                                                                      A      .
+                                                                                                                         2( 2A )
 
 
 -->
@@ -1120,8 +1122,8 @@ href="Reference-Sheets.html#a:reference_sheets">A</a>), we have that
 
 
 \begin{align*}
-f_{\Theta |_{\{X=x\}}}(\theta ) &amp;\propto \exp \l (-A\l (\theta -\frac {B}{A}\r )^2\r ) \\ &amp;\propto \exp \l (-\frac {1}{2(\tfrac {1}{2A})}\l (\theta -\tfrac {B}{A}\r )^2\r
-).
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp;\propto \exp \l (-A\l (\theta -\frac {B}{A}\r )^2 + C - \frac {B^2}{A}\r ) \\ &amp;\propto \exp \l (-\frac {1}{2(\tfrac {1}{2A})}\l (\theta
+-\tfrac {B}{A}\r )^2\r ).
 \end{align*}
 By Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize this p.d.f.&nbsp;as \(\Theta |_{\{X=x\}}\sim \Normal \l (\frac {B}{A},\frac {1}{2A}\r
 )\). We have
@@ -1202,7 +1204,7 @@ cruise control). The camera records speeds of
 
 <!--
 
-                            30.9,   29.9,   30.1,   30.3,   29.7,   30.1,   30.1,   29.2,   30.6,   30.4.                        (4.2)                                     --><a id="eq:camera_data_1"></a><!--
+                        30.9,   29.9,   30.1,   30.3,   29.7,   30.1,   30.1,    29.2,   30.6,   30.4.                   (4.2)                                             --><a id="eq:camera_data_1"></a><!--
 
 -->
 
@@ -1380,7 +1382,7 @@ We’ll return to this data again in Example <a href="The-normal-distribution-wi
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 17, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 24, 2024
 </p>
 
 </footer>

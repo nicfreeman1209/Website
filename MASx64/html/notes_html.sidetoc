@@ -22,7 +22,7 @@
 \contentsline {section}{\numberline {2.2}{\ignorespaces Discrete Bayesian models\relax }}{70}{}
 \contentsline {section}{\numberline {2.3}{\ignorespaces The posterior distribution\relax }}{75}{}
 \contentsline {section}{\numberline {2.4}{\ignorespaces Bayesian updates\relax }}{83}{}
-\contentsline {subsection}{\numberline {2.4.1}{\ignorespaces Historical notes\relax }}{85}{}
+\contentsline {subsection}{\numberline {2.4.1}{\ignorespaces Historical notes ${\color {darkred}(\mathbf {\oslash })}$\relax }}{85}{}
 \contentsline {section}{\numberline {2.5}{\ignorespaces Exercises on Chapter \ref {c:bayes_models_discrete}\relax }}{87}{}
 \contentsline {chapter}{\numberline {3}{\ignorespaces Bayesian models: continuous data\relax }}{90}{}
 \contentsline {section}{\numberline {3.1}{\ignorespaces Continuous Bayesian models\relax }}{91}{}

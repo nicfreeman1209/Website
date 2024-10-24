@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 17, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 24, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Notation: independent data</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 17, 2024
+last updated: October 24, 2024
 </p>
 
 </header>
@@ -1126,7 +1126,8 @@ Consequently our choice of prior has mattered less than it did in Example <a hre
 <p>
 It is sensible to compare the results of our analysis our the histogram of the data \(x\). Our model is for \(50\) independent samples, so technically the sampling and predictive distributions of our model generate
 \(50\) real-valued samples, which is awkward to sketch. Instead we use the sampling and predictive distributions for a single data point (i.e.&nbsp;the \(n=1\) case of our model). This gives sampling and predictive
-distributions with probability density functions
+distributions, from <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:bayes_continuous_sampling_pdf">3.2</a>)</span> and <span class="textup">(<a
+href="Bayesian-models-continuous-data.html#eq:bayes_continuous_predictive_pdf">3.5</a>)</span>, with probability density functions
 </p>
 <span class="hidden"> \(\seteqnumber{0}{3.}{7}\)</span>
 
@@ -1135,7 +1136,8 @@ distributions with probability density functions
 <!--
                                                                                                          Z
                                                                                     fsampling (x1 ) =             fExp(λ) (x1 )fΓ(2,60) (λ) dλ,
-                                                                                                         ZRd
+                                                                                                             Rd
+                                                                                                         Z
                                                                                    fpredictive (x1 ) =            fExp(λ) (x01 )fΓ(52,6698) (λ) dλ.
                                                                                                              Rd
 
@@ -1215,7 +1217,7 @@ and in practice we rarely have a reason to want models of this type. We won’t 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 17, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 24, 2024
 </p>
 
 </footer>

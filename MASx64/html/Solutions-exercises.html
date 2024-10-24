@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 17, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, October 24, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Solutions to exercises</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 17, 2024
+last updated: October 24, 2024
 </p>
 
 </header>
@@ -1843,7 +1843,7 @@ distribution has p.d.f.&nbsp;
                                                                       fΘ|{X=5} (θ) = R                                       fUniform([0,θ]) ( 12 )fPareto(1,3) (θ)
                                                                                        f
                                                                                      R Uniform([0,t])
-                                                                                                      (5)fPareto(1,3) (t) dt
+                                                                                                      (5)fPareto(3,1) (t) dt
                                                                                           1       1 −4
                                                                                   = R ∞ 1 −4        3θ
                                                                                      1 t 3t   dt θ
@@ -1864,11 +1864,11 @@ distribution has p.d.f.&nbsp;
 
 
 \begin{align*}
-f_{\Theta |_{\{X=5\}}}(\theta ) &amp;= \frac {1}{\int _\R f_{\Unif ([0,t])}(5) f_{\Pareto (1,3)}(t)\, dt}f_{\Unif ([0,\theta ])}(\tfrac 12) f_{\Pareto (1,3)}(\theta ) \\
+f_{\Theta |_{\{X=5\}}}(\theta ) &amp;= \frac {1}{\int _\R f_{\Unif ([0,t])}(5) f_{\Pareto (3,1)}(t)\, dt}f_{\Unif ([0,\theta ])}(\tfrac 12) f_{\Pareto (1,3)}(\theta ) \\
 &amp;=\frac {1}{\int _1^\infty \frac {1}{t}3t^{-4}\,dt} \frac {1}{\theta }3\theta ^{-4} \\ &amp;=\frac {1}{\int _1^\infty 3t^{-5}\,dt} 3\theta ^{-5} \\ &amp;=\frac {1}{3/4}\theta
 ^{-5} \\ &amp;=4\theta ^{-5}
 \end{align*}
-for \(\theta &gt;1\) and zero otherwise. We recognize the p.d.f.&nbsp;of the \(\Pareto (1,4)\) distribution. Note that to deduce the second line we used \(f_{\Unif ([0,\theta ])}(\tfrac 12)=\frac
+for \(\theta &gt;1\) and zero otherwise. We recognize the p.d.f.&nbsp;of the \(\Pareto (4,1)\) distribution. Note that to deduce the second line we used \(f_{\Unif ([0,\theta ])}(\tfrac 12)=\frac
 {1}{\theta }\), which was true because \(\frac 12&lt;\theta \).
 </p>
 </li>
@@ -1884,7 +1884,7 @@ distribution has p.d.f.&nbsp;
 
 <!--
                                                                                                        1
-                                                                      fΘ|{X=5} (θ) = R                                      f               (5)fPareto(1,3) (θ)
+                                                                      fΘ|{X=5} (θ) = R                                      f               (5)fPareto(3,1) (θ)
                                                                                        f
                                                                                      R Uniform([0,t])
                                                                                                       (5)fPareto(1,3) (t) dt Uniform([0,θ])
@@ -1910,11 +1910,11 @@ distribution has p.d.f.&nbsp;
 
 
 \begin{align*}
-f_{\Theta |_{\{X=5\}}}(\theta ) &amp;= \frac {1}{\int _\R f_{\Unif ([0,t])}(5) f_{\Pareto (1,3)}(t)\, dt}f_{\Unif ([0,\theta ])}(5) f_{\Pareto (1,3)}(\theta ) \\ &amp;=\frac
+f_{\Theta |_{\{X=5\}}}(\theta ) &amp;= \frac {1}{\int _\R f_{\Unif ([0,t])}(5) f_{\Pareto (1,3)}(t)\, dt}f_{\Unif ([0,\theta ])}(5) f_{\Pareto (3,1)}(\theta ) \\ &amp;=\frac
 {1}{\int _1^\infty \1_{\{5\leq t\}}\frac {1}{t}3t^{-4}\,dt} \1_{\{5\leq \theta \}}\frac {1}{\theta }3\theta ^{-4} \\ &amp;=\frac {1}{\int _5^\infty 3t^{-5}\,dt} \1_{\{5\leq
 \theta \}}3\theta ^{-5} \\ &amp;=\frac {1}{3\frac {5^{-4}}{4}}\1_{\{5\leq \theta \}}\theta ^{-5} \\ &amp;=\1_{\{5\leq \theta \}}5^44\theta ^{-5}
 \end{align*}
-We recognize the p.d.f.&nbsp;of the \(\Pareto (5,4)\) distribution.
+We recognize the p.d.f.&nbsp;of the \(\Pareto (4,5)\) distribution.
 </p>
 <p>
 From <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:bayes_continuous_predictive_pdf">3.5</a>)</span> the predictive distribution has p.d.f.&nbsp;given by
@@ -1924,7 +1924,7 @@ From <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:baye
 
 <!--
                                                                                                    Z ∞
-                                                                                      fX 0 (x) =               fUniform([0,θ]) (x)fPareto(5,4) (θ) dθ
+                                                                                      fX 0 (x) =               fUniform([0,θ]) (x)fPareto(4,5) (θ) dθ
                                                                                                        5
                                                                                                    
                                                                                                     ∞ 1 54 4θ−5 dθ   for x > 5
@@ -1975,7 +1975,7 @@ From <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:baye
 
 
 \begin{align*}
-f_{X&apos;}(x) &amp;=\int _5^\infty f_{\Unif ([0,\theta ])}(x)f_{\Pareto (5,4)}(\theta )\,d\theta \\ &amp;= \begin{cases} \int _x^\infty \frac {1}{\theta } 5^4 4\theta
+f_{X&apos;}(x) &amp;=\int _5^\infty f_{\Unif ([0,\theta ])}(x)f_{\Pareto (4,5)}(\theta )\,d\theta \\ &amp;= \begin{cases} \int _x^\infty \frac {1}{\theta } 5^4 4\theta
 ^{-5}\,d\theta &amp; \text { for }x&gt;5 \\ \int _5^\infty \frac {1}{\theta } 5^4 4\theta ^{-5}\,d\theta &amp; \text { for }x\in [0,5] \end {cases} \\ &amp;= \begin{cases} \int
 _x^\infty \1_{x\leq \theta }5^4 4\theta ^{-6}\,d\theta &amp; \text { for }x&gt;5 \\ \int _5^\infty 5^4 4\theta ^{-6}\,d\theta &amp; \text { for }x\in [0,5] \end {cases} \\ &amp;=
 \begin{cases} 5^4 4[\frac {\theta ^{-5}}{-5}]_x^\infty &amp; \text { for }x&gt;5 \\ 5^4 4[\frac {\theta ^{-5}}{-5}]_5^\infty &amp; \text { for }x\in [0,5] \end {cases} \\ &amp;=
@@ -3952,7 +3952,7 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 17, 2024
+Copyright Nic Freeman, Sheffield University, last updated October 24, 2024
 </p>
 
 </footer>
