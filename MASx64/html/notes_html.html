@@ -29817,11 +29817,11 @@ same thing happen with the other families of conjugate pairs in this chapter?
 
 <p>
 <span class="listmarker"><b>4.7</b></span> <a id="ps:conj_gamma_weibull"></a> \(\color {blue}\star \,\star \) Let \(a,b,k&gt;0\). Let \((X,\Theta )\) be a discrete Bayesian model with model
-family \(M_\theta \sim \Weibull (k,\theta )^{\otimes n}\) and parameter \(\theta \in (0,\infty )\). Suppose that the prior is \(\Theta \sim \IGam (a,b)\) and let \(x=(x_1,\ldots ,x_n)\) where
+family \(M_\theta \sim \Weibull (k,\theta )^{\otimes n}\) and parameter \(\theta \in (0,\infty )\). Suppose that the prior is \(\Theta \sim \Gam (a,b)\) and let \(x=(x_1,\ldots ,x_n)\) where
 \(x_i\in \{0,1,\ldots ,\}\). Show that the posterior is
 </p>
 <p>
-\[\Theta |_{\{X=x\}}\sim \IGam \l (a+n,\, b+\sum _{i=1}^nx_i^k\r ).\]
+\[\Theta |_{\{X=x\}}\sim \Gam \l (a+n,\, b+\sum _{i=1}^nx_i^k\r ).\]
 </p>
 </li>
 <li>
@@ -54299,7 +54299,7 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 
 <!--
 
-                                                                                   fΘ|{X=x} (θ) ∝ fWeibull(k,θ)⊗n (x)fIGamma(a,b) (θ)
+                                                                                   fΘ|{X=x} (θ) ∝ fWeibull(k,θ)⊗n (x)fGamma(a,b) (θ)
                                                                                                     n
                                                                                                                           !
                                                                                                    Y                    k    ba a−1 −bθ
@@ -54320,11 +54320,11 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 
 
 \begin{align*}
-f_{\Theta |_{\{X=x\}}}(\theta ) &amp; \propto f_{\Weibull (k,\theta )^{\otimes n}}(x) f_{\IGam (a,b)}(\theta ) \\ &amp; \propto \l (\prod _{i=1}^n \theta k(x_i)^{k-1}e^{-\theta
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp; \propto f_{\Weibull (k,\theta )^{\otimes n}}(x) f_{\Gam (a,b)}(\theta ) \\ &amp; \propto \l (\prod _{i=1}^n \theta k(x_i)^{k-1}e^{-\theta
 x_i^k}\r ) \frac {b^a}{\Gamma (a)} \theta ^{a-1}e^{-b\theta } \\ &amp; \propto \theta ^n e^{-\theta \sum _1^n x_i^k}\theta ^{a-1}e^{-b\theta } \\ &amp; \propto \theta
 ^{a+n-1}e^{-\theta (b+\sum _1^n x_i^k)}.
 \end{align*}
-Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a>, we recognize the \(\IGam (a+n, b+\sum _1^n x_i^k)\) distribution, as required.
+Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a>, we recognize the \(\Gam (a+n, b+\sum _1^n x_i^k)\) distribution, as required.
 </p>
 </li>
 <li>
