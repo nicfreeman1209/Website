@@ -1111,7 +1111,7 @@ reference prior is the same as the prior proposed by Jeffreys – in more compli
 <li>
 <p>
 <span class="listmarker"> <span class="theoremheaderplain">Definition 5.3.2</span></span> <a id="autoid-126" ></a ><a id="d:reference_prior"></a> Suppose that \((M_\theta )\) is a family
-of distributions with parameter space \(\Pi \sw \R \). The <em>reference prior</em> \(\Theta \) associated \((M_\theta )\) has p.d.f.&nbsp;given by
+of distributions with parameter space \(\Pi \sw \R \). The <em>reference prior</em> \(\Theta \) associated \((M_\theta )\) has density function given by
 </p>
 <span class="hidden"> \(\seteqnumber{0}{5.}{1}\)</span>
 
@@ -1120,13 +1120,13 @@ of distributions with parameter space \(\Pi \sw \R \). The <em>reference prior</
 <!--
                                                                                                  "               2 #1/2
                                                                                                     d
-                                                                                      fΘ (θ) ∝ E      log(LMθ (X))      (5.2)                         --><a id="eq:reference_prior_d1"></a><!--
+                                                                                      fΘ (θ) ∝ E      log(LMθ (X))      (5.2)                              --><a id="eq:reference_prior_d1"></a><!--
                                                                                                    dθ
                                                                                                                    1/2
                                                                                                    d2
                                                                                                  
                                                                                              ∝ E − 2 log(LMθ (X))       (5.3)
-                                                                                                                        .                             --><a id="eq:reference_prior_d2"></a><!--
+                                                                                                                        .                                  --><a id="eq:reference_prior_d2"></a><!--
                                                                                                    dθ
 
 
@@ -1230,7 +1230,7 @@ href="Reference-priors.html#eq:reference_prior_d1">5.2</a>)</span>, use the part
 L_{M_p}(x) \;=\; \begin{cases} p &amp; \text { for }x=0\text { and }p\in [0,1] \\ 1-p &amp; \text { for }x=1\text { and }p\in [0,1] \\ 0 &amp; \text { otherwise} \end {cases}
 \;=\; \begin{cases} p^x(1-p)^{1-x} &amp; \text { for }p\in [0,1] \\ 0 &amp; \text { otherwise} \end {cases}
 \end{align*}
-for \(x\in \{0,1\}\). For the non-zero case, \(\frac {d}{dp}\log (L_{M_p}(x))=\frac {d}{dp}(x\log p - (1-x)\log (1-p))=\frac {x}{p}-\frac {1-x}{1-p}\) and so
+for \(x\in \{0,1\}\). For the non-zero case, \(\frac {d}{dp}\log (L_{M_p}(x))=\frac {d}{dp}(x\log p + (1-x)\log (1-p))=\frac {x}{p}-\frac {1-x}{1-p}\) and so
 </p>
 
 <p>

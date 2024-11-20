@@ -3557,10 +3557,58 @@ to two decimal places. The Bayes factor is \(64.30\).
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> Note that \(L_{\Bin (m,p)^{\otimes n}}(x)\propto p^x(1-p)^{m-x}\) so \(\log L_{\Bin (m,p)}(x)= x\log p + (m-x)\log
-(1-p)=x\log p+m\log (1-p)-x\log (1-p)\). Hence \(\frac {d}{dp} \log L_{\Bin (m,p)}(x)=\frac {x}{p}+\frac {1-x}{1-p}\), which is equal to \(\frac {d}{dp} \log L_{\Bern (p)}(x)\) as
-obtained in Example <a href="Reference-priors.html#ex:bernoulli_reference_prior">5.3.4</a>. Hence the same calculation as in Example <a
-href="Reference-priors.html#ex:bernoulli_reference_prior">5.3.4</a> obtains the same reference prior.
+<span class="listmarker"><span class="textnormal">(b)</span></span> For \(x\in \{0,1,\ldots ,m\}\) and \(p\in [0,1]\) we have
+</p>
+<p>
+\[L_{\Bin (m,p)^{\otimes n}}(x)\propto p^x(1-p)^{m-x}\]
+</p>
+<p>
+so \(\log L_{\Bin (m,p)}(x)= x\log p + (m-x)\log (1-p)\). Hence
+</p>
+<p>
+\[\frac {d^2}{dp^2} \log L_{\Bin (m,p)}(x)=\frac {-x}{p^2}+\frac {1-x}{(1-p)^2}.\]
+</p>
+<p>
+Setting \(X\sim \Bin (m,p)\) and using <span class="textup">(<a href="Reference-priors.html#eq:reference_prior_d2">5.3</a>)</span>, the reference prior has density
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                                                  m − X 1/2
+                                                                                                                         
+                                                                                                           X
+                                                                                               f (p) ∝ E 2 +
+                                                                                                           p     (1 − p)2
+                                                                                                         E[X] m − E[X] 1/2
+                                                                                                                           
+                                                                                                     ∝          +
+                                                                                                           p2      (1 − p)2
+                                                                                                         mp m − mp 1/2
+                                                                                                                         
+                                                                                                     ∝        +
+                                                                                                         p2     (1 − p)2
+                                                                                                                   1/2
+                                                                                                         1      1
+                                                                                                     ∝     +
+                                                                                                         p 1−p
+                                                                                                                 1/2
+                                                                                                              1
+                                                                                                     ∝                 .
+                                                                                                         p(1 − p)
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(p) &amp;\propto \E \l [\frac {X}{p^2}+\frac {m-X}{(1-p)^2}\r ]^{1/2} \\ &amp;\propto \l (\frac {\E [X]}{p^2}+\frac {m-\E [X]}{(1-p)^2}\r )^{1/2} \\ &amp;\propto \l (\frac
+{mp}{p^2}+\frac {m-mp}{(1-p)^2}\r )^{1/2} \\ &amp;\propto \l (\frac {1}{p}+\frac {1}{1-p}\r )^{1/2} \\ &amp;\propto \l (\frac {1}{p(1-p)}\r )^{1/2}.
+\end{align*}
+Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we identify then \(\Beta (\frac 12,\frac 12)\) distribution.
 </p>
 <p>
 We find numerically that the prior and posterior odds ratios are

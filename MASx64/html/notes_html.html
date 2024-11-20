@@ -33299,7 +33299,7 @@ reference prior is the same as the prior proposed by Jeffreys – in more compli
 <li>
 <p>
 <span class="listmarker"> <span class="theoremheaderplain">Definition 5.3.2</span></span> <a id="autoid-126" ></a ><a id="d:reference_prior"></a> Suppose that \((M_\theta )\) is a family
-of distributions with parameter space \(\Pi \sw \R \). The <em>reference prior</em> \(\Theta \) associated \((M_\theta )\) has p.d.f.&nbsp;given by
+of distributions with parameter space \(\Pi \sw \R \). The <em>reference prior</em> \(\Theta \) associated \((M_\theta )\) has density function given by
 </p>
 <span class="hidden"> \(\seteqnumber{0}{5.}{1}\)</span>
 
@@ -33308,13 +33308,13 @@ of distributions with parameter space \(\Pi \sw \R \). The <em>reference prior</
 <!--
                                                                                                  "               2 #1/2
                                                                                                     d
-                                                                                      fΘ (θ) ∝ E      log(LMθ (X))      (5.2)                         --><a id="eq:reference_prior_d1"></a><!--
+                                                                                      fΘ (θ) ∝ E      log(LMθ (X))      (5.2)                              --><a id="eq:reference_prior_d1"></a><!--
                                                                                                    dθ
                                                                                                                    1/2
                                                                                                    d2
                                                                                                  
                                                                                              ∝ E − 2 log(LMθ (X))       (5.3)
-                                                                                                                        .                             --><a id="eq:reference_prior_d2"></a><!--
+                                                                                                                        .                                  --><a id="eq:reference_prior_d2"></a><!--
                                                                                                    dθ
 
 
@@ -33418,7 +33418,7 @@ href="Reference-priors.html#eq:reference_prior_d1">5.2</a>)</span>, use the part
 L_{M_p}(x) \;=\; \begin{cases} p &amp; \text { for }x=0\text { and }p\in [0,1] \\ 1-p &amp; \text { for }x=1\text { and }p\in [0,1] \\ 0 &amp; \text { otherwise} \end {cases}
 \;=\; \begin{cases} p^x(1-p)^{1-x} &amp; \text { for }p\in [0,1] \\ 0 &amp; \text { otherwise} \end {cases}
 \end{align*}
-for \(x\in \{0,1\}\). For the non-zero case, \(\frac {d}{dp}\log (L_{M_p}(x))=\frac {d}{dp}(x\log p - (1-x)\log (1-p))=\frac {x}{p}-\frac {1-x}{1-p}\) and so
+for \(x\in \{0,1\}\). For the non-zero case, \(\frac {d}{dp}\log (L_{M_p}(x))=\frac {d}{dp}(x\log p + (1-x)\log (1-p))=\frac {x}{p}-\frac {1-x}{1-p}\) and so
 </p>
 
 <p>
@@ -43625,7 +43625,7 @@ think it would reasonable to approximate the distribution with a point estimate.
 <p>
 <span class="listmarker"><b>7.2</b></span> <a id="ps:baby_bayes_hyp_test"></a> \(\color {blue}\star \,\star \) In the situation of Example <a
 href="The-posterior-distribution.html#ex:baby_bayes_part3">2.3.3</a>, the experiments test the success of a medical treatment. Each trial is expensive, so it is decided by the regulator that further trials
-of the treatment will be carried out if and only if there is substantial evidence that \(\theta &gt;0.2\).
+of the treatment will be carried out if and only if there is substantial evidence that \(p&gt;0.2\).
 </p>
 <ul class="enumerate" style="list-style-type:none">
 
@@ -43633,7 +43633,7 @@ of the treatment will be carried out if and only if there is substantial evidenc
 <li>
 <p>
 <span class="listmarker"><span class="textnormal">(a)</span></span> Using the original prior \(\Beta (2,8)\) and the posterior \(\Beta (11,19)\) odds obtained after the second round of trials, find
-the prior and posterior odds ratios of \(\theta &gt;0.2\), and find the associated Bayes factor.
+the prior and posterior odds ratios of \(p&gt;0.2\), and find the associated Bayes factor.
 </p>
 
 
@@ -43642,8 +43642,8 @@ the prior and posterior odds ratios of \(\theta &gt;0.2\), and find the associat
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> Show that the reference prior for the Binomial distribution is \(\Theta \sim \Beta (\frac 12,\frac 12)\) (this generalizes
-Example <a href="Reference-priors.html#ex:bernoulli_reference_prior">5.3.4</a>).
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that the reference prior for the Binomial distribution, with a fixed number of trials and unknown success probability \(p\in
+(0,1)\), is \(P\sim \Beta (\frac 12,\frac 12)\) (this generalizes Example <a href="Reference-priors.html#ex:bernoulli_reference_prior">5.3.4</a>).
 </p>
 <p>
 How much does using this prior change the results of your analysis in (a)?
@@ -43751,7 +43751,7 @@ a parter, to choose the value of \(\lambda \) that best expresses your prior bel
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(c)</span></span> Sketch an equally tailed \(95\%\) HPD region for \(\theta \).
+<span class="listmarker"><span class="textnormal">(c)</span></span> Plot an equally tailed \(95\%\) HPD region for \(\theta \).
 </p>
 </li>
 </ul>
@@ -43776,8 +43776,8 @@ Write \(\bar {x}=\sum _1^n x_i\) and \(S^2=\frac {1}{n-1}\sum _1^n (x_i-\bar {x}
 <li>
 <p>
 <span class="listmarker"><span class="textnormal">(a)</span></span> \(\color {blue}\star \,\star \) Inside the file 7_wheat_yields_uk.csv you will find a dataset of the UK wheat yields, measured
-in tonnes per hectare of farmland, for the years 1983-2022. You may assume that the model \(N(\mu ,\phi )^{\otimes 40}\) is appropriate for this data. Construct and sketch an equally tailed \(95\%\) HPD
-region for \(t\), and hence give a \(95\%\) HPD region for \(\mu \).
+in tonnes per hectare of farmland, for the years 1983-2022. You may assume that the model \(N(\mu ,\phi )^{\otimes 40}\) is appropriate for this data. Plot an equally tailed \(95\%\) HPD region for \(t\),
+and hence give a \(95\%\) HPD region for \(\mu \).
 </p>
 
 
@@ -55498,10 +55498,58 @@ to two decimal places. The Bayes factor is \(64.30\).
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(b)</span></span> Note that \(L_{\Bin (m,p)^{\otimes n}}(x)\propto p^x(1-p)^{m-x}\) so \(\log L_{\Bin (m,p)}(x)= x\log p + (m-x)\log
-(1-p)=x\log p+m\log (1-p)-x\log (1-p)\). Hence \(\frac {d}{dp} \log L_{\Bin (m,p)}(x)=\frac {x}{p}+\frac {1-x}{1-p}\), which is equal to \(\frac {d}{dp} \log L_{\Bern (p)}(x)\) as
-obtained in Example <a href="Reference-priors.html#ex:bernoulli_reference_prior">5.3.4</a>. Hence the same calculation as in Example <a
-href="Reference-priors.html#ex:bernoulli_reference_prior">5.3.4</a> obtains the same reference prior.
+<span class="listmarker"><span class="textnormal">(b)</span></span> For \(x\in \{0,1,\ldots ,m\}\) and \(p\in [0,1]\) we have
+</p>
+<p>
+\[L_{\Bin (m,p)^{\otimes n}}(x)\propto p^x(1-p)^{m-x}\]
+</p>
+<p>
+so \(\log L_{\Bin (m,p)}(x)= x\log p + (m-x)\log (1-p)\). Hence
+</p>
+<p>
+\[\frac {d^2}{dp^2} \log L_{\Bin (m,p)}(x)=\frac {-x}{p^2}+\frac {1-x}{(1-p)^2}.\]
+</p>
+<p>
+Setting \(X\sim \Bin (m,p)\) and using <span class="textup">(<a href="Reference-priors.html#eq:reference_prior_d2">5.3</a>)</span>, the reference prior has density
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                                                  m − X 1/2
+                                                                                                                         
+                                                                                                           X
+                                                                                               f (p) ∝ E 2 +
+                                                                                                           p     (1 − p)2
+                                                                                                         E[X] m − E[X] 1/2
+                                                                                                                           
+                                                                                                     ∝          +
+                                                                                                           p2      (1 − p)2
+                                                                                                         mp m − mp 1/2
+                                                                                                                         
+                                                                                                     ∝        +
+                                                                                                         p2     (1 − p)2
+                                                                                                                   1/2
+                                                                                                         1      1
+                                                                                                     ∝     +
+                                                                                                         p 1−p
+                                                                                                                 1/2
+                                                                                                              1
+                                                                                                     ∝                 .
+                                                                                                         p(1 − p)
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(p) &amp;\propto \E \l [\frac {X}{p^2}+\frac {m-X}{(1-p)^2}\r ]^{1/2} \\ &amp;\propto \l (\frac {\E [X]}{p^2}+\frac {m-\E [X]}{(1-p)^2}\r )^{1/2} \\ &amp;\propto \l (\frac
+{mp}{p^2}+\frac {m-mp}{(1-p)^2}\r )^{1/2} \\ &amp;\propto \l (\frac {1}{p}+\frac {1}{1-p}\r )^{1/2} \\ &amp;\propto \l (\frac {1}{p(1-p)}\r )^{1/2}.
+\end{align*}
+Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we identify then \(\Beta (\frac 12,\frac 12)\) distribution.
 </p>
 <p>
 We find numerically that the prior and posterior odds ratios are
