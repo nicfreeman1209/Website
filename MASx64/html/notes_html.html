@@ -33330,9 +33330,9 @@ of distributions with parameter space \(\Pi \sw \R \). The <em>reference prior</
 f_{\Theta }(\theta ) &amp;\propto \E \l [\l (\frac {d}{d\theta }\log (L_{M_{\theta }}(X))\r )^2\r ]^{1/2} \label {eq:reference_prior_d1} \\ &amp;\propto \E \l [-\frac
 {d^2}{d\theta ^2}\log (L_{M_{\theta }}(X))\r ]^{1/2}. \label {eq:reference_prior_d2}
 \end{align}
-Both forms <span class="textup">(<a href="Reference-priors.html#eq:reference_prior_d1">5.2</a>)</span> and <span class="textup">(<a
-href="Reference-priors.html#eq:reference_prior_d2">5.3</a>)</span> are included on the reference sheets in Appendix <a href="Reference-Sheets.html#a:reference_sheets">A</a>. Equation <a
-href="Reference-priors.html#eq:reference_prior_d2">5.3</a> is often easier to work with because it does not include a \((\cdot )^2\) term.
+where \(X\sim M_\theta \). Both forms <span class="textup">(<a href="Reference-priors.html#eq:reference_prior_d1">5.2</a>)</span> and <span class="textup">(<a
+href="Reference-priors.html#eq:reference_prior_d2">5.3</a>)</span> are included on the reference sheets in Appendix <a href="Reference-Sheets.html#a:reference_sheets">A</a>. Equation <span
+class="textup">(<a href="Reference-priors.html#eq:reference_prior_d2">5.3</a>)</span> is often easier to work with because it does not include a \((\cdot )^2\) term.
 </p>
 
 <p>
@@ -33383,38 +33383,27 @@ href="Reference-priors.html#eq:reference_prior_d1">5.2</a>)</span>, use the part
 <span class="listmarker"> <span class="theoremheaderplain">Example 5.3.4</span></span> <a id="autoid-130" ></a ><a id="ex:bernoulli_reference_prior"></a> For the Bernoulli model family
 \((M_p)_{p\in [0,1]}\) where \(M_p\sim \Bern (p)\), the likelihood is
 </p>
-
-<p>
-\[L_{M_p}(x)= \begin {cases} p^x(1-p)^{1-x} &amp; \text { for }p\in [0,1] \\ 0 &amp; \text { otherwise} \end {cases} \]
-</p>
-
-<p>
-for \(x\in \{0,1\}\). Hence \(\frac {d}{dp}\log (L_{M_p}(x))=\frac {p}{dp}(x\log p + (1-x)\log (1-p))=\frac {x}{p}-\frac {1-x}{1-p}\). For \(p\in [0,1]\), the density function of the
-reference prior \(P\) is given by
-</p>
 <span class="hidden"> \(\seteqnumber{0}{5.}{3}\)</span>
 
 
 
 <!--
-                                                                                        "                 2 #1/2
-                                                                                            d
-                                                                              fP (p) ∝ E       log(LMp (X))
-                                                                                            dp
-                                                                                         "              #1/2
-                                                                                            X     1−X 2
-                                                                                     ∝E        −
-                                                                                            p     1−p
-                                                                                                                       !1/2
-                                                                                           1 1−1 2              0 1−0 2
-                                                                                                            
-                                                                                    ∝ p     −       + (1 − p)    +
-                                                                                           p 1−p                p 1−p
-                                                                                              1/2
-                                                                                        1    1
-                                                                                    ∝     −
-                                                                                        p 1−p
-                                                                                    ∝ p−1/2 (1 − p)−1/2 .
+                                                                           
+                                                                           
+                                                                           p          for x = 0 and p ∈ [0, 1]       
+                                                                                                                                       for p ∈ [0, 1]
+                                                                           
+                                                                           
+                                                                                                                     px (1 − p)1−x
+                                                                                                                      
+                                                                  LMp (x) = 1 − p      for x = 1 and p ∈ [0, 1] = 
+                                                                                                                  0                   otherwise
+                                                                           
+                                                                           
+                                                                                       otherwise
+                                                                           
+                                                                           
+                                                                           0
 
 
 
@@ -33426,9 +33415,62 @@ reference prior \(P\) is given by
 
 
 \begin{align*}
-f_P(p) &amp;\propto \E \l [\l (\frac {d}{dp}\log (L_{M_{p}}(X))\r )^2\r ]^{1/2} \\ &amp;\propto \E \l [\l (\frac {X}{p}-\frac {1-X}{1-p}\r )^2\r ]^{1/2} \\ &amp;\propto \l (p\l
-(\frac {1}{p}-\frac {1-1}{1-p}\r )^2+(1-p)\l (\frac {0}{p}+\frac {1-0}{1-p}\r )^2\r )^{1/2} \\ &amp;\propto \l (\frac {1}{p}-\frac {1}{1-p}\r )^{1/2} \\ &amp;\propto
-p^{-1/2}(1-p)^{-1/2}.
+L_{M_p}(x) \;=\; \begin{cases} p &amp; \text { for }x=0\text { and }p\in [0,1] \\ 1-p &amp; \text { for }x=1\text { and }p\in [0,1] \\ 0 &amp; \text { otherwise} \end {cases}
+\;=\; \begin{cases} p^x(1-p)^{1-x} &amp; \text { for }p\in [0,1] \\ 0 &amp; \text { otherwise} \end {cases}
+\end{align*}
+for \(x\in \{0,1\}\). For the non-zero case, \(\frac {d}{dp}\log (L_{M_p}(x))=\frac {d}{dp}(x\log p - (1-x)\log (1-p))=\frac {x}{p}-\frac {1-x}{1-p}\) and so
+</p>
+
+<p>
+\[\frac {d^2}{dp^2}\log (L_{M_p})(x)=\frac {-p}{x^2}-\frac {1-x}{(1-p)^2}.\]
+</p>
+
+<p>
+Hence, from <span class="textup">(<a href="Reference-priors.html#eq:reference_prior_d2">5.3</a>)</span>, for \(p\in [0,1]\) the density function of the reference prior \(P\) is given by
+</p>
+<span class="hidden"> \(\seteqnumber{0}{5.}{3}\)</span>
+
+
+
+<!--
+                                                                                                                         1/2
+                                                                                                        d2
+                                                                                                   
+                                                                                        fP (p) ∝ E − 2 log(LMp (X))
+                                                                                                       dp
+                                                                                                             1 − X 1/2
+                                                                                                                   
+                                                                                                     X
+                                                                                               ∝E 2 +
+                                                                                                     p     (1 − p)2
+                                                                                                   E[X] 1 − E[X] 1/2
+                                                                                                                      
+                                                                                               ∝          +
+                                                                                                     p2       (1 − p)2
+                                                                                                           1 − p 1/2
+                                                                                                                  
+                                                                                                   p
+                                                                                               ∝       +
+                                                                                                   p2 (1 − p)2
+                                                                                                              1/2
+                                                                                                   1       1
+                                                                                               ∝     +
+                                                                                                   p 1−p
+                                                                                              ∝ p−1/2 (1 − p)−1/2 .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+f_P(p) &amp;\propto \E \l [-\frac {d^2}{dp^2}\log (L_{M_{p}}(X))\r ]^{1/2} \\ &amp;\propto \E \l [\frac {X}{p^2}+\frac {1-X}{(1-p)^2}\r ]^{1/2} \\ &amp;\propto \l (\frac {\E
+[X]}{p^2}+\frac {1-\E [X]}{(1-p)^2}\r )^{1/2} \\ &amp;\propto \l (\frac {p}{p^2}+\frac {1-p}{(1-p)^2}\r )^{1/2} \\ &amp;\propto \l (\frac {1}{p}+\frac {1}{1-p}\r )^{1/2} \\
+&amp;\propto p^{-1/2}(1-p)^{-1/2}.
 \end{align*}
 Using Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize that \(P\sim \Beta (\frac 12,\frac 12)\).
 </p>
@@ -35515,12 +35557,12 @@ Recall that for a random variable \(Y\) we define the likelihood function \(L_Y\
 <span class="hidden"> \(\seteqnumber{0}{6.}{0}\)</span>
 
 <!--
-                              
-                              pY (y)    where \(p_Y\) is the p.m.f. and \(Y\) is discrete,
-                              
-                   LY (y) =                                                                                             (6.1)                                                  --><a id="eq:likelihood_def"></a><!--
-                              fY (y)    where \(f_Y\) is the p.d.f. and \(Y\) is continuous.
-                              
+                                         
+                                         pY (y)    where \(p_Y\) is the p.m.f. and \(Y\) is discrete,
+                                         
+                              LY (y) =                                                                                                      (6.1)                              --><a id="eq:likelihood_def"></a><!--
+                                         fY (y)    where \(f_Y\) is the p.d.f. and \(Y\) is continuous.
+                                         
 
 
 -->
@@ -35551,9 +35593,9 @@ distribution of \(\Theta \) given the data \(x\) has p.d.f.
 
 <!--
 
-                                                         LMθ (x)fΘ (θ)
-                                        fΘ|{X=x} (θ) =                                                          (6.2)                                                    --><a id="eq:bayes_rule_combined"></a><!--
-                                                           LX (x)
+                                                                    LMθ (x)fΘ (θ)
+                                                   fΘ|{X=x} (θ) =                                                                   (6.2)                                --><a id="eq:bayes_rule_combined"></a><!--
+                                                                      LX (x)
 
 -->
 
@@ -35577,7 +35619,7 @@ X|_{\{\Theta =\theta \}}\), which leads to
 
 <!--
 
-                                 fΘ|{X=x} (θ) ∝ LX|{Θ=θ} (x)fΘ (θ).                                     (6.3)                                                     --><a id="eq:bayes_rule_full_condensed"></a><!--
+                                            fΘ|{X=x} (θ) ∝ LX|{Θ=θ} (x)fΘ (θ).                                              (6.3)                                 --><a id="eq:bayes_rule_full_condensed"></a><!--
 
 -->
 
@@ -35607,9 +35649,9 @@ class="textup">(<a href="Discussion.html#eq:bayes_rule_full_condensed">6.3</a>)<
 
 <!--
 
-                                                f (x|θ)f (θ)
-                                    f (θ|x) =                ,                                  (6.4)                                                        --><a id="eq:bayes_rule_combined_shorthand"></a><!--
-                                                    f (x)
+                                                           f (x|θ)f (θ)
+                                               f (θ|x) =                ,                                           (6.4)                                    --><a id="eq:bayes_rule_combined_shorthand"></a><!--
+                                                               f (x)
 
 -->
 
@@ -36665,8 +36707,8 @@ You have already seen maximum likelihood based methods for parameter inference i
 
 <!--
 
-                                                  θ̂ = arg max LMθ (x)                                             (6.5)                                                       --><a id="eq:mle_def"></a><!--
-                                                         θ∈Π
+                                                             θ̂ = arg max LMθ (x)                                                       (6.5)                                  --><a id="eq:mle_def"></a><!--
+                                                                   θ∈Π
 
 -->
 
@@ -36858,7 +36900,7 @@ Modern statistics makes use of both posterior distributions and (MLE or otherwis
 model-specific reasons. We do need to divide things up in order to learn them, so will only study Bayesian models within this course – but in general you should maintain an understanding of other approaches too.
 </p>
 <!--
-...... subsection Making the connection precise              ......
+...... subsection Making the connection precise             ......
 -->
 <h5 id="autosec-199"><span class="sectionnumber">6.2.1&#x2003;</span>Making the connection precise \(\offsyl \)</h5>
 <a id="notes-autopage-199"></a>
@@ -36887,13 +36929,13 @@ Then as \(n\to \infty \) it holds that
 
 <!--
 
-                                                         d
-                                                                         
-                                                              1
-                                               Θ|{X=x} ≈ N θ , I(θ∗ )−1
-                                                                 ∗
-                                                                                                                        (6.6)                                                        --><a id="eq:bvm"></a><!--
-                                                              n
+                                                                       d
+                                                                                    
+                                                                         1
+                                                          Θ|{X=x} ≈ N θ , I(θ∗ )−1
+                                                                               ∗
+                                                                                                                                             (6.6)                                   --><a id="eq:bvm"></a><!--
+                                                                         n
 
 -->
 
@@ -39153,9 +39195,9 @@ It is often helpful to get a feel for how much the data has influenced the resul
 
 <!--
 
-                                                   posterior odds
-                                              B=                  .                                              (7.1)                                                 --><a id="eq:bayes_factor"></a><!--
-                                                     prior odds
+                                                              posterior odds
+                                                         B=                  .                                                        (7.1)                            --><a id="eq:bayes_factor"></a><!--
+                                                                prior odds
 
 -->
 
@@ -45778,9 +45820,9 @@ Home</a>
 
 <p>
 In order to perform Bayesian inference computationally, the main requirement is that we can obtain samples from the posterior distribution \(\Theta |_{\{X=x\}}\). We know the p.d.f.&nbsp;from Theorem <a
-href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a>/<a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>, but this The most popular strategy
-for doing so is based on the Metropolis-Hastings algorithm. We will describe the Metropolis-Hastings algorithm in this section, and explain its application to Bayesian inference in Section <a
-href="Markov-chain-Monte-Carlo.html#s:mcmc">8.3</a>.
+href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a>/<a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>, but this doesn’t allow us to take
+samples quickly or easily. The most popular strategies for sampling are based on the Metropolis-Hastings algorithm. We will describe the algorithm in this section, and explain its application to Bayesian inference in
+Section <a href="Markov-chain-Monte-Carlo.html#s:mcmc">8.3</a>.
 </p>
 <!--
 ...... subsection The Metropolis-Hastings algorithm ......

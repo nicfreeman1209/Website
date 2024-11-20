@@ -899,9 +899,9 @@ Home</a>
 
 <p>
 In order to perform Bayesian inference computationally, the main requirement is that we can obtain samples from the posterior distribution \(\Theta |_{\{X=x\}}\). We know the p.d.f.&nbsp;from Theorem <a
-href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a>/<a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>, but this The most popular strategy
-for doing so is based on the Metropolis-Hastings algorithm. We will describe the Metropolis-Hastings algorithm in this section, and explain its application to Bayesian inference in Section <a
-href="Markov-chain-Monte-Carlo.html#s:mcmc">8.3</a>.
+href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a>/<a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>, but this doesn’t allow us to take
+samples quickly or easily. The most popular strategies for sampling are based on the Metropolis-Hastings algorithm. We will describe the algorithm in this section, and explain its application to Bayesian inference in
+Section <a href="Markov-chain-Monte-Carlo.html#s:mcmc">8.3</a>.
 </p>
 <!--
 ...... subsection The Metropolis-Hastings algorithm ......
@@ -1189,7 +1189,96 @@ because the terms on top and bottom involving conditional densities then cancel.
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{3}\)</span>
 <!--
-                                                        \{Q=\tilde {y}\}}}(y).\]
+                                                                         α = min 1,                                                               (8.4)                                 --><a id="eq:mh_alpha_sym"></a><!--
+                                                            fY (yn )
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:mh_alpha_sym} \alpha =\min \l \{1,\,\frac {f_Y(\tilde {y})}{f_Y(y_n)}\r \}
+\end{equation}
+
+
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">3.</span> Then, set
+</p>
+<span class="hidden"> \(\seteqnumber{0}{8.}{4}\)</span>
+<!--
+                                                                                              
+                                                                                              ỹ   with probability α,
+                                                                                              
+                                                                                     yn+1 =
+                                                                                              yn   with probability 1 − α.
+                                                                                              
+
+-->
+<p>
+
+
+\begin{equation*}
+y_{n+1}=\begin{cases} \tilde {y} &amp; \text { with probability }\alpha , \\ y_n &amp; \text { with probability }1-\alpha . \end {cases}
+\end{equation*}
+
+
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+
+<p>
+This is known as the <em>Metropolis</em> algorithm, or sometimes as the <em>symmetric Metropolis-Hastings</em> algorithm.
+</p>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-176"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 8.2.4</span></span> <a id="autoid-177" ></a ><a id="ex:mh_ingredient_normal_walk_2"></a> It is often straightforward to
+write down a \(Q\) such that <span class="textup">(<a href="Metropolis-Hastings.html#eq:mh_sym_YQ">8.3</a>)</span> holds. For example, Suppose that \(Y\) is any random variable with range \(\R \)
+and take \(Q=Y+\Normal (0,\sigma ^2)\) as in Example <a href="Metropolis-Hastings.html#ex:mh_ingredient_normal_walk">8.2.1</a>. Then from Remark <a
+href="Conditioning-on-events-with-zero-probability.html#r:conditioning_to_be_det">1.6.4</a> we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{8.}{4}\)</span>
+
+
+
+<!--
+
+                                                                                              d                  d
+                                                                                    Q|{Y =y} = y + N(0, σ 2 ) = N(y, σ 2 ),
+                                                                                              d                  d
+                                                                                    Y |{Q=ỹ} = ỹ − N(0, σ 2 ) = N(ỹ, σ 2 ).
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+Q|_{\{Y=y\}}&amp;\eqd y+\Normal (0,\sigma ^2)\eqd \Normal (y,\sigma ^2), \\ Y|_{\{Q=\tilde {y}\}}&amp;\eqd \tilde {y}-\Normal (0,\sigma ^2)\eqd \Normal (\tilde {y},\sigma ^2).
+\end{align*}
+Hence
+</p>
+
+<p>
+\[f_{Q|_{\{Y=y\}}}(\tilde {y})=\frac {1}{\sqrt {2\pi \sigma ^2}}e^{-\frac {(y-\tilde {y})^2}{2\sigma ^2}}=f_{Y|_{\{Q=\tilde {y}\}}}(y).\]
 </p>
 
 <p>
