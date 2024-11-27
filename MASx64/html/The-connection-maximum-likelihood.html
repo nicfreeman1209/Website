@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, November 20, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, November 27, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — The connection to maximum likelihood</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: November 20, 2024
+last updated: November 27, 2024
 </p>
 
 </header>
@@ -999,32 +999,59 @@ solution \(y=\frac 12\) corresponds to a local maxima.
 </div>
 
 <p>
-Comparing equations <span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:mle_def">6.5</a>)</span> and <span class="textup">(<a
-href="Discussion.html#eq:bayes_rule_full_condensed">6.3</a>)</span>, there is a clear connection between MLEs and Bayesian inference: <em>if we take a flat prior (i.e.&nbsp;\(f_\Theta (\theta )\) is
-constant) then the MLE \(\hat {\theta }\) is equal to the mode of the posterior distribution.</em> This allows us to view the MLE approach as a simplification of the Bayesian approach. There are two steps to
-this simplification, to obtain the MLE approach from the Bayesian one:
+From Bayes’ rule we have
+</p>
+
+<p>
+\[f_{\Theta |_{\{X=x\}}}(\theta )\propto L_{M_\theta }(x)f_\Theta (\theta ).\]
+</p>
+
+<p>
+Comparing this equation to <span class="textup">(<a href="Discussion.html#eq:bayes_rule_full_condensed">6.3</a>)</span>, we can extract a clear connection between MLEs and Bayesian inference.
+More precisely, the MLE approach can be viewed as a simplification of the Bayesian approach. There are two steps to this simplification:
 </p>
 <ul class="enumerate" style="list-style-type:none">
 
 
 <li>
 <p>
-<span class="listmarker">1.</span> We fix the prior to be a uniform distribution (or an improper flat prior, if necessary).
+<span class="listmarker">1.</span> Fix the prior to be a uniform distribution (or an improper flat prior, if necessary).
 </p>
+<p>
+With this choice, for \(\theta \in \Pi \) we obtain the posterior density
+</p>
+<span class="hidden"> \(\seteqnumber{0}{6.}{5}\)</span>
+<!--
+
+                                                fΘ|{X=x} (θ) ∝ LMθ (x).                                                (6.6)                                   --><a id="eq:posterior_from_flat_prior"></a><!--
+
+-->
+<p>
 
 
+\begin{equation}
+\label {eq:posterior_from_flat_prior} f_{\Theta |_{\{X=x\}}}(\theta )\propto L_{M_\theta }(x).
+\end{equation}
+
+
+</p>
 </li>
 <li>
 
 
 <p>
-<span class="listmarker">2.</span> Instead of considering the posterior distribution as a random variable, we approximate the posterior distribution with a point estimate: its mode.
+<span class="listmarker">2.</span> Then, instead of considering the posterior distribution as a random variable, we approximate the posterior distribution with a point estimate: its mode.
+</p>
+<p>
+Comparing <span class="textup">(<a href="notes.html#??">??</a>)</span> to <span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:mle_def">6.5</a>)</span>, this mode
+is precisely the maximum likelihood estimator \(\hat \theta \).
 </p>
 </li>
 </ul>
 
 <p>
-In principle we might make either one of these simplifications without the other one, but they are commonly made together. We are now able to discuss how the two approaches compare:
+In principle we might make either one of these simplifications without the other one, but they are commonly made together. When they are made together the methods (based on MLEs) that result are often known
+as ‘frequentist’ or ‘classical’ methods. We are now able to discuss how the two approaches compare:
 </p>
 <ul class="itemize" style="list-style-type:none">
 
@@ -1040,16 +1067,16 @@ href="The-connection-maximum-likelihood.html#s:bvm">6.2.1</a> for a more rigorou
 
 
 <p>
-<span class="listmarker">•</span> If we do not have lots of data then the approximation in step 2 will be less precise, and in the Bayesian case the influence of the prior will matter. In this situation whether
-Bayesian or MLE methods perform best depends on several factors.
+<span class="listmarker">•</span> If we do not have lots of data then the approximation in step 2 will be less precise and the influence of the prior will matter. In this case a well chosen prior can lead to
+significantly more accurate analysis.
 </p>
+</li>
+<li>
+
+
 <p>
-Bayesian methods require more work to implement, but they allow us to incorporate prior beliefs (if we have them). These prior beliefs can make the analysis more reliable, if they are realistic beliefs, but can make
-it less reliable if they are not. Bayesian methods generate a posterior distribution that has a clear meaning in terms of conditional probability, with little scope for misinterpretation.
-</p>
-<p>
-MLE based methods are comparatively easier to implement, but come with a risk of loss of detail from the approximation in step 2. They produce a point estimate for the known parameters, which is easier to
-communicate, but is also more open to misinterpretation. (We will discuss this issue in more detail in Chapter <a href="Testing-parameter-estimation.html#c:tests">7</a>.)
+<span class="listmarker">•</span> MLE methods produce a point estimate for the known parameters, which is easier to communicate but is also more open to misinterpretation. We will discuss these issues in
+more detail in Section <a href="Comparison-classical-methods.html#s:mle_testing_comparison">7.4</a>, once we have seen the Bayesian version of hypothesis testing and interval estimates.
 </p>
 </li>
 <li>
@@ -1061,36 +1088,16 @@ unreliable – no matter how much data we have.
 </p>
 </li>
 </ul>
-<div class="theorembodyremark">
-
-<ul class="list" style="list-style-type:none">
-
-
-
-<a id="autoid-139"></a>
-<li>
-<p>
-<span class="listmarker"> <span class="theoremheaderplain">Remark 6.2.3</span></span> <a id="autoid-140" ></a >When we give a point estimate of a random variable it is more common to use the
-mean, but for the MLE we use the mode. The reason for doing so is simply that the mode often gives a nicer formulae.
-</p>
-
-
-</li>
-
-</ul>
-
-</div>
 
 <p>
-Statistical methods based on MLEs and the simplifications 1 and 2 listed above are often known as ‘frequentist’ or ‘classical’ methods. You will sometimes find that statisticians describe themselves as ‘Bayesian’ or
-‘frequentist’, carrying the implication that they prefer to use one family of methods over the other. This may come from greater experience with one set of methods or from a preference due to the specifics of a
-particular model.
+You will sometimes find that statisticians describe themselves as ‘Bayesian’ or ‘frequentist’, carrying the implication that they prefer to use one family of methods over the other. This may come from greater
+experience with one set of methods or from a preference due to the specifics of a particular model.
 </p>
 
 <p>
-To a great extent this distinction is historical. During the middle of the 20<sup>th</sup> century methods based on simplifications 1 and 2 dominated statistics, because they could be implemented without the
-need for modern computers. Once it was realized that modern computers made Bayesian methods possible (with complicated model families) the community that investigated these techniques needed a name and an
-identity, to distinguish itself as something new. The concept of identifying as ‘Bayesian’ or ‘frequentist’ is essentially a relic of that social process, rather than anything with a clear mathematical foundation.
+To a great extent this distinction is historical. During the middle of the 20<sup>th</sup> century MLE based methods dominated statistics, because they could be implemented for complex models without the need
+for modern computers. Once it was realized that modern computers made Bayesian methods possible, the community that investigated these techniques needed a name and an identity, to distinguish itself as
+something new. The concept of identifying as ‘Bayesian’ or ‘frequentist’ is essentially a relic of that social process, rather than anything with a clear mathematical foundation.
 </p>
 
 <p>
@@ -1100,8 +1107,8 @@ model-specific reasons. We do need to divide things up in order to learn them, s
 <!--
 ...... subsection Making the connection precise             ......
 -->
-<h5 id="autosec-199"><span class="sectionnumber">6.2.1&#x2003;</span>Making the connection precise \(\offsyl \)</h5>
-<a id="notes-autopage-199"></a>
+<h5 id="autosec-198"><span class="sectionnumber">6.2.1&#x2003;</span>Making the connection precise \(\offsyl \)</h5>
+<a id="notes-autopage-198"></a>
 
 
 
@@ -1123,7 +1130,7 @@ Let \(\hat \theta \) be the MLE associated to the model family \(M_\theta ^{\oti
 Then as \(n\to \infty \) it holds that
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{6.}{5}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{6.}{6}\)</span>
 
 <!--
 
@@ -1132,7 +1139,7 @@ Then as \(n\to \infty \) it holds that
                                                                          1
                                                           Θ|{X=x} ≈ N θ , I(θ∗ )−1
                                                                                ∗
-                                                                                                                                             (6.6)                                   --><a id="eq:bvm"></a><!--
+                                                                                                                                             (6.7)                                   --><a id="eq:bvm"></a><!--
                                                                          n
 
 -->
@@ -1171,7 +1178,7 @@ href="The-connection-maximum-likelihood.html#eq:bvm">6.6</a>)</span> will fail: 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated November 20, 2024
+Copyright Nic Freeman, Sheffield University, last updated November 27, 2024
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, November 20, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, November 27, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Solutions to exercises</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: November 20, 2024
+last updated: November 27, 2024
 </p>
 
 </header>
@@ -3990,6 +3990,405 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_c
 </p>
 </li>
 </ul>
+<!--
+...... subsection Chapter <a href=Computational-methods.html#c:computational>8</a> ......
+-->
+<h5 id="autosec-300">Chapter <a href="Computational-methods.html#c:computational">8</a></h5>
+<a id="notes-autopage-300"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><a href="notes.html#??">??</a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker">(a,b)</span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(i)</span></span> We will answer both (a) and (b) here:
+</p>
+<div class="center">
+<p>
+
+
+<a href="mh_81ai1.png" target="_blank" ><img
+      src="mh_81ai1.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a><br />
+
+
+<a href="mh_81ai2.png" target="_blank" ><img
+      src="mh_81ai2.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+<p>
+Not much has changed from Example <a href="Metropolis-Hastings.html#ex:mh">8.2.3</a> here; it is clear that the MH algorithm is making larger movements but the approximation to the \(\Cauchy
+(0,1)\) distribution is still quite good.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(ii)</span></span> We obtain:
+</p>
+<div class="center">
+<p>
+
+
+<a href="mh_81aii1.png" target="_blank" ><img
+      src="mh_81aii1.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a><br />
+
+
+<a href="mh_81aii2.png" target="_blank" ><img
+      src="mh_81aii2.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+<p>
+Here the MH algorithm is struggling to converge, due to being started (just) outside of the bulk of the \(\Cauchy (0,1)\) distribution that we are trying to sample. We can see in both pictures that too many
+samples are appearing at large values.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(iii)</span></span> We obtain:
+</p>
+<div class="center">
+<p>
+
+
+<a href="mh_81aiii1.png" target="_blank" ><img
+      src="mh_81aiii1.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a><br />
+
+
+<a href="mh_81aiii2.png" target="_blank" ><img
+      src="mh_81aiii2.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+<p>
+The MH algorithm is failing to converge here. The effect of the initial value is still very visible after \(100\) steps. most of the samples are too large.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(iv)</span></span> We obtain:
+</p>
+<div class="center">
+<p>
+
+
+<a href="mh_81aiv1.png" target="_blank" ><img
+      src="mh_81aiv1.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a><br />
+
+
+<a href="mh_81aiv2.png" target="_blank" ><img
+      src="mh_81aiv2.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+<p>
+Here, by comparison to part (iii), the MH algorithm is producing good approximations to the Cauchy distributions, despite begin started at an unhelpful initial value. Increasing the step size from \(\Normal
+(0,1)\) to \(\Normal (0,20^2)\) has helped it to find its way back into the bulk of the distribution, quickly enough to have converged within 100 steps.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">(c)</span> Any proposals \(\wt {y}&lt;0\) will be rejected, because
+</p>
+<p>
+\[\alpha =\min \l \{1,\frac {f_{\Exp (1)}(\wt {y})}{f_{\Exp (1)}(y)}\r \}=\min \l \{1,\frac {0}{f_{\Exp (1)}(y)}\r \}=0\]
+</p>
+<p>
+due the fact that \(f_{\Exp (1)}\) has range \((0,\infty )\). Hence the MH algorithm will never move below \(0\).
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="notes.html#??">??</a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> The posterior density is
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+
+
+<!--
+                                                                                                          5
+                                                                                                                        !
+                                                                                                          Y     θ2          1
+                                                                                              f (θ|x) ∝                        .
+                                                                                                             x2 + θ 2
+                                                                                                          i=1 i
+                                                                                                                            θ2
+
+
+-->
+
+
+<p>
+
+
+\begin{align*}
+f(\theta |x)\propto \l (\prod _{i=1}^5\frac {\theta ^2}{x_i^2+\theta ^2}\r )\frac {1}{\theta ^2}.
+\end{align*}
+for \(\theta &gt;1\) and zero otherwise.
+</p>
+<p>
+<em>There isn’t any advantage to multiplying this expression out – it won’t simplify into anything nice!</em>
+</p>
+<p>
+Noting that \(\frac {\theta ^2}{x^2+\theta ^2}\leq 1\), we have \(f(\theta |x)\leq \frac {1}{\theta ^2}\), which means that \(\int _{\R } f(\theta |x)\,d\theta \leq \int _1^\infty \theta
+^{-2}\,d\theta &lt;\infty \). Hence \(f(\theta |x)\) is a proper density function.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> See the files 8_mcmc.ipynb and 8_mcmc.Rmd
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="notes.html#??">??</a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> In order: Definition <a href="Testing-parameter-estimation.html#d:odds_ratios">7.1.1</a>, equation <span
+class="textup">(<a href="Testing-parameter-estimation.html#eq:bayes_factor">7.1</a>)</span> and the table shortly below it, Definition <a
+href="High-posterior-density-regions.html#d:hpd_region">7.2.1</a>, equation <span class="textup">(<a href="High-posterior-density-regions.html#eq:hpd_eq_tails_prob">7.3</a>)</span>.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> In order, left column: Section <a href="Metropolis-Hastings.html#s:mh_general">8.2.1</a>, Section <a
+href="Metropolis-Hastings.html#s:mh_symmetric">8.2.2</a>, Example <a href="Metropolis-Hastings.html#ex:mh_ingredient_normal_walk">8.2.1</a> / Exercise <a href="notes.html#??">??</a>.
+</p>
+<p>
+In order, right column: Section <a href="Markov-chain-Monte-Carlo.html#s:mcmc_symmetric">8.3.1</a>, Section <a href="Gibbs-sampling.html#s:gibbs">8.4</a> (the algorithm is below Remark <a
+href="Gibbs-sampling.html#r:full_conditionals_shorthand">8.4.4</a>), Definition <a href="Gibbs-sampling.html#d:full_conditionals">8.4.3</a>.
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="notes.html#??">??</a></span> The point is that we need to take samples of \(Q\) in step 1 of the MH algorithm. If we already had an easy way to generate samples of
+\(Y\), then we wouldn’t bother using the MH algorithm anyway. So it doesn’t help to set \(Q\eqd Y\).
+</p>
+<p>
+If we try to use the Gibbs algorithm in \(d=1\) then, strictly, our definition of the full conditionals in Definition <a href="Gibbs-sampling.html#d:full_conditionals">8.4.3</a> no longer works as intended
+because if \(\Theta =(\theta _1)\) then \(\Theta _{-1}=()\), the empty vector! However, if we try to use the same idea in \(d=1\) and take the proposal \(Q\eqd \Theta |_{\{X=x\}}\), then we run into and
+instance of the problem described above, here with \(Y\eqd \Theta |_{\{X=x\}}\), which is the posterior distribution that the MCMC/Gibbs algorithms are trying to sample from.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="notes.html#??">??</a></span> The full conditional distribution of \(\theta _i\) is the distribution of \(\theta _i|\theta {-i},x\). It has p.d.f.&nbsp; \(f(\theta
+_i|\theta {-i},x)\propto f(\theta )\), where on the right hand side we treat \(\theta _i\mapsto f(\theta )\) as a function of \(\theta _i\) only and \(f(\theta )\) is the density of \(\theta
+=(\theta _1,\ldots ,\theta _d)\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><a href="notes.html#??">??</a></span>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> Suppose that \(X\eqd -X\). Then \(\P [X\leq x]=\P [-X\leq x]=\P [-x\leq X]\), so \(\int _{-\infty }^x f_X(u)\,du =
+\int _{-x}^\infty f_X{u}\,du\). Substituting \(v=-u\) in the second integral we obtain
+</p>
+<p>
+\[\P [X\leq x]=\int _{-\infty }^x f_X(u)\,du = \int _{-\infty }^x f_X(-v)\,dv.\]
+</p>
+<p>
+Hence the function \(v\mapsto f_X(-v)\) is the p.d.f.&nbsp;of \(X\), which we know is also \(f_X(x)\). Swapping \(v\) for \(x\) gives that \(f_X(x)=f_X(-x)\).
+</p>
+<p>
+Now suppose that \(f_X(x)=f_X(-x)\). Then, using the substitution \(v=-u\),
+</p>
+<p>
+\[\P [X\leq x]=\int _{-\infty }^x f_X(u)\,du=\int _{-\infty }^x f_X(-u)\,du=\int _{-x}^{\infty } f_X(v)\,dv =\P [-x\leq X]=\P [-X\leq x].\]
+</p>
+<p>
+Hence \(X\eqd -X\).
+</p>
+<p>
+<em>Strictly, when we write \(f_X(x)=f_X(-x)\) here, we should take into account the comments about probability density functions only being defined ‘almost everywhere’ from Sections <a
+href="Conditioning.html#s:technicalities">1.1.1</a> and <a href="Equality-in-distribution.html#s:eq_in_dist">1.2</a>.</em>
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> By Remark <a href="Conditioning-on-events-with-zero-probability.html#r:conditioning_to_be_det">1.6.4</a> we have
+\(Q|_{\{Y=y\}}\eqd y+Z\) and \(Y|_{\{Q=\tilde {y}\}}\eqd \tilde {y}-Z\). From the first equation we have
+</p>
+<p>
+\[\P [Q|_{\{Y=y\}}\leq \tilde {y}]=\P [y+Z\leq \tilde {y}]=\P [Z\leq \tilde {y}-y].\]
+</p>
+<p>
+Hence, differentiating with respect to \(\tilde {y}\), the p.d.f.&nbsp;of \(Q|_{\{Y=y\}}\) is
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
+<!--
+
+                                                              fQ|{Y =y} (ỹ) = fZ (ỹ − y).                                                        (C.4)                            --><a id="eq:Z-Z1"></a><!--
+
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:Z-Z1} f_{Q|_{\{Y=y\}}}(\tilde {y})=f_Z(\tilde {y}-y).
+\end{equation}
+
+
+</p>
+<p>
+We have also that
+</p>
+<p>
+\[\P [Y|_{\{Q=\tilde {y}\}}\leq y]=\P [\tilde {y}-Z\leq y]=\P [\tilde {y}-y\leq Z]\]
+</p>
+<p>
+From part (a) we have \(Z\eqd -Z\), hence
+</p>
+<p>
+\[\P [Y|_{\{Q=\tilde {y}\}}\leq y]=\P [\tilde {y}-y\leq -Z]=\P [Z\leq y-\tilde {y}].\]
+</p>
+<p>
+Differentiating with respect to \(y\) we obtain
+</p>
+<span class="hidden"> \(\seteqnumber{0}{C.}{4}\)</span>
+<!--
+
+                                                              fY |{Q=ỹ} (y) = fZ (y − ỹ).                                                        (C.5)                            --><a id="eq:Z-Z2"></a><!--
+
+-->
+<p>
+
+
+\begin{equation}
+\label {eq:Z-Z2} f_{Y|_{\{Q=\tilde {y}\}}}(y)=f_Z(y-\tilde {y}).
+\end{equation}
+
+
+</p>
+<p>
+Putting <span class="textup">(<a href="notes.html#??">??</a>)</span> and <span class="textup">(<a href="notes.html#??">??</a>)</span> together and using that \(f_Z(z)=f_Z(-z)\),
+</p>
+<p>
+\[f_{Q|_{\{Y=y\}}}(\tilde {y})=f_Z(\tilde {y}-y)=f_Z(y-\tilde {y})=f_{Y|_{\{Q=\tilde {y}\}}}(y).\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
 <a id="notes-autofile-last"></a>
 </section>
 
@@ -4000,7 +4399,7 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated November 20, 2024
+Copyright Nic Freeman, Sheffield University, last updated November 27, 2024
 </p>
 
 </footer>

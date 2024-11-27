@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, November 20, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, November 27, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Testing and parameter estimation</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -232,14 +232,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-203"></a>
+<a id="notes-autopage-202"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: November 20, 2024
+last updated: November 27, 2024
 </p>
 
 </header>
@@ -891,8 +891,8 @@ Home</a>
 <!--
 ...... chapter Testing and parameter estimation ......
 -->
-<h3 id="autosec-204">Chapter&nbsp;<span class="sectionnumber">7&#x2003;</span>Testing and parameter estimation</h3>
-<a id="notes-autopage-204"></a>
+<h3 id="autosec-203">Chapter&nbsp;<span class="sectionnumber">7&#x2003;</span>Testing and parameter estimation</h3>
+<a id="notes-autopage-203"></a>
 <a id="notes-autofile-33"></a>
 
 <a id="c:tests"></a>
@@ -913,8 +913,8 @@ varying the prior or comparing to a weakly informative prior.
 <!--
 ...... section Hypothesis testing ......
 -->
-<h4 id="autosec-205"><span class="sectionnumber">7.1&#x2003;</span>Hypothesis testing</h4>
-<a id="notes-autopage-205"></a>
+<h4 id="autosec-204"><span class="sectionnumber">7.1&#x2003;</span>Hypothesis testing</h4>
+<a id="notes-autopage-204"></a>
 
 
 
@@ -929,10 +929,10 @@ Hypothesis testing is surprisingly simple within the Bayesian framework. We firs
 
 
 
-<a id="autoid-141"></a>
+<a id="autoid-139"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.1</span></span> <a id="autoid-142" ></a ><a id="d:odds_ratios"></a> Let \(A\) and \(B\) be events such that \(\P
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.1</span></span> <a id="autoid-140" ></a ><a id="d:odds_ratios"></a> Let \(A\) and \(B\) be events such that \(\P
 [A\cup B]=1\) and \(A\cap B=\emptyset \). The <em>odds ratio</em> of \(A\) against \(B\) is
 </p>
 
@@ -953,7 +953,31 @@ It expresses how much more likely \(A\) is than \(B\). For example, \(O_{A,B}=2\
 
 <p>
 Take a Bayesian model \((X,\Theta )\) with parameter space \(\Pi \). We split the parameter space into two pieces: \(\Pi =\Pi _0\cup \Pi _1\) where \(\Pi _0\cap \Pi _1=\emptyset \). We consider two
-competing hypothesis: \(H_0\) is that the unknown parameter \(\theta \) is within the set \(\Pi _0\), and \(H_1\) is that the unknown parameter \(\theta \) is within the set \(\Pi _1\).
+competing hypothesis:
+</p>
+<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+
+
+
+<!--
+
+                                                                                                 H0 : that θ ∈ Π0 ,
+
+                                                                                                 H1 : that θ ∈ Π1 ,
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+H_0&amp;:\text { that }\theta \in \Pi _0, \\ H_1&amp;:\text { that }\theta \in \Pi _1,
+\end{align*}
+where \(\theta \) represents the true value of the parameter i.e.&nbsp;the value for which our model should (at least, as a good approximation) match up with reality.
 </p>
 <div class="theorembodydefinition">
 
@@ -961,27 +985,59 @@ competing hypothesis: \(H_0\) is that the unknown parameter \(\theta \) is withi
 
 
 
-<a id="autoid-143"></a>
+<a id="autoid-141"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.2</span></span> <a id="autoid-144" ></a >The <em>prior odds</em> of \(H_0\) against \(H_1\) is defined to be
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.2</span></span> <a id="autoid-142" ></a >The <em>prior odds</em> of \(H_0\) against \(H_1\) is defined to be
 </p>
 
+<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+
+<!--
+
+                                                                        P[Θ ∈ Π0 ]
+                                                                                   .                                                                        (7.1)         --><a id="eq:prior_odds"></a><!--
+                                                                        P[Θ ∈ Π1 ]
+
+-->
+
 <p>
-\[\frac {\P [\Theta \in \Pi _0]}{\P [\Theta \in \Pi _1]}.\]
+
+
+\begin{equation}
+\label {eq:prior_odds} \frac {\P [\Theta \in \Pi _0]}{\P [\Theta \in \Pi _1]}.
+\end{equation}
+
+
 </p>
 
 <p>
 Given the data \(x\), the <em>posterior odds</em> of \(H_0\) against \(H_1\) is defined to be
 </p>
 
+<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
+
+<!--
+
+                                                                  P[Θ|{X=x} ∈ Π0 ]
+                                                                                   .                                                                (7.2)            --><a id="eq:posterior_odds"></a><!--
+                                                                  P[Θ|{X=x} ∈ Π1 ]
+
+-->
+
 <p>
-\[\frac {\P [\Theta |_{\{X=x\}}\in \Pi _0]}{\P [\Theta |_{\{X=x\}}\in \Pi _1]}.\]
+
+
+\begin{equation}
+\label {eq:posterior_odds} \frac {\P [\Theta |_{\{X=x\}}\in \Pi _0]}{\P [\Theta |_{\{X=x\}}\in \Pi _1]}.
+\end{equation}
+
+
 </p>
 
 <p>
-
-
+We might also refer to <span class="textup">(<a href="notes.html#??">??</a>)</span> as the ‘prior odds of \(\Pi _0\) against \(\Pi _1\)’, and similarly for <span class="textup">(<a
+href="notes.html#??">??</a>)</span>.
 </p>
 
 
@@ -992,8 +1048,8 @@ Given the data \(x\), the <em>posterior odds</em> of \(H_0\) against \(H_1\) is 
 </div>
 
 <p>
-Note that the prior odds involves the prior \(\Theta \), and the posterior odds involve the posterior \(\Theta |_{\{X=x\}}\), both otherwise the formulae are identical. We assume implicitly that \(\P [\Theta
-\in \Pi _0]\) and \(\P [\Theta \in \Pi _1]\) are both non-zero, which by Theorems <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> and <a
+Note that the prior odds involve the prior \(\Theta \), and the posterior odds involve the posterior \(\Theta |_{\{X=x\}}\), but otherwise the formulae are identical. We assume implicitly that \(\P [\Theta \in
+\Pi _0]\) and \(\P [\Theta \in \Pi _1]\) are both non-zero, which by Theorems <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> and <a
 href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> implies that the same is true for \(\Theta |_{\{X=x\}}\). Note also that the prior and posterior odds are only well
 defined for proper prior and posterior distributions, or else we cannot make sense of the probabilities above.
 </p>
@@ -1002,13 +1058,13 @@ defined for proper prior and posterior distributions, or else we cannot make sen
 It is often helpful to get a feel for how much the data has influenced the result of the test. For these purposes we also define the <em>Bayes factor</em>
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{2}\)</span>
 
 <!--
 
-                                                              posterior odds
-                                                         B=                  .                                                        (7.1)                            --><a id="eq:bayes_factor"></a><!--
-                                                                prior odds
+                                                                       posterior odds
+                                                                 B=                   .                                                                (7.3)            --><a id="eq:bayes_factor"></a><!--
+                                                                         prior odds
 
 -->
 
@@ -1032,10 +1088,10 @@ _1\). In other words, \(B\) is the ratio of the likelihood of \(H_0\) compared t
 
 
 
-<a id="autoid-145"></a>
+<a id="autoid-143"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Lemma 7.1.3</span></span> <a id="autoid-146" ></a ><a id="l:bayes_factor_likelihood_ratio"></a> In the notation above, the
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 7.1.3</span></span> <a id="autoid-144" ></a ><a id="l:bayes_factor_likelihood_ratio"></a> In the notation above, the
 Bayes factor satisfies \(B=\frac {L_{X|_{\{\Theta \in \Pi _0\}}}(x)}{L_{X|_{\{\Theta \in \Pi _1\}}}(x)}\) where \(L\) denotes the likelihood function.
 </p>
 
@@ -1064,7 +1120,7 @@ href="Exercises-on-Chapter-ref-c-tests.html#ps:bayes_factor_likelihood_ratio_abs
 </p>
 
 <p>
-As a rough guide to interpreting the Bayes factor, the following table<sup>1</sup><a id="notes-autopage-208"></a> is often used:
+As a rough guide to interpreting the Bayes factor, the following table<sup>1</sup><a id="notes-autopage-207"></a> is often used:
 </p>
 <div class="center">
 <table>
@@ -1117,7 +1173,7 @@ Values of the Bayes factor below \(1\) suggest evidence in favour of \(H_1\) ove
 </p>
 <div role="note" class="footnotes">
 
-<a id="notes-autopage-211"></a>
+<a id="notes-autopage-210"></a>
 
 <p>
 <sup>1</sup>&nbsp;From Kass &amp; Raftery (1995).
@@ -1135,28 +1191,59 @@ Values of the Bayes factor below \(1\) suggest evidence in favour of \(H_1\) ove
 
 
 
-<a id="autoid-147"></a>
+<a id="autoid-145"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Example 7.1.4</span></span> <a id="autoid-148" ></a >Returning to Example <a
+<span class="listmarker"> <span class="theoremheaderplain">Example 7.1.4</span></span> <a id="autoid-146" ></a >Returning to Example <a
 href="The-normal-distribution-with-unknown-mean-variance.html#ex:speed_camera_2">4.5.3</a>, suppose that we wished to test the hypothesis that the speed camera is, on average, overestimating the
-speed to cars. According to our posterior, a car travelling at exactly 30mph will have a recorded speed with a \(N(\mu ,\frac {1}{\tau })\) distribution where \((\mu ,\tau )\sim \NGam (30.14, 10.01,
-6.00, 1.24)\).
+speed to cars. Recall that in this example:
+</p>
+<ul class="itemize" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker">•</span> Our model was the \(N(\mu ,\frac {1}{\tau })\), for the speed recorded by the camera when a car travels at exactly 30mph.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">•</span> We used a weak prior \((\mu ,\tau )\sim \NGam (30,\frac {1}{10^2},1,\frac 15)\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">•</span> We found the posterior \((\mu ,\tau )\sim \NGam (30.14, 10.01, 6.00, 1.24)\).
+</p>
+</li>
+</ul>
+
+<p>
+Both the posterior and prior density functions are plotted in Example <a href="The-normal-distribution-with-unknown-mean-variance.html#ex:speed_camera_2">4.5.3</a>.
 </p>
 
 <p>
-The speed camera on average overestimates the speed when \(\mu &gt;30\), and underestimates when \(\mu &lt;30\). The probability that \(\mu \) is exactly \(30\) is zero, because our posterior \(\NGam \) is
-a continuous distribution, so we will simply ignore that possibility. We don’t care about the location of \(\tau \) here so we simply allow it to take any value \(\tau \in (0,\infty )\). This gives us hypothesis
+Recall that if \((\mu ,\tau )\sim \NGam (m,p,a,b)\) then \(\mu |\tau \sim \Normal (m,\frac {1}{p\tau })\), so the marginal mean of \(\mu \) is \(m\). Hence, the speed camera on average overestimates
+the speed when \(\mu &gt;30\), and underestimates on average when \(\mu &lt;30\). The probability that \(\mu \) is exactly \(30\) is zero, because our posterior \(\NGam \) is a continuous distribution, so we
+will simply ignore that possibility. We don’t care about the location of \(\tau \) here so we simply allow it to take any value \(\tau \in (0,\infty )\). This gives us hypothesis
 </p>
-<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{3}\)</span>
 
 
 
 <!--
 
-                                                                                       H0 : that (µ, τ ) ⊆ Π0 = (30, ∞) × (0, ∞),
+                                                                                       H0 : that (µ, τ ) ∈ Π0 = (30, ∞) × (0, ∞),
 
-                                                                                       H1 : that (µ, τ ) ⊆ Π1 = (−∞, 30) × (0, ∞).
+                                                                                       H1 : that (µ, τ ) ∈ Π1 = (−∞, 30) × (0, ∞).
 
 
 
@@ -1168,16 +1255,16 @@ a continuous distribution, so we will simply ignore that possibility. We don’t
 
 
 \begin{align*}
-H_0&amp;:\text { that }(\mu ,\tau )\sw \Pi _0=(30,\infty )\times (0,\infty ), \\ H_1&amp;:\text { that }(\mu ,\tau )\sw \Pi _1=(-\infty ,30)\times (0,\infty ).
+H_0&amp;:\text { that }(\mu ,\tau )\in \Pi _0=(30,\infty )\times (0,\infty ), \\ H_1&amp;:\text { that }(\mu ,\tau )\in \Pi _1=(-\infty ,30)\times (0,\infty ).
 \end{align*}
-We have
+We want to compute the Bayes factor \(B\). We’ll start with the posterior odds ratio. We have
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{3}\)</span>
 
 <!--
                                                                                              Z ∞Z ∞
-                                                                        P[(µ, τ ) ∈ Π0 ] =            fNGamma(30.14,10.01,6.00,1.24) (µ, τ ) dτ dµ = 0.82,
+                                                                        P[(µ, τ ) ∈ Π0 ] =            fNGamma(30.14,10.01,6.00,1.24) (µ, τ ) dτ dµ ≈ 0.82,
                                                                                              30   0
 
 -->
@@ -1186,7 +1273,7 @@ We have
 
 
 \begin{equation*}
-\P [(\mu ,\tau )\in \Pi _0]=\int _{30}^\infty \int _0^\infty f_{\NGam (30.14, 10.01, 6.00, 1.24)}(\mu ,\tau )\,d\tau \,d\mu = 0.82,
+\P [(\mu ,\tau )\in \Pi _0]=\int _{30}^\infty \int _0^\infty f_{\NGam (30.14, 10.01, 6.00, 1.24)}(\mu ,\tau )\,d\tau \,d\mu \approx 0.82,
 \end{equation*}
 
 
@@ -1206,12 +1293,12 @@ distribution (this symmetry is visible in the sketch in Example <a href="The-nor
 {1}{10^2},1,\frac 15)\in \Pi _1]=\P [\NGam (30,\frac {1}{10^2},1,\frac 15)\in \Pi _0]=\frac 12\). Hence the Bayes factor for this hypothesis test is
 </p>
 
-<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
+<span class="hidden"> \(\seteqnumber{0}{7.}{3}\)</span>
 
 <!--
 
                                                                                                             4.56
-                                                                                                      B=         = 4.56.                                                                                           (7.2)
+                                                                                                      B=         = 4.56.                                                                                           (7.4)
                                                                                                             1.00
 
 -->
@@ -1231,7 +1318,7 @@ Based on our table above, we have substantial evidence that the speed camera is 
 </p>
 
 <p>
-A potential problem with our test is that we have not cared about <em>how much</em> the camera is overestimating speeds. The (marginal) mean of \(\mu \) in our posterior distribution is \(30.11\), which is
+A potential problem with our test is that we have not cared about <em>how much</em> the camera is overestimating speeds. The (marginal) mean of \(\mu \) in our posterior distribution is \(30.14\), which is
 only slightly larger than the true speed \(30\), and this suggests that the error is fairly small. We would need to be careful about communicating the result of our test, to avoid giving the wrong impression.
 </p>
 
@@ -1255,7 +1342,7 @@ Note that we have used a small amount of Bayesian shorthand in this example, by 
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated November 20, 2024
+Copyright Nic Freeman, Sheffield University, last updated November 27, 2024
 </p>
 
 </footer>
