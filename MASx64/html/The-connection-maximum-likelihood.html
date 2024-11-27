@@ -542,91 +542,91 @@ Home</a>
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-discussion.html#autosec-201" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-discussion.html#autosec-200" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
 </p>
 
 
 
 <p>
-<a href="Testing-parameter-estimation.html#autosec-204" class="tocchapter" >
+<a href="Testing-parameter-estimation.html#autosec-203" class="tocchapter" >
 <span class="sectionnumber">7</span>&#x2003;Testing and parameter estimation</a>
 </p>
 
 
 
 <p>
-<a href="Testing-parameter-estimation.html#autosec-205" class="tocsection" >
+<a href="Testing-parameter-estimation.html#autosec-204" class="tocsection" >
 <span class="sectionnumber">7.1</span>&#x2003;Hypothesis testing</a>
 </p>
 
 
 
 <p>
-<a href="High-posterior-density-regions.html#autosec-213" class="tocsection" >
+<a href="High-posterior-density-regions.html#autosec-212" class="tocsection" >
 <span class="sectionnumber">7.2</span>&#x2003;High posterior density regions</a>
 </p>
 
 
 
 <p>
-<a href="Point-estimates.html#autosec-222" class="tocsection" >
+<a href="Point-estimates.html#autosec-221" class="tocsection" >
 <span class="sectionnumber">7.3</span>&#x2003;Point estimates</a>
 </p>
 
 
 
 <p>
-<a href="Comparison-classical-methods.html#autosec-227" class="tocsection" >
+<a href="Comparison-classical-methods.html#autosec-226" class="tocsection" >
 <span class="sectionnumber">7.4</span>&#x2003;Comparison to classical methods</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-tests.html#autosec-233" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-tests.html#autosec-232" class="tocsection" >
 <span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Computational-methods.html#autosec-236" class="tocchapter" >
+<a href="Computational-methods.html#autosec-235" class="tocchapter" >
 <span class="sectionnumber">8</span>&#x2003;Computational methods</a>
 </p>
 
 
 
 <p>
-<a href="Computational-methods.html#autosec-237" class="tocsection" >
+<a href="Computational-methods.html#autosec-236" class="tocsection" >
 <span class="sectionnumber">8.1</span>&#x2003;Approximate Bayesian computation \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
-<a href="Metropolis-Hastings.html#autosec-240" class="tocsection" >
+<a href="Metropolis-Hastings.html#autosec-239" class="tocsection" >
 <span class="sectionnumber">8.2</span>&#x2003;Metropolis-Hastings</a>
 </p>
 
 
 
 <p>
-<a href="Markov-chain-Monte-Carlo.html#autosec-254" class="tocsection" >
-<span class="sectionnumber">8.3</span>&#x2003;Markov chain Monte Carlo</a>
+<a href="Markov-Chain-Monte-Carlo.html#autosec-253" class="tocsection" >
+<span class="sectionnumber">8.3</span>&#x2003;Markov Chain Monte Carlo</a>
 </p>
 
 
 
 <p>
-<a href="Gibbs-sampling.html#autosec-259" class="tocsection" >
+<a href="Gibbs-sampling.html#autosec-258" class="tocsection" >
 <span class="sectionnumber">8.4</span>&#x2003;Gibbs sampling</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-computational.html#autosec-266" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-computational.html#autosec-265" class="tocsection" >
 <span class="sectionnumber">8.5</span>&#x2003;Exercises on Chapter 8</a>
 </p>
 
@@ -1043,8 +1043,8 @@ With this choice, for \(\theta \in \Pi \) we obtain the posterior density
 <span class="listmarker">2.</span> Then, instead of considering the posterior distribution as a random variable, we approximate the posterior distribution with a point estimate: its mode.
 </p>
 <p>
-Comparing <span class="textup">(<a href="notes.html#??">??</a>)</span> to <span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:mle_def">6.5</a>)</span>, this mode
-is precisely the maximum likelihood estimator \(\hat \theta \).
+Comparing <span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:posterior_from_flat_prior">6.6</a>)</span> to <span class="textup">(<a
+href="The-connection-maximum-likelihood.html#eq:mle_def">6.5</a>)</span>, this mode is precisely the maximum likelihood estimator \(\hat \theta \).
 </p>
 </li>
 </ul>
@@ -1156,17 +1156,17 @@ Then as \(n\to \infty \) it holds that
 
 <p>
 where \(I(\theta )\) is the <em>Fisher information matrix</em> defined by \(I(\theta )_{ij}=\E [\frac {\p ^2}{\p \theta _i \theta _j}\log f_{M_\theta ^{\otimes n}}(X)]\). The key point is that
-<span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:bvm">6.6</a>)</span> says that the posterior \(\Theta |_{\{X=x\}}\) and the MLE \(\theta ^*\) are in fact very similar,
+<span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:bvm">6.7</a>)</span> says that the posterior \(\Theta |_{\{X=x\}}\) and the MLE \(\theta ^*\) are in fact very similar,
 for large \(n\), because of the factor \(\frac 1n\) in the variance.
 </p>
 
 <p>
-Equation <span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:bvm">6.6</a>)</span> is known as Laplace approximation. The mathematically precise form of this approximation,
-which replaces \(\approxd \) in <span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:bvm">6.6</a>)</span> by the concept of convergence is distribution, is known as the
+Equation <span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:bvm">6.7</a>)</span> is known as Laplace approximation. The mathematically precise form of this approximation,
+which replaces \(\approxd \) in <span class="textup">(<a href="The-connection-maximum-likelihood.html#eq:bvm">6.7</a>)</span> by the concept of convergence is distribution, is known as the
 Bernstein von-Mises theorem. The first rigorous proof was given by Doob in 1949 for the special case of finite sample spaces. It has since been extended under more general assumptions, notably to cover countable
 state spaces, but the general case (and whatever conditions it may need) is still unknown. From these results we do know that various conditions are required for <span class="textup">(<a
-href="The-connection-maximum-likelihood.html#eq:bvm">6.6</a>)</span> to hold. We can also identify cases in which <span class="textup">(<a
-href="The-connection-maximum-likelihood.html#eq:bvm">6.6</a>)</span> will fail: for example if \(M_\theta \sim \Cauchy (\theta ,1)\) then all of the terms in \(I(\theta )\) will be undefined.
+href="The-connection-maximum-likelihood.html#eq:bvm">6.7</a>)</span> to hold. We can also identify cases in which <span class="textup">(<a
+href="The-connection-maximum-likelihood.html#eq:bvm">6.7</a>)</span> will fail: for example if \(M_\theta \sim \Cauchy (\theta ,1)\) then all of the terms in \(I(\theta )\) will be undefined.
 </p>
 
 </section>
