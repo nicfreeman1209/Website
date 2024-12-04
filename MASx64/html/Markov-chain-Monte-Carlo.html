@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, November 27, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, December 4, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Markov Chain Monte Carlo</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: November 27, 2024
+last updated: December 4, 2024
 </p>
 
 </header>
@@ -986,9 +986,9 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 </td>
 <td class="tdp">
 <p>
-If we don’t use the symmetric case, then we also need to evaluate \(f_{Y|_{\{Q=q\}}}\) and \(f_{Q|_{\{Y=y\}}}\), from our chosen joint distribution \((Y,Q)\). Our choice of \((Y,Q)\) (in the step above) will
-usually result in us being able to write down the joint p.d.f.&nbsp;\(f_{Y,Q}\), from which we can (at least in principle) use Lemma <a
-href="Conditioning-on-events-with-zero-probability.html#l:rv_from_conditioning_abs_cts">1.6.1</a> to calculate \(f_{Y|_{\{Q=q\}}}\) and \(f_{Q|_{\{Y=y\}}}\).
+If we don’t use the symmetric case, then we also need to evaluate \(f_{Q|_{\{Y=y\}}}\), from our chosen joint distribution \((Y,Q)\). Our choice of \((Y,Q)\) (in the step above) will usually result in us being
+able to write down the joint p.d.f.&nbsp;\(f_{Y,Q}\), from which we can (at least in principle) use Lemma <a
+href="Conditioning-on-events-with-zero-probability.html#l:rv_from_conditioning_abs_cts">1.6.1</a> to calculate \(f_{Q|_{\{Y=y\}}}\).
 </p>
 </td>
 </tr>
@@ -999,17 +999,35 @@ href="Conditioning-on-events-with-zero-probability.html#l:rv_from_conditioning_a
 
 <p>
 <span class="listmarker">3.</span> The last thing that we require is that the proposals are accepted fairly often, in step 3 of the MH algorithm. As a rough guide, an acceptance rate of \(15-50\%\) is generally
-viewed as sufficient.
+viewed as best.
 </p>
+<ul class="itemize" style="list-style-type:none">
+
+
+<li>
 <p>
-This happens naturally in many cases. When it does not, additional techniques are required, some of which appear in the MSc material next semester.
+<span class="listmarker">•</span> An acceptance rate that is very high (i.e.&nbsp;moderately close to \(100\%\)) often means that the MH algorithm is not moving very fast, so won’t converge quickly.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">•</span> An acceptance rate that is too low (i.e.&nbsp;close to \(0\%\)) tells you that few proposals are being accepted. This also prevents the MH algorithm from converging quickly.
+</p>
+</li>
+</ul>
+<p>
+A good acceptance rate happens naturally in some cases. When it does not, a bit of hand-tuning or additional techniques are required, some of which appear in the MSc material next semester.
 </p>
 </li>
 </ul>
 
 <p>
-We’ll focus on the symmetric case, for the remainder of Section <a href="Markov-Chain-Monte-Carlo.html#s:mcmc">8.3</a>. We’ll write down a full description of the MCMC algorithm for Bayesian inference,
-for the random walk case, in Section <a href="Markov-Chain-Monte-Carlo.html#s:mcmc_symmetric">8.3.1</a>
+We’ll focus on the symmetric case from now on. We’ll write down a full description of the MCMC algorithm for Bayesian inference, for the random walk case, in Section <a
+href="Markov-Chain-Monte-Carlo.html#s:mcmc_symmetric">8.3.1</a>
 </p>
 <!--
 ...... subsection MCMC algorithm for the random walk case ......
@@ -1022,7 +1040,7 @@ for the random walk case, in Section <a href="Markov-Chain-Monte-Carlo.html#s:mc
 <a id="s:mcmc_symmetric"></a>
 
 <p>
-Take a (discrete or continuous) Bayesian model \((X,\Theta )\), with parameter space \(\Pi =\R ^d\). We want to obtain samples of \(\Theta |_{\{X=x\}}\), and we know the p.d.f.&nbsp;\(f_{\Theta
+Take a (discrete or continuous) Bayesian model \((X,\Theta )\), with parameter space \(\Pi \sw \R ^d\). We want to obtain samples of \(\Theta |_{\{X=x\}}\), and we know the p.d.f.&nbsp;\(f_{\Theta
 |_{\{X=x\}}}\) from Theorems <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a>/<a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>.
 </p>
 
@@ -1086,7 +1104,7 @@ Repeating the whole procedure obtains multiple samples of \(\Theta |_{\{X=x\}}\)
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated November 27, 2024
+Copyright Nic Freeman, Sheffield University, last updated December 4, 2024
 </p>
 
 </footer>
