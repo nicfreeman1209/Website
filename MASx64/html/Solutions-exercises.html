@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, December 4, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, December 5, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Solutions to exercises</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: December 4, 2024
+last updated: December 5, 2024
 </p>
 
 </header>
@@ -889,7 +889,7 @@ Home</a>
 </div>
 
 <!--
-...... chapter Solutions to exercises ......
+......     chapter Solutions to exercises ......
 -->
 <h3 id="autosec-280">Chapter&nbsp;<span class="sectionnumber">C&#x2003;</span>Solutions to exercises</h3>
 <a id="notes-autopage-280"></a>
@@ -897,7 +897,7 @@ Home</a>
 
 <a id="a:solutions"></a>
 <!--
-...... subsection Chapter <a href=Conditioning.html#c:conditioning>1</a> ......
+......   subsection Chapter <a href=Conditioning.html#c:conditioning>1</a> ......
 -->
 <h5 id="autosec-281">Chapter <a href="Conditioning.html#c:conditioning">1</a></h5>
 <a id="notes-autopage-281"></a>
@@ -982,7 +982,7 @@ _B \frac {1}{b-a}\,dx.\]
 Hence \(U&apos;\) is a continuous random variable with p.d.f.
 </p>
 <p>
-\[f_{U&apos;}(u)=\begin {cases} \frac {1}{b-a} &amp; \text { for }x\in [a,b] \\ 0 &amp; \text { otherwise}. \end {cases} \]
+\[f_{U&apos;}(u)=\begin {cases} \frac {1}{b-a} &amp; \text { for }x\in [a,b] \\ 0 &amp; \text { otherwise}.                      \end {cases} \]
 </p>
 <p>
 This is the continuous uniform distribution on \([a,b]\).
@@ -1122,9 +1122,9 @@ In the middle equality we use <span class="textup">(<a href="Exercises-on-Chapte
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{0}\)</span>
 <!--
-                                                P[X ≥ 5, Y = y]
-                            P[Y |{X≥5} = y] =                   .                          (C.1)                                                                        --><a id="eq:cond_corr_ps_xy"></a><!--
-                                                   P[X ≥ 5]
+                                                 P[X ≥ 5, Y = y]
+                             P[Y |{X≥5} = y] =                   .                           (C.1)                                                                      --><a id="eq:cond_corr_ps_xy"></a><!--
+                                                    P[X ≥ 5]
 -->
 <p>
 
@@ -1143,14 +1143,17 @@ We need to calculate the top and bottom of <span class="textup">(<a href="Soluti
 
 <!--
                                                                                              ∞
+                                                                                                   2−xy (1 − 2−y )
                                                                                              X
-                                                                         P[X ≥ 5, Y = y] =         2−xy (1 − 2−y )
+                                                                         P[X ≥ 5, Y = y] =
                                                                                              x=5
                                                                                                          ∞
-                                                                                                         X                       (2−y )5
-                                                                                          = (1 − 2−y )     (2−y )x = (1 − 2−y )          = 2−5y .
-                                                                                                                                1 − 2−y
+                                                                                                                                     (2−y )5
+                                                                                          = (1 − 2−y )       (2−y )x = (1 − 2−y )            = 2−5y .
+                                                                                                         X
+
                                                                                                          x=5
+                                                                                                                                    1 − 2−y
 
 
 -->
@@ -1169,12 +1172,13 @@ href="Solutions-exercises.html#eq:cond_corr_ps_xy">C.1</a>)</span> we obtain
 
 
 <!--
+                                                                                                  2−5y (1 − 2−5 )
                                                                                                                                            y−1
-                                                                                                 2−5y (1 − 2−5 )
-                                                                                                                                
-                                                                                                                             1        1
-                                                                               P[Y |{X≥5} = y] =                 =        1− 5
-                                                                                                       2−5                  2         25
+                                                                                                                       1              1
+                                                                                                                               
+                                                                                P[Y |{X≥5} = y] =         −5
+                                                                                                                  = 1− 5
+                                                                                                        2             2               25
 
 
 -->
@@ -1215,7 +1219,7 @@ The last equality follows by symmetry (or a \(v=-y\) substitution) because \(f_X
 variable with p.d.f.
 </p>
 <p>
-\[f_{Y&apos;}(y)=\begin {cases} 2f_X(y) &amp; \text { for }y&gt;0 \\ 0 &amp; \text { otherwise}. \end {cases} \]
+\[f_{Y&apos;}(y)=\begin {cases} 2f_X(y) &amp; \text { for }y&gt;0 \\ 0 &amp; \text { otherwise}.                           \end {cases} \]
 </p>
 <p>
 This matches the distribution of \(X|_{\{X\geq 0\}}\) that we obtained in Example <a href="Conditioning-on-location.html#ex:N_conditioning_fold">1.4.3</a>.
@@ -1265,10 +1269,10 @@ lemma, for all \(B\sw \R ^d\) we have
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{1}\)</span>
 <!--
-                         P[(X, Y ) ∈ A × B]    P[X ∈ A, Y ∈ B]   P[X ∈ A]P[Y ∈ B]
-  P[(X, Y ) ∈ A × B] =                    d
-                                             =                 =                  = P[Y ∈ B], (C.2)                                                               --><a id="eq:indep_conditioning_1"></a><!--
-                         P[(X, Y ) ∈ A × R ]      P[X ∈ A]           P[X ∈ A]
+                          P[(X, Y ) ∈ A × B]    P[X ∈ A, Y ∈ B]   P[X ∈ A]P[Y ∈ B]
+   P[(X, Y ) ∈ A × B] =                    d
+                                              =                 =                  = P[Y ∈ B],            (C.2)                                                   --><a id="eq:indep_conditioning_1"></a><!--
+                          P[(X, Y ) ∈ A × R ]      P[X ∈ A]           P[X ∈ A]
 -->
 <p>
 
@@ -1297,7 +1301,7 @@ The last equality above uses <span class="textup">(<a href="Solutions-exercises.
 </li>
 </ul>
 <!--
-...... subsection Chapter <a href=Bayesian-models-discrete-data.html#c:bayes_models_discrete>2</a> ......
+......   subsection Chapter <a href=Bayesian-models-discrete-data.html#c:bayes_models_discrete>2</a> ......
 -->
 <h5 id="autosec-283">Chapter <a href="Bayesian-models-discrete-data.html#c:bayes_models_discrete">2</a></h5>
 <a id="notes-autopage-283"></a>
@@ -1339,13 +1343,13 @@ The last equality above uses <span class="textup">(<a href="Solutions-exercises.
 
 
 <!--
-                                                                                              1
-                                                          fP |{X=5} (p) = R 1                                           P[Geometric(p) = 5]fUniform([0,1]) (p) dp
+                                                                                               1
+                                                          fP |{X=5} (p) = R 1                                         P[Geometric(p) = 5]fUniform([0,1]) (p) dp
                                                                           0 P[Geometric(q) = 5]fUniform([0,1]) (q) dq
-                                                                                 1
-                                                                       = R1              p(1 − p)5
-                                                                                     5
-                                                                          0 q(1 − q) dq
+                                                                                1
+                                                                       = R1               p(1 − p)5
+                                                                            q(1 −  q)5 dq
+                                                                          0
                                                                             1
                                                                        =         p(1 − p)5
                                                                          B(2, 6)
@@ -1398,17 +1402,17 @@ for \(p\in [0,1]\) and zero elsewhere, which we recognize as the p.d.f.&nbsp;of 
 
 
 <!--
-                                                                                                 1
-                                                              fP |{X=9} (p) = R 1                                       P[Geometric(p) = 9]fBeta(2,6) (p) dp
-                                                                              0 P [Geometric (q)  = 9]fBeta(2,6) (q) dq
-                                                                             B(2, 6)              1
-                                                                           =         R1                           p(1 − p)5 p(1 − p)9
-                                                                             B(2, 6) q(1 − q) q(1 − q)9 q dq
-                                                                                                 5
-                                                                                       0
-                                                                                1
-                                                                           =          p2 (1 − p)14
-                                                                             B(3, 15)
+                                                                                                  1
+                                                               fP |{X=9} (p) = R 1                                     P[Geometric(p) = 9]fBeta(2,6) (p) dp
+                                                                               0 P[Geometric(q) = 9]fBeta(2,6) (q) dq
+                                                                              B(2, 6)              1
+                                                                            =                                     p(1 − p)5 p(1 − p)9
+                                                                              B(2, 6) 01 q(1 − q)5 q(1 − q)9 q dq
+                                                                                      R
+
+                                                                                 1
+                                                                            =          p2 (1 − p)14
+                                                                              B(3, 15)
 
 
 -->
@@ -1478,7 +1482,7 @@ href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> the posterior h
 
 
 <!--
-                                                                                                1
+                                                                                                 1
                                                                     fΛ|{X=5} (λ) = R ∞                              P[Poisson(λ) = 7]fExp(5) (λ)
                                                                                   0 P[Poisson(l) = 7]fExp(5) (l) dl
                                                                                  7!       1
@@ -1486,16 +1490,16 @@ href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> the posterior h
                                                                                  7! 0 l e le dl
                                                                                       1
                                                                                = R ∞ 8 −6l λ8 e−6λ
-                                                                                  0 l e dl
-                                                                                    69         1
-                                                                               =                       λ8 e−6λ
-                                                                                   Γ(9) 0∞ Γ(9)
-                                                                                            69 8 −6l
+                                                                                  0 l e   dl
+                                                                                    9
+                                                                                  6          1
+                                                                               =      R ∞ 69            λ8 e−6λ
+                                                                                 Γ(9) 0 Γ(9) l8 e−6l dl
+                                                                                    69        1
+                                                                               =                         λ8 e−6λ
+                                                                                   Γ(9) 0∞ fΓ(6,9)(l) dl
                                                                                        R
-                                                                                                l e dl
-                                                                                    69       1
-                                                                               =       R∞               λ8 e−6λ
-                                                                                   Γ(9) 0 fΓ(6,9)(l) dl
+
                                                                                     69 8 −6λ
                                                                                =        λ e
                                                                                    Γ(9)
@@ -1522,17 +1526,19 @@ The predictive p.m.f.&nbsp;is given by
 
 
 <!--
-                                                                                              Z ∞
-                                                                               P[X 0 = x] =         P[Poisson(λ) = x]fGamma(9,6) (λ) dλ
-                                                                                              0
-                                                                                              Z ∞
-                                                                                                λx e−λ 96 8 −6λ
-                                                                                          =                 λ e    dλ
-                                                                                             0     x! Γ(9)
-                                                                                                Z ∞
-                                                                                             96
-                                                                                          =          λ8+x e−7λ dλ.
-                                                                                            8!x! 0
+                                                                                               Z ∞
+                                                                                    ′
+                                                                               P[X = x] =            P[Poisson(λ) = x]fGamma(9,6) (λ) dλ
+                                                                                               0
+                                                                                                     λx e−λ 96 8 −6λ
+                                                                                               Z ∞
+                                                                                           =                   λ e   dλ
+                                                                                               0       x! Γ(9)
+                                                                                              96
+                                                                                                     Z ∞
+                                                                                           =               λ8+x e−7λ dλ.
+                                                                                             8!x!     0
+
 
 
 -->
@@ -1543,14 +1549,14 @@ The predictive p.m.f.&nbsp;is given by
 
 \begin{align*}
 \P [X&apos;=x] &amp;=\int _0^\infty \P [\Poisson (\lambda )=x]f_{\Gam (9,6)}(\lambda )\,d\lambda \\ &amp;=\int _0^\infty \frac {\lambda ^{x}e^{-\lambda }}{x!}\frac {9^6}{\Gamma
-(9)}\lambda ^8e^{-6\lambda }\,d\lambda \\ &amp;=\frac {9^6}{8! x!}\int _0^\infty \lambda ^{8+x}e^{-7\lambda }\,d\lambda .
+(9)}\lambda ^8e^{-6\lambda }\,d\lambda \\ &amp;=\frac {9^6}{8!            x!}\int _0^\infty \lambda ^{8+x}e^{-7\lambda }\,d\lambda .
 \end{align*}
 for \(x\in \{0,1,\ldots \}\).
 </p>
 </li>
 </ul>
 <!--
-...... subsection Chapter <a href=Bayesian-models-continuous-data.html#c:bayes_models_continuous>3</a> ......
+......    subsection Chapter <a href=Bayesian-models-continuous-data.html#c:bayes_models_continuous>3</a> ......
 -->
 <h5 id="autosec-287">Chapter <a href="Bayesian-models-continuous-data.html#c:bayes_models_continuous">3</a></h5>
 <a id="notes-autopage-287"></a>
@@ -1584,15 +1590,15 @@ distribution has p.d.f.
 
 
 <!--
-                                                                                                    1
-                                                                                     fΘ|{X=2} =       f      (2)fGamma(2,3) (θ)
-                                                                                                    Z Exp(θ)
-                                                                                                    1 32
-                                                                                                  =        θe−2θ θe−3θ
-                                                                                                    Z Γ(2)
-                                                                                                    1
-                                                                                                  = 0 θ2 e−5θ
-                                                                                                    Z
+                                                                                                       1
+                                                                                    fΘ|{X=2} =           fExp(θ) (2)fGamma(2,3) (θ)
+                                                                                                       Z
+                                                                                                       1 32
+                                                                                                     =        θe−2θ θe−3θ
+                                                                                                       Z Γ(2)
+                                                                                                       1
+                                                                                                     = ′ θ2 e−5θ
+                                                                                                       Z
 
 
 -->
@@ -1620,22 +1626,23 @@ href="Bayesian-models-continuous-data.html#eq:bayes_continuous_sampling_pdf">3.2
 
 <!--
                                                                                             Z ∞
-                                                                                fX (x) =      fExp(θ) (x)fGamma(2,3) (θ) dθ
+                                                                                fX (x) =             fExp(θ) (x)fGamma(2,3) (θ) dθ
                                                                                              0
-                                                                                               Z ∞
-                                                                                          32
-                                                                                       =            θe−θx θe−3θ dθ
-                                                                                         Γ(2) 0
-                                                                                          Z ∞
-                                                                                       =9       θ2 e−θ(x+3) dθ
-                                                                                            0
-                                                                                                     Z ∞
-                                                                                              2           (x + 3)3 2 −θ(x+3)
-                                                                                       =9                         θ e         dθ
-                                                                                          (x + 3)3 0         2
-                                                                                                     Z ∞
-                                                                                              2
-                                                                                       =9                fGamma(3,x+3) (θ) dθ
+                                                                                             32
+                                                                                                      Z ∞
+                                                                                       =                       θe−θx θe−3θ dθ
+                                                                                            Γ(2)          0
+                                                                                             Z ∞
+                                                                                       =9              θ2 e−θ(x+3) dθ
+                                                                                                 0
+                                                                                             2        ∞ (x + 3)3
+                                                                                                               Z
+                                                                                       =9         3
+                                                                                                                 θ2 e−θ(x+3) dθ
+                                                                                          (x + 3) 0        2
+                                                                                                    Z ∞
+                                                                                             2
+                                                                                       =9               fGamma(3,x+3) (θ) dθ
                                                                                           (x + 3)3 0
                                                                                             18
                                                                                        =
@@ -1663,24 +1670,24 @@ From <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:baye
 
 <!--
                                                                                             Z ∞
-                                                                               fX 0 (x) =     fExp(θ) (x)fGamma(3,5) (θ) dθ
+                                                                               fX ′ (x) =            fExp(θ) (x)fGamma(3,5) (θ) dθ
                                                                                             0
-                                                                                               Z ∞
-                                                                                          53
-                                                                                      =             θe−θx θ2 e−5θ dθ
+                                                                                          53    ∞     Z
+                                                                                      =           θe−θx θ2 e−5θ dθ
                                                                                         Γ(3) 0
                                                                                         53 ∞ 3 −θ(x+5)
                                                                                             Z
-                                                                                      =           θ e         dθ
+                                                                                      =         θ e         dθ
                                                                                          2 0
-                                                                                                         ∞
-                                                                                        53 Γ(4)            (x + 5)4 3 −θ(x+5)
-                                                                                                       Z
-                                                                                      =                              θ e        dθ
-                                                                                         2 (x + 5)4 0         Γ(4)
-                                                                                                       Z ∞
-                                                                                        53      6
-                                                                                      =                    fGamma(4,x+5) (θ) dθ
+                                                                                        53 Γ(4)          (x + 5)4 3 −θ(x+5)
+                                                                                                    Z ∞
+                                                                                      =           4
+                                                                                                                   θ e        dθ
+                                                                                         2 (x + 5) 0        Γ(4)
+                                                                                        53
+                                                                                                    Z ∞
+                                                                                               6
+                                                                                      =                  fGamma(4,x+5) (θ) dθ
                                                                                          2 (x + 5)4 0
                                                                                            375
                                                                                       =
@@ -1719,15 +1726,15 @@ Let us write \(z=\sum _1^n x_i\). From Theorem <a href="Bayesian-models-continuo
 
 
 <!--
-                                                                                                        1
-                                                                                      fΘ|{X=x} (θ) =      fM (x)fΓ(2,3) (θ)
-                                                                                                        Z θ
-                                                                                                        1 32 n −θz −3θ
-                                                                                                      =        θ e θe
-                                                                                                        Z Γ(2)
-                                                                                                        1
-                                                                                                      = 0 θn+1 e−θ(3+z)
-                                                                                                        Z
+                                                                                                                1
+                                                                                      fΘ|{X=x} (θ) =              fM (x)fΓ(2,3) (θ)
+                                                                                                                Z θ
+                                                                                                                1 32 n −θz −3θ
+                                                                                                              =        θ e θe
+                                                                                                                Z Γ(2)
+                                                                                                                1
+                                                                                                              = ′ θn+1 e−θ(3+z)
+                                                                                                                Z
 
 
 -->
@@ -1839,21 +1846,20 @@ distribution has p.d.f.&nbsp;
 
 
 <!--
-                                                                                                       1
-                                                                      fΘ|{X=5} (θ) = R                                       fUniform([0,θ]) ( 12 )fPareto(1,3) (θ)
-                                                                                       f
-                                                                                     R Uniform([0,t])
-                                                                                                      (5)fPareto(3,1) (t) dt
-                                                                                          1       1 −4
-                                                                                  = R ∞ 1 −4        3θ
-                                                                                     1 t 3t   dt θ
-                                                                                         1
-                                                                                  = R ∞ −5 3θ−5
-                                                                                     1 3t    dt
-                                                                                     1 −5
-                                                                                  =     θ
-                                                                                    3/4
-                                                                                  = 4θ−5
+                                                                                                            1
+                                                                        fΘ|{X=5} (θ) = R                                           fUniform([0,θ]) ( 21 )fPareto(1,3) (θ)
+                                                                                            f
+                                                                                          R Uniform([0,t]) (5)f Pareto(3,1) (t) dt
+                                                                                               1      1 −4
+                                                                                       = R ∞ 1 −4        3θ
+                                                                                          1 t 3t   dt θ
+                                                                                              1
+                                                                                       = R ∞ −5 3θ−5
+                                                                                          1 3t    dt
+                                                                                          1 −5
+                                                                                       =     θ
+                                                                                         3/4
+                                                                                       = 4θ−5
 
 
 
@@ -1883,23 +1889,21 @@ distribution has p.d.f.&nbsp;
 
 
 <!--
-                                                                                                       1
-                                                                      fΘ|{X=5} (θ) = R                                      f               (5)fPareto(3,1) (θ)
-                                                                                       f
-                                                                                     R Uniform([0,t])
-                                                                                                      (5)fPareto(1,3) (t) dt Uniform([0,θ])
-                                                                                             1                    1
-                                                                                  = R∞                     1{5≤θ} 3θ−4
-                                                                                     1 1{5≤t} t 3t
-                                                                                               1 −4               θ
-                                                                                                        dt
-                                                                                         1
-                                                                                  = R ∞ −5 1{5≤θ} 3θ−5
-                                                                                     5 3t    dt
-                                                                                      1
-                                                                                  = 5−4 1{5≤θ} θ−5
-                                                                                    3 4
-                                                                                  = 1{5≤θ} 54 4θ−5
+                                                                                                             1
+                                                                        fΘ|{X=5} (θ) = R                                           fUniform([0,θ]) (5)fPareto(3,1) (θ)
+                                                                                          R fUniform([0,t]) (5)fPareto(1,3) (t) dt
+                                                                                                   1                    1
+                                                                                       = R∞                     1{5≤θ} 3θ−4
+                                                                                          1 1{5≤t} t 3t
+                                                                                                     1 −4
+                                                                                                             dt         θ
+                                                                                              1
+                                                                                       = R ∞ −5 1{5≤θ} 3θ−5
+                                                                                          5 3t     dt
+                                                                                           1
+                                                                                       = 5−4 1{5≤θ} θ−5
+                                                                                         3 4
+                                                                                       = 1{5≤θ} 54 4θ−5
 
 
 
@@ -1923,49 +1927,60 @@ From <span class="textup">(<a href="Bayesian-models-continuous-data.html#eq:baye
 
 
 <!--
-                                                                                                   Z ∞
-                                                                                      fX 0 (x) =               fUniform([0,θ]) (x)fPareto(4,5) (θ) dθ
-                                                                                                       5
-                                                                                                   
-                                                                                                    ∞ 1 54 4θ−5 dθ   for x > 5
-                                                                                                   R
-                                                                                                    x θ
-                                                                                               =
-                                                                                                  ∞ 1 54 4θ−5 dθ for x ∈ [0, 5]
-                                                                                                 R
-                                                                                                    5 θ
-                                                                                                 
-                                                                                                  ∞ 1x≤θ 54 4θ−6 dθ for x > 5
-                                                                                                 R
-                                                                                                    x
-                                                                                               = R
-                                                                                                                           for x ∈ [0, 5]
-                                                                                                  ∞ 4 −6
-                                                                                                    5 5 4θ     dθ
-                                                                                                 
-                                                                                                 
-                                                                                                 54 4[ θ−5 ]∞ for x > 5
-                                                                                                 
-                                                                                                         −5 x
-                                                                                               =
-                                                                                                 54 4[ θ−5 ]∞ for x ∈ [0, 5]
-                                                                                                 
-                                                                                                         −5 5
-                                                                                                 
-                                                                                                 54 4 1 x−5 for x > 5
-                                                                                                 
-                                                                                                       5
-                                                                                               =
-                                                                                                 54 4 1 5−5 for x ∈ [0, 5]
-                                                                                                 
-                                                                                                       5
-                                                                                                 
-                                                                                                 53 4x−5 for x > 5
-                                                                                                 
-                                                                                               =
-                                                                                                  42         for x ∈ [0, 5]
-                                                                                                 
-                                                                                                   5
+                                                                                                        Z ∞
+                                                                                           fX ′ (x) =                fUniform([0,θ]) (x)fPareto(4,5) (θ) dθ
+                                                                                                        5
+                                                                                                         ∞ 1 54 4θ−5 dθ
+                                                                                                         R
+                                                                                                        
+                                                                                                             x        θ                 for x > 5
+                                                                                                    =
+                                                                                                         5∞ 1 54 4θ−5 dθ for x ∈ [0, 5]
+                                                                                                        
+                                                                                                         R
+                                                                                                             θ
+                                                                                                        
+                                                                                                         ∞1       54 4θ−6 dθ for x >
+                                                                                                         R
+                                                                                                        
+                                                                                                             x            x≤θ                              5
+                                                                                                    =
+                                                                                                         5∞ 54 4θ−6 dθ
+                                                                                                          R
+                                                                                                                                            for x ∈ [0, 5]
+                                                                                                        
+                                                                                                        
+                                                                                                        
+                                                                                                                −5
+                                                                                                        54 4[ θ ]∞ for x
+                                                                                                        
+                                                                                                        
+                                                                                                                       −5 x                > 5
+                                                                                                    =
+                                                                                                                −5
+                                                                                                        54 4[ θ ]∞   for x ∈ [0, 5]
+                                                                                                        
+                                                                                                        
+                                                                                                                −5 5
+                                                                                                        
+                                                                                                        54 4 1 x−5 for x > 5
+                                                                                                        
+                                                                                                        
+                                                                                                              5
+                                                                                                    =
+                                                                                                        54 4 1 5−5 for x ∈ [0, 5]
+                                                                                                        
+                                                                                                        
+                                                                                                              5
+                                                                                                        
+                                                                                                        53 4x−5 for x > 5
+                                                                                                        
+                                                                                                        
+                                                                                                    =
+                                                                                                         42                    for x ∈ [0, 5]
+                                                                                                        
+                                                                                                        
+                                                                                                             5
 
 
 -->
@@ -1998,14 +2013,13 @@ A]&gt;0]\), we will use Lemma <a href="Conditioning-correlations.html#l:cond_cor
 
 
 <!--
-                                                                                           P[X ∈ B, Θ ∈ A]
-                                                                                                                          Z Z
-                                                                                                                    1
-                                                                       P[X|{Θ∈A} ∈ B] =                     =                 fM (x)fΘ (θ) dθ dx
-                                                                                              P[Θ ∈ A]         P[Θ ∈ A] B A θ
-                                                                                           Z Z
-                                                                                         =      fMθ (x)fΘ|{Θ∈A} (θ) dθ dx.
-                                                                                              B    A
+                                                                                                  P[X ∈ B, Θ ∈ A]      1
+                                                                                                                                                 Z Z
+                                                                        P[X|{Θ∈A} ∈ B] =                          =                                      fMθ (x)fΘ (θ) dθ dx
+                                                                                                     P[Θ ∈ A]       P[Θ ∈ A]                     B   A
+                                                                                                  Z Z
+                                                                                              =             fMθ (x)fΘ|{Θ∈A} (θ) dθ dx.
+                                                                                                   B    A
 
 
 
@@ -2059,10 +2073,11 @@ Here we used that \(f_{M_\theta }\) is a p.d.f.&nbsp;which integrates to \(1\), 
 
 
 <!--
-                                                                                                           Z                                            Z
-                                                                               1                  1                                    Z
-                                                             fΘ|{X 0 =x} (θ) = 0 fMθ0 (x)fΘ (θ) = 0          fMθ (x − y)κ(y)fΘ (θ) dy = 0                   fΘ|{X=x−y} (θ)κ(y) dy
-                                                                              Z                  Z         R                           Z                R
+                                                                                  1                    1                                                  Z
+                                                                                                                 Z                                             Z
+                                                              fΘ|{X ′ =x} (θ) =     ′
+                                                                                      fMθ′ (x)fΘ (θ) = ′               fMθ (x − y)κ(y)fΘ (θ) dy =                  fΘ|{X=x−y} (θ)κ(y) dy
+                                                                                  Z                   Z          R                                        Z′   R
 
 
 
@@ -2089,16 +2104,16 @@ as required.
 adding a \(\Normal (0,1)\) random variable to the data, which gives Model 2. That is, \(X&apos;\eqd X+\Normal (0,1)\). Model 2 is therefore a version of Model 1 that is designed handle (additional) noise.
 </p>
 <p>
-It helps to visualize things, which is left for you here: the effect of convolution on the probability density functions is to smooth them i.e.&nbsp;to spread out high peaks into lower and wider regions. Equation
-<span class="textup">(<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#eq:model_convolution_posterior">3.10</a>)</span> says that the posterior density of
-\((X&apos;,\Theta )\) can be obtained by taking the posterior density of \((X,\Theta )\) and smoothing it in this way (with respect to the \(x\) coordinate).
+It helps to visualize things, which is left for you here: the effect of convolution on the probability density functions is to smooth them i.e.&nbsp;to spread out high peaks into lower and wider regions. Equation <span
+class="textup">(<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#eq:model_convolution_posterior">3.10</a>)</span> says that the posterior density of \((X&apos;,\Theta )\)
+can be obtained by taking the posterior density of \((X,\Theta )\) and smoothing it in this way (with respect to the \(x\) coordinate).
 </p>
 </li>
 </ul>
 </li>
 </ul>
 <!--
-...... subsection Chapter <a href=Conjugate-priors.html#c:conjugate_priors>4</a> ......
+......    subsection Chapter <a href=Conjugate-priors.html#c:conjugate_priors>4</a> ......
 -->
 <h5 id="autosec-289">Chapter <a href="Conjugate-priors.html#c:conjugate_priors">4</a></h5>
 <a id="notes-autopage-289"></a>
@@ -2178,19 +2193,20 @@ href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have
 
 <!--
 
-                                                                        fΘ|{X=x} (θ) ∝ P[Geometric(θ)⊗n = x]fBeta(α,β) (θ)
-                                                                                         n
-                                                                                                      !
-                                                                                         Y
-                                                                                                   xi     1
-                                                                                     ∝     θ(1 − θ)             θα−1 (1 − θ)β−1
-                                                                                                        B(α, β)
+                                                                         fΘ|{X=x} (θ) ∝ P[Geometric(θ)⊗n = x]fBeta(α,β) (θ)
+                                                                                          n
+                                                                                                                      !
+                                                                                          Y
+                                                                                                                 xi         1
+                                                                                     ∝          θ(1 − θ)                          θα−1 (1 − θ)β−1
                                                                                           i=1
-                                                                                                   Pn
-                                                                                          n            1 xi
-                                                                                     ∝ θ (1 − θ)              θα−1 (1 − θ)β−1
-                                                                                                                Pn
-                                                                                     ∝ θα+n−1 (1 − θ)β+           1 xi −1
+                                                                                                                          B(α, β)
+                                                                                                          Pn
+                                                                                                                 xi α−1
+                                                                                     ∝ θn (1 − θ)           1         θ     (1 − θ)β−1
+                                                                                                                          Pn
+                                                                                                                               xi −1
+                                                                                     ∝ θα+n−1 (1 − θ)β+                    1
 
 
 
@@ -2223,17 +2239,18 @@ href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have
 <!--
 
                                                                            fΘ|{X=x} (θ) ∝ P[Poisson(θ)⊗n = x]fGamma(α,β) (θ)
-                                                                                            n
-                                                                                                       !
-                                                                                            Y  θxi e−θ    β α α−1 −βθ
-                                                                                        ∝                     θ  e
-                                                                                                 xi !    Γ(α)
+                                                                                              n
+                                                                                                                  !
+                                                                                              Y θxi e−θ                    β α α−1 −βθ
+                                                                                         ∝                                     θ  e
                                                                                               i=1
+                                                                                                          xi !            Γ(α)
                                                                                               Pn
-                                                                                         ∝θ    1 xi −nθ α−1 −βθ
-                                                                                                   e      θ       e
+                                                                                                     xi −nθ α−1 −βθ
+                                                                                         ∝θ      1    e          θ         e
                                                                                                  Pn
-                                                                                         ∝ θα+    1 xi −1   e−θ(β+n)
+                                                                                                          xi −1 −θ(β+n)
+                                                                                         ∝ θα+        1          e
 
 
 
@@ -2264,35 +2281,24 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 
 <!--
 
-                                                                       fΘ|{X=x} (τ ) ∝ fN(µ, 1 )⊗n (x)fGamma(α,β) (τ )
+                                                                        fΘ|{X=x} (τ ) ∝ fN(µ, 1 )⊗n (x)fGamma(α,β) (τ )
                                                                                               τ
-
-                                                                                         Y √τ
-                                                                                           n
+                                                                                          n √
                                                                                                                  !
-                                                                                                       τ (x −µ)2
-                                                                                                     − i2           β α α−1 −βτ
-                                                                                     ∝         √ e                        τ     e
-                                                                                                 2π                Γ(α)
-                                                                                          i=1
-                                                                                                         n
-                                                                                                                        !
-                                                                                                     τX
-                                                                                     ∝ τ 2 exp −
-                                                                                         n
-                                                                                                            (xi − µ) τ α−1 e−βτ
-                                                                                                                      2
-                                                                                                     2
-                                                                                                          1
-                                                                                                                        n
-                                                                                                      "                               !#
-                                                                                                                    1
-                                                                                     ∝ τ α+ 2 −1 exp −τ β +
-                                                                                             n
-                                                                                                                       X
-                                                                                                                            (xi − µ)2    .
-                                                                                                                    2
-                                                                                                                            1
+                                                                                         Y        τ − τ (xi −µ)2    β α α−1 −βτ
+                                                                                      ∝       √ e          2            τ  e
+                                                                                         i=1     2π                Γ(α)
+                                                                                                n
+                                                                                                                                       !
+                                                                                         n    τX
+                                                                                    ∝ τ exp −
+                                                                                         2        (xi − µ)2 τ α−1 e−βτ
+                                                                                              2 1
+                                                                                                                  n
+                                                                                                            "                                !#
+                                                                                         α+ n2 −1               1X
+                                                                                    ∝τ               exp −τ β +     (xi − µ)2                       .
+                                                                                                                2 1
 
 
 -->
@@ -2391,17 +2397,22 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 
 <!--
 
-                                                                                   fΘ|{X=x} (θ) ∝ fWeibull(k,θ)⊗n (x)fGamma(a,b) (θ)
-                                                                                                    n
-                                                                                                                          !
-                                                                                                   Y                    k    ba a−1 −bθ
-                                                                                                ∝      θk(xi )k−1 e−θxi          θ e
-                                                                                                                            Γ(a)
-                                                                                                   i=1
-                                                                                                          Pn  k
-                                                                                               ∝ θn e−θ    1 xi   θa−1 e−bθ
-                                                                                                                    Pn   k
-                                                                                               ∝ θa+n−1 e−θ(b+        1 xi )   .
+                                                                                    fΘ|{X=x} (θ) ∝ fWeibull(k,θ)⊗n (x)fGamma(a,b) (θ)
+                                                                                                     n
+                                                                                                                                     !
+                                                                                                     Y
+                                                                                                                   k−1 −θxki              ba a−1 −bθ
+                                                                                                ∝          θk(xi )        e                   θ e
+                                                                                                     i=1
+                                                                                                                                         Γ(a)
+                                                                                                            Pn k
+                                                                                                ∝ θn e−θ      1
+                                                                                                                  xi a−1 −bθ
+                                                                                                                     θ        e
+                                                                                                                         Pn k
+                                                                                                ∝ θa+n−1 e−θ(b+           1
+                                                                                                                              xi )
+                                                                                                                                     .
 
 
 
@@ -2464,7 +2475,7 @@ href="Conjugate-priors.html#d:propto">4.1.1</a> gives \(C,C&apos;&gt;0\), so \(C
 </li>
 </ul>
 <!--
-...... subsection Chapter <a href=The-prior.html#c:prior>5</a> ......
+......   subsection Chapter <a href=The-prior.html#c:prior>5</a> ......
 -->
 <h5 id="autosec-291">Chapter <a href="The-prior.html#c:prior">5</a></h5>
 <a id="notes-autopage-291"></a>
@@ -2484,72 +2495,72 @@ href="Conjugate-priors.html#d:propto">4.1.1</a> gives \(C,C&apos;&gt;0\), so \(C
 
 
 <tr class="hline">
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">Age band</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">Population</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">Proportion (2dp)</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">Age band</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">Population</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">Proportion (2dp)</td>
 </tr>
 
 
 <tr class="hline">
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">10+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">60096227</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.89</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">10+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">60096227</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.89</td>
 </tr>
 
 
 <tr>
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">20+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">52089688</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.77</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">20+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">52089688</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.77</td>
 </tr>
 
 
 <tr>
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">30+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">43661735</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.65</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">30+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">43661735</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.65</td>
 </tr>
 
 
 <tr>
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">40+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">34458842</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.51</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">40+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">34458842</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.51</td>
 </tr>
 
 
 <tr>
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">50+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">26028478</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.39</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">50+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">26028478</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.39</td>
 </tr>
 
 
 <tr>
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">60+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">16814195</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.25</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">60+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">16814195</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.25</td>
 </tr>
 
 
 <tr>
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">70+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">9316631</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.14</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">70+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">9316631</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.14</td>
 </tr>
 
 
 <tr>
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">80+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">3399106</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.05</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">80+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">3399106</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.05</td>
 </tr>
 
 
 <tr>
-<td class="tdc tvertbarl tvertbarr" style="border-left: 1px solid black; border-right: 1px solid black">90+</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">609904</td>
-<td class="tdc tvertbarr" style="border-right: 1px solid black">0.01</td>
+<td class="tdc tvertbarl tvertbarr" style="border-left:               1px solid black; border-right:             1px solid black">90+</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">609904</td>
+<td class="tdc tvertbarr" style="border-right:             1px solid black">0.01</td>
 </tr>
 
 
@@ -2592,26 +2603,27 @@ where \(x\in \{0,1,\ldots \}\). Hence \(\frac {d}{d\lambda }\log (L_{M_\lambda }
 
 
 <!--
-                                                                                                      "                 2 #1/2
-                                                                                                          d
-                                                                                           fΛ (λ) ∝ E        log(LMθ (X))
-                                                                                                          dθ
-                                                                                                      "          #1/2
-                                                                                                          X −λ 2
+                                                                                                         "
+                                                                                                                              2    #1/2
+                                                                                                              d
+                                                                                            fΛ (λ) ∝ E           log(LMθ (X))
+                                                                                                              dθ
+                                                                                                         "            2 #1/2
+                                                                                                              X −λ
                                                                                                   ∝E
-                                                                                                             λ
-                                                                                                    1   h         i1/2
-                                                                                                  ∝ E (X − λ)2
-                                                                                                    λ
-                                                                                                    1
+                                                                                                                λ
+                                                                                                   1 h          i1/2
+                                                                                                  ∝  E (X − λ)2
+                                                                                                   λ
+                                                                                                   1
                                                                                                   ∝ var(X)1/2
-                                                                                                    λ
-                                                                                                    1
+                                                                                                   λ
+                                                                                                   1
                                                                                                   ∝ λ1/2
-                                                                                                    λ
-                                                                                                      1
+                                                                                                   λ
+                                                                                                     1
                                                                                                   ∝ 1/2 .
-                                                                                                    λ
+                                                                                                   λ
 
 
 -->
@@ -2639,15 +2651,15 @@ Noting that \(\int _0^\infty \frac {1}{\lambda ^{1/2}}\,d\lambda =\infty \), thi
 
 
 <!--
-                                                                                                              1
-                                                                                                                              !
-                                                                                                              Y   λxi e−λ               1
-                                                                                             fΛ|{X=x} (x) ∝     2                      √
-                                                                                                                    xi !                 λ
-                                                                                                              i=1
-                                                                                                              P12
-                                                                                                                    xi − 12 −12λ
-                                                                                                         ∝λ    1         e         .
+                                                                                                                 1
+                                                                                                                                  !
+                                                                                                                 Y λxi e−λ             1
+                                                                                             fΛ|{X=x} (x) ∝            2              √
+                                                                                                                 i=1
+                                                                                                                           xi !         λ
+                                                                                                                P12
+                                                                                                                       xi − 12 −12λ
+                                                                                                          ∝λ       1         e        .
 
 
 
@@ -2696,13 +2708,16 @@ distribution for all values of \(x\), which answers part (b). For part (a) we ha
 
 
 <!--
-                                                                                                                                               
-                                                                                                                1 θe−θx   for θ > x > 0,       e−θx   for θ > x > 0,
-                                                                                                                                               
-                                                                                                                 θ
-                                                            fΘ|{X=x} (θ) ∝ fUniform(0,θ) (x)fExp(1) (θ) ∝                                   ∝
-                                                                                                               0          otherwise,           0      otherwise.
-                                                                                                                                               
+                                                                                                                                                     
+                                                                                                                1 θe−θx                              e−θx
+                                                                                                                                                     
+                                                                                                               
+                                                                                                                 θ               for θ > x > 0,              for θ > x > 0,
+                                                             fΘ|{X=x} (θ) ∝ fUniform(0,θ) (x)fExp(1) (θ) ∝                                        ∝
+                                                                                                                                                     
+                                                                                                               0
+                                                                                                                                otherwise,           0
+                                                                                                                                                             otherwise.
 
 
 -->
@@ -2764,15 +2779,14 @@ Take Alice’s sampling distribution and substitute \(\theta =h(\lambda )\) to o
 
 <!--
                                                                                                      Z
-                                                                                        fX1 (x) =         fMθ (x)f1 (θ) dθ
-                                                                                                      Π
-                                                                                                                                  dh−1
-                                                                                                     Z
-                                                                                                 =        fMh(λ) (x)f1 h−1 (λ)          dλ
-                                                                                                                                    dλ
+                                                                                         fX1 (x) =         fMθ (x)f1 (θ) dθ
+                                                                                                       Π
+                                                                                                     Z                                dh−1
+                                                                                                 =         fMh(λ) (x)f1 h−1 (λ)                dλ
                                                                                                      ZΠ
-                                                                                                 =        fMh(λ) (x)f2 (λ) dλ
-                                                                                                      Π
+                                                                                                                                         dλ
+                                                                                                 =         fMh(λ) (x)f2 (λ) dλ
+                                                                                                       Π
 
                                                                                                  = fX2 (x)
 
@@ -2803,19 +2817,18 @@ for all \(i\), we have
 
 
 <!--
-                                                                                                                 n
-                                                                                                        "                     #
-                                                                                      d                       d X
-                                                                                  E − 2 log LMθ⊗n (X) = E − 2      log LMθ (Xi )
-                                                                                     dθ                      dθ
-                                                                                                                 1
-                                                                                                         n                     
-                                                                                                                 d
-                                                                                                            E − 2 log LMθ (Xi ) .
-                                                                                                         X
-                                                                                                       =
-                                                                                                                dθ
-                                                                                                                     i=1
+                                                                                                               n
+                                                                                                                         "                            #
+                                                                                       d                     d X
+                                                                                                                
+                                                                                   E − 2 log LM ⊗n (X) = E − 2   log LMθ (Xi )
+                                                                                      dθ       θ            dθ 1
+                                                                                                                       n
+                                                                                                                               d
+                                                                                                                       X                             
+                                                                                                                     =     E − 2 log LMθ (Xi ) .
+                                                                                                                       i=1
+                                                                                                                              dθ
 
 
 -->
@@ -2834,10 +2847,12 @@ Hence by <span class="textup">(<a href="Reference-priors.html#eq:reference_prior
 
 
 <!--
-                                                                                                      n
-                                                                                                      X
-                                                                                        fMθ⊗n (θ) ∝            fMθ (θ) ∝ nfMθ (θ) ∝ fMθ (θ)
+                                                                                                         n
+                                                                                                         X
+                                                                                         fM ⊗n (θ) ∝           fMθ (θ) ∝ nfMθ (θ) ∝ fMθ (θ)
+                                                                                            θ
                                                                                                          i=1
+
 
 
 -->
@@ -2858,7 +2873,7 @@ as required.
 </li>
 </ul>
 <!--
-...... subsection Chapter <a href=Discussion.html#c:discussion>6</a> ......
+......    subsection Chapter <a href=Discussion.html#c:discussion>6</a> ......
 -->
 <h5 id="autosec-295">Chapter <a href="Discussion.html#c:discussion">6</a></h5>
 <a id="notes-autopage-295"></a>
@@ -2876,7 +2891,7 @@ as required.
 <span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
 <!--
 
-                                 (α − 1)xα−2 e−βx + xα−1 (−β)e−βx = xα−2 e−βx (α − 1 − βx).                                                                                             --><a id="eq:gamma_pdf_diff"></a><!--
+                                   (α − 1)xα−2 e−βx + xα−1 (−β)e−βx = xα−2 e−βx (α − 1 − βx).                                                                                                                --><a id="eq:gamma_pdf_diff"></a><!--
 
 -->
 <p>
@@ -2999,11 +3014,13 @@ as discussed (in more general terms) at the start of Section <a href="Conditioni
 
 <!--
 
-                                                                                                           f (θ|x) ∝ fNegBin(m,θ)⊗n (x)fBeta(α,β) (θ)
-                                                                                                                                                Pn
-                                                                                                                        ∝ θmn (1 − θ)               1 xi   θα−1 (1 − θ)β−1
-                                                                                                                                                               Pn
-                                                                                                                        ∝ θα+mn−1 (1 − θ)β+                        1 xi −1      .
+                                                                                                       f (θ|x) ∝ fNegBin(m,θ)⊗n (x)fBeta(α,β) (θ)
+                                                                                                                                                   Pn
+                                                                                                                                                               xi α−1
+                                                                                                                       ∝ θmn (1 − θ)                       1       θ         (1 − θ)β−1
+                                                                                                                                                                         Pn
+                                                                                                                                                                                 xi −1
+                                                                                                                       ∝ θα+mn−1 (1 − θ)β+                                  1                .
 
 
 
@@ -3040,32 +3057,30 @@ By Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2
 
 
 <!--
-                                                                                                                                          1/2
-                                                                                                                  d2
-                                                                                                              
-                                                                                                    f (θ) ∝ E − 2 log LNegBin(m,θ) (X)
-                                                                                                                  dθ
-                                                                                                              
-                                                                                                                  d2                        1/2
-                                                                                                          ∝ E − 2 log θ (1 − θ)
-                                                                                                                                       Pn
-                                                                                                                             mn         1 Xi
-                                                                                                                  dθ
-                                                                                                              "                      n
-                                                                                                                                                     !#1/2
-                                                                                                                   d2
-                                                                                                          ∝ E − 2 mn log θ +            Xi log(1 − θ)
-                                                                                                                                    X
-                                                                                                                  dθ
-                                                                                                                                     1
-                                                                                                                       Pn      1/2
-                                                                                                                mn         1 Xi
-                                                                                                          ∝E         +
-                                                                                                                θ2     (1 − θ)2
-                                                                                                                                         1/2
-                                                                                                              mn mn(1 − θ)           1
-                                                                                                          ∝        +
-                                                                                                               θ2          θ     (1 − θ)2
+                                                                                                               "                                                             #1/2
+                                                                                                             d2
+                                                                                                  f (θ) ∝ E − 2 log LNegBin(m,θ) (X)
+                                                                                                             dθ
+                                                                                                               "                                                                         #1/2
+                                                                                                           d2               Pn 
+                                                                                                      ∝ E − 2 log θmn (1 − θ) 1 Xi
+                                                                                                           dθ
+                                                                                                               "                                               n
+                                                                                                                                                                                                     !#1/2
+                                                                                                          d2                                                   X
+                                                                                                      ∝E − 2                          mn log θ +                         Xi log(1 − θ)
+                                                                                                          dθ                                                       1
+                                                                                                                 n     1/2         P
+                                                                                                         mn      1 Xi
+                                                                                                                                                  
+                                                                                                      ∝E    +
+                                                                                                         θ2   (1 − θ)2
+                                                                                                                                                                            1/2
+                                                                                                               mn mn(1 − θ)    1
+                                                                                                           
+                                                                                                      ∝          2
+                                                                                                                   +
+                                                                                                               θ     θ      (1 − θ)2
 
 
 -->
@@ -3082,7 +3097,7 @@ f(\theta ) &amp;\propto \E \l [-\frac {d^2}{d\theta ^2}\log L_{\NBin (m,\theta )
 where we use that \(X_i\sim \NBin (m,\theta )\) has mean \(\frac {m(1-\theta )}{\theta }\). Hence
 </p>
 <p>
-\[f(\theta ) \propto \l (\frac {mn(1-\theta )+mn\theta }{\theta ^2(1-\theta )}\r )^{1/2} \propto \theta ^{-1}(1-\theta )^{-1/2}. \]
+\[f(\theta ) \propto \l (\frac {mn(1-\theta )+mn\theta }{\theta ^2(1-\theta )}\r )^{1/2} \propto \theta ^{-1}(1-\theta )^{-1/2}.                                                                                             \]
 </p>
 </li>
 <li>
@@ -3106,10 +3121,12 @@ by
 
 
 <!--
-                                                                                                                                                Pn
-                                                                                                           f (θ|x) ∝ θmn (1 − θ)                    1 xi   θ−1 (1 − θ)−1/2
-                                                                                                                                                    Pn        1
-                                                                                                                        ∝ θmn−1 (1 − θ)                1 xi − 2     .
+                                                                                                                                                   Pn
+                                                                                                                                                               xi −1
+                                                                                                       f (θ|x) ∝ θmn (1 − θ)                               1        θ       (1 − θ)−1/2
+                                                                                                                                                           Pn
+                                                                                                                                                                       xi − 12
+                                                                                                                       ∝ θmn−1 (1 − θ)                          1                .
 
 
 
@@ -3147,27 +3164,26 @@ distribution has p.d.f.
 
 
 <!--
-                                                                                                                                   n
-                                                                                                                                                               !
-                                                                                                                                   Y                               1
-                                                                                                           f (µ, τ |x) ∝                  fN(µ, 1 ) (xi )
-                                                                                                                                                τ                  τ
-                                                                                                                                   i=1
-                                                                                                                                   n
+                                                                                                                                      n
                                                                                                                                                                         !
-                                                                                                                                   Y  1   1          2                      1
-                                                                                                                          ∝          √ e− 2 τ (xi −µ)
-                                                                                                                                       τ                                    τ
-                                                                                                                                   i=1
-                                                                                                                                                               n
-                                                                                                                                                                                    !
-                                                                                                                                                τX
-                                                                                                                                          exp −
-                                                                                                                                   n
-                                                                                                                                     −1
-                                                                                                                          ∝τ       2               (xi − µ)2
-                                                                                                                                                2
-                                                                                                                                                               1
+                                                                                                                                      Y                                     1
+                                                                                                       f (µ, τ |x) ∝                         fN(µ, 1 ) (xi )
+                                                                                                                                      i=1
+                                                                                                                                                       τ                    τ
+                                                                                                                                       n
+                                                                                                                                                                                     !
+                                                                                                                                   1   1           2                                     1
+                                                                                                                                  √ e− 2 τ (xi −µ)
+                                                                                                                                      Y
+                                                                                                                            ∝
+                                                                                                                              i=1
+                                                                                                                                    τ                                                    τ
+                                                                                                                                                     n
+                                                                                                                                                                                                  !
+                                                                                                                                      n
+                                                                                                                                        −1         τX
+                                                                                                                            ∝τ        2      exp −     (xi − µ)2
+                                                                                                                                                   2 1
 
 
 -->
@@ -3196,31 +3212,31 @@ where \(s^2=\frac {1}{n}\sum _1^n(x_i-\mu )^2\).
 
 <!--
                                                                                                                                         n
-                                                                                                              Z                                        !
-                                                                                                                                    τX
-                                                                                                                         exp −
-                                                                                                                        n
-                                                                                                                          −1
-                                                                                                   f (τ |x) ∝     τ     2                  (xi − µ)2 dµ
-                                                                                                               R                    2
-                                                                                                                                        1
-                                                                                                              Z                τ                        
-                                                                                                                  τ 2 −1 exp − ns2 + (x̄ − µ)2 dµ
-                                                                                                                    n
-                                                                                                            ∝
-                                                                                                               R                    2
-                                                                                                                                    Z               τ      
-                                                                                                                                       τ 1/2 exp − (x̄ − µ)2 dµ
-                                                                                                                n      1    1     2
-                                                                                                            ∝ τ 2 −1− 2 e− 2 τ ns
-                                                                                                                                                       2
-                                                                                                                                   ZR
-                                                                                                                n−1       1     2
-                                                                                                            ∝ τ 2 −1 e− 2 τ ns        fN(x̄, 1 )(µ) dµ
-                                                                                                                                                           τ
-                                                                                                                                            R
-                                                                                                                  n−1          1      2
-                                                                                                           ∝ τ 2 −1 e− 2 τ ns .
+                                                                                                                                                                                     !
+                                                                                                                                      τX
+                                                                                                           Z
+                                                                                                                       n
+                                                                                                                         −1
+                                                                                              f (τ |x) ∝           τ   2        exp −     (xi − µ)2                                          dµ
+                                                                                                               R                      2 1
+                                                                                                                               τ 2
+                                                                                                           Z                                                                                   
+                                                                                                                       n
+                                                                                                       ∝           τ 2 −1 exp −    ns + (x̄ − µ)2   dµ
+                                                                                                          R                    2
+                                                                                                                                              τ
+                                                                                                                               Z                      
+                                                                                                           n     1    1      2
+                                                                                                       ∝ τ 2 −1− 2 e− 2 τ ns      τ 1/2 exp − (x̄ − µ)2 dµ
+                                                                                                                                R             2
+                                                                                                                                             Z
+                                                                                                               n−1
+                                                                                                                   −1           − 12 τ ns2
+                                                                                                       ∝τ       2           e                      fN(x̄, 1 )(µ) dµ
+                                                                                                                                                                τ
+                                                                                                                                               R
+                                                                                                               n−1                1     2
+                                                                                                       ∝ τ 2 −1 e− 2 τ ns .
 
 
 
@@ -3246,12 +3262,12 @@ We have
 
 
 <!--
-                                                                                                           Z ∞Z                                            Z ∞
-                                                                                                                         f (µ, τ |x) dµ dτ =                        f (τ |x) dτ
-                                                                                                             0       R
-                                                                                                                                                           Z0 ∞
-                                                                                                                                                     ∝              f (τ |x) dτ,
-                                                                                                                                                               0
+                                                                                                        Z ∞Z                                                        Z ∞
+                                                                                                                           f (µ, τ |x) dµ dτ =                               f (τ |x) dτ
+                                                                                                           0        R                                                   0
+                                                                                                                                                                    Z ∞
+                                                                                                                                                               ∝             f (τ |x) dτ,
+                                                                                                                                                                        0
 
 
 
@@ -3268,12 +3284,10 @@ which is finite if \(n\geq 2\) because the Gamma distribution is proper. If \(n=
 </p>
 <span class="hidden"> \(\seteqnumber{0}{C.}{2}\)</span>
 <!--
-                          Z ∞Z                            Z ∞                                     Z 1
-                                                                                                        1
-                                    f (µ, τ |x) dµ dτ =         τ   −1 − 12 τ s2
-                                                                       e                − 12 sn
-                                                                                   dτ ≥ e                 dτ = ∞.                                                       (C.3)                                  --><a id="eq:improper_tau_gamma"></a><!--
-                            0   R                         0                                        0    τ
+                            Z ∞Z                           Z ∞                               Z 1
+                                                                        1   2          1 n         1
+                                     f (µ, τ |x) dµ dτ =         τ −1 e− 2 τ s dτ ≥ e− 2 s           dτ = ∞.                                                                                 (C.3)                                   --><a id="eq:improper_tau_gamma"></a><!--
+                             0   R                         0                                  0    τ
 -->
 <p>
 
@@ -3318,16 +3332,14 @@ Here we use that \(e^{-\frac 12\tau s^2}\geq e^{-\frac 12 s^n}\) for \(\tau \in 
 
 
 <!--
-                                                                                                                      fMθ (x)fΘ (θ)
-                                                                                                fΘ|{X=x } (θ) = R
-                                                                                                                      f (x)fΘ (θ) dx
-                                                                                                                    Rn Mθ
-                                                                                                                       αfMθ (x)fΘ1 (θ) + βfMθ (x)fΘ2 (θ)
-                                                                                                                 =R                      R
-                                                                                                                      f (x)fΘ1 (θ) dx + Rn fMθ (x)fΘ2 (θ) dx
-                                                                                                                    Rn Mθ
+                                                                                                                    fMθ (x)fΘ (θ)
+                                                                                             fΘ|{X=x } (θ) = R
+                                                                                                                  Rn fMθ (x)fΘ (θ) dx
+                                                                                                                      αfMθ (x)fΘ1 (θ) + βfMθ (x)fΘ2 (θ)
+                                                                                                               =R                       R
+                                                                                                                  Rn fMθ (x)fΘ1 (θ) dx + Rn fMθ (x)fΘ2 (θ) dx
 
-                                                                                                                 = α0 fΘ1 |{X1 =x} (θ) + β 0 fΘ1 |{X1 =x} (θ)
+                                                                                                               = α′ fΘ1 |{X1 =x} (θ) + β ′ fΘ1 |{X1 =x} (θ)
 
 
 
@@ -3348,14 +3360,14 @@ where
 
 
 <!--
-                                                                                                        R
-                                                                                            0          α Rn fMθ (x)fΘ1 (θ) dθ                  αZ1
-                                                                                        α = R                        R                     =
-                                                                                           α Rn fMθ (x)fΘ1 (θ) dx + β Rn fMθ (x)fΘ2 (θ) dx   αZ1 + βZ2
-                                                                                                        R
-                                                                                                       β Rn fMθ (x)fΘ2 (θ) dθ                  βZ2
-                                                                                        β= R                         R                     =
-                                                                                           α Rn fMθ (x)fΘ1 (θ) dx + β Rn fMθ (x)fΘ2 (θ) dx   αZ1 + βZ2
+                                                                                                                       R
+                                                                                       ′             α Rn fMθ (x)fΘ1 (θ) dθ                  αZ1
+                                                                                      α = R                        R                     =
+                                                                                         α Rn fMθ (x)fΘ1 (θ) dx + β Rn fMθ (x)fΘ2 (θ) dx   αZ1 + βZ2
+                                                                                                      R
+                                                                                                     β Rn fMθ (x)fΘ2 (θ) dθ                  βZ2
+                                                                                      β= R                         R                     =
+                                                                                         α Rn fMθ (x)fΘ1 (θ) dx + β Rn fMθ (x)fΘ2 (θ) dx   αZ1 + βZ2
 
 
 -->
@@ -3421,12 +3433,12 @@ Applying <span class="textup">(<a href="Discussion.html#eq:bayes_rule_combined">
 
 <!--
 
-                                                                                                            fΘ|{X1 =x(1)} (θ) ∝ LM ⊗n1 (x(1))fΘ (θ)
-                                                                                                                                                θ
+                                                                                                          fΘ|{X1 =x(1)} (θ) ∝ LM ⊗n1 (x(1))fΘ (θ)
+                                                                                                                                                    θ
 
 
-                                                                                                  f(Θ|{X1 =x(1)} )|{X2 =x(2)} (θ) ∝ LM ⊗n2 (x(2))LM ⊗n1 (x(1))fΘ (θ)
-                                                                                                                                                θ                           θ
+                                                                                             f(Θ|{X1 =x(1)} )|{X2 =x(2)} (θ) ∝ LM ⊗n2 (x(2))LM ⊗n1 (x(1))fΘ (θ)
+                                                                                                                                                    θ                                    θ
 
 
 
@@ -3445,7 +3457,7 @@ We note that by independence
 </p>
 <p>
 \[L_{M_\theta ^{\otimes n_2}}(x(2)) L_{M_\theta ^{\otimes n_1}}(x(1)) =\l (\prod _{i=1}^{n_1}L_{M_\theta }(x_i)\r ) \l (\prod _{i=n_1+1}^{n_2}L_{M_\theta }(x_i)\r ) \\ =\l (\prod
-_{i=1}^{n_2}L_{M_\theta }(x_i)\r ) =L_{M_\theta ^{\otimes n}}(x). \]
+_{i=1}^{n_2}L_{M_\theta }(x_i)\r ) =L_{M_\theta ^{\otimes n}}(x).                             \]
 </p>
 <p>
 Hence \(f_{(\Theta |_{\{X_1=x(1)\}})|_{\{X_2=x(2)\}}}(\theta )\propto f_{\Theta |_{\{X=x\}}}(\theta )\), which by Lemma <a
@@ -3474,11 +3486,11 @@ href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:transitive_bayes_examp
 
 <!--
 
-                                                                                                                         f (θ|x) ∝ f (x|θ)f (θ)
+                                                                                                                           f (θ|x) ∝ f (x|θ)f (θ)
 
                                                                                                                    f (θ|x(1)) ∝ f (x(1)|θ)f (θ)
 
-                                                                                                           f (θ|x(1), x(2)) ∝ f (x(2)|θ)f (x(1)|θ)f (θ).
+                                                                                                       f (θ|x(1), x(2)) ∝ f (x(2)|θ)f (x(1)|θ)f (θ).
 
 
 
@@ -3506,7 +3518,7 @@ hence \(f(\theta |x) \propto f(\theta |x(1),x(2))\). By Lemma <a href="Equality-
 </li>
 </ul>
 <!--
-...... subsection Chapter <a href=Testing-parameter-estimation.html#c:tests>7</a> ......
+......     subsection Chapter <a href=Testing-parameter-estimation.html#c:tests>7</a> ......
 -->
 <h5 id="autosec-296">Chapter <a href="Testing-parameter-estimation.html#c:tests">7</a></h5>
 <a id="notes-autopage-296"></a>
@@ -3575,27 +3587,30 @@ Setting \(X\sim \Bin (m,p)\) and using <span class="textup">(<a href="Reference-
 
 
 <!--
-                                                                                                                  m − X 1/2
-                                                                                                                         
-                                                                                                           X
-                                                                                               f (p) ∝ E 2 +
-                                                                                                           p     (1 − p)2
-                                                                                                         E[X] m − E[X] 1/2
-                                                                                                                           
-                                                                                                     ∝          +
-                                                                                                           p2      (1 − p)2
-                                                                                                         mp m − mp 1/2
-                                                                                                                         
-                                                                                                     ∝        +
-                                                                                                         p2     (1 − p)2
-                                                                                                                   1/2
-                                                                                                         1      1
-                                                                                                     ∝     +
-                                                                                                         p 1−p
-                                                                                                                 1/2
-                                                                                                              1
-                                                                                                     ∝                 .
-                                                                                                         p(1 − p)
+                                                                                                                X   m − X 1/2
+                                                                                                                           
+                                                                                               f (p) ∝ E          +
+                                                                                                                p2 (1 − p)2
+                                                                                                                                1/2
+                                                                                                            E[X] m − E[X]
+                                                                                                        
+                                                                                                    ∝           +
+                                                                                                             p2   (1 − p)2
+                                                                                                                            1/2
+                                                                                                            mp m − mp
+                                                                                                        
+                                                                                                    ∝          +
+                                                                                                            p2   (1 − p)2
+                                                                                                                    1/2
+                                                                                                        1     1
+                                                                                                                     
+                                                                                                    ∝     +
+                                                                                                        p 1−p
+                                                                                                                 1/2
+                                                                                                            1
+                                                                                                      
+                                                                                                    ∝                 .
+                                                                                                        p(1 − p)
 
 
 -->
@@ -3628,9 +3643,9 @@ The Bayes factor has not changed much, even though the odds ratios are quite dif
 
 
 <p>
-<span class="listmarker"><span class="textnormal">(c)</span></span> The regulator will be interested by both sets of analysis. In particular, by the fact that both Bayes factors (using the informative
-prior elicited from the scientist and the uninformative reference prior) point towards the hypothesis \(\theta &gt;0.2\), suggests that the analysis is robust i.e.&nbsp;is not overly sensitive to the particular
-methodology used.
+<span class="listmarker"><span class="textnormal">(c)</span></span> The regulator will be interested by both sets of analysis. In particular, by the fact that both Bayes factors (using the informative prior
+elicited from the scientist and the uninformative reference prior) point towards the hypothesis \(\theta &gt;0.2\), suggests that the analysis is robust i.e.&nbsp;is not overly sensitive to the particular methodology
+used.
 </p>
 <p>
 <em>This is a highly stylized example. Medical trials tend to be complex experiments with multiple subgroups, typically with outcomes that are not easily reducible to success vs.&nbsp;failure. The process of deciding
@@ -3818,24 +3833,22 @@ The relationship between \(\mu |x\) and \(t|x\) is that \(\mu |x=\bar {x}+(t|x)\
 
 
 <!--
-                                                                                              n
-                                                                                                                  !
-                                                                                              Y                       1
-                                                                                f (µ, φ) =            fN(µ,φ) (xi )
-                                                                                                                      φ
-                                                                                              i=1
-                                                                                                            n
-                                                                                                                        !
-                                                                                                  1       1 X
-                                                                                           ∝ n/2+1 exp −      (xi − µ)2
-                                                                                            φ            2φ
-                                                                                                            1
-                                                                                                                              
-                                                                                              1           1
-                                                                                           ∝ n/2+1 exp −      2            2
-                                                                                                                             
-                                                                                                            ns + n(x̄ − µ)
-                                                                                            φ            2φ
+                                                                                                    n
+                                                                                                                         !
+                                                                                                    Y                         1
+                                                                                f (µ, ϕ) =                fN(µ,ϕ) (xi )
+                                                                                                    i=1
+                                                                                                                              ϕ
+                                                                                                             n
+                                                                                                                                              !
+                                                                                                     1     1 X
+                                                                                            ∝ n/2+1 exp −      (xi − µ)2
+                                                                                             ϕ            2ϕ 1
+                                                                                                     1        1  2
+                                                                                                                                                  
+                                                                                                                               2
+                                                                                            ∝          exp −     ns + n(x̄ − µ)
+                                                                                                ϕn/2+1       2ϕ
 
 
 -->
@@ -3855,12 +3868,12 @@ where we have used <span class="textup">(<a href="The-normal-distribution-with-u
 
 
 <!--
-                                                                                       Z ∞                                    
-                                                                                               1           1
-                                                                                                    exp −      2           2
-                                                                                                                             
-                                                                           f (µ|x) ∝                         ns + n(x̄ − µ) ) dφ.
-                                                                                       0     φn/2+1       2φ
+                                                                                        Z ∞
+                                                                                                    1         1  2
+                                                                                                                                                   
+                                                                                                                               2
+                                                                            f (µ|x) ∝                  exp −     ns + n(x̄ − µ)    )                      dϕ.
+                                                                                        0       ϕn/2+1       2ϕ
 
 
 -->
@@ -3879,20 +3892,18 @@ hence
 
 
 <!--
-                                                                                            Z ∞
-                                                                                                       1        2φ2
-                                                                               f (µ|x) ∝                    e−ψ           dψ
-                                                                                          0   φ          ns2 + n(x̄ − µ)2
-                                                                                                      n/2+1
-                                                                                                                Z ∞
-                                                                                                   1
-                                                                                       ∝                    n/2
-                                                                                                                    ψ n/2−1 e−ψ dψ
-                                                                                            2            2
-                                                                                         (ns + n(x̄ − µ) )       0
-                                                                                                   1
-                                                                                       ∝
-                                                                                         (ns2 + n(x̄ − µ)2 )n/2
+                                                                                                                               2ϕ2
+                                                                                              Z ∞
+                                                                                                             1
+                                                                               f (µ|x) ∝                          e−ψ                     dψ
+                                                                                                0       ϕ   n/2+1        ns2 + n(x̄ − µ)2
+                                                                                                                                  Z ∞
+                                                                                                                 1
+                                                                                         ∝                                               ψ n/2−1 e−ψ dψ
+                                                                                                (ns2 + n(x̄ − µ)2 )n/2             0
+                                                                                                          1
+                                                                                         ∝
+                                                                                                (ns2 + n(x̄ − µ)2 )n/2
 
 
 -->
@@ -3912,19 +3923,17 @@ where we use the fact that \(\int _0^\infty f_{\Gam (n/2,1)}(\psi )\,d\psi =1\).
 
 
 <!--
-                                                                                                                   dµ
-                                                                                                  f (τ |x) ∝ f (µ|x)
-                                                                                                                   dt
-                                                                                                             2 2
-                                                                                                                  n/2
-                                                                                                            S t
-                                                                                                  ∝ ns2 + n
-                                                                                                              n
-                                                                                                                −n/2
-                                                                                                           t2
-                                                                                                     
-                                                                                                   ∝ 1+
-                                                                                                         n−1
+                                                                                                                                  dµ
+                                                                                                        f (τ |x) ∝ f (µ|x)
+                                                                                                                                  dt
+                                                                                                                                  !n/2
+                                                                                                               S 2 t2
+                                                                                                     ∝ ns2 + n
+                                                                                                                 n
+                                                                                                                              !−n/2
+                                                                                                                t2
+                                                                                                          ∝ 1+
+                                                                                                               n−1
 
 
 -->
@@ -3952,19 +3961,16 @@ href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we id
 
 
 <!--
-                                                                                                          1
-                                                                                                            R
-                                                                      P[Θ|{X=x} ∈ Π0 ]P[Θ ∈ H1 ]         Z Π0 fMθ (x)fΘ (θ) dθ P[Θ ∈ H1 ]
-                                                                   B=                                 = 1R
-                                                                      P[Θ|{X=x} ∈ Π1 ]P[Θ ∈ H0 ]         Z Π1 fMθ (x)fΘ (θ) dθ P[Θ ∈ H0 ]
-                                                                      R               fΘ (θ)      R
-                                                                        Π0 fMθ (x) P[Θ∈H0 ] dθ          fMθ (x)fΘ|{Θ∈H0 } (θ) dθ   fX|{Θ∈H0 } (x)
-                                                                    =R                fΘ (θ)
-                                                                                                = RΠ 0                           =                .
-                                                                           fM   (x)          dθ     Π   fMθ (x)fΘ|{Θ∈H1 } (θ) dθ   fX|{Θ∈H1 } (x)
-                                                                        Π1    θ     P[Θ∈H1 ]          1
-
-
+                                                                                                   1
+                                                                                                                          R
+                                                                      P[Θ|{X=x} ∈ Π0 ]P[Θ ∈ H1 ]   Z Π0 fMθ (x)fΘ (θ) dθ P[Θ ∈ H1 ]
+                                                                   B=                            = 1R
+                                                                      P[Θ|{X=x} ∈ Π1 ]P[Θ ∈ H0 ]   Z Π1 fMθ (x)fΘ (θ) dθP[Θ ∈ H0 ]
+                                                                        R            fΘ (θ)       R
+                                                                         Π0 fMθ (x) P[Θ∈H0 ] dθ    Π fMθ (x)fΘ|{Θ∈H0 } (θ) dθ    fX|{Θ∈H0 } (x)
+                                                                      =R                        = R 0                          =                .
+                                                                                     fΘ (θ)
+                                                                        Π1 fMθ (x) P[Θ∈H1 ] dθ     Π1 fMθ (x)fΘ|{Θ∈H1 } (θ) dθ   fX|{Θ∈H1 } (x)
 
 
 -->
@@ -3991,7 +3997,7 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#ps:bayes_abs_cts_c
 </li>
 </ul>
 <!--
-...... subsection Chapter <a href=Computational-methods.html#c:computational>8</a> ......
+......   subsection Chapter <a href=Computational-methods.html#c:computational>8</a> ......
 -->
 <h5 id="autosec-300">Chapter <a href="Computational-methods.html#c:computational">8</a></h5>
 <a id="notes-autopage-300"></a>
@@ -4192,12 +4198,12 @@ due the fact that \(f_{\Exp (1)}\) has range \((0,\infty )\). Hence the MH algor
 
 
 <!--
-                                                                                                          5
+                                                                                                           5
                                                                                                                         !
-                                                                                                          Y     θ2          1
-                                                                                             f (θ|x) ∝                         .
-                                                                                                             x2 + θ 2
-                                                                                                          i=1 i
+                                                                                                           Y θ2             1
+                                                                                             f (θ|x) ∝     2                   .
+                                                                                                          x + θ2
+                                                                                                       i=1 i
                                                                                                                             θ2
 
 
@@ -4334,7 +4340,7 @@ Hence, differentiating with respect to \(\tilde {y}\), the p.d.f.&nbsp;of \(Q|_{
 <span class="hidden"> \(\seteqnumber{0}{C.}{3}\)</span>
 <!--
 
-                                                                                               fQ|{Y =y} (ỹ) = fZ (ỹ − y).
+                                                                                                fQ|{Y =y} (ỹ) = fZ (ỹ − y).
 
 -->
 <p>
@@ -4370,7 +4376,7 @@ Using this fact along with \(f_Z(z)=f_Z(-z)\),
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated December 4, 2024
+Copyright Nic Freeman, Sheffield University, last updated December 5, 2024
 </p>
 
 </footer>
