@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, December 5, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, December 10, 2024." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Conjugate priors</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: December 5, 2024
+last updated: December 10, 2024
 </p>
 
 </header>
@@ -889,7 +889,7 @@ Home</a>
 </div>
 
 <!--
-......     chapter Conjugate priors ......
+...... chapter Conjugate priors ......
 -->
 <h3 id="autosec-110">Chapter&nbsp;<span class="sectionnumber">4&#x2003;</span>Conjugate priors</h3>
 <a id="notes-autopage-110"></a>
@@ -937,7 +937,7 @@ href="Bayesian-models-continuous-data.html#eq:bayes_rule_continuous_data">3.3</a
 href="The-limitations-conjugate-pairs.html#s:conj_limitations">4.6</a>.
 </p>
 <!--
-......   section Notation:      proportionality ......
+...... section Notation: proportionality ......
 -->
 <h4 id="autosec-112"><span class="sectionnumber">4.1&#x2003;</span>Notation: proportionality</h4>
 <a id="notes-autopage-112"></a>
@@ -1083,9 +1083,9 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 
 <!--
 
-                                                                            fΘ|{X=x} (θ) ∝ pMθ (x)fΘ (θ)    for discrete Bayesian models,
+                                                                            fΘ|{X=x} (θ) ∝ pMθ (x)fΘ (θ)     for discrete Bayesian models,
 
-                                                                            fΘ|{X=x} (θ) ∝ fMθ (x)fΘ (θ)    for continuous Bayesian models.
+                                                                            fΘ|{X=x} (θ) ∝ fMθ (x)fΘ (θ)     for continuous Bayesian models.
 
 
 
@@ -1117,7 +1117,7 @@ purposes there is a simple way to resolve this difficulty. We we use \(\propto \
 function (not including subscripts) are the variables that proportionality applies to; everything else can be treated as constant in so far as \(\propto \) is concerned.
 </p>
 <!--
-......   subsection The Beta-Binomial pair ......
+...... subsection The Beta-Binomial pair ......
 -->
 <h5 id="autosec-117"><span class="sectionnumber">4.1.1&#x2003;</span>The Beta-Binomial pair</h5>
 <a id="notes-autopage-117"></a>
@@ -1152,9 +1152,9 @@ href="The-posterior-distribution.html#ex:baby_bayes_part3">2.3.3</a>.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that \(k\) is the number of Bernoulli trials that generate a \(1\), and that we have
-\(n\) trials in total. Under \(M_p\), each trial has probability \(p\) of generating \(1\). From Theorem <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have that for \(\theta
-\in [0,1]\)
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Note that \(k\) is the number of Bernoulli trials that generate a \(1\), and that we have \(n\)
+trials in total. Under \(M_p\), each trial has probability \(p\) of generating \(1\). From Theorem <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have that for \(\theta \in
+[0,1]\)
 </p>
 <span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
 
@@ -1162,17 +1162,19 @@ href="The-posterior-distribution.html#ex:baby_bayes_part3">2.3.3</a>.
 
 <!--
 
-                                                                                   fΘ|{X=x} (θ) ∝ P[Bernoulli(θ)⊗n = x]fBeta(a,b) (θ)
-                                                                                                       n
-                                                                                                                                   !
-                                                                                                       Y
-                                                                                               ∝             P[Bernoulli(θ) = xi ] fBeta(a,b) (θ)
-                                                                                                       i=1
-                                                                                                                           1
-                                                                                                                                                    
-                                                                                               ∝ θk (1 − θ)n−k                     θa−1 (1 − θ)b−1
-                                                                                                                           B(a, b)
-                                                                                               ∝ θa+k−1 (1 − θ)b+n−k−1 .
+                                                                                  fΘ|{X=x} (θ) ∝ P[Bernoulli(θ)⊗n = x]fBeta(a,b) (θ)
+                                                                                                   n
+                                                                                                                           !
+                                                                                                      P[Bernoulli(θ) = xi ] fBeta(a,b) (θ)
+                                                                                                   Y
+                                                                                               ∝
+                                                                                                    i=1
+                                                                                                                      1
+                                                                                                                                                 
+                                                                                                    k       n−k
+                                                                                              ∝ θ (1 − θ)                      θa−1 (1 − θ)b−1
+                                                                                                                       B(a, b)
+                                                                                              ∝ θa+k−1 (1 − θ)b+n−k−1 .
 
 
 
@@ -1230,27 +1232,22 @@ with the parameter \(\theta \in \Pi =[0,1]\). Suppose that the prior is \(\Theta
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> From Theorem <a
-href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have that for \(\theta \in [0,1]\)
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> From Theorem <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a>
+we have that for \(\theta \in [0,1]\)
 </p>
 <span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
 
 
 
 <!--
-                                                                                      n
-                                                                                                     !                       !
-                                                                                        mi                                          1
-                                                                                                                                                            
-                                                                                                                    mi −xi
-                                                                                      Y
-                                                                                                         xi
-                                                                     fΘ|{X=x} (θ) ∝                     θ (1 − θ)                         θa−1 (1 − θ)b−1
+                                                                                     n                                  !                             
+                                                                                     Y   mi          xi          mi −xi          1
+                                                                    fΘ|{X=x} (θ) ∝                  θ (1 − θ)                          θa−1 (1 − θ)b−1
+                                                                                             xi                                B(a, b)
                                                                                       i=1
-                                                                                                xi                                B(a, b)
-                                                                                       Pn                           Pn          Pn
-                                                                                                xi −1                    mi −        xi −1
-                                                                                 ∝ θa+      1           (1 − θ)b+    1           1           .
+                                                                                     a+ n
+                                                                                        P                       Pn        Pn
+                                                                                ∝θ        1 xi −1   (1 − θ)b+    1 mi −    1 xi −1   .
 
 
 
@@ -1297,7 +1294,7 @@ can have many possible outcomes. It involves the Dirichlet and multinomial distr
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated December 5, 2024
+Copyright Nic Freeman, Sheffield University, last updated December 10, 2024
 </p>
 
 </footer>
