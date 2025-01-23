@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, December 10, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, January 23, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — Two more examples of conjugate pairs</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: December 10, 2024
+last updated: January 23, 2025
 </p>
 
 </header>
@@ -889,7 +889,7 @@ Home</a>
 </div>
 
 <!--
-...... section Two more examples of conjugate pairs ......
+......     section Two more examples of conjugate pairs ......
 -->
 <h4 id="autosec-122"><span class="sectionnumber">4.2&#x2003;</span>Two more examples of conjugate pairs</h4>
 <a id="notes-autopage-122"></a>
@@ -923,7 +923,7 @@ href="Notation-independent-data.html#ex:social_duration">3.2.3</a>.
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> From Theorem <a
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> From Theorem <a
 href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have that for \(\lambda \in (0,\infty )\)
 </p>
 <span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
@@ -933,18 +933,23 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 <!--
 
                                                                                   fΛ|{X=x} (λ) ∝ fExp(λ)⊗n (x)fGamma(α,β) (λ)
-                                                                                                    n
-                                                                                                              !
-                                                                                                                  β α α−1 −βλ
-                                                                                                   Y                          
-                                                                                                         −λxi
-                                                                                               ∝      λe              λ     e
-                                                                                                                 Γ(α)
-                                                                                                 i=1
-                                                                                                        Pn
-                                                                                             ∝ λn e−λ    1 xi   λα−1 e−βλ .
-                                                                                                                  Pn
-                                                                                             ∝ λα+n−1 e−λ(β+        1 xi )   ,
+                                                                                                  n
+                                                                                                                    !
+                                                                                                                          β α α−1 −βλ
+                                                                                                                                            
+                                                                                                             −λxi
+                                                                                                  Y
+                                                                                              ∝         λe                    λ e
+                                                                                                  i=1
+                                                                                                                         Γ(α)
+                                                                                                         Pn
+                                                                                              ∝ λn e−λ        1
+                                                                                                                  xi α−1 −βλ
+                                                                                                                    λ    e              .
+                                                                                                                        Pn
+                                                                                              ∝ λα+n−1 e−λ(β+            1
+                                                                                                                             xi )
+                                                                                                                                    ,
 
 
 
@@ -958,7 +963,7 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 \begin{align*}
 f_{\Lambda |_{\{X=x\}}}(\lambda ) &amp;\propto f_{\Exp (\lambda )^{\otimes n}}(x)f_{\Gam (\alpha ,\beta )}(\lambda ) \\ &amp;\propto \l (\prod _{i=1}^n\lambda e^{-\lambda x_i}\r
 )\l (\frac {\beta ^\alpha }{\Gamma (\alpha )}\lambda ^{\alpha -1}e^{-\beta \lambda }\r ) \\ &amp;\propto \lambda ^n e^{-\lambda \sum _1^n x_i}\lambda ^{\alpha -1}e^{-\beta
-\lambda }. \\ &amp;\propto \lambda ^{\alpha +n-1}e^{-\lambda (\beta +\sum _1^n x_i)},
+\lambda }.     \\ &amp;\propto \lambda ^{\alpha +n-1}e^{-\lambda (\beta +\sum _1^n x_i)},
 \end{align*}
 By Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize this p.d.f.&nbsp;as \(\Theta |_{\{X=x\}}\sim \Gam (\alpha +n,\beta +\sum _1^n x_i)\).
 &#x2003;&#x2003;&#x220E;
@@ -986,12 +991,12 @@ unknown parameters. For now we view \(\sigma \) as fixed, so the mean \(\mu \) i
 <span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
 
 <!--
-                                                                               !
-                                                  1 Pn         u
-                                                        1 xi + s2       1
-                                   Θ|{X=x} ∼ N    σ2
-                                                     n       1    , n     1        .                                               (4.1)                       --><a id="eq:conj_normal_normal"></a><!--
-                                                     σ 2 + s2       σ 2 + s2
+                                                    1 Pn
+                                                                                 !
+                                                                 u
+                                                    σ2    1 xi + s2       1
+                                    Θ|{X=x} ∼ N        n       1    , n     1        .                                                      (4.1)                                        --><a id="eq:conj_normal_normal"></a><!--
+                                                       σ 2 + s2       σ 2 + s2
 
 -->
 
@@ -1019,7 +1024,7 @@ unknown parameters. For now we view \(\sigma \) as fixed, so the mean \(\mu \) i
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> From Theorem <a
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> From Theorem <a
 href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have that for \(\theta \in \R \)
 </p>
 <span class="hidden"> \(\seteqnumber{0}{4.}{1}\)</span>
@@ -1028,24 +1033,22 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 
 <!--
 
-                                                                                       fΘ|{X=x} (θ) ∝ fN(θ,σ2 )⊗n (x)fN(u,s2 ) (θ)
-                                                                                                         n
-                                                                                                                            !                  
-                                                                                                        Y      1 − (xi −θ)2
-                                                                                                                                    1  − (θ−u)2
-                                                                                                    ∝       √ e 2σ2                √ e 2s2
-                                                                                                        i=1
-                                                                                                               2π                   2π
-                                                                                                                          n
-                                                                                                                                                          !
-                                                                                                             1 X                1
-                                                                                                    ∝ exp − 2       (xi − θ)2 − 2 (θ − u)2
-                                                                                                            2σ                 2s
-                                                                                                                i=1
-
-                                                                                                    ∝ exp − Q(θ)
-                                                                                                                 
-
+                                                                                         fΘ|{X=x} (θ) ∝ fN(θ,σ2 )⊗n (x)fN(u,s2 ) (θ)
+                                                                                                              n
+                                                                                                                                       !
+                                                                                                             1  (xi −θ)2                      1  (θ−u)2
+                                                                                                                                                                  
+                                                                                                            √ e− 2σ2                         √ e− 2s2
+                                                                                                              Y
+                                                                                                      ∝
+                                                                                                        i=1  2π                               2π
+                                                                                                                 n
+                                                                                                                                                                      !
+                                                                                                              1 X               1
+                                                                                                      ∝ exp − 2     (xi − θ)2 − 2 (θ − u)2
+                                                                                                             2σ i=1            2s
+                                                                                                                           
+                                                                                                      ∝ exp − Q(θ)
 
 
 
@@ -1068,14 +1071,14 @@ where
 
 <!--
 
-                                                                                               A                               B                          C
-                                                                                       z      }|                 z          }|      !{ z        }|      !{
-                                                                                                       {                  n                   n
-                                                                                             n     1                   1 X         u       1 X 2      u2
-                                                                     Q(θ) = θ2                 2
-                                                                                                 + 2        −2θ               xi + 2 +            xi + 2 .
-                                                                                            2σ    2s                  2σ 2        2s      2σ 2        2s
-                                                                                                                         i=1                        i=1
+                                                                                                 A                                 B                                  C
+                                                                                         z      }|                 z       }|                   !{       z         }|          !{
+                                                                                                         {               n                                       n
+                                                                                               n     1                  1 X         u                           1 X        u2
+                                                                        Q(θ) = θ2                  + 2        −2θ              xi + 2                 +               2
+                                                                                                                                                                       x +           .
+                                                                                              2σ 2  2s                    2
+                                                                                                                        2σ i=1     2s                          2σ 2 i=1 i 2s2
 
 -->
 
@@ -1099,19 +1102,16 @@ href="Reference-Sheets.html#a:reference_sheets">A</a>), we have that
 
 
 <!--
-                                                                                                                                     2             !
-                                                                                                                                               B2
-                                                                                                                           
-                                                                                                                       B
-                                                                                             fΘ|{X=x} (θ) ∝ exp −A θ −                  +C −
-                                                                                                                       A                       A
-                                                                                                                                           !
-                                                                                                                           1
-                                                                                                            ∝ exp −
-                                                                                                                                        2
-                                                                                                                             1     θ− B
-                                                                                                                                      A      .
-                                                                                                                         2( 2A )
+                                                                                                                                            2                    !
+                                                                                                                         B                            B2
+                                                                                                                            
+                                                                                               fΘ|{X=x} (θ) ∝ exp −A θ −                         +C −
+                                                                                                                         A                            A
+                                                                                                                                                       !
+                                                                                                                               1                 2
+                                                                                                              ∝ exp −         1            θ− B
+                                                                                                                                              A            .
+                                                                                                                          2( 2A )
 
 
 -->
@@ -1141,9 +1141,8 @@ as required. Note that in the first term we have cancelled a factor of \(\frac 1
 <p>
 From <span class="textup">(<a href="Two-more-examples-conjugate-pairs.html#eq:conj_normal_normal">4.1</a>)</span> we can see that the variance will decrease as \(n\to \infty \), and that for
 large \(n\) it will be \(\approx \frac {\sigma ^2}{n}\). This agrees with our experience in Example <a href="Two-more-examples-conjugate-pairs.html#ex:speed_camera_1">4.2.4</a>, in which case we
-had \(\sigma ^2=s^2=0.4^2\), giving variance \(\frac {0.4^2}{n}\). Recall that in our discussion at the end of Example <a
-href="Two-more-examples-conjugate-pairs.html#ex:speed_camera_1">4.2.4</a> we noted that the posterior variance had become very small after only \(10\) obserations, despite the prior having a reasonably
-large variance.
+had \(\sigma ^2=s^2=0.4^2\), giving variance \(\frac {0.4^2}{n}\). Recall that in our discussion at the end of Example <a href="Two-more-examples-conjugate-pairs.html#ex:speed_camera_1">4.2.4</a>
+we noted that the posterior variance had become very small after only \(10\) obserations, despite the prior having a reasonably large variance.
 </p>
 
 <p>
@@ -1204,7 +1203,7 @@ cruise control). The camera records speeds of
 
 <!--
 
-                        30.9,   29.9,   30.1,   30.3,   29.7,   30.1,   30.1,    29.2,   30.6,   30.4.                   (4.2)                                             --><a id="eq:camera_data_1"></a><!--
+                          30.9,   29.9,   30.1,   30.3,   29.7,   30.1,   30.1,   29.2,   30.6,   30.4.                   (4.2)                                            --><a id="eq:camera_data_1"></a><!--
 
 -->
 
@@ -1272,7 +1271,7 @@ By Lemma <a href="Two-more-examples-conjugate-pairs.html#l:conj_normal_normal">4
 
 <p>
 \[\Theta |_{\{X=x\}}\sim \Normal \l ( \frac {\frac {1}{0.16}\sum _1^{10}x_i+\frac {30}{5^2}}{\frac {10}{0.16}+\frac {1}{5^2}}, \frac {1}{\frac {10}{0.16}+\frac {1}{5^2}} \r ) \eqd
-\Normal \l (30.13, 0.04^2\r ). \]
+\Normal \l (30.13, 0.04^2\r ).        \]
 </p>
 
 <p>
@@ -1382,7 +1381,7 @@ We’ll return to this data again in Example <a href="The-normal-distribution-wi
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated December 10, 2024
+Copyright Nic Freeman, Sheffield University, last updated January 23, 2025
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, December 10, 2024." />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, January 23, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS364/61006 — The normal distribution with unknown mean and variance</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: December 10, 2024
+last updated: January 23, 2025
 </p>
 
 </header>
@@ -889,7 +889,7 @@ Home</a>
 </div>
 
 <!--
-...... section The normal distribution with unknown mean and variance ......
+......     section The normal distribution with unknown mean and variance ......
 -->
 <h4 id="autosec-150"><span class="sectionnumber">4.5&#x2003;</span>The normal distribution with unknown mean and variance</h4>
 <a id="notes-autopage-150"></a>
@@ -918,17 +918,21 @@ The conjugate prior in this case is complicated. It is the Normal-Gamma distribu
 
 <!--
 
-                                                                                                      (4.8)
-                                                                       fNGamma(m,p,a,b) (µ, τ ) = fN(m,   1 (µ) f
-                                                                                                            )    Gamma(a,b) (τ )                                     --><a id="eq:NGamma_pre"></a><!--
+                                                                        fNGamma(m,p,a,b) (µ, τ ) = fN(m,(4.8)
+                                                                                                         1 (µ) fGamma(a,b) (τ )
+                                                                                                           )                                                         --><a id="eq:NGamma_pre"></a><!--
                                                                                                          pτ
-                                                                                                  r
-                                                                                                     pτ        pτ              ba
-                                                                                                =        exp − (µ − m)2               τ a−1 e−bτ
-                                                                                                     2π           2              Γ(a)
-                                                                                                               pτ                
-                                                                                                ∝ τ a− 2 exp(4.9)
+
+                                                                                                                              ba a−1 −bτ
+                                                                                                    r
+                                                                                                     pτ          pτ
+                                                                                                                             
+                                                                                                =        exp − (µ − m)2           τ e
+                                                                                                     2π           2          Γ(a)
+                                                                                                                 pτ
+                                                                                                                             
                                                                                                        1
+                                                                                                ∝ τ a− 2 exp (4.9)
                                                                                                                − (µ − m)2 − bτ .                                          --><a id="eq:NGamma"></a><!--
                                                                                                                   2
 
@@ -1016,11 +1020,10 @@ Our next goal is to state the conjugacy between \(\NGam \) and the Normal distri
 <span class="hidden"> \(\seteqnumber{0}{4.}{9}\)</span>
 
 <!--
-                            n
-                                                                                        (4.10)                                                                  --><a id="eq:sample-mean-variance"></a><!--
-                            X
-                              (xi − µ)2 = ns2 + n(x̄ − µ)2
-                            i=1
+                             n
+                             X
+                                   (xi − µ)2 = ns2 + n(x̄ − µ)2                          (4.10)                                                                  --><a id="eq:sample-mean-variance"></a><!--
+                             i=1
 
 -->
 
@@ -1088,7 +1091,7 @@ where \(\bar {x}=\frac {1}{n}\sum _1^n x_i\) and \(s^2=\frac 1n\sum _1^n (x_i-\b
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> \(\offsyl \) From Theorem <a
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> \(\offsyl \) From Theorem <a
 href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> we have that for all \(\mu \in \R \) and \(\tau &gt;0\),
 </p>
 <span class="hidden"> \(\seteqnumber{0}{4.}{10}\)</span>
@@ -1096,36 +1099,35 @@ href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a
 
 
 <!--
-                                                                                           n                           !
-                                                                                                          τ (µ − xi )2
-                                                                                               r      
-                                                                                                 τ                                    pτ             
-                                                                                                   exp −                   τ a− 2 exp − (µ − m)2 − bτ
-                                                                                                                                1
-                                                                                           Y
-                                                                f(U,T )|{X=x} (µ, τ ) ∝
-                                                                                                2π               2                      2
-                                                                                        i=1
-                                                                                                             n
-                                                                                                    "                                     !#
-                                                                                                       τ X
-                                                                                              2 exp
-                                                                                        n     1
-                                                                                          +a−                            2            2
-                                                                                      ∝τ2            −          (µ − xi ) + p(µ − m) + 2b
-                                                                                                       2
-                                                                                                           i=1
-                                                                                                    h τ                                     i
-                                                                                              2 exp −
-                                                                                        n     1
-                                                                                          +a−
-                                                                                      ∝τ2                 ns2 + n(µ − x̄)2 + p(µ − m)2 + 2b
-                                                                                                    h τ2       i
-                                                                                              2 exp −
-                                                                                        n     1
-                                                                                          +a−
-                                                                                      ∝τ2                Q(µ)
-                                                                                                       2
+                                                                                            n
+                                                                                                                                   !!
+                                                                                                                τ (µ − xi )2
+                                                                                                  r
+                                                                                                        τ                                                pτ
+                                                                                                                                                                         
+                                                                                                                                            a− 12
+                                                                                            Y
+                                                                 f(U,T )|{X=x} (µ, τ ) ∝                  exp −                         τ           exp − (µ − m)2 − bτ
+                                                                                            i=1
+                                                                                                       2π            2                                    2
+                                                                                                                     n
+                                                                                                            "                                               !#
+                                                                                            n
+                                                                                              +a− 12         τ       X
+                                                                                       ∝τ   2          exp −               (µ − xi )2 + p(µ − m)2 + 2b
+                                                                                                             2       i=1
+                                                                                                        τ
+                                                                                                                                                               
+                                                                                            n
+                                                                                              +a− 12
+                                                                                       ∝τ   2      exp − ns2 + n(µ − x̄)2 + p(µ − m)2 + 2b
+                                                                                                        2
+                                                                                                        τ
+                                                                                                            
+                                                                                          n
+                                                                                            +a− 12
+                                                                                       ∝τ 2        exp − Q(µ)
+                                                                                                        2
 
 
 
@@ -1158,15 +1160,13 @@ Completing the square (with the help of the reference sheet) we obtain \(\mc {Q}
 
 
 <!--
-                                                                                                                    "                         #
-                                                                                                                             B 2           B2
-                                                                                                                                    
-                                                                                                                      τ             1
-                                                                                                                 exp − A µ −
-                                                                                                      n
-                                                                                                        +a− 12
-                                                                          f(U,T )|{X=x} (µ, τ ) ∝ τ   2                          −τ     C−       .
-                                                                                                                      2      A      2      A
+                                                                                                                     "                      2                   !#
+                                                                                                                        τ      B                       1    B2
+                                                                                                                               
+                                                                                                        n
+                                                                                                          +a− 12
+                                                                           f(U,T )|{X=x} (µ, τ ) ∝ τ    2          exp − A µ −                      −τ   C−           .
+                                                                                                                        2      A                       2    A
 
 
 
@@ -1189,29 +1189,25 @@ from the coefficient of this term we have \(p^*=A=n+p\). This leaves only
 
 
 <!--
-
-                                                                                  B2
-                                                                                    
-                                                                      ∗  1
-                                                                     b =     C−
-                                                                         2         A
-                                                                                                                      
-                                                                         1    2      2      2          1             2
-                                                                       =    ns + nx̄ + pm + 2b −           (nx̄ + mp)
-                                                                         2                           n+p
-                                                                             ns2      1 
-                                                                                          (n + p)nx̄2 + (n + p)pm2 − n2 x̄2 + 2mpnx̄ − m2 p2
-                                                                                                                                             
-                                                                       =b+        +
-                                                                              2     n+p
-                                                                             ns 2     1 
-                                                                                          pnx̄2 + npm2 + 2mpnx̄
-                                                                                                                  
-                                                                       =b+        +
-                                                                              2     n+p
-                                                                             ns2     np
-                                                                       =b+        +     (x̄ − m)2 ,
-                                                                              2     n+p
+                                                                                            !
+                                                                       ∗  1        B2
+                                                                      b =     C−
+                                                                          2         A
+                                                                          1                             1
+                                                                                                                       
+                                                                               2      2      2                        2
+                                                                        =    ns + nx̄ + pm + 2b −           (nx̄ + mp)
+                                                                          2                           n+p
+                                                                              ns2      1 h                                                    i
+                                                                        =b+        +       (n + p)nx̄2 + (n + p)pm2 − n2 x̄2 + 2mpnx̄ − m2 p2
+                                                                               2     n+p
+                                                                                 2
+                                                                              ns       1 h                         i
+                                                                        =b+        +       pnx̄2 + npm2 + 2mpnx̄
+                                                                               2     n+p
+                                                                              ns2     np
+                                                                        =b+        +     (x̄ − m)2 ,
+                                                                               2     n+p
 
 
 
@@ -1326,7 +1322,7 @@ href="Computational-methods.html#c:computational">8</a>.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated December 10, 2024
+Copyright Nic Freeman, Sheffield University, last updated January 23, 2025
 </p>
 
 </footer>
