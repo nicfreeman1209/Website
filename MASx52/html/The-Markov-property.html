@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 16, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, April 22, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — The Markov property</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 16, 2024
+last updated: April 22, 2025
 </p>
 
 </header>
@@ -275,363 +275,6 @@ Contents
 <a href="notes_2.html" class="linkhome" >
 Home</a>
 </p>
-
-<p>
-<a href="The-transition-continuous-time.html#autosec-5" class="tocchapter" >
-<span class="sectionnumber">10</span>&#x2003;The transition to continuous time</a>
-</p>
-
-
-
-<p>
-<a href="Brownian-motion.html#autosec-12" class="tocchapter" >
-<span class="sectionnumber">11</span>&#x2003;Brownian motion</a>
-</p>
-
-
-
-<p>
-<a href="Brownian-motion.html#autosec-13" class="tocsection" >
-<span class="sectionnumber">11.1</span>&#x2003;The limit of random walks</a>
-</p>
-
-
-
-<p>
-<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
-<span class="sectionnumber">11.2</span>&#x2003;Brownian motion (definition)</a>
-</p>
-
-
-
-<p>
-<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
-<span class="sectionnumber">11.3</span>&#x2003;Brownian motion and the heat equation \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Properties-Brownian-motion.html#autosec-32" class="tocsection" >
-<span class="sectionnumber">11.4</span>&#x2003;Properties of Brownian motion</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-bm.html#autosec-41" class="tocsection" >
-<span class="sectionnumber">11.5</span>&#x2003;Exercises on Chapter 11</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-integration.html#autosec-45" class="tocchapter" >
-<span class="sectionnumber">12</span>&#x2003;Stochastic integration</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-integration.html#autosec-46" class="tocsection" >
-<span class="sectionnumber">12.1</span>&#x2003;Introduction to Ito calculus</a>
-</p>
-
-
-
-<p>
-<a href="Ito-integrals.html#autosec-51" class="tocsection" >
-<span class="sectionnumber">12.2</span>&#x2003;Ito integrals</a>
-</p>
-
-
-
-<p>
-<a href="Existence-Ito-integrals.html#autosec-55" class="tocsection" >
-<span class="sectionnumber">12.3</span>&#x2003;Existence of Ito integrals \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Ito-processes.html#autosec-60" class="tocsection" >
-<span class="sectionnumber">12.4</span>&#x2003;Ito processes</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-ito.html#autosec-67" class="tocsection" >
-<span class="sectionnumber">12.5</span>&#x2003;Exercises on Chapter 12</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-differential-equations.html#autosec-71" class="tocchapter" >
-<span class="sectionnumber">13</span>&#x2003;Stochastic differential equations</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-differential-equations.html#autosec-75" class="tocsection" >
-<span class="sectionnumber">13.1</span>&#x2003;Ito’s formula</a>
-</p>
-
-
-
-<p>
-<a href="Geometric-Brownian-motion.html#autosec-82" class="tocsection" >
-<span class="sectionnumber">13.2</span>&#x2003;Geometric Brownian motion</a>
-</p>
-
-
-
-<p>
-<a href="The-Ornstein-Uhlenbeck-process.html#autosec-85" class="tocsection" >
-<span class="sectionnumber">13.3</span>&#x2003;The Ornstein–Uhlenbeck process \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-exponentials-martingale-representation.html#autosec-90" class="tocsection" >
-<span class="sectionnumber">13.4</span>&#x2003;Stochastic exponentials and martingale representation</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-sdes.html#autosec-96" class="tocsection" >
-<span class="sectionnumber">13.5</span>&#x2003;Exercises on Chapter 13</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-processes-in-continuous-time.html#autosec-101" class="tocchapter" >
-<span class="sectionnumber">14</span>&#x2003;Stochastic processes in continuous time</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-processes-in-continuous-time.html#autosec-102" class="tocsection" >
-<span class="sectionnumber">14.1</span>&#x2003;The Feynman-Kac formula</a>
-</p>
-
-
-
-<p>
-<a href="The-Markov-property.html#autosec-110" class="tocsection" >
-<span class="sectionnumber">14.2</span>&#x2003;The Markov property</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-stoch_procs_3.html#autosec-114" class="tocsection" >
-<span class="sectionnumber">14.3</span>&#x2003;Exercises on Chapter 14</a>
-</p>
-
-
-
-<p>
-<a href="The-Black-Scholes-model.html#autosec-118" class="tocchapter" >
-<span class="sectionnumber">15</span>&#x2003;The Black-Scholes model</a>
-</p>
-
-
-
-<p>
-<a href="The-Black-Scholes-model.html#autosec-119" class="tocsection" >
-<span class="sectionnumber">15.1</span>&#x2003;The Black-Scholes market</a>
-</p>
-
-
-
-<p>
-<a href="Completeness.html#autosec-127" class="tocsection" >
-<span class="sectionnumber">15.2</span>&#x2003;Completeness</a>
-</p>
-
-
-
-<p>
-<a href="The-Black-Scholes-equation.html#autosec-134" class="tocsection" >
-<span class="sectionnumber">15.3</span>&#x2003;The Black-Scholes equation</a>
-</p>
-
-
-
-<p>
-<a href="Martingales-risk-neutral-world.html#autosec-140" class="tocsection" >
-<span class="sectionnumber">15.4</span>&#x2003;Martingales and ‘the risk-neutral world’</a>
-</p>
-
-
-
-<p>
-<a href="The-Black-Scholes-formula.html#autosec-144" class="tocsection" >
-<span class="sectionnumber">15.5</span>&#x2003;The Black-Scholes formula</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-bs.html#autosec-147" class="tocsection" >
-<span class="sectionnumber">15.6</span>&#x2003;Exercises on Chapter 15</a>
-</p>
-
-
-
-<p>
-<a href="Application-extension-Black-Scholes-model.html#autosec-153" class="tocchapter" >
-<span class="sectionnumber">16</span>&#x2003;Application and extension of the Black-Scholes model</a>
-</p>
-
-
-
-<p>
-<a href="Application-extension-Black-Scholes-model.html#autosec-154" class="tocsection" >
-<span class="sectionnumber">16.1</span>&#x2003;Transaction costs and parity relations</a>
-</p>
-
-
-
-<p>
-<a href="The-Greeks.html#autosec-158" class="tocsection" >
-<span class="sectionnumber">16.2</span>&#x2003;The Greeks</a>
-</p>
-
-
-
-<p>
-<a href="Delta-Gamma-Hedging.html#autosec-161" class="tocsection" >
-<span class="sectionnumber">16.3</span>&#x2003;Delta and Gamma Hedging</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-bs_extensions.html#autosec-168" class="tocsection" >
-<span class="sectionnumber">16.4</span>&#x2003;Exercises on Chapter 16</a>
-</p>
-
-
-
-<p>
-<a href="Further-topics-on-Black-Scholes-model.html#autosec-175" class="tocchapter" >
-<span class="sectionnumber">17</span>&#x2003;Further topics on the Black-Scholes model \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Further-topics-on-Black-Scholes-model.html#autosec-176" class="tocsection" >
-<span class="sectionnumber">17.1</span>&#x2003;Time inhomogeneity \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="American-Exotic-options.html#autosec-178" class="tocsection" >
-<span class="sectionnumber">17.2</span>&#x2003;American and Exotic options \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Discontinuous-stock-prices-heavy-tails.html#autosec-182" class="tocsection" >
-<span class="sectionnumber">17.3</span>&#x2003;Discontinuous stock prices and heavy tails \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Volatility.html#autosec-186" class="tocsection" >
-<span class="sectionnumber">17.4</span>&#x2003;Volatility \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Incomplete-markets.html#autosec-192" class="tocsection" >
-<span class="sectionnumber">17.5</span>&#x2003;Incomplete markets \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="The-financial-crisis-2007-8.html#autosec-194" class="tocchapter" >
-<span class="sectionnumber">18</span>&#x2003;The financial crisis of 2007/8 \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Financial-networks.html#autosec-205" class="tocchapter" >
-<span class="sectionnumber">19</span>&#x2003;Financial networks \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Financial-networks.html#autosec-206" class="tocsection" >
-<span class="sectionnumber">19.1</span>&#x2003;Graphs and random graphs \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="The-Gai-Kapadia-model-debt-contagion.html#autosec-212" class="tocsection" >
-<span class="sectionnumber">19.2</span>&#x2003;The Gai-Kapadia model of debt contagion \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Approximating-contagion-Galton-Watson-process.html#autosec-219" class="tocsection" >
-<span class="sectionnumber">19.3</span>&#x2003;Approximating contagion by a Galton-Watson process \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Modelling-discussion-on-financial-networks.html#autosec-222" class="tocsection" >
-<span class="sectionnumber">19.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-fin_net.html#autosec-225" class="tocsection" >
-<span class="sectionnumber">19.5</span>&#x2003;Exercises on Chapter 19 \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Solutions-exercises-part-two.html#autosec-233" class="tocchapter" >
-<span class="sectionnumber">C</span>&#x2003;Solutions to exercises (part two)</a>
-</p>
-
-
-
-<p>
-<a href="Advice-revision-exams.html#autosec-246" class="tocchapter" >
-<span class="sectionnumber">D</span>&#x2003;Advice for revision/exams</a>
-</p>
-
-
-
-<p>
-<a href="Formula-sheet-part-two.html#autosec-250" class="tocchapter" >
-<span class="sectionnumber">E</span>&#x2003;Formula sheet (part two)</a>
-</p>
-
-
 
 </div>
 
@@ -874,7 +517,7 @@ Home</a>
 </div>
 
 <!--
-...... section The Markov property ......
+......     section The Markov property ......
 -->
 <h4 id="autosec-110"><span class="sectionnumber">14.2&#x2003;</span>The Markov property</h4>
 <a id="notes_2-autopage-110"></a>
@@ -883,8 +526,8 @@ Home</a>
 <a id="s:markov_prop"></a>
 
 <p>
-The notation \(\E _{t,x}[\ldots ]\) from Section <a href="Stochastic-processes-in-continuous-time.html#s:fk">14.1</a>, along with conditional expectation, allows us to formally express one of the
-most useful concepts in probability theory: the Markov property.
+The notation \(\E _{t,x}[\ldots ]\) from Section <a href="notes_2.html#??">??</a>, along with conditional expectation, allows us to formally express one of the most useful concepts in probability theory:
+the Markov property.
 </p>
 
 <p>
@@ -894,7 +537,7 @@ href="The-strong-Markov-property.html#s:rw_markov_prop">8.4</a>. We’ll use sli
 
 <p>
 The idea of the Markov property is the following. Suppose that we have a stochastic process \((X_t)\), and that we have waited up until time \(t\), so the information visible to us is given by \(\mc {F}_t\). We
-want to make a best guesses for some information about \(X_T\) where \(T&gt;t\). In symbols this means that we have chosen some (deterministic) function \(\Phi \) and we are interested in
+want to make a best guess for some information about \(X_T\) where \(T&gt;t\). In symbols this means that we have chosen some (deterministic) function \(\Phi \) and we are interested in
 </p>
 
 <p>
@@ -902,7 +545,7 @@ want to make a best guesses for some information about \(X_T\) where \(T&gt;t\).
 </p>
 
 <p>
-In principle, we have access to all the information in \(\mc {F}_t\). However, in many cases it holds that <sup>1</sup>
+In principle, we have access to all the information in \(\mc {F}_t\). However, in many cases it holds that<sup>1</sup>
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{14.}{6}\)</span>
@@ -911,7 +554,7 @@ In principle, we have access to all the information in \(\mc {F}_t\). However, i
 
 
 
-                                         E[Φ(XT ) | Ft ] = Et,Xt [Φ(XT )].                                      (14.7)                                                 --><a id="eq:markov_property"></a><!--
+                                          E[Φ(XT ) | Ft ] = Et,Xt [Φ(XT )].                                        (14.7)                                               --><a id="eq:markov_property"></a><!--
 
 -->
 
@@ -926,15 +569,15 @@ In principle, we have access to all the information in \(\mc {F}_t\). However, i
 </p>
 
 <p>
-Recall our intuition for conditional expectation: we view the left hand side of <span class="textup">(<a href="The-Markov-property.html#eq:markov_property">14.7</a>)</span> as our best guess for
-\(\Phi (X_T)\), based on the information we have seen during \([0,t]\). On the right hand side, we simply start at time \(t\), fix the value of \(X_t\), run the stochastic process until time \(T\), and take
-expectations. Thus, the right hand side relies on much less information (in particular, we ignore the values of \(X_u\) for \(u\in [0,t)\) and only need to know \(X_t\)).
+Recall our intuition for conditional expectation: we view the left hand side of <span class="textup">(<a href="notes_2.html#??">??</a>)</span> as our best guess for \(\Phi (X_T)\), based on the
+information we have seen during \([0,t]\). On the right hand side, we simply start at time \(t\), fix the value of \(X_t\), run the stochastic process until time \(T\), and take expectations. Thus, the right hand
+side relies on much less information (in particular, we ignore the values of \(X_u\) for \(u\in [0,t)\) and only need to know \(X_t\)).
 </p>
 
 <p>
-Equation <span class="textup">(<a href="The-Markov-property.html#eq:markov_property">14.7</a>)</span> is known as the <i>Markov property</i> for the stochastic process \(X\). Not all stochastic
-processes are Markov, but many of the most useful ones are. Intuitively, the future (random) behaviour of a Markov process depends on its current value – but, crucially, the future doesn’t depend on the
-<i>whole</i> history of the process, just on the current value.
+Equation <span class="textup">(<a href="notes_2.html#??">??</a>)</span> is known as the <i>Markov property</i> for the stochastic process \(X\). A process \((X_t)\) that satisfies the Markov property
+is known as a <i>Markov process</i>. Not all stochastic processes are Markov but many of the most useful ones are. Intuitively, the future (random) behaviour of a Markov process depends on its current value –
+but, crucially, the future doesn’t depend on the <i>whole</i> history of the process, just on the current value.
 </p>
 
 <p>
@@ -974,8 +617,7 @@ For our purposes we need only know that:
 </div>
 
 <p>
-In particular, the formula <span class="textup">(<a href="The-Markov-property.html#eq:markov_property">14.7</a>)</span> holds when \(X\) is Brownian motion, and when \(X\) is geometric Brownian
-motion.
+In particular, the formula <span class="textup">(<a href="notes_2.html#??">??</a>)</span> holds when \(X\) is Brownian motion, and when \(X\) is geometric Brownian motion.
 </p>
 <div class="theorembodyremark">
 
@@ -988,7 +630,7 @@ motion.
 <p>
 <span class="listmarker"> <span class="theoremheaderplain">Remark 14.2.2</span></span> <a id="autoid-92" ></a >\(\msconly \) \(\offsyl \) In Section <a
 href="The-strong-Markov-property.html#s:rw_markov_prop">8.4</a> we introduced the strong Markov property for random walks. All Ito processes are strongly Markov, so <span class="textup">(<a
-href="The-Markov-property.html#eq:markov_property">14.7</a>)</span> also holds at stopping times \(T\).
+href="notes_2.html#??">??</a>)</span> also holds at stopping times \(T\).
 </p>
 
 
@@ -1007,7 +649,7 @@ href="The-Markov-property.html#eq:markov_property">14.7</a>)</span> also holds a
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 16, 2024
+Copyright Nic Freeman, Sheffield University, last updated April 22, 2025
 </p>
 
 </footer>

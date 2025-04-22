@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, October 16, 2024." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, April 22, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — The optional stopping theorem </title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-       // Insert the replacement string into the TeX string, and check
-       // that there haven't been too many maxro substitutions (prevents
-       // infinite loops).
-       const useArgument = (parser, text) => {
-         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-         parser.i = 0;
-         if (++parser.macroCount > parser.configuration.options.maxMacros) {
-           throw new TexError('MaxMacroSub1',
-           'MathJax maximum macro substitution count exceeded; ' +
-           'is there a recursive macro call?');
-         }
-       }
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
 
-       // Create the command map for:
-       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-       new CommandMap('Lwarp-macros', {
-         ifstar: 'IfstarFunction',
-         ifnextchar: 'IfnextcharFunction',
-         ifblank: 'IfblankFunction',
-         ifstrequal: 'IfstrequalFunction',
-         gsubstitute: 'GsubstituteFunction',
-         seteqnumber: 'SeteqnumberFunction'
-       }, {
-         // This function implements an ifstar macro.
-         IfstarFunction(parser, name) {
-            const resultstar = parser.GetArgument(name);
-            const resultnostar = parser.GetArgument(name);
-            const star = parser.GetStar();                 // true if there is a *
-            useArgument(parser, star ? resultstar : resultnostar);
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
          },
-
-         // This function implements an ifnextchar macro.
-         IfnextcharFunction(parser, name) {
-           let whichchar = parser.GetArgument(name);
-           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-             // $ syntax highlighting
-             whichchar = String.fromCodePoint(parseInt(whichchar));
-           }
-           const resultnextchar = parser.GetArgument(name);
-           const resultnotnextchar = parser.GetArgument(name);
-           const gotchar = (parser.GetNext() === whichchar);
-           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-         },
-
-         // This function implements an ifblank macro.
-         IfblankFunction(parser, name) {
-           const blankarg = parser.GetArgument(name);
-           const resultblank = parser.GetArgument(name);
-           const resultnotblank = parser.GetArgument(name);
-           const isblank = (blankarg.trim() == "");
-           useArgument(parser, isblank ? resultblank : resultnotblank);
-         },
-
-         // This function implements an ifstrequal macro.
-         IfstrequalFunction(parser, name) {
-           const strequalfirst = parser.GetArgument(name);
-           const strequalsecond = parser.GetArgument(name);
-           const resultequal = parser.GetArgument(name);
-           const resultnotequal = parser.GetArgument(name);
-           const isequal = (strequalfirst == strequalsecond);
-           useArgument(parser, isequal ? resultequal : resultnotequal);
-         },
-
-         // This function implements a gsub macro.
-         GsubstituteFunction(parser, name) {
-           const gsubfirst = parser.GetArgument(name);
-           const gsubsecond = parser.GetArgument(name);
-           const gsubthird = parser.GetArgument(name);
-           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-           useArgument(parser, gsubresult);
-         },
-
-         // This function modifies the equation numbers.
-         SeteqnumberFunction(parser, name) {
-             // Get the macro parameters
-             const star = parser.GetStar();                  // true if there is a *
-             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-             const newsubequations = parser.GetArgument(name); // the subequations argument
-             const neweqsection = parser.GetArgument(name); // the eq section argument
-             const neweqnumber = parser.GetArgument(name);   // the eq number argument
-             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-             MathJax.config.section=neweqsection ;           // a string with numeric meaning
-             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-         }
-
-       });
-
-       // Create the Lwarp-macros package
-       Configuration.create('Lwarp-macros', {
-         handler: {macro: ['Lwarp-macros']}
-       });
-
-       MathJax.startup.defaultReady();
-
-       // For forward references:
-       MathJax.startup.input[0].preFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             MathJax.config.subequations = math.inputData.recompile.subequations;
-             MathJax.config.section = math.inputData.recompile.section;
-         }
-       });
-       MathJax.startup.input[0].postFilters.add(({math}) => {
-         if (math.inputData.recompile){
-             math.inputData.recompile.subequations = MathJax.config.subequations;
-             math.inputData.recompile.section = MathJax.config.section;
-         }
-       });
-
-         // For \left, \right with unicode-math:
-         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-         const {Symbol} = MathJax._.input.tex.Symbol;
-         const {MapHandler} = MathJax._.input.tex.MapHandler;
-         const delimiter = MapHandler.getMap('delimiter');
-         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   }     // ready
- },      // startup
-
- tex: {
-   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-   tags: "ams",
-        tagformat: {
-            number: function (n) {
-                if(MathJax.config.subequations==0)
-                    return(MathJax.config.section + n);
-                else
-                    return(MathJax.config.section + String.fromCharCode(96+n));
-            },
-        },
- }
+  }
 }
 </script>
 
@@ -232,14 +232,14 @@ MathJax = {
 
 
 
-<a id="notes_1-autopage-247"></a>
+<a id="notes_1-autopage-245"></a>
 <nav class="topnavigation"><a href="notes_1.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: October 16, 2024
+last updated: April 22, 2025
 </p>
 
 </header>
@@ -275,419 +275,6 @@ Contents
 <a href="notes_1.html" class="linkhome" >
 Home</a>
 </p>
-
-<p>
-<a href="Introduction.html#autosec-4" class="tocchapter" >
-<span class="sectionnumber">0</span>&#x2003;Introduction</a>
-</p>
-
-
-
-<p>
-<a href="Introduction.html#autosec-5" class="tocsection" >
-<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
-</p>
-
-
-
-<p>
-<a href="Expectation-Arbitrage.html#autosec-12" class="tocchapter" >
-<span class="sectionnumber">1</span>&#x2003;Expectation and Arbitrage</a>
-</p>
-
-
-
-<p>
-<a href="Expectation-Arbitrage.html#autosec-13" class="tocsection" >
-<span class="sectionnumber">1.1</span>&#x2003;Betting on coin tosses</a>
-</p>
-
-
-
-<p>
-<a href="The-one-period-market.html#autosec-16" class="tocsection" >
-<span class="sectionnumber">1.2</span>&#x2003;The one-period market</a>
-</p>
-
-
-
-<p>
-<a href="Arbitrage.html#autosec-21" class="tocsection" >
-<span class="sectionnumber">1.3</span>&#x2003;Arbitrage</a>
-</p>
-
-
-
-<p>
-<a href="Modelling-discussion.html#autosec-30" class="tocsection" >
-<span class="sectionnumber">1.4</span>&#x2003;Modelling discussion</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-pricing.html#autosec-32" class="tocsection" >
-<span class="sectionnumber">1.5</span>&#x2003;Exercises on Chapter&nbsp;1</a>
-</p>
-
-
-
-<p>
-<a href="Probability-spaces-random-variables.html#autosec-36" class="tocchapter" >
-<span class="sectionnumber">2</span>&#x2003;Probability spaces and random variables</a>
-</p>
-
-
-
-<p>
-<a href="Probability-spaces-random-variables.html#autosec-37" class="tocsection" >
-<span class="sectionnumber">2.1</span>&#x2003;Probability measures and \(\sigma \)-fields</a>
-</p>
-
-
-
-<p>
-<a href="Random-variables.html#autosec-47" class="tocsection" >
-<span class="sectionnumber">2.2</span>&#x2003;Random variables</a>
-</p>
-
-
-
-<p>
-<a href="Infinite.html#autosec-62" class="tocsection" >
-<span class="sectionnumber">2.3</span>&#x2003;Infinite \(\Omega \)</a>
-</p>
-
-
-
-<p>
-<a href="Expectation.html#autosec-68" class="tocsection" >
-<span class="sectionnumber">2.4</span>&#x2003;Expectation</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-prob_meas.html#autosec-77" class="tocsection" >
-<span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a>
-</p>
-
-
-
-<p>
-<a href="Conditional-expectation-martingales.html#autosec-82" class="tocchapter" >
-<span class="sectionnumber">3</span>&#x2003;Conditional expectation and martingales</a>
-</p>
-
-
-
-<p>
-<a href="Conditional-expectation-martingales.html#autosec-83" class="tocsection" >
-<span class="sectionnumber">3.1</span>&#x2003;Conditional expectation</a>
-</p>
-
-
-
-<p>
-<a href="Properties-conditional-expectation.html#autosec-89" class="tocsection" >
-<span class="sectionnumber">3.2</span>&#x2003;Properties of conditional expectation</a>
-</p>
-
-
-
-<p>
-<a href="Martingales.html#autosec-95" class="tocsection" >
-<span class="sectionnumber">3.3</span>&#x2003;Martingales</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-cond_exp.html#autosec-106" class="tocsection" >
-<span class="sectionnumber">3.4</span>&#x2003;Exercises on Chapter 3</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-processes.html#autosec-110" class="tocchapter" >
-<span class="sectionnumber">4</span>&#x2003;Stochastic processes</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-processes.html#autosec-112" class="tocsection" >
-<span class="sectionnumber">4.1</span>&#x2003;Random walks</a>
-</p>
-
-
-
-<p>
-<a href="Urn-processes.html#autosec-118" class="tocsection" >
-<span class="sectionnumber">4.2</span>&#x2003;Urn processes</a>
-</p>
-
-
-
-<p>
-<a href="A-branching-process.html#autosec-124" class="tocsection" >
-<span class="sectionnumber">4.3</span>&#x2003;A branching process</a>
-</p>
-
-
-
-<p>
-<a href="Other-stochastic-processes.html#autosec-128" class="tocsection" >
-<span class="sectionnumber">4.4</span>&#x2003;Other stochastic processes</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-stoch_procs.html#autosec-131" class="tocsection" >
-<span class="sectionnumber">4.5</span>&#x2003;Exercises on Chapter 4</a>
-</p>
-
-
-
-<p>
-<a href="The-binomial-model.html#autosec-135" class="tocchapter" >
-<span class="sectionnumber">5</span>&#x2003;The binomial model</a>
-</p>
-
-
-
-<p>
-<a href="The-binomial-model.html#autosec-136" class="tocsection" >
-<span class="sectionnumber">5.1</span>&#x2003;Arbitrage in the one-period model</a>
-</p>
-
-
-
-<p>
-<a href="Hedging-in-one-period-model.html#autosec-144" class="tocsection" >
-<span class="sectionnumber">5.2</span>&#x2003;Hedging in the one-period model</a>
-</p>
-
-
-
-<p>
-<a href="Types-financial-derivative.html#autosec-155" class="tocsection" >
-<span class="sectionnumber">5.3</span>&#x2003;Types of financial derivative</a>
-</p>
-
-
-
-<p>
-<a href="The-binomial-model-definition.html#autosec-157" class="tocsection" >
-<span class="sectionnumber">5.4</span>&#x2003;The binomial model (definition)</a>
-</p>
-
-
-
-<p>
-<a href="Portfolios-arbitrage-martingales.html#autosec-161" class="tocsection" >
-<span class="sectionnumber">5.5</span>&#x2003;Portfolios, arbitrage and martingales</a>
-</p>
-
-
-
-<p>
-<a href="Hedging.html#autosec-170" class="tocsection" >
-<span class="sectionnumber">5.6</span>&#x2003;Hedging</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-bin_model.html#autosec-179" class="tocsection" >
-<span class="sectionnumber">5.7</span>&#x2003;Exercises on Chapter 5</a>
-</p>
-
-
-
-<p>
-<a href="Convergence-random-variables.html#autosec-184" class="tocchapter" >
-<span class="sectionnumber">6</span>&#x2003;Convergence of random variables</a>
-</p>
-
-
-
-<p>
-<a href="Convergence-random-variables.html#autosec-185" class="tocsection" >
-<span class="sectionnumber">6.1</span>&#x2003;Modes of convergence</a>
-</p>
-
-
-
-<p>
-<a href="The-monotone-convergence-theorem.html#autosec-191" class="tocsection" >
-<span class="sectionnumber">6.2</span>&#x2003;The monotone convergence theorem</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-rv_conv.html#autosec-195" class="tocsection" >
-<span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-200" class="tocchapter" >
-<span class="sectionnumber">7</span>&#x2003;Stochastic processes and martingale theory</a>
-</p>
-
-
-
-<p>
-<a href="Stochastic-processes-martingale-theory.html#autosec-201" class="tocsection" >
-<span class="sectionnumber">7.1</span>&#x2003;The martingale transform</a>
-</p>
-
-
-
-<p>
-<a href="Roulette.html#autosec-204" class="tocsection" >
-<span class="sectionnumber">7.2</span>&#x2003;Roulette</a>
-</p>
-
-
-
-<p>
-<a href="The-martingale-convergence-theorem.html#autosec-210" class="tocsection" >
-<span class="sectionnumber">7.3</span>&#x2003;The martingale convergence theorem</a>
-</p>
-
-
-
-<p>
-<a href="Long-term-behaviour-stochastic-processes.html#autosec-218" class="tocsection" >
-<span class="sectionnumber">7.4</span>&#x2003;Long term behaviour of stochastic processes</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-stoch_procs_1.html#autosec-237" class="tocsection" >
-<span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
-</p>
-
-
-
-<p>
-<a href="Further-theory-stochastic-processes.html#autosec-242" class="tocchapter" >
-<span class="sectionnumber">8</span>&#x2003;Further theory of stochastic processes \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Further-theory-stochastic-processes.html#autosec-243" class="tocsection" >
-<span class="sectionnumber">8.1</span>&#x2003;The dominated convergence theorem \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="The-optional-stopping-theorem.html#autosec-248" class="tocsection" >
-<span class="sectionnumber">8.2</span>&#x2003;The optional stopping theorem \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="The-stopped-field.html#autosec-255" class="tocsection" >
-<span class="sectionnumber">8.3</span>&#x2003;The stopped \(\sigma \)-field \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="The-strong-Markov-property.html#autosec-259" class="tocsection" >
-<span class="sectionnumber">8.4</span>&#x2003;The strong Markov property \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Kolmogorov-0-1-law.html#autosec-262" class="tocsection" >
-<span class="sectionnumber">8.5</span>&#x2003;Kolmogorov’s 0-1 law \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-stoch_procs_2.html#autosec-266" class="tocsection" >
-<span class="sectionnumber">8.6</span>&#x2003;Exercises on Chapter 8 \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Simple-random-walks.html#autosec-270" class="tocchapter" >
-<span class="sectionnumber">9</span>&#x2003;Simple random walks \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Simple-random-walks.html#autosec-272" class="tocsection" >
-<span class="sectionnumber">9.1</span>&#x2003;Exit probabilities \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Stirling-Approximation.html#autosec-276" class="tocsection" >
-<span class="sectionnumber">9.2</span>&#x2003;Stirling’s Approximation \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Long-term-behaviour-symmetric-case.html#autosec-279" class="tocsection" >
-<span class="sectionnumber">9.3</span>&#x2003;Long term behaviour: symmetric case \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Long-term-behaviour-asymmetric-case.html#autosec-288" class="tocsection" >
-<span class="sectionnumber">9.4</span>&#x2003;Long term behaviour: asymmetric case \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="In-higher-dimensions.html#autosec-294" class="tocsection" >
-<span class="sectionnumber">9.5</span>&#x2003;In higher dimensions \(\color {darkred}(\mathbf {\oslash })\)</a>
-</p>
-
-
-
-<p>
-<a href="Exercises-on-Chapter-ref-c-rws.html#autosec-298" class="tocsection" >
-<span class="sectionnumber">9.6</span>&#x2003;Exercises on Chapter 9 \((\Delta )\)</a>
-</p>
-
-
-
-<p>
-<a href="Solutions-exercises-part-one.html#autosec-302" class="tocchapter" >
-<span class="sectionnumber">A</span>&#x2003;Solutions to exercises (part one)</a>
-</p>
-
-
-
-<p>
-<a href="Formula-Sheet-part-one.html#autosec-320" class="tocchapter" >
-<span class="sectionnumber">B</span>&#x2003;Formula Sheet (part one)</a>
-</p>
-
-
 
 </div>
 
@@ -902,17 +489,17 @@ Home</a>
 </div>
 
 <!--
-...... section The optional stopping theorem         ......
+......     section The optional stopping theorem      ......
 -->
-<h4 id="autosec-248"><span class="sectionnumber">8.2&#x2003;</span>The optional stopping theorem \(\msconly \)</h4>
-<a id="notes_1-autopage-248"></a>
+<h4 id="autosec-246"><span class="sectionnumber">8.2&#x2003;</span>The optional stopping theorem \(\msconly \)</h4>
+<a id="notes_1-autopage-246"></a>
 <a id="notes_1-autofile-37"></a>
 
 <a id="s:op_stop"></a>
 
 <p>
-Adaptedness, from Definition <a href="Martingales.html#d:adapted">3.3.2</a>, captures the idea that we cannot see into the future. This leaves us with the question: as time passes, in what circumstances can
-we tell if an event has already occurred?
+Adaptedness, from Definition <a href="notes_1.html#??">??</a>, captures the idea that we cannot see into the future. This leaves us with the question: as time passes, in what circumstances can we tell if an
+event has already occurred?
 </p>
 <div class="theorembodydefn">
 
@@ -936,8 +523,7 @@ we tell if an event has already occurred?
 
 <p>
 A stopping time is a random time with the property that, if we have only information from \(\mc {F}_n\) accessible to us at time \(n\), we are able to decide at any \(n\) whether or not \(T\) has already
-happened. It is straightforward to check that \(T\) is a stopping time if and only if \(\{T=n\}\) is \(\mc {F}_n\) measurable for all \(n\). This is left for you as exercise <a
-href="Exercises-on-Chapter-ref-c-stoch_procs_2.html#ps:stopping_time_defn_2"><b>8.4</b></a>.
+happened. It is straightforward to check that \(T\) is a stopping time if and only if \(\{T=n\}\) is \(\mc {F}_n\) measurable for all \(n\). This is left for you as exercise <a href="notes_1.html#??">??</a>.
 </p>
 <div class="theorembodyexample">
 
@@ -966,11 +552,12 @@ which is the first time \(S_n\) takes the value \(a\), is a stopping time. It is
 <!--
 
 
-                                                                                                                        n                n
-                                                                        {T ≤ n} = {for some i ≤ n we have Si = a} =
-                                                                                                                        [                [
-                                                                                                                            {Si = a} =         Si−1 (a)
-                                                                                                                        i=0              i=0
+                                                                                                                        n                  n
+                                                                                                                                                 Si−1 (a)
+                                                                                                                        [                  [
+                                                                        {T ≤ n} = {for some i ≤ n we have Si = a} =           {Si = a} =
+                                                                                                                        i=0                i=0
+
 
 
 
@@ -1024,7 +611,7 @@ respect to the filtration \((\mc {F}_n)\). Then \(S\wedge T\) is also a \((\mc {
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Note that
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that
 </p>
 
 <p>
@@ -1046,7 +633,7 @@ If \(T\) is a stopping time and \(M\) is a stochastic process, we define \(M^T\)
 
 <p>
 Here \(a\wedge b\) denotes the minimum of \(a\) and \(b\). To be precise, this means that \(M^T_n(\omega )=M_{n\wedge T(\omega )}(\omega )\) for all \(\omega \in \Omega \). In Example <a
-href="The-optional-stopping-theorem.html#ex:rw_hitting_time">8.2.2</a>, \(S^T\) would be the random walk \(S\) which is stopped (i.e.&nbsp;never moves again) when (if!) it reaches state \(a\).
+href="notes_1.html#??">??</a>, \(S^T\) would be the random walk \(S\) which is stopped (i.e.&nbsp;never moves again) when (if!) it reaches state \(a\).
 </p>
 <div class="theorembodylemma">
 
@@ -1069,18 +656,17 @@ href="The-optional-stopping-theorem.html#ex:rw_hitting_time">8.2.2</a>, \(S^T\) 
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Let \(C_n:=\1\{T-1\ge n\}\). Note that \(\{T-1\ge n\}=\Omega \sc \{T\le n-1\}\), so
-\(\{T\ge n\}\in \mc {F}_{n}\). By Lemma <a href="Expectation.html#l:indicator_meas">2.4.2</a> \(C_n\in m\mc {F}_{n-1}\). That is, \((C_n)\) is an adapted process. Moreover,
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(C_n:=\1\{T-1\ge n\}\). Note that \(\{T-1\ge n\}=\Omega \sc \{T\le n\}\in
+\mc {F}_{n}\). By Lemma <a href="notes_1.html#??">??</a> we have \(C_n\in m\mc {F}_{n}\), so \((C_n)\) is an adapted process. Moreover,
 </p>
 
 <p>
-\[ (C\circ M)_n = \sum _{k=1}^n \1_{k-1\le T-1} (M_k-M_{k-1}) = \sum _{k=1}^n \1_{k\le T} (M_k-M_{k-1}) = \sum _{k=1}^{n\wedge T} (M_k-M_{k-1}) = M_{T\wedge n}-M_{0}. \]
+\[ (C\circ M)_n = \sum _{k=1}^n \1_{k-1\le T-1} (M_k-M_{k-1}) = \sum _{k=1}^n \1_{k\le T} (M_k-M_{k-1}) = \sum _{k=1}^{n\wedge T} (M_k-M_{k-1}) = M_{T\wedge n}-M_{0}.                             \]
 </p>
 
 <p>
-The last equality holds because the sum is telescoping (i.e.&nbsp;the middle terms all cancel each other out). Hence, by Theorem&nbsp;<a
-href="Stochastic-processes-martingale-theory.html#t:mart_transf">7.1.1</a>, if \(M\) is a martingale (resp.&nbsp;submartingale, supermartingale), \(C\circ M\) is also a martingale
-(resp.&nbsp;submartingale, supermartingale). &#x2003;&#x2003;&#x220E;
+The last equality holds because the sum is telescoping (i.e.&nbsp;the middle terms all cancel each other out). Hence, by Theorem&nbsp;<a href="notes_1.html#??">??</a>, if \(M\) is a martingale
+(resp.&nbsp;submartingale, supermartingale), \(C\circ M\) is also a martingale (resp.&nbsp;submartingale, supermartingale). &#x2003;&#x2003;&#x220E;
 </p>
 <div class="theorembodythm">
 
@@ -1138,8 +724,8 @@ href="Stochastic-processes-martingale-theory.html#t:mart_transf">7.1.1</a>, if \
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> We’ll prove this for the supermartingale case. The submartingale case then follows by considering
-\(-M\), and the martingale case follows since martingales are both supermartingales and submartingales.
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> We’ll prove this for the supermartingale case. The submartingale case then follows by
+considering \(-M\), and the martingale case follows since martingales are both supermartingales and submartingales.
 </p>
 
 <p>
@@ -1152,7 +738,7 @@ Note that
 
 
 
-                                     E[Mn∧T − M0 ] ≤ 0,                                      (8.1)                                                               --><a id="eq:opt_stop_pre"></a><!--
+                                     E[Mn∧T − M0 ] ≤ 0,                                       (8.1)                                                                --><a id="eq:opt_stop_pre"></a><!--
 
 -->
 
@@ -1167,24 +753,23 @@ Note that
 </p>
 
 <p>
-because \(M^T\) is a supermartingale, by Lemma <a href="The-optional-stopping-theorem.html#l:stopped_martingale">8.2.4</a>. For (a), we take \(n=\sup _\omega T(\omega )\) and the conclusion
-follows.
+because \(M^T\) is a supermartingale, by Lemma <a href="notes_1.html#??">??</a>. For (a), we take \(n=\sup _\omega T(\omega )\) and the conclusion follows.
 </p>
 
 <p>
-For (b), we use the dominated convergence theorem to let \(n\to \infty \) in <span class="textup">(<a href="The-optional-stopping-theorem.html#eq:opt_stop_pre">8.1</a>)</span>. As \(n\to
-\infty \), almost surely \(n\wedge T(\omega )\) is eventually equal to \(T(\omega )\) (because \(\P [T&lt;\infty ]=1\)), so \(M_{n\wedge T}\to M_T\) almost surely. Since \(M\) is bounded, \(M_{n\wedge
-T}\) and \(M_T\) are also bounded. So \(\E [M_{n\wedge T}]\to \E [M_T]\) and taking limits in <span class="textup">(<a
-href="The-optional-stopping-theorem.html#eq:opt_stop_pre">8.1</a>)</span> obtains \(\E [M_T-M_0]\leq 0\), which in turn implies that \(\E [M_T]\leq \E [M_0]\).
+For (b), we use the dominated convergence theorem to let \(n\to \infty \) in <span class="textup">(<a href="notes_1.html#??">??</a>)</span>. As \(n\to \infty \), almost surely \(n\wedge T(\omega
+)\) is eventually equal to \(T(\omega )\) (because \(\P [T&lt;\infty ]=1\)), so \(M_{n\wedge T}\to M_T\) almost surely. Since \(M\) is bounded, \(M_{n\wedge T}\) and \(M_T\) are also bounded. So \(\E
+[M_{n\wedge T}]\to \E [M_T]\) and taking limits in <span class="textup">(<a href="notes_1.html#??">??</a>)</span> obtains \(\E [M_T-M_0]\leq 0\), which in turn implies that \(\E [M_T]\leq \E
+[M_0]\).
 </p>
 
 <p>
-For (c), we will also use the dominated convergence theorem to let \(n\to \infty \) in <span class="textup">(<a href="The-optional-stopping-theorem.html#eq:opt_stop_pre">8.1</a>)</span>, but
-now we need a different way to check its conditions. We observe that
+For (c), we will also use the dominated convergence theorem to let \(n\to \infty \) in <span class="textup">(<a href="notes_1.html#??">??</a>)</span>, but now we need a different way to check its
+conditions. We observe that
 </p>
 
 <p>
-\[ |M_{n\wedge T}-M_0| =\left |\sum _{k=1}^{n\wedge T} (M_k-M_{k-1}) \right | \le T\;\sup _{n\in \N } |M_n-M_{n-1}|. \]
+\[ |M_{n\wedge T}-M_0| =\left |\sum _{k=1}^{n\wedge T} (M_k-M_{k-1}) \right | \le T\;\sup _{n\in \N } |M_n-M_{n-1}|.                 \]
 </p>
 
 <p>
@@ -1192,8 +777,8 @@ Since \(\E [T(\sup _n |M_n-M_{n-1}|)]\leq c\E [T]&lt;\infty \), we can use the D
 </p>
 
 <p>
-These three sets of conditions (a)-(c) for the optional stopping theorem are listed on the formula sheet, in Appendix <a href="Formula-Sheet-part-one.html#s:formula_sheet_1">B</a>. Sometimes
-<i>none</i> of them apply! See Remark <a href="Long-term-behaviour-symmetric-case.html#r:op_stop_careful">9.3.5</a> and the lemma above it for a warning example.
+These three sets of conditions (a)-(c) for the optional stopping theorem are listed on the formula sheet, in Appendix <a href="notes_1.html#??">??</a>. Sometimes <i>none</i> of them apply! See Remark <a
+href="notes_1.html#??">??</a> and the lemma above it for a warning example.
 </p>
 
 </section>
@@ -1205,7 +790,7 @@ These three sets of conditions (a)-(c) for the optional stopping theorem are lis
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 16, 2024
+Copyright Nic Freeman, Sheffield University, last updated April 22, 2025
 </p>
 
 </footer>
