@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, April 22, 2025." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, May 1, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — The Black-Scholes formula</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: April 22, 2025
+last updated: May 1, 2025
 </p>
 
 </header>
@@ -599,35 +599,35 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion-on-financial-networks.html#autosec-221" class="tocsection" >
+<a href="Modelling-discussion-on-financial-networks.html#autosec-222" class="tocsection" >
 <span class="sectionnumber">19.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-fin_net.html#autosec-224" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-fin_net.html#autosec-225" class="tocsection" >
 <span class="sectionnumber">19.5</span>&#x2003;Exercises on Chapter 19 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises-part-two.html#autosec-232" class="tocchapter" >
+<a href="Solutions-exercises-part-two.html#autosec-233" class="tocchapter" >
 <span class="sectionnumber">C</span>&#x2003;Solutions to exercises (part two)</a>
 </p>
 
 
 
 <p>
-<a href="Advice-revision-exams.html#autosec-245" class="tocchapter" >
+<a href="Advice-revision-exams.html#autosec-246" class="tocchapter" >
 <span class="sectionnumber">D</span>&#x2003;Advice for revision/exams</a>
 </p>
 
 
 
 <p>
-<a href="Formula-sheet-part-two.html#autosec-249" class="tocchapter" >
+<a href="Formula-sheet-part-two.html#autosec-250" class="tocchapter" >
 <span class="sectionnumber">E</span>&#x2003;Formula sheet (part two)</a>
 </p>
 
@@ -876,7 +876,7 @@ Home</a>
 </div>
 
 <!--
-......     section The Black-Scholes formula ......
+...... section The Black-Scholes formula ......
 -->
 <h4 id="autosec-144"><span class="sectionnumber">15.5&#x2003;</span>The Black-Scholes formula</h4>
 <a id="notes_2-autopage-144"></a>
@@ -904,7 +904,7 @@ We begin from the formula given to us by Theorem <a href="The-Black-Scholes-equa
 
 
 
-                                           F (t, St ) = e−r(T −t) EQ [Φ(ST ) | Ft ] .                                   (15.19)                                        --><a id="eq:call_rnv"></a><!--
+                                           F (t, St ) = e−r(T −t) EQ [Φ(ST ) | Ft ] .                                  (15.19)                                         --><a id="eq:call_rnv"></a><!--
 
 -->
 
@@ -936,9 +936,10 @@ From <span class="textup">(<a href="Geometric-Brownian-motion.html#eq:gbm_soln_t
 <!--
 
 
-                                                                                                                                   
-                                                                                        ST = St exp (r − 21 σ 2 )(T − t) + σ(BT − B(15.20)
-                                                                                                                                   t)                                    --><a id="eq:gbm_tT"></a><!--
+
+                                                                                        ST = St exp (r − 12 σ 2 )(T − t) + σ(BT − B(15.20)                               --><a id="eq:gbm_tT"></a><!--
+                                                                                                                                      
+                                                                                                                                    t)
 
                                                                                            = St eZ                                  (15.21)                               --><a id="eq:gbm_Z"></a><!--
 
@@ -987,19 +988,21 @@ Using <span class="textup">(<a href="The-Black-Scholes-formula.html#eq:gbm_tT">1
 <!--
 
 
-                                                                                                                                          h                 1   2
-                                                                                                                                                                                                 i
-                                                                           e−r(T −t) EQ [2ST + 1 | Ft ] = e−r(T −t) EQ 2St e(r− 2 σ )(T −t)+σ(BT −Bt ) + 1 | Ft
-                                                                                                                                                     1    2
-                                                                                                                                                                                                 
-                                                                                                                 = e−r(T −t) 2St e(r− 2 σ ) EQ [eσ (BT − Bt ) | Ft ] + 1
-                                                                                                                                                                                        
-                                                                                                                 = e−r(T −t) 2St EQ [eσ (BT − Bt )] + 1
-                                                                                                                                                                                            
-                                                                                                                                                      1     2                1   2
-                                                                                                                 = e−r(T −t) 2St e(r− 2 σ )(T −t)+ 2 σ (T −t) + 1
-                                                                                                                                                                   
-                                                                                                                 = e−r(T −t) 2St er(T −t) + 1
+                                                                                                                     h           1 2
+                                                                                                                                                               i
+                                                                         e−r(T −t) EQ [2ST + 1 | Ft ] = e−r(T −t) EQ 2St e(r− 2 σ )(T −t)+σ(BT −Bt ) + 1 | Ft
+                                                                                                                           1 2
+                                                                                                                                                               
+                                                                                                      = e−r(T −t) 2St e(r− 2 σ ) EQ [eσ (BT − Bt ) | Ft ] + 1
+
+                                                                                                      = e−r(T −t) 2St EQ [eσ (BT − Bt )] + 1
+                                                                                                                                                       
+                                                                                                                                                            
+                                                                                                                             1
+                                                                                                         −r(T −t)        (r− 2 σ 2 )(T −t)+ 12 σ 2 (T −t)
+                                                                                                      =e            2St e                                 +1
+                                                                                                                                      
+                                                                                                      = e−r(T −t) 2St er(T −t) + 1
 
                                                                                                                  = 2St + e−r(T −t)
 
@@ -1061,9 +1064,9 @@ We are now looking to evaluate
 
 
 
-                                                                                                         F (t, St ) = e−r(T −t) EQ [Φ(ST ) | Ft ]
+                                                                                                     F (t, St ) = e−r(T −t) EQ [Φ(ST ) | Ft ]
 
-                                                                                                                     = e−r(T −t) EQ [Φ(St eZ ) | Ft ],
+                                                                                                                   = e−r(T −t) EQ [Φ(St eZ ) | Ft ],
 
 
 
@@ -1087,30 +1090,27 @@ us
 <!--
 
 
-                                                                                               Z ∞
-                                                                     F (t, s) = e   −r(T −t)
-                                                                                                     Φ(sez )fZ (z) dz
-                                                                                                −∞
-                                                                                                      Z ∞                                             !
-                                                                             =e     −r(T −t)
-                                                                                                 0+                 (se − K)fZ (z) dz
-                                                                                                                        z
-                                                                                                         log(K/s)
-                                                                                                                     1
-                                                                                               Z ∞                        (z−u)2
-                                                                             = e−r(T −t)                 (sez − K) √    e− 2v2 dz
-                                                                                                log(K/s)            2πv
-                                                                                                           A                                                                             B
-                                                                                z                          }|                                 {       z                              }|              {
-                                                                                                            1                                                                        1
-                                                                                               Z ∞                           (z−u)2
-                                                                                                                                                                        Z ∞               (z−u)2
-                                                                                                                            − 2v2
-                                                                             =e     −r(T −t)
-                                                                                               (15.22) se √  z
-                                                                                                                e                         dz − e          −r(T −t)
-                                                                                                                                                                                  K√    e− 2v2 dz        --><a id="eq:bs_form_pre"></a><!--
-                                                                                                log(K/s)    2πv                                                          log(K/s)   2πv
+                                                                                             Z ∞
+                                                                                  −r(T −t)
+                                                                   F (t, s) = e                    Φ(sez )fZ (z) dz
+                                                                                              −∞
+                                                                                                   Z ∞                                      !
+                                                                                  −r(T −t)                           z
+                                                                           =e                 0+                  (se − K)fZ (z) dz
+                                                                                                     log(K/s)
+                                                                                             Z ∞
+                                                                                  −r(T −t)                                   1     (z−u)2
+                                                                           =e                            (sez − K) √             e− 2v2 dz
+                                                                                              log(K/s)                       2πv
+                                                                                                         A                                                          B
+                                                                              z        Z ∞               }|                           {    z              Z ∞       }|              {
+                                                                                                            1     (z−u)2                                              1           2
+
+                                                                                    (15.22)
+                                                                           = e−r(T −t)                 se √  z
+                                                                                                                e− 2v2 dz − e−r(T −t)                              K√      − (z−u)
+                                                                                                                                                                          e 2v2 dz      --><a id="eq:bs_form_pre"></a><!--
+                                                                                              log(K/s)      2πv                                           log(K/s)    2πv
 
 
 -->
@@ -1144,15 +1144,14 @@ Let’s look at the the \(\mc {B}\) term first. Setting \(y=-z\), we have
 <!--
 
 
-
-                                                                                                   K −r(T −t) −∞            (−y−u)2
-                                                                                                                              Z
-                                                                                                B=√    e                  e− 2v2 (−1) dy
-                                                                                                   2πv         − log(K/s)
-                                                                                                              Z log(s/K) (y+u)2
-                                                                                                   K −r(T −t)
-                                                                                                 =√    e                 e− 2v2 dy
-                                                                                                   2πv         −∞
+                                                                                                                             Z −∞
+                                                                                                 K −r(T −t)                                     (−y−u)2
+                                                                                              B=√     e                                    e−     2v 2    (−1) dy
+                                                                                                  2πv                         − log(K/s)
+                                                                                                                             Z log(s/K)
+                                                                                                  K −r(T −t)                                   (y+u)2
+                                                                                                =√     e                                  e− 2v2 dy
+                                                                                                   2πv                        −∞
 
 
 
@@ -1177,35 +1176,77 @@ and setting \(x-\frac {y+u}{v}\) we have
 <!--
 
 
-                                                                                                                                  Z 1 (log(s/K)+u)
-                                                                                                     K −r(T −t)                       v                                 x2
-                                                                                                  B=√     e                                                     e− 2 v dx
-                                                                                                      2πv                          −∞
-                                                                                                                                                            1
-                                                                                                                            Z 1 (log(s/K)+u)
-                                                                                                                              v                                x2
-                                                                                                      = Ke−r(T −t)                                         √ e− 2 dx
-                                                                                                                             −∞                             2π
-                                                                                                                              1     s
-                                                                                                                                                                                       2        2
-                                                                                                                                                        dy
-                                                                               2πv            −∞                   2v 2
-                                                                                             Z log(s/K)
-                                                                               s                                   −1 
-                                                                                                                                      2                       
-                                                                            =√     e−r(T −t)                exp           y + (u + v 2
-                                                                                                                                       )    −  (u  +  v  )
-                                                                                                                                                        2 2
-                                                                                                                                                            + u2
-                                                                                                                                                                    dy
-                                                                               2πv            −∞                   2v 2
-                                                                                                                                (y +  (u   +    )  )
-                                                                                                                                                     !
-                                                                                                             Z log(s/K)                        2 2
-                                                                               s    −r(T −t)+
-                                                                                              (u+v 2 )2 −u2                                  v
-                                                                            =√     e              2v 2                  exp −                           dy
-                                                                               2πv                            −∞                       2v 2
+
+                                                                                                    K −r(T −t) v (log(s/K)+u) − x2
+                                                                                                                    Z 1
+                                                                                                B=√      e                         e 2 v dx
+                                                                                                    2πv               −∞
+                                                                                                               Z 1 (log(s/K)+u)
+                                                                                                                 v               1    x2
+                                                                                                 = Ke−r(T −t)                   √ e− 2 dx
+                                                                                                                −∞               2π
+                                                                                                                  n              o
+                                                                                                                    1        s
+                                                                                                 = Ke −r(T −t)
+                                                                                                               N        log      +u .
+                                                                                                                    v        K
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\mc {B} &amp;=\frac {K}{\sqrt {2\pi } v} e^{-r(T-t)}\int ^{\frac {1}{v}\l (\log (s/K)+u\r )}_{-\infty }e^{-\frac {x^2}{2}}v\,dx\\ &amp;=Ke^{-r(T-t)}\int ^{\frac {1}{v}\l (\log
+(s/K)+u\r )}_{-\infty }\frac {1}{\sqrt {2\pi }}e^{-\frac {x^2}{2}}\,dx\\ &amp;=Ke^{-r(T-t)}\,\mc {N}\l [\frac {1}{v}\l \{\log \l (\frac {s}{K}\r )+u\r \}\r ].
+\end{align*}
+
+
+</p>
+
+<p>
+For the \(\mc {A}\) term, we have an extra factor \(e^{z}\). To handle this factor we will have to complete the square inside the exponential term before we make the \(x\) substitution (i.e.&nbsp;the same
+technique as in exercise <a href="Exercises-on-Chapter-ref-c-bm.html#ps:lognormal_mean"><b>11.5</b></a>). Again setting \(y=-z\) we have
+</p>
+<span class="hidden"> \(\seteqnumber{0}{15.}{22}\)</span>
+
+
+
+<!--
+
+
+                                                                                                   Z −∞
+                                                                            s                                                 (−y−u)2
+                                                                       A= √     e−r(T −t)                           e−y e−      2v 2    (−1) dy
+                                                                            2πv                     − log(K/s)
+                                                                                                   Z log(s/K)
+                                                                                  s                                          (y+u)2
+                                                                          =√          e−r(T −t)                    e−y e− 2v2 dy
+                                                                                  2πv               −∞
+                                                                                                   Z log(s/K)                                    
+                                                                             s                                   −1  2
+                                                                                 e−r(T −t)                exp                         2       2
+                                                                                                                                                
+                                                                          =√                                          y + (2u + 2v )y + u            dy
+                                                                             2πv            −∞                   2v 2
+                                                                                           Z log(s/K)                                                       i
+                                                                             s                                   −1 h
+                                                                                 e−r(T −t)                exp                      2 2              2 2    2
+                                                                                                                                     
+                                                                          =√                                            y + (u + v  )    − (u +   v  )  + u     dy
+                                                                             2πv            −∞                   2v 2
+                                                                                                           Z log(s/K)
+                                                                                                                              (y + (u + v 2 )2 )
+                                                                                                                                                
+                                                                             s                  2 2     2
+
+                                                                          =√     e−r(T −t)+ (u+v2v)2 −u
+                                                                                                                      exp −                         dy
+                                                                             2πv                            −∞                       2v 2
 
 
 
@@ -1232,24 +1273,1086 @@ obtain
 <!--
 
 
-                                                                                                          Z 1 (log(s/K)+u+v2 )                                               !
-                                                                                                     s       v                          x2
-                                                                                                A= √                           exp −         v dx
-                                                                                                     2πv −∞                             2
-                                                                                                    Z 1 (log(s/K)+u+v2 )
-                                                                                                                          1
-                                                                                                                                           !
-                                                                                                       v                                x2
-                                                                                                 =s                      √ exp −              dx
-                                                                                                     −∞                   2π             2
-                                                                                                         1          s
-                                                                                                        gma ^2\r )(T-t)\r \}\\ d_2&amp;=\frac {1}{\sigma \sqrt {T-t}}\l \{\log \l (\frac
-{S_t}{K}\r )+\l (r-\frac 12\sigma ^2\r )(T-t)\r \}.
+                                                                                                        Z 1 (log(s/K)+u+v2 )      2
+                                                                                                   s                                 x
+                                                                                                                             exp −
+                                                                                                            v
+                                                                                              A= √                                      v dx
+                                                                                                   2πv −∞                            2
+                                                                                                  Z 1 (log(s/K)+u+v2 )            2
+                                                                                                                        1            x
+                                                                                                                       √ exp −
+                                                                                                     v
+                                                                                               =s                                        dx
+                                                                                                    −∞                  2π            2
+                                                                                                      n                      o
+                                                                                                       1          s
+                                                                                               = sN        log       +u+v     2
+                                                                                                                                   .
+                                                                                                       v         K
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+\mc {A} &amp;=\frac {s}{\sqrt {2\pi } v}\int _{-\infty }^{\frac {1}{v}\l (\log (s/K)+u+v^2\r )}\exp \l (-\frac {x^2}{2}\r )v\,dx\\ &amp;=s\int _{-\infty }^{\frac {1}{v}\l (\log
+(s/K)+u+v^2\r )}\frac {1}{\sqrt {2\pi }}\exp \l (-\frac {x^2}{2}\r )\,dx\\ &amp;=s\,\mc {N}\l [\frac {1}{v}\l \{\log \l (\frac {s}{K}\r )+u+v^2\r \}\r ].
 \end{align*}
-This expression for \(F(t,S_t)\) is known as the Black-Scholes formula. It is historically significant, which is the only reason that we have included it within the course. The precise form of the formula is not very
-important, and you are certainly not expected to remember it. However, the discovery by Black and Scholes that the absence of arbitrage led to explicit pricing formulae for commonly used derivatives (such as calls
-and puts), revolutionized the financial world.
+
+
 </p>
+
+<p>
+Substituting back in for \(u\) and \(v\), and recalling that we use the shorthand \(s=S_t\), we obtain the following formula for price, at time \(t\in [0,T]\), of a European call option with strike price \(K\) and
+exercise date \(T\).
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{15.}{22}\)</span>
+
+<!--
+
+
+
+                                          F (t, St ) = St N [d1 ] − Ke−r(T −t) N [d2 ]                                                                  (15.23)                          --><a id="eq:bs_formula"></a><!--
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:bs_formula} F(t,S_t)= S_t\,\mc {N}[d_1]-Ke^{-r(T-t)}\,\mc {N}[d_2]
+\end{equation}
+
+
+</p>
+
+<p>
+where
+</p>
+<span class="hidden"> \(\seteqnumber{0}{15.}{23}\)</span>
+
+
+
+<!--
+
+
+                                                                                                        ndable;
+
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
+
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
+         },
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
+}
+</script>
+
+<script
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J4222H8D03');
+</script>
+<!-- Google tag (gtag.js) -->
+
+
+</head>
+<body>
+
+
+
+<a id="notes_2-autopage-146"></a>
+<nav class="topnavigation"><a href="notes_2.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: May 1, 2025
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
+
+
+
+<nav class="sidetoc">
+
+
+
+<div class="sidetoctitle">
+
+<p>
+<span class="sidetocthetitle">Stochastic Processes and Financial Mathematics<br />
+(part two)</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents">
+
+<p>
+<a href="notes_2.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="The-transition-continuous-time.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber">10</span>&#x2003;The transition to continuous time</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-12" class="tocchapter" >
+<span class="sectionnumber">11</span>&#x2003;Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion.html#autosec-13" class="tocsection" >
+<span class="sectionnumber">11.1</span>&#x2003;The limit of random walks</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-definition.html#autosec-19" class="tocsection" >
+<span class="sectionnumber">11.2</span>&#x2003;Brownian motion (definition)</a>
+</p>
+
+
+
+<p>
+<a href="Brownian-motion-heat-equation.html#autosec-26" class="tocsection" >
+<span class="sectionnumber">11.3</span>&#x2003;Brownian motion and the heat equation \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Properties-Brownian-motion.html#autosec-32" class="tocsection" >
+<span class="sectionnumber">11.4</span>&#x2003;Properties of Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bm.html#autosec-41" class="tocsection" >
+<span class="sectionnumber">11.5</span>&#x2003;Exercises on Chapter 11</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-45" class="tocchapter" >
+<span class="sectionnumber">12</span>&#x2003;Stochastic integration</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-integration.html#autosec-46" class="tocsection" >
+<span class="sectionnumber">12.1</span>&#x2003;Introduction to Ito calculus</a>
+</p>
+
+
+
+<p>
+<a href="Ito-integrals.html#autosec-51" class="tocsection" >
+<span class="sectionnumber">12.2</span>&#x2003;Ito integrals</a>
+</p>
+
+
+
+<p>
+<a href="Existence-Ito-integrals.html#autosec-55" class="tocsection" >
+<span class="sectionnumber">12.3</span>&#x2003;Existence of Ito integrals \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Ito-processes.html#autosec-60" class="tocsection" >
+<span class="sectionnumber">12.4</span>&#x2003;Ito processes</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-ito.html#autosec-67" class="tocsection" >
+<span class="sectionnumber">12.5</span>&#x2003;Exercises on Chapter 12</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-71" class="tocchapter" >
+<span class="sectionnumber">13</span>&#x2003;Stochastic differential equations</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-differential-equations.html#autosec-75" class="tocsection" >
+<span class="sectionnumber">13.1</span>&#x2003;Ito’s formula</a>
+</p>
+
+
+
+<p>
+<a href="Geometric-Brownian-motion.html#autosec-82" class="tocsection" >
+<span class="sectionnumber">13.2</span>&#x2003;Geometric Brownian motion</a>
+</p>
+
+
+
+<p>
+<a href="The-Ornstein-Uhlenbeck-process.html#autosec-85" class="tocsection" >
+<span class="sectionnumber">13.3</span>&#x2003;The Ornstein–Uhlenbeck process \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-exponentials-martingale-representation.html#autosec-90" class="tocsection" >
+<span class="sectionnumber">13.4</span>&#x2003;Stochastic exponentials and martingale representation</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-sdes.html#autosec-96" class="tocsection" >
+<span class="sectionnumber">13.5</span>&#x2003;Exercises on Chapter 13</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes-in-continuous-time.html#autosec-101" class="tocchapter" >
+<span class="sectionnumber">14</span>&#x2003;Stochastic processes in continuous time</a>
+</p>
+
+
+
+<p>
+<a href="Stochastic-processes-in-continuous-time.html#autosec-102" class="tocsection" >
+<span class="sectionnumber">14.1</span>&#x2003;The Feynman-Kac formula</a>
+</p>
+
+
+
+<p>
+<a href="The-Markov-property.html#autosec-110" class="tocsection" >
+<span class="sectionnumber">14.2</span>&#x2003;The Markov property</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-stoch_procs_3.html#autosec-114" class="tocsection" >
+<span class="sectionnumber">14.3</span>&#x2003;Exercises on Chapter 14</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-118" class="tocchapter" >
+<span class="sectionnumber">15</span>&#x2003;The Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-model.html#autosec-119" class="tocsection" >
+<span class="sectionnumber">15.1</span>&#x2003;The Black-Scholes market</a>
+</p>
+
+
+
+<p>
+<a href="Completeness.html#autosec-127" class="tocsection" >
+<span class="sectionnumber">15.2</span>&#x2003;Completeness</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-equation.html#autosec-134" class="tocsection" >
+<span class="sectionnumber">15.3</span>&#x2003;The Black-Scholes equation</a>
+</p>
+
+
+
+<p>
+<a href="Martingales-risk-neutral-world.html#autosec-140" class="tocsection" >
+<span class="sectionnumber">15.4</span>&#x2003;Martingales and ‘the risk-neutral world’</a>
+</p>
+
+
+
+<p>
+<a href="The-Black-Scholes-formula.html#autosec-144" class="tocsection" >
+<span class="sectionnumber">15.5</span>&#x2003;The Black-Scholes formula</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bs.html#autosec-147" class="tocsection" >
+<span class="sectionnumber">15.6</span>&#x2003;Exercises on Chapter 15</a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-153" class="tocchapter" >
+<span class="sectionnumber">16</span>&#x2003;Application and extension of the Black-Scholes model</a>
+</p>
+
+
+
+<p>
+<a href="Application-extension-Black-Scholes-model.html#autosec-154" class="tocsection" >
+<span class="sectionnumber">16.1</span>&#x2003;Transaction costs and parity relations</a>
+</p>
+
+
+
+<p>
+<a href="The-Greeks.html#autosec-158" class="tocsection" >
+<span class="sectionnumber">16.2</span>&#x2003;The Greeks</a>
+</p>
+
+
+
+<p>
+<a href="Delta-Gamma-Hedging.html#autosec-161" class="tocsection" >
+<span class="sectionnumber">16.3</span>&#x2003;Delta and Gamma Hedging</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bs_extensions.html#autosec-168" class="tocsection" >
+<span class="sectionnumber">16.4</span>&#x2003;Exercises on Chapter 16</a>
+</p>
+
+
+
+<p>
+<a href="Further-topics-on-Black-Scholes-model.html#autosec-175" class="tocchapter" >
+<span class="sectionnumber">17</span>&#x2003;Further topics on the Black-Scholes model \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Further-topics-on-Black-Scholes-model.html#autosec-176" class="tocsection" >
+<span class="sectionnumber">17.1</span>&#x2003;Time inhomogeneity \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="American-Exotic-options.html#autosec-178" class="tocsection" >
+<span class="sectionnumber">17.2</span>&#x2003;American and Exotic options \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Discontinuous-stock-prices-heavy-tails.html#autosec-182" class="tocsection" >
+<span class="sectionnumber">17.3</span>&#x2003;Discontinuous stock prices and heavy tails \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Volatility.html#autosec-186" class="tocsection" >
+<span class="sectionnumber">17.4</span>&#x2003;Volatility \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Incomplete-markets.html#autosec-192" class="tocsection" >
+<span class="sectionnumber">17.5</span>&#x2003;Incomplete markets \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="The-financial-crisis-2007-8.html#autosec-194" class="tocchapter" >
+<span class="sectionnumber">18</span>&#x2003;The financial crisis of 2007/8 \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-205" class="tocchapter" >
+<span class="sectionnumber">19</span>&#x2003;Financial networks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Financial-networks.html#autosec-206" class="tocsection" >
+<span class="sectionnumber">19.1</span>&#x2003;Graphs and random graphs \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="The-Gai-Kapadia-model-debt-contagion.html#autosec-212" class="tocsection" >
+<span class="sectionnumber">19.2</span>&#x2003;The Gai-Kapadia model of debt contagion \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Approximating-contagion-Galton-Watson-process.html#autosec-219" class="tocsection" >
+<span class="sectionnumber">19.3</span>&#x2003;Approximating contagion by a Galton-Watson process \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Modelling-discussion-on-financial-networks.html#autosec-222" class="tocsection" >
+<span class="sectionnumber">19.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-fin_net.html#autosec-225" class="tocsection" >
+<span class="sectionnumber">19.5</span>&#x2003;Exercises on Chapter 19 \((\Delta )\)</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises-part-two.html#autosec-233" class="tocchapter" >
+<span class="sectionnumber">C</span>&#x2003;Solutions to exercises (part two)</a>
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-246" class="tocchapter" >
+<span class="sectionnumber">D</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Formula-sheet-part-two.html#autosec-250" class="tocchapter" >
+<span class="sectionnumber">E</span>&#x2003;Formula sheet (part two)</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<main class="bodycontainer">
+
+
+
+<section class="textbody">
+
+<h1>Stochastic Processes and Financial Mathematics<br />
+(part two)</h1>
+
+<!--MathJax customizations:-->
+<div data-nosnippet
+      style="display:none"
+>
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
+
+\( \def \offsyl {(\oslash )} \def \msconly {(\Delta )} \)
+
+\(\DeclareMathOperator {\var }{var}\)
+
+\(\DeclareMathOperator {\cov }{cov}\)
+
+\(\DeclareMathOperator {\indeg }{deg_{in}}\)
+
+\(\DeclareMathOperator {\outdeg }{deg_{out}}\)
+
+\(\newcommand {\nN }{n \in \mathbb {N}}\)
+
+\(\newcommand {\Br }{{\cal B}(\R )}\)
+
+\(\newcommand {\F }{{\cal F}}\)
+
+\(\newcommand {\ds }{\displaystyle }\)
+
+\(\newcommand {\st }{\stackrel {d}{=}}\)
+
+\(\newcommand {\uc }{\stackrel {uc}{\rightarrow }}\)
+
+\(\newcommand {\la }{\langle }\)
+
+\(\newcommand {\ra }{\rangle }\)
+
+\(\newcommand {\li }{\liminf _{n \rightarrow \infty }}\)
+
+\(\newcommand {\ls }{\limsup _{n \rightarrow \infty }}\)
+
+\(\newcommand {\limn }{\lim _{n \rightarrow \infty }}\)
+
+\(\def \ra {\Rightarrow }\)
+
+\(\def \to {\rightarrow }\)
+
+\(\def \iff {\Leftrightarrow }\)
+
+\(\def \sw {\subseteq }\)
+
+\(\def \wt {\widetilde }\)
+
+\(\def \mc {\mathcal }\)
+
+\(\def \mb {\mathbb }\)
+
+\(\def \sc {\setminus }\)
+
+\(\def \v {\textbf }\)
+
+\(\def \p {\partial }\)
+
+\(\def \E {\mb {E}}\)
+
+\(\def \P {\mb {P}}\)
+
+\(\def \R {\mb {R}}\)
+
+\(\def \C {\mb {C}}\)
+
+\(\def \N {\mb {N}}\)
+
+\(\def \Q {\mb {Q}}\)
+
+\(\def \Z {\mb {Z}}\)
+
+\(\def \B {\mb {B}}\)
+
+\(\def \~{\sim }\)
+
+\(\def \-{\,;\,}\)
+
+\(\def \|{\,|\,}\)
+
+\(\def \qed {$\blacksquare $}\)
+
+\(\def \1{\unicode {x1D7D9}}\)
+
+\(\def \cadlag {c\&grave;{a}dl\&grave;{a}g}\)
+
+\(\def \p {\partial }\)
+
+\(\def \l {\left }\)
+
+\(\def \r {\right }\)
+
+\(\def \F {\mc {F}}\)
+
+\(\def \G {\mc {G}}\)
+
+\(\def \H {\mc {H}}\)
+
+\(\def \Om {\Omega }\)
+
+\(\def \om {\omega }\)
+
+\(\def \Vega {\mc {V}}\)
+
+</div>
+
+<!--
+...... section Exercises on Chapter <a href=The-Black-Scholes-model.html#c:bs>15</a> ......
+-->
+<h4 id="autosec-147"><span class="sectionnumber">15.6&#x2003;</span>Exercises on Chapter <a href="The-Black-Scholes-model.html#c:bs">15</a></h4>
+<a id="notes_2-autopage-147"></a>
+<a id="notes_2-autofile-25"></a>
+
+<p>
+All questions refer to the Black-Scholes model, and use the the same notation as in the rest of this chapter.
+</p>
+<!--
+...... subsection On the Black Scholes model ......
+-->
+<h5 id="autosec-148">On the Black Scholes model</h5>
+<a id="notes_2-autopage-148"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><b>15.1</b></span> <a id="ps:pricing_simplest"></a> Consider the contingent claim \(\Phi (S_T)=K\). Use the risk neutral valuation formula <span class="textup">(<a
+href="The-Black-Scholes-equation.html#eq:bs_rnv">15.13</a>)</span> to show that its price, at time \(t\), is \(Ke^{-r(T-t)}\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><b>15.2</b></span> <a id="ps:pricing_log"></a>
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> Find the price, at time \(t\), of the contingent claim \(\Phi (S_T)=\log (S_T)\). Show that at time \(t=0\) this gives a price of
+</p>
+<p>
+\[e^{-rT}\l (\log S_0+(r-\tfrac 12\sigma ^2)T\r ).\]
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> An excitable mathematician suggests the following hedging strategy:
+</p>
+<blockquote>
+<p>
+<i>“At time \(0\), I will buy \(\log S_0\) units of stock. Then I’ll wait until time \(T\). The stock will be worth \(S_T\) then so then I will have \(\log (S_T)\) worth in stock. This means that at time \(0\)
+the arbitrage free price of the contingent claim \(\log (S_T)\) is actually \(\log S_0\), and therefore the formula in part (a) can’t be true.”</i>
+</p>
+</blockquote>
+<p>
+Where is the flaw in this argument?
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><b>15.3</b></span> <a id="ps:pricing_gbm_beta"></a> Let \(\beta \geq 2\).
+</p>
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><span class="textnormal">(a)</span></span> Calculate \(dY_t\) where \(Y_t=S_t^\beta \), in the risk neutral world \(\Q \). Hence, show that \(Y_t\) is a geometric Brownian
+motion and find its parameters.
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><span class="textnormal">(b)</span></span> Show that the arbitrage free price, at time \(t\), of the contingent claim \(\Phi (S_T)=S_T^\beta \) is given by
+</p>
+<p>
+\[S_t^\beta \exp \l \{-r(T-t)(1-\beta ) -\tfrac 12\sigma ^2\beta (T-t)(1-\beta )\r \}.\]
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><b>15.4</b></span> <a id="ps:pricing_binary"></a> Let \(0&lt;\alpha &lt;\beta \) and \(K&gt;0\) be deterministic constants. A binary option is a contract with contingent
+claim
+</p>
+<p>
+\[\Phi (S_T)= \begin {cases} K &amp; \text { if }S_T\in [\alpha ,\beta ]\\ 0 &amp; \text { otherwise}. \end {cases} \]
+</p>
+<p>
+Find an explicit formula (in terms of the cumulative distribution function of the \(N(0,1)\) distribution) for the value of this contingent claim at time \(t\in [0,T]\).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><b>15.5</b></span> <a id="ps:P_mart_bs"></a> Find a deterministic process \(F_t\) such that \(\frac {S_t}{F_t}\) is a martingale under \(\P \).
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><b>15.6</b></span> <a id="ps:bs_explicit"></a> Let \(c\in \R \) be a deterministic constant. Show that the functions \(f(t,s)=cs\) and \(g(t,s)=ce^{rt}\) are both
+solutions of the Black-Scholes PDE <span class="textup">(<a href="The-Black-Scholes-equation.html#eq:bs_eq">15.10</a>)</span>. What portfolios do these solutions correspond to?
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker"><b>15.7</b></span> <a id="ps:pricing_linear"></a> Given a contingent claim \(\Phi (S_T)\), let \(\Pi _t(\Phi )\) denote the price of this contingent claim at time \(t\in
+[0,T]\). Let \(\Phi _1(S_T)\) and \(\Phi _2(S_T)\) be two contingent claims, with exercise date \(T\), and let \(\alpha ,\beta \in \R \) be deterministic constants. Show that
+</p>
+<p>
+\[\Pi _t(\alpha \Phi _1+\beta \Phi _2)=\alpha \Pi _t(\Phi _1)+\beta \Pi _t(\Phi _2)\]
+</p>
+<p>
+for all \(t\in [0,T]\).
+</p>
+<p>
+
+
+</p>
+</li>
+</ul>
+<!--
+...... subsection Challenge Questions ......
+-->
+<h5 id="autosec-150">Challenge Questions</h5>
+<a id="notes_2-autopage-150"></a>
+
+
+
+<ul class="enumerate" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker"><b>15.8</b></span> <a id="ps:excitable"></a> Our excitable mathematician from exercise <a
+href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_log"><b>15.2</b></a> is back. In response to <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.3</b></a>, they
+say
+</p>
+<blockquote>
+<p>
+<i>The situation in exercise <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.3</b></a>, is equivalent to a ‘new’ Black-Scholes model in which the stock asset is not \(S_t\), but
+\(Y_t\). Since, by part (a) of <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.3</b></a>, \(Y_t\) follows a geometric Brownian motion, this new model is actually just our
+usual Black-Scholes model but with different parameters. In this new model, we can hedge a single unit of the new ‘\(Y_t\)’ stock by simply buying a single unit of the new stock. So, the arbitrage free price of a single
+unit of the new stock will be \(Y_t=S_t^\beta \) and the answer claimed in <a href="Exercises-on-Chapter-ref-c-bs.html#ps:pricing_gbm_beta"><b>15.3</b></a>(b) is wrong.</i>
+</p>
+</blockquote>
+<p>
+Where is the flaw in this argument?
+</p>
+</li>
+</ul>
 
 </section>
 
@@ -1260,7 +2363,7 @@ and puts), revolutionized the financial world.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated April 22, 2025
+Copyright Nic Freeman, Sheffield University, last updated May 1, 2025
 </p>
 
 </footer>

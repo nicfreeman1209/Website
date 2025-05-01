@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, April 22, 2025." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, May 1, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MAS352/61023 — The martingale convergence theorem</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: April 22, 2025
+last updated: May 1, 2025
 </p>
 
 </header>
@@ -902,7 +902,7 @@ Home</a>
 </div>
 
 <!--
-......     section The martingale convergence theorem ......
+...... section The martingale convergence theorem ......
 -->
 <h4 id="autosec-210"><span class="sectionnumber">7.3&#x2003;</span>The martingale convergence theorem</h4>
 <a id="notes_1-autopage-210"></a>
@@ -953,7 +953,7 @@ largest \(k\) such there exists
 </p>
 
 <p>
-\[ 0\leq s_1 &lt; t_2 &lt; \ldots &lt; s_k &lt; t_k \leq N \hspace {1pc}\text { such that }\hspace {1pc} M_{s_i}\leq a, M_{t_i}&gt; b\;\text { for all }i=1,\ldots ,k.                          \]
+\[ 0\leq s_1 &lt; t_2 &lt; \ldots &lt; s_k &lt; t_k \leq N \hspace {1pc}\text { such that }\hspace {1pc} M_{s_i}\leq a, M_{t_i}&gt; b\;\text { for all }i=1,\ldots ,k. \]
 </p>
 
 <p>
@@ -995,7 +995,7 @@ Note that \(U_N[a,b]\) is an increasing function of \(N\), and define \(U_\infty
 
 
 
-                                                         U∞ [a, b](ω) = lim UN [a, b](ω).                                                       (7.1)                                  --><a id="eq:UNU"></a><!--
+                                                        U∞ [a, b](ω) = lim UN [a, b](ω).                                                        (7.1)                                  --><a id="eq:UNU"></a><!--
                                                                        N ↑∞
 
 -->
@@ -1026,7 +1026,7 @@ This is an almost surely limit, since it holds for each \(\omega \in \Omega \). 
 </p>
 
 <p>
-\[(b-a) \E [U_N[a,b]]\le \E [|M_N-a|].           \]
+\[(b-a) \E [U_N[a,b]]\le \E [|M_N-a|]. \]
 </p>
 
 <p>
@@ -1042,11 +1042,11 @@ This is an almost surely limit, since it holds for each \(\omega \in \Omega \). 
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Let \(C_1=\1\{M_0&lt;a\}\) and recursively define
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Let \(C_1=\1\{M_0&lt;a\}\) and recursively define
 </p>
 
 <p>
-\[ C_n=\1\{C_{n-1}=1,M_{n}\leq b\}+\1\{C_{n-1}=0,M_{n}\leq a\}.                 \]
+\[ C_n=\1\{C_{n-1}=1,M_{n}\leq b\}+\1\{C_{n-1}=0,M_{n}\leq a\}. \]
 </p>
 
 <p>
@@ -1059,10 +1059,11 @@ The behaviour of \(C_n\) is that, when \(X\) enters the region below \(a\), \(C_
 <!--
 
 
-                                                  N
-                                                  X
-                                    (C ◦ M )N =         Ck−1 (Mk − Mk−1 ) ≥ (b − a)UN [a, b] − |MN − a|.                                   (7.2)                                 --><a id="eq:Doobup_eq"></a><!--
-                                                  k=1
+                                                 N
+                                                                                                                                           (7.2)                                 --><a id="eq:Doobup_eq"></a><!--
+                                                 X
+                                   (C ◦ M )N =         Ck−1 (Mk − Mk−1 ) ≥ (b − a)UN [a, b] − |MN − a|.
+                                                 k=1
 
 -->
 
@@ -1106,8 +1107,8 @@ bounded in \(L^1\). Then \(P[U_\infty [a,b]=\infty ]=0.\)
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> From Lemma <a
-href="The-martingale-convergence-theorem.html#l:Doobup">7.3.2</a> we have
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> From Lemma <a href="The-martingale-convergence-theorem.html#l:Doobup">7.3.2</a>
+we have
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{7.}{2}\)</span>
@@ -1116,8 +1117,8 @@ href="The-martingale-convergence-theorem.html#l:Doobup">7.3.2</a> we have
 
 
 
-                                                 (b − a)E[UN [a, b]] ≤ |a| + sup E|Mn |.                                             (7.3)                                --><a id="eq:UNbound"></a><!--
-                                                                            n∈N
+                                                (b − a)E[UN [a, b]] ≤ |a| + sup E|Mn |.                                             (7.3)                                 --><a id="eq:UNbound"></a><!--
+                                                                           n∈N
 
 -->
 
@@ -1171,7 +1172,7 @@ is a supermartingale and uniformly bounded in \(L^1\). Then the limit \(M_n\stac
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Define
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Define
 </p>
 
 <p>
@@ -1183,7 +1184,7 @@ We observe that \(\Lambda _{a,b}\sw \{U_\infty [a,b]=\infty \}\), which has prob
 </p>
 
 <p>
-\[ \{\om :     M_n(\om ) \mbox { does not converge to a limit in } [-\infty ,\infty ]\} = \bigcup _{\stackrel {a,b\in \mathbb {Q}}{a&lt;b}} \Lambda _{a,b}, \]
+\[ \{\om : M_n(\om ) \mbox { does not converge to a limit in } [-\infty ,\infty ]\} = \bigcup _{\stackrel {a,b\in \mathbb {Q}}{a&lt;b}} \Lambda _{a,b}, \]
 </p>
 
 <p>
@@ -1208,8 +1209,8 @@ To prove the second part we will use an inequality that holds for any convergent
 
 
 
-                                                      E[|M∞ |] ≤ sup E[|Mn |].                                                    (7.4)                                --><a id="eq:fatou_subst"></a><!--
-                                                                 n∈N
+                                                     E[|M∞ |] ≤ sup E[|Mn |].                                                    (7.4)                                 --><a id="eq:fatou_subst"></a><!--
+                                                                n∈N
 
 -->
 
@@ -1280,7 +1281,7 @@ The proof of Corollary <a href="The-martingale-convergence-theorem.html#t:mart_c
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated April 22, 2025
+Copyright Nic Freeman, Sheffield University, last updated May 1, 2025
 </p>
 
 </footer>

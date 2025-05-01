@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, April 22, 2025." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, May 1, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — The Black-Scholes equation</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: April 22, 2025
+last updated: May 1, 2025
 </p>
 
 </header>
@@ -599,35 +599,35 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion-on-financial-networks.html#autosec-221" class="tocsection" >
+<a href="Modelling-discussion-on-financial-networks.html#autosec-222" class="tocsection" >
 <span class="sectionnumber">19.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-fin_net.html#autosec-224" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-fin_net.html#autosec-225" class="tocsection" >
 <span class="sectionnumber">19.5</span>&#x2003;Exercises on Chapter 19 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises-part-two.html#autosec-232" class="tocchapter" >
+<a href="Solutions-exercises-part-two.html#autosec-233" class="tocchapter" >
 <span class="sectionnumber">C</span>&#x2003;Solutions to exercises (part two)</a>
 </p>
 
 
 
 <p>
-<a href="Advice-revision-exams.html#autosec-245" class="tocchapter" >
+<a href="Advice-revision-exams.html#autosec-246" class="tocchapter" >
 <span class="sectionnumber">D</span>&#x2003;Advice for revision/exams</a>
 </p>
 
 
 
 <p>
-<a href="Formula-sheet-part-two.html#autosec-249" class="tocchapter" >
+<a href="Formula-sheet-part-two.html#autosec-250" class="tocchapter" >
 <span class="sectionnumber">E</span>&#x2003;Formula sheet (part two)</a>
 </p>
 
@@ -876,7 +876,7 @@ Home</a>
 </div>
 
 <!--
-......     section The Black-Scholes equation ......
+...... section The Black-Scholes equation ......
 -->
 <h4 id="autosec-134"><span class="sectionnumber">15.3&#x2003;</span>The Black-Scholes equation</h4>
 <a id="notes_2-autopage-134"></a>
@@ -907,10 +907,10 @@ the value of the contingent claim \(\Phi (S_T)\) at time \(t\in [0,T]\). Then, a
 
 
                                                                                 ∂F             ∂F         1      ∂2F
-                                                                                   (t, s) + rs                         s) − rF (t, s) = 0,
-                                                                                                  (t, s) + s2 σ 2 2 (t,(15.10)                                                            --><a id="eq:bs_eq"></a><!--
+                                                                                   (t, s) + rs    (t, s) + s2 σ 2 2 (t,(15.10)
+                                                                                                                        s) − rF (t, s) = 0,                                               --><a id="eq:bs_eq"></a><!--
                                                                                 ∂t             ∂s         2      ∂s
-                                                                                                               (15.11)       F (T, s) = Φ(s).                                     --><a id="eq:bs_boundary"></a><!--
+                                                                                                               (15.11)        F (T, s) = Φ(s).                                    --><a id="eq:bs_boundary"></a><!--
 
 
 
@@ -933,11 +933,11 @@ prizes are only awarded to the living).
 <a id="notes_2-autopage-135"></a>
 
 <p>
-<sup>1</sup>&nbsp;Black, Fischer; Myron Scholes (1973). "The Pricing of Options and Corporate Liabilities". Journal of Political Economy. 81 (3): 637–654.
+<sup>1</sup>&nbsp;Black, Fischer; Myron Scholes (1973). ”The Pricing of Options and Corporate Liabilities”. Journal of Political Economy. 81 (3): 637–654.
 </p>
 
 <p>
-<sup>2</sup>&nbsp;Merton, Robert C. (1973). "Theory of Rational Option Pricing". Bell Journal of Economics and Management Science. The RAND Corporation.
+<sup>2</sup>&nbsp;Merton, Robert C. (1973). ”Theory of Rational Option Pricing”. Bell Journal of Economics and Management Science. The RAND Corporation.
 </p>
 
 
@@ -966,14 +966,14 @@ prizes are only awarded to the living).
 
 
 
-                                                                                                           1                    1
-                                                                                                                                                     !
-                                                                                                                 ∂F                     ∂2F
-                                                                                                     xt =             (t, St ) + σ 2 St2 2 (t, St )
-                                                                                                          rCt ∂t                2       ∂s
-                                                                                                          ∂F
-                                                                                                     yt =    (t, St )
-                                                                                                          ∂s
+                                                                                                                           1 2 2 ∂2F
+                                                                                                                                            
+                                                                                                      1     ∂F
+                                                                                                xt =             (t, St ) + σ St     (t, St )
+                                                                                                     rCt ∂t                2     ∂s2
+                                                                                                     ∂F
+                                                                                                yt =    (t, St )
+                                                                                                     ∂s
 
 
 
@@ -997,7 +997,7 @@ href="The-Black-Scholes-equation.html#eq:bs_boundary">15.11</a>)</span>. The val
 
 
 
-                                                   F (t, St ) = e−r(T −t) EQ [Φ(ST ) | Ft ],                                                      (15.12)                   --><a id="eq:bs_rnv_pre"></a><!--
+                                                  F (t, St ) = e−r(T −t) EQ [Φ(ST ) | Ft ],                                                  (15.12)                        --><a id="eq:bs_rnv_pre"></a><!--
 
 -->
 
@@ -1021,7 +1021,7 @@ and in particular its value at time \(0\) is
 
 
 
-                                                                e−rT EQ [Φ(ST )].                                                                          (15.13)               --><a id="eq:bs_rnv"></a><!--
+                                                               e−rT EQ [Φ(ST )].                                                                    (15.13)                      --><a id="eq:bs_rnv"></a><!--
 
 -->
 
@@ -1064,7 +1064,7 @@ We will most of this section proving the claims in Theorem <a href="The-Black-Sc
 </p>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> First let us deduce that <span class="textup">(<a
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> First let us deduce that <span class="textup">(<a
 href="The-Black-Scholes-equation.html#eq:bs_boundary">15.11</a>)</span>. Equation <span class="textup">(<a href="The-Black-Scholes-equation.html#eq:bs_boundary">15.11</a>)</span> is
 known as the boundary condition, because it relates to the exercise time \(T\). It holds because, by definition of \(F(t,S_t)\), at the exercise time \(T\) the value of \(\Phi (S_T)\) must be equal \(F(T,S_T)\)
 i.e.&nbsp;\(\Phi (S_T)=F(T,S_T)\). Since \(S_T\) may take any positive value we simply replace \(S_T\) with a general \(s&gt;0\).
@@ -1086,7 +1086,7 @@ of arbitrage, the value of this portfolio strategy at time \(t\) must be equal t
 
 
 
-                                                   F (t, St ) = Vth = xt Ct + yt St                                                         (15.14)                   --><a id="eq:deriv_replicate"></a><!--
+                                                  F (t, St ) = Vth = xt Ct + yt St                                                      (15.14)                       --><a id="eq:deriv_replicate"></a><!--
 
 -->
 
@@ -1116,7 +1116,7 @@ Since \((h_t)\) is self-financing we have
 
 
 
-                                                                                                                dVth = xt dCt + yt dSt .
+                                                                                                             dVth = xt dCt + yt dSt .
 
 -->
 
@@ -1141,7 +1141,7 @@ href="The-Black-Scholes-model.html#eq:cash_price">15.2</a>)</span>, this becomes
 
 
 
-                                         dVth = (xt rCt + yt µSt ) dt + yt σSt dBt .                                                       (15.15)                   --><a id="eq:deriv_self_fin_2"></a><!--
+                                         dVth = (xt rCt + yt µSt ) dt + yt σSt dBt .                                                (15.15)                          --><a id="eq:deriv_self_fin_2"></a><!--
 
 -->
 
@@ -1164,11 +1164,11 @@ Next: recalling that \(dS_t=\mu S_t \,dt+\sigma S_t \,dB_t\), by Ito’s formula
 <!--
 
 
-                                                                  1
-                                                                                      !
-                                                     ∂F       ∂F          ∂2F                        ∂F
-                                   dF (t, St ) =        + µSt    + σ 2 St2 2              dt + σSt      dBt                                              (15.16)              --><a id="eq:deriv_bs"></a><!--
-                                                     ∂t       ∂s  2       ∂s                         ∂s
+                                                                           ∂2F
+                                                                                    
+                                                      ∂F       ∂F  1                                ∂F
+                                  dF (t, St ) =          + µSt    + σ 2 St2 2            dt + σSt      dBt                                        (15.16)                     --><a id="eq:deriv_bs"></a><!--
+                                                      ∂t       ∂s  2       ∂s                       ∂s
 -->
 
 <p>
@@ -1225,8 +1225,8 @@ With this in hand, equating the \(dt\) coefficients gives us
 
 
                                                                                      ∂F       ∂F  1       ∂2F           ∂F
-                                                                                        + µSt                  xt rCt +
-                                                                                                 + σ 2 St2 2 = (15.17)     µSt                                        --><a id="eq:deriv_self_fin_3"></a><!--
+                                                                                        + µSt    + σ 2 St2 2 =(15.17)
+                                                                                                               xt rCt +    µSt                                        --><a id="eq:deriv_self_fin_3"></a><!--
                                                                                      ∂t       ∂s  2       ∂s            ∂s
 
 
@@ -1268,13 +1268,14 @@ href="The-Black-Scholes-equation.html#eq:deriv_self_fin_3">15.17</a>)</span>, we
 
 
 
-                                                                                          ∂F  1       ∂2F       F − yt S t
-                                                                                                                                    
+                                                                                                      ∂2F
+                                                                                                                                   
+                                                                                          ∂F  1                      F − yt St
                                                                                              + σ 2 St2 2 = xt r
-                                                                                          ∂t  2       ∂s            xt
-                                                                                                                     ∂F
-                                                                                                          = rF − rSt    .
-                                                                                                                     ∂s
+                                                                                          ∂t  2       ∂s                xt
+                                                                                                                         ∂F
+                                                                                                              = rF − rSt    .
+                                                                                                                         ∂s
 
 
 
@@ -1316,8 +1317,9 @@ portfolio is
 
 
 
-                                                                                                                     t,St [Φ(ST )]
-                                                                                             F (t, St ) = e−r(T −t) EQ
+                                                                                            F (t, St ) = e−r(T −t) EQ
+                                                                                                                    t,St [Φ(ST )]
+
 
 
 
@@ -1375,7 +1377,7 @@ href="The-Black-Scholes-equation.html#t:bs_repl">15.3.1</a> for \(\Phi (S_T)\) i
 </div>
 
 <p>
-<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> The calculations in the proof of Theorem <a
+<span class="textsc">Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> The calculations in the proof of Theorem <a
 href="The-Black-Scholes-equation.html#t:bs_repl">15.3.1</a> showed that any replicating portfolio (consisting solely of stocks and cash) could be written in terms of the solution to the Black-Scholes
 equation, as in the statement of Theorem <a href="The-Black-Scholes-equation.html#t:bs_repl">15.3.1</a>. It is known from the world of PDEs that the Black-Scholes equation has a unique solution, so the
 replicating portfolio is also unique. &#x2003;&#x2003;&#x220E;
@@ -1403,8 +1405,8 @@ which is an example of a different type of connection known as ‘duality’ tha
 
 <li>
 <p>
-<span class="listmarker">•</span> The Keynmann-Kac formula was originally developed to describe solutions to the Schro&#x0308;dinger equation, a PDE which is the equivalent in quantum mechanics of
-Newton’s second law (i.e.&nbsp;\(F=ma\), the ‘law of motion’).
+<span class="listmarker">•</span> The Keynmann-Kac formula was originally developed to describe solutions to the Schrödinger equation, a PDE which is the equivalent in quantum mechanics of Newton’s
+second law (i.e.&nbsp;\(F=ma\), the ‘law of motion’).
 </p>
 
 
@@ -1439,7 +1441,7 @@ There are many others – Brownian motion sits right at the heart of the physica
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated April 22, 2025
+Copyright Nic Freeman, Sheffield University, last updated May 1, 2025
 </p>
 
 </footer>

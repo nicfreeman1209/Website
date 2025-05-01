@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, April 22, 2025." />
+<meta name="description" content="MAS352/61023 Stochastic Processes and Financial Mathematics, Sheffield University, May 1, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MASx52 — Stochastic exponentials and martingale representation</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: April 22, 2025
+last updated: May 1, 2025
 </p>
 
 </header>
@@ -599,35 +599,35 @@ Home</a>
 
 
 <p>
-<a href="Modelling-discussion-on-financial-networks.html#autosec-221" class="tocsection" >
+<a href="Modelling-discussion-on-financial-networks.html#autosec-222" class="tocsection" >
 <span class="sectionnumber">19.4</span>&#x2003;Modelling discussion on financial networks \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-fin_net.html#autosec-224" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-fin_net.html#autosec-225" class="tocsection" >
 <span class="sectionnumber">19.5</span>&#x2003;Exercises on Chapter 19 \((\Delta )\)</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises-part-two.html#autosec-232" class="tocchapter" >
+<a href="Solutions-exercises-part-two.html#autosec-233" class="tocchapter" >
 <span class="sectionnumber">C</span>&#x2003;Solutions to exercises (part two)</a>
 </p>
 
 
 
 <p>
-<a href="Advice-revision-exams.html#autosec-245" class="tocchapter" >
+<a href="Advice-revision-exams.html#autosec-246" class="tocchapter" >
 <span class="sectionnumber">D</span>&#x2003;Advice for revision/exams</a>
 </p>
 
 
 
 <p>
-<a href="Formula-sheet-part-two.html#autosec-249" class="tocchapter" >
+<a href="Formula-sheet-part-two.html#autosec-250" class="tocchapter" >
 <span class="sectionnumber">E</span>&#x2003;Formula sheet (part two)</a>
 </p>
 
@@ -876,7 +876,7 @@ Home</a>
 </div>
 
 <!--
-......     section Stochastic exponentials and martingale representation ......
+...... section Stochastic exponentials and martingale representation ......
 -->
 <h4 id="autosec-90"><span class="sectionnumber">13.4&#x2003;</span>Stochastic exponentials and martingale representation</h4>
 <a id="notes_2-autopage-90"></a>
@@ -894,7 +894,7 @@ In this section we look at a close relative of the SDE <span class="textup">(<a 
 
 
 
-                                                dXt = σt Xt dBt                                                       (13.13)                                                   --><a id="eq:stoch_exp"></a><!--
+                                               dXt = σt Xt dBt                                                   (13.13)                                                        --><a id="eq:stoch_exp"></a><!--
 
 -->
 
@@ -928,14 +928,13 @@ From Ito’s formula we have
 <!--
 
 
-
-                                                                                                       1         −1                    1
-                                                                                                                     
-                                                                                        dZt = 0 + 0 + (σt Xt )2 2         dt + σt Xt      dBt
-                                                                                                       2         Xt                    Xt
-                                                                                               1 2
-                                                                                            = − σt dt + σt dBt .
-                                                                                               2
+                                                                                                                    
+                                                                                                      1         −1                    1
+                                                                                       dZt = 0 + 0 + (σt Xt )2 2         dt + σt Xt      dBt
+                                                                                                      2         Xt                    Xt
+                                                                                              1 2
+                                                                                           = − σt dt + σt dBt .
+                                                                                              2
 
 
 
@@ -964,11 +963,10 @@ and hence
 
 <!--
 
-
-                                                                 1
-                                                    Z t             Z t        
-                                      Xt = X0 exp       σu dBu −           σu2 du   .                                       (13.14)                                        --><a id="eq:stoch_exp_pre"></a><!--
-                                                      0          2    0
+                                                   Z t             Z t        
+                                                                1
+                                     Xt = X0 exp       σu dBu −           σu2 du   .                                      (13.14)                                          --><a id="eq:stoch_exp_pre"></a><!--
+                                                     0          2    0
 
 -->
 
@@ -1049,9 +1047,9 @@ noting that \(\mc {E}_\sigma (0)=1\) we thus have
 
 <!--
 
-                                                           Z t
-                                            Eσ (t) = 1 +         σu Eσ (u) dBu .                         (13.15)                                         --><a id="eq:stoch_exp_int"></a><!--
-                                                            0
+                                                          Z t
+                                           Eσ (t) = 1 +         σu Eσ (u) dBu .                        (13.15)                                           --><a id="eq:stoch_exp_int"></a><!--
+                                                           0
 
 -->
 
@@ -1069,7 +1067,7 @@ noting that \(\mc {E}_\sigma (0)=1\) we thus have
 We record this equation here because we’ll need it in the next section.
 </p>
 <!--
-......   subsection The martingale representation theorem               ......
+...... subsection The martingale representation theorem               ......
 -->
 <h5 id="autosec-93">The martingale representation theorem \(\offsyl \)</h5>
 <a id="notes_2-autopage-93"></a>
@@ -1123,7 +1121,7 @@ for all \(t\in [0,T]\).
 </div>
 
 <p>
-<span class="textsc">Sketch of Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Thanks to <span class="textup">(<a
+<span class="textsc">Sketch of Proof:</span><span style="width:5.5pt; display:inline-block"><!----></span> Thanks to <span class="textup">(<a
 href="Stochastic-exponentials-martingale-representation.html#eq:stoch_exp_int">13.15</a>)</span>, we already know that this theorem holds if \(M_0=1\) and \(M_t\) is the stochastic exponential of
 some stochastic process \(\sigma _t\) – in this case we take \(h_t=\sigma _t\mc {E}_\sigma (t)\). The proof of the martingale representation theorem, which we don’t include in this course, works by showing
 that <i>any</i> continuous martingale \(M_t\in \mc {H}^2\) can be approximated by a sequence \(M^{(n)}_t\) of continuous martingales that are themselves stochastic exponentials. As a consequence, the
@@ -1145,7 +1143,7 @@ href="Completeness.html#s:bs_compl">15.2</a>) to show that hedging strategies ex
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated April 22, 2025
+Copyright Nic Freeman, Sheffield University, last updated May 1, 2025
 </p>
 
 </footer>
