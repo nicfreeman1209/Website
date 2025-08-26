@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, January 23, 2025." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MAS364/61006 — Conjugate priors</title>
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
+
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
+
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
+         },
+  }
+}
+</script>
+
+<script
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J4222H8D03');
+</script>
+<!-- Google tag (gtag.js) -->
+
+
+</head>
+<body>
+
+
+
+<a id="notes-autopage-109"></a>
+<nav class="topnavigation"><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: January 23, 2025
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
+
+
+
+<nav class="sidetoc">
+
+
+
+<div class="sidetoctitle">
+
+<p>
+<span class="sidetocthetitle">Bayesian Statistics</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents">
+
+<p>
+<a href="notes.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber">0</span>&#x2003;Introduction</a>
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber">0.1</span>&#x2003;Organization</a>
+</p>
+
+
+
+<p>
+<a href="Outline-course.html#autosec-13" class="tocsection" >
+<span class="sectionnumber">0.2</span>&#x2003;Outline of the course</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning.html#autosec-15" class="tocchapter" >
+<span class="sectionnumber">1</span>&#x2003;Conditioning</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning.html#autosec-16" class="tocsection" >
+<span class="sectionnumber">1.1</span>&#x2003;Random variables</a>
+</p>
+
+
+
+<p>
+<a href="Equality-in-distribution.html#autosec-21" class="tocsection" >
+<span class="sectionnumber">1.2</span>&#x2003;Equality in distribution</a>
+</p>
+
+
+
+<p>
+<a href="Families-random-variables.html#autosec-31" class="tocsection" >
+<span class="sectionnumber">1.3</span>&#x2003;Families of random variables</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-on-location.html#autosec-35" class="tocsection" >
+<span class="sectionnumber">1.4</span>&#x2003;Conditioning on location</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-correlations.html#autosec-43" class="tocsection" >
+<span class="sectionnumber">1.5</span>&#x2003;Conditioning and correlations</a>
+</p>
+
+
+
+<p>
+<a href="Conditioning-on-events-with-zero-probability.html#autosec-50" class="tocsection" >
+<span class="sectionnumber">1.6</span>&#x2003;Conditioning on events with zero probability</a>
+</p>
+
+
+
+<p>
+<a href="Families-with-random-parameters.html#autosec-57" class="tocsection" >
+<span class="sectionnumber">1.7</span>&#x2003;Families with random parameters</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-conditioning.html#autosec-60" class="tocsection" >
+<span class="sectionnumber">1.8</span>&#x2003;Exercises on Chapter 1</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-discrete-data.html#autosec-65" class="tocchapter" >
+<span class="sectionnumber">2</span>&#x2003;Bayesian models: discrete data</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-discrete-data.html#autosec-66" class="tocsection" >
+<span class="sectionnumber">2.1</span>&#x2003;Models with random parameters</a>
+</p>
+
+
+
+<p>
+<a href="Discrete-Bayesian-models.html#autosec-70" class="tocsection" >
+<span class="sectionnumber">2.2</span>&#x2003;Discrete Bayesian models</a>
+</p>
+
+
+
+<p>
+<a href="The-posterior-distribution.html#autosec-75" class="tocsection" >
+<span class="sectionnumber">2.3</span>&#x2003;The posterior distribution</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-updates.html#autosec-83" class="tocsection" >
+<span class="sectionnumber">2.4</span>&#x2003;Bayesian updates</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#autosec-87" class="tocsection" >
+<span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-continuous-data.html#autosec-90" class="tocchapter" >
+<span class="sectionnumber">3</span>&#x2003;Bayesian models: continuous data</a>
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-continuous-data.html#autosec-91" class="tocsection" >
+<span class="sectionnumber">3.1</span>&#x2003;Continuous Bayesian models</a>
+</p>
+
+
+
+<p>
+<a href="Notation-independent-data.html#autosec-97" class="tocsection" >
+<span class="sectionnumber">3.2</span>&#x2003;Notation: independent data</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#autosec-107" class="tocsection" >
+<span class="sectionnumber">3.3</span>&#x2003;Exercises on Chapter 3</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-priors.html#autosec-110" class="tocchapter" >
+<span class="sectionnumber">4</span>&#x2003;Conjugate priors</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-priors.html#autosec-112" class="tocsection" >
+<span class="sectionnumber">4.1</span>&#x2003;Notation: proportionality</a>
+</p>
+
+
+
+<p>
+<a href="Two-more-examples-conjugate-pairs.html#autosec-122" class="tocsection" >
+<span class="sectionnumber">4.2</span>&#x2003;Two more examples of conjugate pairs</a>
+</p>
+
+
+
+<p>
+<a href="Conjugate-pairs-exponential-family.html#autosec-132" class="tocsection" >
+<span class="sectionnumber">4.3</span>&#x2003;Conjugate pairs and the exponential family \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="What-if.html#autosec-137" class="tocsection" >
+<span class="sectionnumber">4.4</span>&#x2003;What if?</a>
+</p>
+
+
+
+<p>
+<a href="The-normal-distribution-with-unknown-mean-variance.html#autosec-150" class="tocsection" >
+<span class="sectionnumber">4.5</span>&#x2003;The normal distribution with unknown mean and variance</a>
+</p>
+
+
+
+<p>
+<a href="The-limitations-conjugate-pairs.html#autosec-158" class="tocsection" >
+<span class="sectionnumber">4.6</span>&#x2003;The limitations of conjugate pairs</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#autosec-160" class="tocsection" >
+<span class="sectionnumber">4.7</span>&#x2003;Exercises on Chapter 4</a>
+</p>
+
+
+
+<p>
+<a href="The-prior.html#autosec-163" class="tocchapter" >
+<span class="sectionnumber">5</span>&#x2003;The prior</a>
+</p>
+
+
+
+<p>
+<a href="The-prior.html#autosec-164" class="tocsection" >
+<span class="sectionnumber">5.1</span>&#x2003;Elicitation</a>
+</p>
+
+
+
+<p>
+<a href="Uninformative-priors.html#autosec-172" class="tocsection" >
+<span class="sectionnumber">5.2</span>&#x2003;Uninformative priors</a>
+</p>
+
+
+
+<p>
+<a href="Reference-priors.html#autosec-179" class="tocsection" >
+<span class="sectionnumber">5.3</span>&#x2003;Reference priors</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-prior.html#autosec-185" class="tocsection" >
+<span class="sectionnumber">5.4</span>&#x2003;Exercises on Chapter 5</a>
+</p>
+
+
+
+<p>
+<a href="Discussion.html#autosec-188" class="tocchapter" >
+<span class="sectionnumber">6</span>&#x2003;Discussion</a>
+</p>
+
+
+
+<p>
+<a href="Discussion.html#autosec-189" class="tocsection" >
+<span class="sectionnumber">6.1</span>&#x2003;Bayesian shorthand notation</a>
+</p>
+
+
+
+<p>
+<a href="The-connection-maximum-likelihood.html#autosec-194" class="tocsection" >
+<span class="sectionnumber">6.2</span>&#x2003;The connection to maximum likelihood</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-discussion.html#autosec-200" class="tocsection" >
+<span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
+</p>
+
+
+
+<p>
+<a href="Testing-parameter-estimation.html#autosec-203" class="tocchapter" >
+<span class="sectionnumber">7</span>&#x2003;Testing and parameter estimation</a>
+</p>
+
+
+
+<p>
+<a href="Testing-parameter-estimation.html#autosec-204" class="tocsection" >
+<span class="sectionnumber">7.1</span>&#x2003;Hypothesis testing</a>
+</p>
+
+
+
+<p>
+<a href="High-posterior-density-regions.html#autosec-212" class="tocsection" >
+<span class="sectionnumber">7.2</span>&#x2003;High posterior density regions</a>
+</p>
+
+
+
+<p>
+<a href="Point-estimates.html#autosec-221" class="tocsection" >
+<span class="sectionnumber">7.3</span>&#x2003;Point estimates</a>
+</p>
+
+
+
+<p>
+<a href="Comparison-classical-methods.html#autosec-226" class="tocsection" >
+<span class="sectionnumber">7.4</span>&#x2003;Comparison to classical methods</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-tests.html#autosec-232" class="tocsection" >
+<span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
+</p>
+
+
+
+<p>
+<a href="Computational-methods.html#autosec-235" class="tocchapter" >
+<span class="sectionnumber">8</span>&#x2003;Computational methods</a>
+</p>
+
+
+
+<p>
+<a href="Computational-methods.html#autosec-236" class="tocsection" >
+<span class="sectionnumber">8.1</span>&#x2003;Approximate Bayesian computation \(\color {darkred}(\mathbf {\oslash })\)</a>
+</p>
+
+
+
+<p>
+<a href="Metropolis-Hastings.html#autosec-239" class="tocsection" >
+<span class="sectionnumber">8.2</span>&#x2003;Metropolis-Hastings</a>
+</p>
+
+
+
+<p>
+<a href="Markov-Chain-Monte-Carlo.html#autosec-253" class="tocsection" >
+<span class="sectionnumber">8.3</span>&#x2003;Markov Chain Monte Carlo</a>
+</p>
+
+
+
+<p>
+<a href="Gibbs-sampling.html#autosec-258" class="tocsection" >
+<span class="sectionnumber">8.4</span>&#x2003;Gibbs sampling</a>
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-computational.html#autosec-265" class="tocsection" >
+<span class="sectionnumber">8.5</span>&#x2003;Exercises on Chapter 8</a>
+</p>
+
+
+
+<p>
+<a href="Reference-Sheets.html#autosec-268" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Reference Sheets</a>
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-276" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Advice for revision/exams</a>
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-280" class="tocchapter" >
+<span class="sectionnumber">C</span>&#x2003;Solutions to exercises</a>
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<main class="bodycontainer">
+
+
+
+<section class="textbody">
+
+<h1>Bayesian Statistics</h1>
+
+<!--MathJax customizations:-->
+<div data-nosnippet
+      style="display:none"
+>
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
+
+\(\require {colortbl}\)
+
+\(\let \LWRorigcolumncolor \columncolor \)
+
+\(\renewcommand {\columncolor }[2][named]{\LWRorigcolumncolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\let \LWRorigrowcolor \rowcolor \)
+
+\(\renewcommand {\rowcolor }[2][named]{\LWRorigrowcolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\let \LWRorigcellcolor \cellcolor \)
+
+\(\renewcommand {\cellcolor }[2][named]{\LWRorigcellcolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\require {mathtools}\)
+
+\(\newenvironment {crampedsubarray}[1]{}{}\)
+
+\(\newcommand {\smashoperator }[2][]{#2\limits }\)
+
+\(\newcommand {\SwapAboveDisplaySkip }{}\)
+
+\(\newcommand {\LaTeXunderbrace }[1]{\underbrace {#1}}\)
+
+\(\newcommand {\LaTeXoverbrace }[1]{\overbrace {#1}}\)
+
+\(\newcommand {\LWRmultlined }[1][]{\begin {multline*}}\)
+
+\(\newenvironment {multlined}[1][]{\LWRmultlined }{\end {multline*}}\)
+
+\(\let \LWRorigshoveleft \shoveleft \)
+
+\(\renewcommand {\shoveleft }[1][]{\LWRorigshoveleft }\)
+
+\(\let \LWRorigshoveright \shoveright \)
+
+\(\renewcommand {\shoveright }[1][]{\LWRorigshoveright }\)
+
+\(\newcommand {\shortintertext }[1]{\text {#1}\notag \\}\)
+
+\(\newcommand {\vcentcolon }{\mathrel {\unicode {x2236}}}\)
+
+\(\renewcommand {\intertext }[2][]{\text {#2}\notag \\}\)
+
+\(\newenvironment {fleqn}[1][]{}{}\)
+
+\(\newenvironment {ceqn}{}{}\)
+
+\(\newenvironment {darray}[2][c]{\begin {array}[#1]{#2}}{\end {array}}\)
+
+\(\newcommand {\dmulticolumn }[3]{#3}\)
+
+\(\newcommand {\LWRnrnostar }[1][0.5ex]{\\[#1]}\)
+
+\(\newcommand {\nr }{\ifstar \LWRnrnostar \LWRnrnostar }\)
+
+\(\newcommand {\mrel }[1]{\begin {aligned}#1\end {aligned}}\)
+
+\(\newcommand {\underrel }[2]{\underset {#2}{#1}}\)
+
+\(\newcommand {\medmath }[1]{#1}\)
+
+\(\newcommand {\medop }[1]{#1}\)
+
+\(\newcommand {\medint }[1]{#1}\)
+
+\(\newcommand {\medintcorr }[1]{#1}\)
+
+\(\newcommand {\mfrac }[2]{\frac {#1}{#2}}\)
+
+\(\newcommand {\mbinom }[2]{\binom {#1}{#2}}\)
+
+\(\newenvironment {mmatrix}{\begin {matrix}}{\end {matrix}}\)
+
+\(\newcommand {\displaybreak }[1][]{}\)
+
+\( \def \offsyl {(\oslash )} \def \msconly {(\Delta )} \)
+
+\( \DeclareMathOperator {\var }{var} \DeclareMathOperator {\cov }{cov} \DeclareMathOperator {\Bin }{Bin} \DeclareMathOperator {\Geo }{Geometric} \DeclareMathOperator {\Beta
+}{Beta} \DeclareMathOperator {\Unif }{Uniform} \DeclareMathOperator {\Gam }{Gamma} \DeclareMathOperator {\Normal }{N} \DeclareMathOperator {\Exp }{Exp} \DeclareMathOperator
+{\Cauchy }{Cauchy} \DeclareMathOperator {\Bern }{Bernoulli} \DeclareMathOperator {\Poisson }{Poisson} \DeclareMathOperator {\Weibull }{Weibull} \DeclareMathOperator {\IGam
+}{IGamma} \DeclareMathOperator {\NGam }{NGamma} \DeclareMathOperator {\ChiSquared }{ChiSquared} \DeclareMathOperator {\Pareto }{Pareto} \DeclareMathOperator {\NBin }{NegBin}
+\DeclareMathOperator {\Studentt }{Student-t} \DeclareMathOperator *{\argmax }{arg\,max} \DeclareMathOperator *{\argmin }{arg\,min} \)
+
+\( \def \to {\rightarrow } \def \iff {\Leftrightarrow } \def \ra {\Rightarrow } \def \sw {\subseteq } \def \mc {\mathcal } \def \mb {\mathbb } \def \sc {\setminus } \def \wt
+{\widetilde } \def \v {\textbf } \def \E {\mb {E}} \def \P {\mb {P}} \def \R {\mb {R}} \def \C {\mb {C}} \def \N {\mb {N}} \def \Q {\mb {Q}} \def \Z {\mb {Z}} \def \B {\mb {B}}
+\def \~{\sim } \def \-{\,;\,} \def \qed {$\blacksquare $} \CustomizeMathJax {\def \1{\unicode {x1D7D9}}} \def \cadlag {c\&grave;{a}dl\&grave;{a}g} \def \p {\partial } \def \l
+{\left } \def \r {\right } \def \Om {\Omega } \def \om {\omega } \def \eps {\epsilon } \def \de {\delta } \def \ov {\overline } \def \sr {\stackrel } \def \Lp {\mc {L}^p} \def
+\Lq {\mc {L}^p} \def \Lone {\mc {L}^1} \def \Ltwo {\mc {L}^2} \def \toae {\sr {\rm a.e.}{\to }} \def \toas {\sr {\rm a.s.}{\to }} \def \top {\sr {\mb {\P }}{\to }} \def \tod {\sr
+{\rm d}{\to }} \def \toLp {\sr {\Lp }{\to }} \def \toLq {\sr {\Lq }{\to }} \def \eqae {\sr {\rm a.e.}{=}} \def \eqas {\sr {\rm a.s.}{=}} \def \eqd {\sr {\rm d}{=}} \def \approxd
+{\sr {\rm d}{\approx }} \def \Sa {(S1)\xspace } \def \Sb {(S2)\xspace } \def \Sc {(S3)\xspace } \)
+
+</div>
+
+<!--
+......     chapter Conjugate priors ......
+-->
+<h3 id="autosec-110">Chapter&nbsp;<span class="sectionnumber">4&#x2003;</span>Conjugate priors</h3>
+<a id="notes-autopage-110"></a>
+<a id="notes-autofile-19"></a>
+
+<a id="c:conjugate_priors"></a>
+
+<p>
+Recall that we define a Bayesian model \((X,\Theta )\) using a prior \(\Theta \) and a model family \((M_\theta )_{\theta \in \Pi }\). The main result from Chapters <a
+href="Bayesian-models-discrete-data.html#c:bayes_models_discrete">2</a> and <a href="Bayesian-models-continuous-data.html#c:bayes_models_continuous">3</a> is that we can (at least, in
+principle) obtain the distribution of the posterior \(\Theta |_{\{X=x\}}\). If the prior and posterior are from the same family of distributions then we say that this family of distributions is <em>conjugate</em> to
+the model family.
+</p>
+
+<p>
+Note that the setup here involves <em>two</em> families of distributions: (1) the model family \((M_\theta )\) and (2) the <em>conjugate</em> family, to which the prior and posterior both belong. The formal
+definition is a bit of a mouthful:
+</p>
+<div class="theorembodydefinition">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-75"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Definition 4.0.1</span></span> <a id="autoid-76" ></a >Let \((M_\theta )_{\theta \in \Pi }\) and \((T_a)_{a\in A}\) be two
+model families, with parameter spaces \(\Pi \) and \(A\) respectively. We say that \((M_\theta )\) and \((T_a)\) are a <em>conjugate pair</em> if whenever \((X,\Theta )\) is a Bayesian model with model
+family \((M_\theta )\) and prior \(\Theta \sim T_a\), for all \(x\in R_X\) there exists \(b\in A\) such that \(\Theta |_{\{X=x\}}\sim T_b\). We say that the family \((T_a)\) is a <em>conjugate
+prior</em> for \((M_\theta )\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+The point of using conjugate pairs is that, to specify a Bayesian update step, we only need to describe how the parameters of the prior distribution should change, to obtain the posterior distribution. This is in
+general much simpler than <span class="textup">(<a href="Bayesian-updates.html#eq:bayes_rule_discrete_data">2.11</a>)</span> and <span class="textup">(<a
+href="Bayesian-models-continuous-data.html#eq:bayes_rule_continuous_data">3.3</a>)</span>. We will describe a few conjugate pairs in this chapter and discuss their limitations in Section <a
+href="The-limitations-conjugate-pairs.html#s:conj_limitations">4.6</a>.
+</p>
+<!--
+......   section Notation:      proportionality ......
+-->
+<h4 id="autosec-112"><span class="sectionnumber">4.1&#x2003;</span>Notation: proportionality</h4>
+<a id="notes-autopage-112"></a>
+
+
+
+<a id="s:propto"></a>
+
+<p>
+In <span class="textup">(<a href="Bayesian-updates.html#eq:propto_helps_example">2.12</a>)</span> and <span class="textup">(<a
+href="Notation-independent-data.html#eq:social_post_pdf">3.7</a>)</span> we used \(\frac {1}{Z}\) and \(\frac {1}{Z&apos;}\) for normalizing constants. It was helpful not to worry about exactly
+what the value of these constant were. In longer calculations we might need to use several different normalizing constants in this way, and it is helpful to have some notation for doing so (beyond simply \(\frac
+{1}{Z&apos;&apos;},\frac {1}{Z&apos;&apos;&apos;}\) and so on).
+</p>
+<div class="theorembodydefinition">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-77"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Definition 4.1.1</span></span> <a id="autoid-78" ></a ><a id="d:propto"></a> Let \(f\) and \(g\) be functions within the same
+domain. We write \(f\propto g\) if there exists \(C\in (0,\infty )\) such that \(f(x)=Cg(x)\) for all \(x\). In words, \(f\) is said to be <em>proportional</em> to \(g\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+The relation \(\propto \) has several nice properties, which are easy to check and are left for you in Exercise <a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#ps:propto"><b>4.9</b></a>.
+For example, for any function \(f\) we have \(f\propto f\). Also, \(f\propto g\) if and only if \(g\propto f\) and, lastly, if \(f\propto g\) and \(g\propto h\) then \(f\propto h\). We’ll use these
+properties frequently in calculations, without further comment.
+</p>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-79"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 4.1.2</span></span> <a id="autoid-80" ></a >Using the notation \(\propto \), Lemma <a
+href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> says that for random variables \(X\) and \(Y\):
+</p>
+<ul class="itemize" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker">•</span> If \(X\) and \(Y\) are discrete and \(p_X\propto p_Y\) then \(X\eqd Y\).
+</p>
+
+
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">•</span> If \(X\) and \(Y\) are continuous and \(f_X\propto f_Y\) then \(X\eqd Y\).
+</p>
+</li>
+</ul>
+
+<p>
+We will often use Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> in this way from now on, including in the next example.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-81"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 4.1.3</span></span> <a id="autoid-82" ></a >The calculation in <span class="textup">(<a
+href="Bayesian-updates.html#eq:propto_helps_example">2.12</a>)</span> can be written simply as
+</p>
+<span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
+
+
+
+<!--
+
+                                                                           fP |{X=4} (p) ∝ P[Bin(10, p) = 4]fBeta(2,8) (p)
+
+                                                                                       ∝ p4 (1 − p)10−4 p2−1 (1 − p)8−1
+
+                                                                                       ∝ p5 (1 − p)13 .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+f_{P|_{\{X=4\}}}(p) &amp;\propto \P [\Bin (10,p)=4]f_{\Beta (2,8)}(p) \\ &amp;\propto p^4(1-p)^{10-4}p^{2-1}(1-p)^{8-1} \\ &amp;\propto p^{5}(1-p)^{13}.
+\end{align*}
+It follows immediately from Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> that \(P|_{\{X=4\}}\sim \Beta (6,14)\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-83"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 4.1.4</span></span> <a id="autoid-84" ></a >More generally, the key equations <span class="textup">(<a
+href="Bayesian-updates.html#eq:bayes_rule_discrete_data">2.11</a>)</span> and <span class="textup">(<a
+href="Bayesian-models-continuous-data.html#eq:bayes_rule_continuous_data">3.3</a>)</span> from Theorems <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> and <a
+href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> can be written
+</p>
+<span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
+
+
+
+<!--
+
+                                                                            fΘ|{X=x} (θ) ∝ pMθ (x)fΘ (θ)    for discrete Bayesian models,
+
+                                                                            fΘ|{X=x} (θ) ∝ fMθ (x)fΘ (θ)    for continuous Bayesian models.
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\theta )\propto p_{M_\theta }(x)f_{\Theta }(\theta ) &amp; \qquad \text { for discrete Bayesian models,} \\ f_{\Theta |_{\{X=x\}}}(\theta )\propto
+f_{M_\theta }(x)f_{\Theta }(\theta ) &amp; \qquad \text { for continuous Bayesian models.}
+\end{align*}
+We will often use Theorems <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> and <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a>
+in this way from now on.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+A complication of using \(\propto \) is that the symbol does not explicitly specify which variables should be treated as part of the proportionality, and which other variables can be treated as constants. For our
+purposes there is a simple way to resolve this difficulty. We we use \(\propto \) there will, in most cases, be a function on the left of the first \(\propto \) that appears within a calculation. The arguments of that
+function (not including subscripts) are the variables that proportionality applies to; everything else can be treated as constant in so far as \(\propto \) is concerned.
+</p>
+<!--
+......   subsection The Beta-Binomial pair ......
+-->
+<h5 id="autosec-117"><span class="sectionnumber">4.1.1&#x2003;</span>The Beta-Binomial pair</h5>
+<a id="notes-autopage-117"></a>
+
+
+
+<a id="s:beta_binomial"></a>
+
+<p>
+Here is our first example of a conjugate pair, which generalizes the calculations in Example <a href="Bayesian-models-discrete-data.html#ex:baby_bayes">2.1.1</a>-<a
+href="The-posterior-distribution.html#ex:baby_bayes_part3">2.3.3</a>.
+</p>
+<div class="theorembodylemma">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-85"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 4.1.5 (Beta-Bernoulli conjugate pair)</span></span> <a id="autoid-86" ></a ><a id="l:conj_bernoulli_beta"></a> Let \(n\in
+\N \). Let \((X,\Theta )\) be a discrete Bayesian model with model family \(M_\theta \sim \Bern (\theta )^{\otimes n}\) and parameter \(\theta \in [0,1]\). Suppose that the prior is \(\Theta \sim
+\Beta (a,b)\) and let \(x\in \{0,1\}^n\). Then the posterior is \(\Theta |_{\{X=x\}}\sim \Beta (a+k,b+n-k)\) where \(k=\sum _1^n x_i\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> Note that \(k\) is the number of Bernoulli trials that generate a \(1\), and that we have
+\(n\) trials in total. Under \(M_p\), each trial has probability \(p\) of generating \(1\). From Theorem <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have that for \(\theta
+\in [0,1]\)
+</p>
+<span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
+
+
+
+<!--
+
+                                                                                   fΘ|{X=x} (θ) ∝ P[Bernoulli(θ)⊗n = x]fBeta(a,b) (θ)
+                                                                                                       n
+                                                                                                                                   !
+                                                                                                       Y
+                                                                                               ∝             P[Bernoulli(θ) = xi ] fBeta(a,b) (θ)
+                                                                                                       i=1
+                                                                                                                           1
+                                                                                                                                                    
+                                                                                               ∝ θk (1 − θ)n−k                     θa−1 (1 − θ)b−1
+                                                                                                                           B(a, b)
+                                                                                               ∝ θa+k−1 (1 − θ)b+n−k−1 .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp;\propto \P [\Bern (\theta )^{\otimes n}=x] f_{\Beta (a,b)}(\theta ) \\ &amp;\propto \l (\prod _{i=1}^n\P [\Bern (\theta )=x_i]\r ) f_{\Beta
+(a,b)}(\theta ) \\ &amp;\propto \l (\theta ^k(1-\theta )^{n-k}\r )\l (\frac {1}{\mc {B}(a,b)}\theta ^{a-1}(1-\theta )^{b-1}\r )\\ &amp;\propto \theta ^{a+k-1}(1-\theta
+)^{b+n-k-1}.
+\end{align*}
+By Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize this p.d.f.&nbsp;as \(\Theta |_{\{X=x\}}\sim \Beta (a+k,b+n-k)\).
+&#x2003;&#x2003;&#x220E;
+</p>
+
+<p>
+The value of \(k\) has an intuitive interpretation, because it is the number of successful trials observed in our data \(x\) (here we take a trial to result in \(1\) if successful, and \(0\) if failed). Looking back at
+Example <a href="The-posterior-distribution.html#ex:baby_bayes_part3">2.3.3</a>, this allows us to do all of the Bayesian update calculations with one easy piece of arithmetic.
+</p>
+
+<p>
+More generally, we can use the Binomial distribution in place of the Bernoulli distribution, as in the next lemma.
+</p>
+<div class="theorembodylemma">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-87"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 4.1.6 (Beta-Binomial conjugate pair)</span></span> <a id="autoid-88" ></a ><a id="l:conj_binomial_beta"></a> Let
+\(n,m_i\in \N \). Let \((X,\Theta )\) be a discrete Bayesian model with model family
+</p>
+
+<p>
+\[M_\theta \sim \Bin (m_1,\theta )\otimes \ldots \otimes \Bin (m_n,\theta ).\]
+</p>
+
+<p>
+with the parameter \(\theta \in \Pi =[0,1]\). Suppose that the prior is \(\Theta \sim \Beta (a,b)\) and let \(x=(x_1,\ldots ,x_n)\) where \(x_i\in \{0,\ldots ,m_i\}\). Then the posterior is
+\(\Theta |_{\{X=x\}}\sim \Beta \l (a+\sum _1^n x_i,b+\sum _1^n m_i-\sum _1^n x_i\r )\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+<span class="textsc">Proof:</span><span style="width:5.38533pt; display:inline-block"><!----></span> From Theorem <a
+href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> we have that for \(\theta \in [0,1]\)
+</p>
+<span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
+
+
+
+<!--
+                                                                                      n
+                                                                                                     !                       !
+                                                                                        mi                                          1
+                                                                                                                                                            
+                                                                                                                    mi −xi
+                                                                                      Y
+                                                                                                         xi
+                                                                     fΘ|{X=x} (θ) ∝                     θ (1 − θ)                         θa−1 (1 − θ)b−1
+                                                                                      i=1
+                                                                                                xi                                B(a, b)
+                                                                                       Pn                           Pn          Pn
+                                                                                                xi −1                    mi −        xi −1
+                                                                                 ∝ θa+      1           (1 − θ)b+    1           1           .
+
+
+
+-->
+
+
+
+<p>
+
+
+\begin{align*}
+f_{\Theta |_{\{X=x\}}}(\theta ) &amp;\propto \l (\prod _{i=1}^n\binom {m_i}{x_i}\theta ^{x_i}(1-\theta )^{m_i-x_i}\r )\l (\frac {1}{\mc {B}(a,b)}\theta ^{a-1}(1-\theta )^{b-1}\r
+)\\ &amp;\propto \theta ^{a+\sum _1^n x_i-1}(1-\theta )^{b+\sum _1^nm_i-\sum _1^nx_i-1}.
+\end{align*}
+By Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a> we recognize this p.d.f.&nbsp;as \(\Theta |_{\{X=x\}}\sim \Beta \l (a+\sum _1^n x_i,b+\sum _1^n
+m_i-\sum _1^n x_i\r )\). &#x2003;&#x2003;&#x220E;
+</p>
+<div class="theorembodyremark">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-89"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Remark 4.1.7</span></span> <a id="autoid-90" ></a >\(\offsyl \) There is a further generalization of this model to experiments that
+can have many possible outcomes. It involves the Dirichlet and multinomial distributions. It is not much more complicated, but we won’t cover it within this course.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated January 23, 2025
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation"><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>
