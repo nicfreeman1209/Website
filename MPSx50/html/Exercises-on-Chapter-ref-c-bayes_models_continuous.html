@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MAS364/61006 Bayesian Statistics, Sheffield University, August 26, 2025." />
+<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, September 8, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MAS364/61006 — Exercises on Chapter <a href=Bayesian-models-continuous-data.html#c:bayes_models_continuous>3</a></title>
+<title>MPS350/4111 — Exercises on Chapter <a href=Bayesian-models-continuous-data.html#c:bayes_models_continuous>3</a></title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
 <script>
 // Lwarp MathJax emulation code
@@ -40,173 +40,173 @@ MathJax = {
       const ParseUtil = MathJax._.input.tex.ParseUtil.default;
       const expandable = MathJax._.util.Options.expandable;
 
-        // Insert the replacement string into the TeX string, and check
-        // that there haven't been too many maxro substitutions (prevents
-        // infinite loops).
-        const useArgument = (parser, text) => {
-          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-          parser.i = 0;
-          if (++parser.macroCount > parser.configuration.options.maxMacros) {
-            throw new TexError('MaxMacroSub1',
-            'MathJax maximum macro substitution count exceeded; ' +
-            'is there a recursive macro call?');
-          }
-        }
+       // Insert the replacement string into the TeX string, and check
+       // that there haven't been too many maxro substitutions (prevents
+       // infinite loops).
+       const useArgument = (parser, text) => {
+         parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+         parser.i = 0;
+         if (++parser.macroCount > parser.configuration.options.maxMacros) {
+           throw new TexError('MaxMacroSub1',
+           'MathJax maximum macro substitution count exceeded; ' +
+           'is there a recursive macro call?');
+         }
+       }
 
-        // Create the command map for:
-        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-        new CommandMap('Lwarp-macros', {
-          ifstar: 'IfstarFunction',
-          ifnextchar: 'IfnextcharFunction',
-          ifblank: 'IfblankFunction',
-          ifstrequal: 'IfstrequalFunction',
-          gsubstitute: 'GsubstituteFunction',
-          seteqnumber: 'SeteqnumberFunction'
-        }, {
-          // This function implements an ifstar macro.
-          IfstarFunction(parser, name) {
-             const resultstar = parser.GetArgument(name);
-             const resultnostar = parser.GetArgument(name);
-             const star = parser.GetStar();                 // true if there is a *
-             useArgument(parser, star ? resultstar : resultnostar);
-          },
-
-          // This function implements an ifnextchar macro.
-          IfnextcharFunction(parser, name) {
-            let whichchar = parser.GetArgument(name);
-            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-              // $ syntax highlighting
-              whichchar = String.fromCodePoint(parseInt(whichchar));
-            }
-            const resultnextchar = parser.GetArgument(name);
-            const resultnotnextchar = parser.GetArgument(name);
-            const gotchar = (parser.GetNext() === whichchar);
-            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
-          },
-
-          // This function implements an ifblank macro.
-          IfblankFunction(parser, name) {
-            const blankarg = parser.GetArgument(name);
-            const resultblank = parser.GetArgument(name);
-            const resultnotblank = parser.GetArgument(name);
-            const isblank = (blankarg.trim() == "");
-            useArgument(parser, isblank ? resultblank : resultnotblank);
-          },
-
-          // This function implements an ifstrequal macro.
-          IfstrequalFunction(parser, name) {
-            const strequalfirst = parser.GetArgument(name);
-            const strequalsecond = parser.GetArgument(name);
-            const resultequal = parser.GetArgument(name);
-            const resultnotequal = parser.GetArgument(name);
-            const isequal = (strequalfirst == strequalsecond);
-            useArgument(parser, isequal ? resultequal : resultnotequal);
-          },
-
-          // This function implements a gsub macro.
-          GsubstituteFunction(parser, name) {
-            const gsubfirst = parser.GetArgument(name);
-            const gsubsecond = parser.GetArgument(name);
-            const gsubthird = parser.GetArgument(name);
-            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
-            useArgument(parser, gsubresult);
-          },
-
-          // This function modifies the equation numbers.
-          SeteqnumberFunction(parser, name) {
-              // Get the macro parameters
-              const star = parser.GetStar();                  // true if there is a *
-              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
-              const newsubequations = parser.GetArgument(name); // the subequations argument
-              const neweqsection = parser.GetArgument(name); // the eq section argument
-              const neweqnumber = parser.GetArgument(name);   // the eq number argument
-              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
-              MathJax.config.section=neweqsection ;           // a string with numeric meaning
-              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-          }
-
-        });
-
-        // Create the Lwarp-macros package
-        Configuration.create('Lwarp-macros', {
-          handler: {macro: ['Lwarp-macros']}
-        });
-
-        MathJax.startup.defaultReady();
-
-        // For forward references:
-        MathJax.startup.input[0].preFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              MathJax.config.subequations = math.inputData.recompile.subequations;
-              MathJax.config.section = math.inputData.recompile.section;
-          }
-        });
-        MathJax.startup.input[0].postFilters.add(({math}) => {
-          if (math.inputData.recompile){
-              math.inputData.recompile.subequations = MathJax.config.subequations;
-              math.inputData.recompile.section = MathJax.config.section;
-          }
-        });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-    }     // ready
-  },      // startup
-
-  tex: {
-    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
-    tags: "ams",
-         tagformat: {
-             number: function (n) {
-                 if(MathJax.config.subequations==0)
-                     return(MathJax.config.section + n);
-                 else
-                     return(MathJax.config.section + String.fromCharCode(96+n));
-             },
+       // Create the command map for:
+       //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+       new CommandMap('Lwarp-macros', {
+         ifstar: 'IfstarFunction',
+         ifnextchar: 'IfnextcharFunction',
+         ifblank: 'IfblankFunction',
+         ifstrequal: 'IfstrequalFunction',
+         gsubstitute: 'GsubstituteFunction',
+         seteqnumber: 'SeteqnumberFunction'
+       }, {
+         // This function implements an ifstar macro.
+         IfstarFunction(parser, name) {
+            const resultstar = parser.GetArgument(name);
+            const resultnostar = parser.GetArgument(name);
+            const star = parser.GetStar();                 // true if there is a *
+            useArgument(parser, star ? resultstar : resultnostar);
          },
-  }
+
+         // This function implements an ifnextchar macro.
+         IfnextcharFunction(parser, name) {
+           let whichchar = parser.GetArgument(name);
+           if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+             // $ syntax highlighting
+             whichchar = String.fromCodePoint(parseInt(whichchar));
+           }
+           const resultnextchar = parser.GetArgument(name);
+           const resultnotnextchar = parser.GetArgument(name);
+           const gotchar = (parser.GetNext() === whichchar);
+           useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+         },
+
+         // This function implements an ifblank macro.
+         IfblankFunction(parser, name) {
+           const blankarg = parser.GetArgument(name);
+           const resultblank = parser.GetArgument(name);
+           const resultnotblank = parser.GetArgument(name);
+           const isblank = (blankarg.trim() == "");
+           useArgument(parser, isblank ? resultblank : resultnotblank);
+         },
+
+         // This function implements an ifstrequal macro.
+         IfstrequalFunction(parser, name) {
+           const strequalfirst = parser.GetArgument(name);
+           const strequalsecond = parser.GetArgument(name);
+           const resultequal = parser.GetArgument(name);
+           const resultnotequal = parser.GetArgument(name);
+           const isequal = (strequalfirst == strequalsecond);
+           useArgument(parser, isequal ? resultequal : resultnotequal);
+         },
+
+         // This function implements a gsub macro.
+         GsubstituteFunction(parser, name) {
+           const gsubfirst = parser.GetArgument(name);
+           const gsubsecond = parser.GetArgument(name);
+           const gsubthird = parser.GetArgument(name);
+           let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+           useArgument(parser, gsubresult);
+         },
+
+         // This function modifies the equation numbers.
+         SeteqnumberFunction(parser, name) {
+             // Get the macro parameters
+             const star = parser.GetStar();                  // true if there is a *
+             const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+             const newsubequations = parser.GetArgument(name); // the subequations argument
+             const neweqsection = parser.GetArgument(name); // the eq section argument
+             const neweqnumber = parser.GetArgument(name);   // the eq number argument
+             MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+             MathJax.config.section=neweqsection ;           // a string with numeric meaning
+             parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+         }
+
+       });
+
+       // Create the Lwarp-macros package
+       Configuration.create('Lwarp-macros', {
+         handler: {macro: ['Lwarp-macros']}
+       });
+
+       MathJax.startup.defaultReady();
+
+       // For forward references:
+       MathJax.startup.input[0].preFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             MathJax.config.subequations = math.inputData.recompile.subequations;
+             MathJax.config.section = math.inputData.recompile.section;
+         }
+       });
+       MathJax.startup.input[0].postFilters.add(({math}) => {
+         if (math.inputData.recompile){
+             math.inputData.recompile.subequations = MathJax.config.subequations;
+             math.inputData.recompile.section = MathJax.config.section;
+         }
+       });
+
+         // For \left, \right with unicode-math:
+         const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+         const {Symbol} = MathJax._.input.tex.Symbol;
+         const {MapHandler} = MathJax._.input.tex.MapHandler;
+         const delimiter = MapHandler.getMap('delimiter');
+         delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+         delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+         delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+         delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+         delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+         delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+         delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+         delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+         delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+         delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+         delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+         delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+         delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+         delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+         delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+         delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+         delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+         delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+         delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+         delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+         delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+         delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+         delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+         delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+         delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+         delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+         delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+         delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+         delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+         delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+         delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+         delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+         delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+         delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+         delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+         delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+         delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+         delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+         delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   }     // ready
+ },      // startup
+
+ tex: {
+   packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+   tags: "ams",
+        tagformat: {
+            number: function (n) {
+                if(MathJax.config.subequations==0)
+                    return(MathJax.config.section + n);
+                else
+                    return(MathJax.config.section + String.fromCharCode(96+n));
+            },
+        },
+ }
 }
 </script>
 
@@ -232,14 +232,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-106"></a>
+<a id="notes-autopage-103"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: August 26, 2025
+last updated: September 8, 2025
 </p>
 
 </header>
@@ -290,364 +290,364 @@ Home</a>
 
 
 <p>
-<a href="Outline-course.html#autosec-13" class="tocsection" >
+<a href="Outline-course.html#autosec-10" class="tocsection" >
 <span class="sectionnumber">0.2</span>&#x2003;Outline of the course</a>
 </p>
 
 
 
 <p>
-<a href="Conditioning.html#autosec-15" class="tocchapter" >
+<a href="Conditioning.html#autosec-12" class="tocchapter" >
 <span class="sectionnumber">1</span>&#x2003;Conditioning</a>
 </p>
 
 
 
 <p>
-<a href="Conditioning.html#autosec-16" class="tocsection" >
+<a href="Conditioning.html#autosec-13" class="tocsection" >
 <span class="sectionnumber">1.1</span>&#x2003;Random variables</a>
 </p>
 
 
 
 <p>
-<a href="Equality-in-distribution.html#autosec-21" class="tocsection" >
+<a href="Equality-in-distribution.html#autosec-18" class="tocsection" >
 <span class="sectionnumber">1.2</span>&#x2003;Equality in distribution</a>
 </p>
 
 
 
 <p>
-<a href="Families-random-variables.html#autosec-31" class="tocsection" >
+<a href="Families-random-variables.html#autosec-28" class="tocsection" >
 <span class="sectionnumber">1.3</span>&#x2003;Families of random variables</a>
 </p>
 
 
 
 <p>
-<a href="Conditioning-on-location.html#autosec-35" class="tocsection" >
+<a href="Conditioning-on-location.html#autosec-32" class="tocsection" >
 <span class="sectionnumber">1.4</span>&#x2003;Conditioning on location</a>
 </p>
 
 
 
 <p>
-<a href="Conditioning-correlations.html#autosec-43" class="tocsection" >
+<a href="Conditioning-correlations.html#autosec-40" class="tocsection" >
 <span class="sectionnumber">1.5</span>&#x2003;Conditioning and correlations</a>
 </p>
 
 
 
 <p>
-<a href="Conditioning-on-events-with-zero-probability.html#autosec-50" class="tocsection" >
+<a href="Conditioning-on-events-with-zero-probability.html#autosec-47" class="tocsection" >
 <span class="sectionnumber">1.6</span>&#x2003;Conditioning on events with zero probability</a>
 </p>
 
 
 
 <p>
-<a href="Families-with-random-parameters.html#autosec-57" class="tocsection" >
+<a href="Families-with-random-parameters.html#autosec-54" class="tocsection" >
 <span class="sectionnumber">1.7</span>&#x2003;Families with random parameters</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-conditioning.html#autosec-60" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-conditioning.html#autosec-57" class="tocsection" >
 <span class="sectionnumber">1.8</span>&#x2003;Exercises on Chapter 1</a>
 </p>
 
 
 
 <p>
-<a href="Bayesian-models-discrete-data.html#autosec-65" class="tocchapter" >
+<a href="Bayesian-models-discrete-data.html#autosec-62" class="tocchapter" >
 <span class="sectionnumber">2</span>&#x2003;Bayesian models: discrete data</a>
 </p>
 
 
 
 <p>
-<a href="Bayesian-models-discrete-data.html#autosec-66" class="tocsection" >
+<a href="Bayesian-models-discrete-data.html#autosec-63" class="tocsection" >
 <span class="sectionnumber">2.1</span>&#x2003;Models with random parameters</a>
 </p>
 
 
 
 <p>
-<a href="Discrete-Bayesian-models.html#autosec-70" class="tocsection" >
+<a href="Discrete-Bayesian-models.html#autosec-67" class="tocsection" >
 <span class="sectionnumber">2.2</span>&#x2003;Discrete Bayesian models</a>
 </p>
 
 
 
 <p>
-<a href="The-posterior-distribution.html#autosec-75" class="tocsection" >
+<a href="The-posterior-distribution.html#autosec-72" class="tocsection" >
 <span class="sectionnumber">2.3</span>&#x2003;The posterior distribution</a>
 </p>
 
 
 
 <p>
-<a href="Bayesian-updates.html#autosec-83" class="tocsection" >
+<a href="Bayesian-updates.html#autosec-80" class="tocsection" >
 <span class="sectionnumber">2.4</span>&#x2003;Bayesian updates</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#autosec-87" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#autosec-84" class="tocsection" >
 <span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a>
 </p>
 
 
 
 <p>
-<a href="Bayesian-models-continuous-data.html#autosec-90" class="tocchapter" >
+<a href="Bayesian-models-continuous-data.html#autosec-87" class="tocchapter" >
 <span class="sectionnumber">3</span>&#x2003;Bayesian models: continuous data</a>
 </p>
 
 
 
 <p>
-<a href="Bayesian-models-continuous-data.html#autosec-91" class="tocsection" >
+<a href="Bayesian-models-continuous-data.html#autosec-88" class="tocsection" >
 <span class="sectionnumber">3.1</span>&#x2003;Continuous Bayesian models</a>
 </p>
 
 
 
 <p>
-<a href="Notation-independent-data.html#autosec-97" class="tocsection" >
+<a href="Notation-independent-data.html#autosec-94" class="tocsection" >
 <span class="sectionnumber">3.2</span>&#x2003;Notation: independent data</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#autosec-107" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#autosec-104" class="tocsection" >
 <span class="sectionnumber">3.3</span>&#x2003;Exercises on Chapter 3</a>
 </p>
 
 
 
 <p>
-<a href="Conjugate-priors.html#autosec-110" class="tocchapter" >
+<a href="Conjugate-priors.html#autosec-107" class="tocchapter" >
 <span class="sectionnumber">4</span>&#x2003;Conjugate priors</a>
 </p>
 
 
 
 <p>
-<a href="Conjugate-priors.html#autosec-112" class="tocsection" >
+<a href="Conjugate-priors.html#autosec-109" class="tocsection" >
 <span class="sectionnumber">4.1</span>&#x2003;Notation: proportionality</a>
 </p>
 
 
 
 <p>
-<a href="Two-more-examples-conjugate-pairs.html#autosec-122" class="tocsection" >
+<a href="Two-more-examples-conjugate-pairs.html#autosec-119" class="tocsection" >
 <span class="sectionnumber">4.2</span>&#x2003;Two more examples of conjugate pairs</a>
 </p>
 
 
 
 <p>
-<a href="Conjugate-pairs-exponential-family.html#autosec-132" class="tocsection" >
+<a href="Conjugate-pairs-exponential-family.html#autosec-129" class="tocsection" >
 <span class="sectionnumber">4.3</span>&#x2003;Conjugate pairs and the exponential family \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
-<a href="What-if.html#autosec-137" class="tocsection" >
+<a href="What-if.html#autosec-134" class="tocsection" >
 <span class="sectionnumber">4.4</span>&#x2003;What if?</a>
 </p>
 
 
 
 <p>
-<a href="The-normal-distribution-with-unknown-mean-variance.html#autosec-150" class="tocsection" >
+<a href="The-normal-distribution-with-unknown-mean-variance.html#autosec-147" class="tocsection" >
 <span class="sectionnumber">4.5</span>&#x2003;The normal distribution with unknown mean and variance</a>
 </p>
 
 
 
 <p>
-<a href="The-limitations-conjugate-pairs.html#autosec-158" class="tocsection" >
+<a href="The-limitations-conjugate-pairs.html#autosec-155" class="tocsection" >
 <span class="sectionnumber">4.6</span>&#x2003;The limitations of conjugate pairs</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#autosec-160" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#autosec-157" class="tocsection" >
 <span class="sectionnumber">4.7</span>&#x2003;Exercises on Chapter 4</a>
 </p>
 
 
 
 <p>
-<a href="The-prior.html#autosec-163" class="tocchapter" >
+<a href="The-prior.html#autosec-160" class="tocchapter" >
 <span class="sectionnumber">5</span>&#x2003;The prior</a>
 </p>
 
 
 
 <p>
-<a href="The-prior.html#autosec-164" class="tocsection" >
+<a href="The-prior.html#autosec-161" class="tocsection" >
 <span class="sectionnumber">5.1</span>&#x2003;Elicitation</a>
 </p>
 
 
 
 <p>
-<a href="Uninformative-priors.html#autosec-172" class="tocsection" >
+<a href="Uninformative-priors.html#autosec-169" class="tocsection" >
 <span class="sectionnumber">5.2</span>&#x2003;Uninformative priors</a>
 </p>
 
 
 
 <p>
-<a href="Reference-priors.html#autosec-179" class="tocsection" >
+<a href="Reference-priors.html#autosec-176" class="tocsection" >
 <span class="sectionnumber">5.3</span>&#x2003;Reference priors</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-prior.html#autosec-185" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-prior.html#autosec-182" class="tocsection" >
 <span class="sectionnumber">5.4</span>&#x2003;Exercises on Chapter 5</a>
 </p>
 
 
 
 <p>
-<a href="Discussion.html#autosec-188" class="tocchapter" >
+<a href="Discussion.html#autosec-185" class="tocchapter" >
 <span class="sectionnumber">6</span>&#x2003;Discussion</a>
 </p>
 
 
 
 <p>
-<a href="Discussion.html#autosec-189" class="tocsection" >
+<a href="Discussion.html#autosec-186" class="tocsection" >
 <span class="sectionnumber">6.1</span>&#x2003;Bayesian shorthand notation</a>
 </p>
 
 
 
 <p>
-<a href="The-connection-maximum-likelihood.html#autosec-194" class="tocsection" >
+<a href="The-connection-maximum-likelihood.html#autosec-191" class="tocsection" >
 <span class="sectionnumber">6.2</span>&#x2003;The connection to maximum likelihood</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-discussion.html#autosec-200" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-discussion.html#autosec-197" class="tocsection" >
 <span class="sectionnumber">6.3</span>&#x2003;Exercises on Chapter 6</a>
 </p>
 
 
 
 <p>
-<a href="Testing-parameter-estimation.html#autosec-203" class="tocchapter" >
+<a href="Testing-parameter-estimation.html#autosec-200" class="tocchapter" >
 <span class="sectionnumber">7</span>&#x2003;Testing and parameter estimation</a>
 </p>
 
 
 
 <p>
-<a href="Testing-parameter-estimation.html#autosec-204" class="tocsection" >
+<a href="Testing-parameter-estimation.html#autosec-201" class="tocsection" >
 <span class="sectionnumber">7.1</span>&#x2003;Hypothesis testing</a>
 </p>
 
 
 
 <p>
-<a href="High-posterior-density-regions.html#autosec-212" class="tocsection" >
+<a href="High-posterior-density-regions.html#autosec-209" class="tocsection" >
 <span class="sectionnumber">7.2</span>&#x2003;High posterior density regions</a>
 </p>
 
 
 
 <p>
-<a href="Point-estimates.html#autosec-221" class="tocsection" >
+<a href="Point-estimates.html#autosec-218" class="tocsection" >
 <span class="sectionnumber">7.3</span>&#x2003;Point estimates</a>
 </p>
 
 
 
 <p>
-<a href="Comparison-classical-methods.html#autosec-226" class="tocsection" >
+<a href="Comparison-classical-methods.html#autosec-223" class="tocsection" >
 <span class="sectionnumber">7.4</span>&#x2003;Comparison to classical methods</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-tests.html#autosec-232" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-tests.html#autosec-229" class="tocsection" >
 <span class="sectionnumber">7.5</span>&#x2003;Exercises on Chapter 7</a>
 </p>
 
 
 
 <p>
-<a href="Computational-methods.html#autosec-235" class="tocchapter" >
+<a href="Computational-methods.html#autosec-232" class="tocchapter" >
 <span class="sectionnumber">8</span>&#x2003;Computational methods</a>
 </p>
 
 
 
 <p>
-<a href="Computational-methods.html#autosec-236" class="tocsection" >
+<a href="Computational-methods.html#autosec-233" class="tocsection" >
 <span class="sectionnumber">8.1</span>&#x2003;Approximate Bayesian computation \(\color {darkred}(\mathbf {\oslash })\)</a>
 </p>
 
 
 
 <p>
-<a href="Metropolis-Hastings.html#autosec-239" class="tocsection" >
+<a href="Metropolis-Hastings.html#autosec-236" class="tocsection" >
 <span class="sectionnumber">8.2</span>&#x2003;Metropolis-Hastings</a>
 </p>
 
 
 
 <p>
-<a href="Markov-Chain-Monte-Carlo.html#autosec-253" class="tocsection" >
+<a href="Markov-Chain-Monte-Carlo.html#autosec-250" class="tocsection" >
 <span class="sectionnumber">8.3</span>&#x2003;Markov Chain Monte Carlo</a>
 </p>
 
 
 
 <p>
-<a href="Gibbs-sampling.html#autosec-258" class="tocsection" >
+<a href="Gibbs-sampling.html#autosec-255" class="tocsection" >
 <span class="sectionnumber">8.4</span>&#x2003;Gibbs sampling</a>
 </p>
 
 
 
 <p>
-<a href="Exercises-on-Chapter-ref-c-computational.html#autosec-265" class="tocsection" >
+<a href="Exercises-on-Chapter-ref-c-computational.html#autosec-262" class="tocsection" >
 <span class="sectionnumber">8.5</span>&#x2003;Exercises on Chapter 8</a>
 </p>
 
 
 
 <p>
-<a href="Reference-Sheets.html#autosec-268" class="tocchapter" >
+<a href="Reference-Sheets.html#autosec-265" class="tocchapter" >
 <span class="sectionnumber">A</span>&#x2003;Reference Sheets</a>
 </p>
 
 
 
 <p>
-<a href="Advice-revision-exams.html#autosec-276" class="tocchapter" >
+<a href="Advice-revision-exams.html#autosec-273" class="tocchapter" >
 <span class="sectionnumber">B</span>&#x2003;Advice for revision/exams</a>
 </p>
 
 
 
 <p>
-<a href="Solutions-exercises.html#autosec-280" class="tocchapter" >
+<a href="Solutions-exercises.html#autosec-276" class="tocchapter" >
 <span class="sectionnumber">C</span>&#x2003;Solutions to exercises</a>
 </p>
 
@@ -889,10 +889,10 @@ Home</a>
 </div>
 
 <!--
-......     section Exercises on Chapter <a href=Bayesian-models-continuous-data.html#c:bayes_models_continuous>3</a> ......
+...... section Exercises on Chapter <a href=Bayesian-models-continuous-data.html#c:bayes_models_continuous>3</a> ......
 -->
-<h4 id="autosec-107"><span class="sectionnumber">3.3&#x2003;</span>Exercises on Chapter <a href="Bayesian-models-continuous-data.html#c:bayes_models_continuous">3</a></h4>
-<a id="notes-autopage-107"></a>
+<h4 id="autosec-104"><span class="sectionnumber">3.3&#x2003;</span>Exercises on Chapter <a href="Bayesian-models-continuous-data.html#c:bayes_models_continuous">3</a></h4>
+<a id="notes-autopage-104"></a>
 <a id="notes-autofile-18"></a>
 
 <p>
@@ -969,21 +969,23 @@ space \(\Pi =(0,\infty )\). Let \((X,\Theta )\) be the Bayesian model with this 
 </p>
 <span class="hidden"> \(\seteqnumber{0}{3.}{7}\)</span>
 <!--
-                                                          
-                                                               18
-                                                          
-                                                          
-                                                              (x+3)3   for x > 0
-                                               fX (x) =                                                                (3.8)                                          --><a id="eq:lomax_1"></a><!--
-                                                          
-                                                          0
-                                                                      otherwise.
+                                                         
+                                                               18
+                                                                      for x > 0
+                                                         
+                                                         
+                                                                                                                      (3.8)
+                                                             (x+3)3
+                                              fX (x) =                                                                                                                --><a id="eq:lomax_1"></a><!--
+                                                         0           otherwise.
+                                                         
+
 -->
 <p>
 
 
 \begin{equation}
-\label {eq:lomax_1} f_X(x)=\begin{cases} \frac {18}{(x+3)^3} &amp; \text { for }x&gt;0 \\ 0 &amp; \text { otherwise}.                \end {cases}
+\label {eq:lomax_1} f_X(x)=\begin{cases} \frac {18}{(x+3)^3} &amp; \text { for }x&gt;0 \\ 0 &amp; \text { otherwise}. \end {cases}
 \end{equation}
 
 
@@ -1106,9 +1108,9 @@ Consider a second continuous Bayesian model \((X&apos;, \Theta )\) with the same
 </p>
 <span class="hidden"> \(\seteqnumber{0}{3.}{8}\)</span>
 <!--
-                                                          Z
-                                            fMθ′ (x) =         fMθ (x − y)κ(y) dy.                            (3.9)                                         --><a id="eq:model_convolution"></a><!--
-                                                           R
+                                                         Z
+                                          fMθ0 (x) =          fMθ (x − y)κ(y) dy.                            (3.9)                                          --><a id="eq:model_convolution"></a><!--
+                                                          R
 
 -->
 <p>
@@ -1141,9 +1143,9 @@ We require that \(\kappa :\R \to [0,\infty )\) and \(\int _\R \kappa (y)\,dy=1\)
 </p>
 <span class="hidden"> \(\seteqnumber{0}{3.}{9}\)</span>
 <!--
-                                                    Z
-                                fΘ|{X ′ =x} (θ) ∝       fΘ|{X=x−y} (θ)κ(y) dy.                   (3.10)                                          --><a id="eq:model_convolution_posterior"></a><!--
-                                                    R
+                                                   Z
+                               fΘ|{X 0 =x} (θ) ∝       fΘ|{X=x−y} (θ)κ(y) dy.                    (3.10)                                          --><a id="eq:model_convolution_posterior"></a><!--
+                                                   R
 
 -->
 <p>
@@ -1182,7 +1184,7 @@ href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#eq:model_convoluti
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated August 26, 2025
+Copyright Nic Freeman, Sheffield University, last updated September 8, 2025
 </p>
 
 </footer>
