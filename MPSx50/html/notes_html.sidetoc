@@ -42,29 +42,28 @@
 \contentsline {subsection}{\numberline {5.2.1}{\ignorespaces The philosophy of not knowing anything\relax }}{171}{}
 \contentsline {section}{\numberline {5.3}{\ignorespaces Reference priors\relax }}{176}{}
 \contentsline {section}{\numberline {5.4}{\ignorespaces Exercises on Chapter \ref {c:prior}\relax }}{182}{}
-\contentsline {chapter}{\numberline {6}{\ignorespaces Discussion\relax }}{185}{}
-\contentsline {section}{\numberline {6.1}{\ignorespaces Bayesian shorthand notation\relax }}{186}{}
-\contentsline {subsection}{\numberline {6.1.1}{\ignorespaces A technical remark\relax }}{188}{}
-\contentsline {section}{\numberline {6.2}{\ignorespaces The connection to maximum likelihood\relax }}{191}{}
-\contentsline {subsection}{\numberline {6.2.1}{\ignorespaces Making the connection precise ${\color {darkred}(\mathbf {\oslash })}$\relax }}{195}{}
-\contentsline {section}{\numberline {6.3}{\ignorespaces Exercises on Chapter \ref {c:discussion}\relax }}{197}{}
-\contentsline {chapter}{\numberline {7}{\ignorespaces Testing and parameter estimation\relax }}{200}{}
-\contentsline {section}{\numberline {7.1}{\ignorespaces Hypothesis testing\relax }}{201}{}
-\contentsline {section}{\numberline {7.2}{\ignorespaces High posterior density regions\relax }}{209}{}
-\contentsline {section}{\numberline {7.3}{\ignorespaces Point estimates\relax }}{218}{}
-\contentsline {section}{\numberline {7.4}{\ignorespaces Comparison to classical methods\relax }}{223}{}
-\contentsline {section}{\numberline {7.5}{\ignorespaces Exercises on Chapter \ref {c:tests}\relax }}{229}{}
-\contentsline {chapter}{\numberline {8}{\ignorespaces Computational methods\relax }}{232}{}
-\contentsline {section}{\numberline {8.1}{\ignorespaces Approximate Bayesian computation ${\color {darkred}(\mathbf {\oslash })}$\relax }}{233}{}
-\contentsline {section}{\numberline {8.2}{\ignorespaces Metropolis-Hastings\relax }}{236}{}
-\contentsline {subsection}{\numberline {8.2.1}{\ignorespaces The Metropolis-Hastings algorithm\relax }}{237}{}
-\contentsline {subsection}{\numberline {8.2.2}{\ignorespaces The Metropolis algorithm\relax }}{244}{}
-\contentsline {subsection}{\numberline {8.2.3}{\ignorespaces Why does Metropolis-Hastings work? ${\color {darkred}(\mathbf {\oslash })}$\relax }}{246}{}
-\contentsline {section}{\numberline {8.3}{\ignorespaces Markov Chain Monte Carlo\relax }}{250}{}
-\contentsline {subsection}{\numberline {8.3.1}{\ignorespaces MCMC algorithm for the random walk case\relax }}{253}{}
-\contentsline {section}{\numberline {8.4}{\ignorespaces Gibbs sampling\relax }}{255}{}
-\contentsline {section}{\numberline {8.5}{\ignorespaces Exercises on Chapter \ref {c:computational}\relax }}{262}{}
-\contentsline {chapter}{\numberline {A}{\ignorespaces Reference Sheets\relax }}{265}{}
-\contentsline {chapter}{\numberline {B}{\ignorespaces Advice for revision/exams\relax }}{273}{}
-\contentsline {chapter}{\numberline {C}{\ignorespaces Solutions to exercises\relax }}{276}{}
+\contentsline {chapter}{\numberline {6}{\ignorespaces Bayesian Notation\relax }}{185}{}
+\contentsline {section}{\numberline {6.1}{\ignorespaces Exercises on Chapter \ref {c:bayesian_shorthand}\relax }}{189}{}
+\contentsline {chapter}{\numberline {7}{\ignorespaces The posterior\relax }}{191}{}
+\contentsline {section}{\numberline {7.1}{\ignorespaces Credible intervals\relax }}{192}{}
+\contentsline {subsection}{\numberline {7.1.1}{\ignorespaces Credible intervals vs confidence intervals\relax }}{199}{}
+\contentsline {subsection}{\numberline {7.1.2}{\ignorespaces A little history ${\color {darkred}(\mathbf {\oslash })}$\relax }}{201}{}
+\contentsline {section}{\numberline {7.2}{\ignorespaces The connection to maximum likelihood\relax }}{203}{}
+\contentsline {subsection}{\numberline {7.2.1}{\ignorespaces Making the connection precise ${\color {darkred}(\mathbf {\oslash })}$\relax }}{207}{}
+\contentsline {section}{\numberline {7.3}{\ignorespaces Hypothesis testing, odds ratios and Bayes factors\relax }}{209}{}
+\contentsline {subsection}{\numberline {7.3.1}{\ignorespaces Comparison to classical hypothesis testing\relax }}{214}{}
+\contentsline {section}{\numberline {7.4}{\ignorespaces Exercises on Chapter \ref {c:posterior}\relax }}{219}{}
+\contentsline {chapter}{\numberline {8}{\ignorespaces Computational methods\relax }}{222}{}
+\contentsline {section}{\numberline {8.1}{\ignorespaces Approximate Bayesian computation ${\color {darkred}(\mathbf {\oslash })}$\relax }}{223}{}
+\contentsline {section}{\numberline {8.2}{\ignorespaces Metropolis-Hastings\relax }}{226}{}
+\contentsline {subsection}{\numberline {8.2.1}{\ignorespaces The Metropolis-Hastings algorithm\relax }}{227}{}
+\contentsline {subsection}{\numberline {8.2.2}{\ignorespaces The Metropolis algorithm\relax }}{234}{}
+\contentsline {subsection}{\numberline {8.2.3}{\ignorespaces Why does Metropolis-Hastings work? ${\color {darkred}(\mathbf {\oslash })}$\relax }}{236}{}
+\contentsline {section}{\numberline {8.3}{\ignorespaces Markov Chain Monte Carlo\relax }}{240}{}
+\contentsline {subsection}{\numberline {8.3.1}{\ignorespaces MCMC algorithm for the random walk case\relax }}{243}{}
+\contentsline {section}{\numberline {8.4}{\ignorespaces Gibbs sampling\relax }}{245}{}
+\contentsline {section}{\numberline {8.5}{\ignorespaces Exercises on Chapter \ref {c:computational}\relax }}{252}{}
+\contentsline {chapter}{\numberline {A}{\ignorespaces Reference Sheets\relax }}{255}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Advice for revision/exams\relax }}{263}{}
+\contentsline {chapter}{\numberline {C}{\ignorespaces Solutions to exercises\relax }}{266}{}
 
