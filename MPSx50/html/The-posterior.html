@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, October 21, 2025." />
+<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, October 28, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MPS350/4111 — The posterior</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -232,14 +232,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-191"></a>
+<a id="notes-autopage-192"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: October 21, 2025
+last updated: October 28, 2025
 </p>
 
 </header>
@@ -870,8 +870,8 @@ Home</a>
 <!--
 ...... chapter The posterior ......
 -->
-<h3 id="autosec-192">Chapter&nbsp;<span class="sectionnumber">7&#x2003;</span>The posterior</h3>
-<a id="notes-autopage-192"></a>
+<h3 id="autosec-193">Chapter&nbsp;<span class="sectionnumber">7&#x2003;</span>The posterior</h3>
+<a id="notes-autopage-193"></a>
 <a id="notes-autofile-31"></a>
 
 <a id="c:posterior"></a>
@@ -892,8 +892,8 @@ the prior or comparing to a weakly informative prior.
 <!--
 ...... section Credible intervals ......
 -->
-<h4 id="autosec-193"><span class="sectionnumber">7.1&#x2003;</span>Credible intervals</h4>
-<a id="notes-autopage-193"></a>
+<h4 id="autosec-194"><span class="sectionnumber">7.1&#x2003;</span>Credible intervals</h4>
+<a id="notes-autopage-194"></a>
 
 
 
@@ -908,10 +908,10 @@ In this section we look at interval estimates for the unknown parameter \(\theta
 
 
 
-<a id="autoid-135"></a>
+<a id="autoid-137"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.1</span></span> <a id="autoid-136" ></a ><a id="d:credible_interval"></a> A <em>credible interval</em> is a subset
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.1</span></span> <a id="autoid-138" ></a ><a id="d:credible_interval"></a> A <em>credible interval</em> is a subset
 \(\Pi _0\sw \Pi \) that is chosen to minimize the size of \(\Pi _0\) and maximize \(\P [\Theta |_{\{X=x\}}\in \Pi _0]\).
 </p>
 
@@ -932,10 +932,10 @@ and in some situations there is no single right answer. They are also sometimes 
 
 
 
-<a id="autoid-137"></a>
+<a id="autoid-139"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Example 7.1.2</span></span> <a id="autoid-138" ></a ><a id="ex:hpd"></a> Suppose that our posterior has come out as \(\Theta
+<span class="listmarker"> <span class="theoremheaderplain">Example 7.1.2</span></span> <a id="autoid-140" ></a ><a id="ex:hpd"></a> Suppose that our posterior has come out as \(\Theta
 |_{\{X=x\}}\sim \Normal (0,1.5^2)\).
 </p>
 <div class="center">
@@ -1009,10 +1009,10 @@ A value of \(p\) close to \(1\) gives a wide interval and a high value for \(\P 
 
 
 
-<a id="autoid-139"></a>
+<a id="autoid-141"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Example 7.1.3</span></span> <a id="autoid-140" ></a ><a id="ex:hpd_uneq_tails"></a> Suppose that our posterior has come out as
+<span class="listmarker"> <span class="theoremheaderplain">Example 7.1.3</span></span> <a id="autoid-142" ></a ><a id="ex:hpd_uneq_tails"></a> Suppose that our posterior has come out as
 \(\Theta |_{\{X=x\}}\sim \Gam (4,3)\). We want an equally tailed credible interval region \([a,b]\) such that \(\P [\Theta |_{\{X=x\}}\in [a,b]]=0.8\).
 </p>
 <div class="center">
@@ -1049,10 +1049,10 @@ href="Exercises-on-Chapter-ref-c-posterior.html#ps:hpd_code"><b>7.5</b></a>.
 
 
 
-<a id="autoid-141"></a>
+<a id="autoid-143"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Remark 7.1.4</span></span> <a id="autoid-142" ></a >\(\offsyl \) It is possible to construct a form of hypothesis testing based on
+<span class="listmarker"> <span class="theoremheaderplain">Remark 7.1.4</span></span> <a id="autoid-144" ></a >\(\offsyl \) It is possible to construct a form of hypothesis testing based on
 credible intervals. For example, we might by choose a credible interval \(\Pi _0\) with a \(95\%\) probability of containing \(\Theta |_{\{X=x\}}\), and then we then reject the hypothesis \(\theta =\theta
 _0\) if and only if \(\theta _0\notin \Pi _0\). This approach is known as <em>Lindley’s method</em>.
 </p>
@@ -1072,8 +1072,8 @@ when we asked an elicitee to estimate their 25th and 75th percentiles.
 <!--
 ...... subsection Credible intervals vs confidence intervals ......
 -->
-<h5 id="autosec-200"><span class="sectionnumber">7.1.1&#x2003;</span>Credible intervals vs confidence intervals</h5>
-<a id="notes-autopage-200"></a>
+<h5 id="autosec-201"><span class="sectionnumber">7.1.1&#x2003;</span>Credible intervals vs confidence intervals</h5>
+<a id="notes-autopage-201"></a>
 
 
 
@@ -1089,10 +1089,10 @@ following.
 
 
 
-<a id="autoid-143"></a>
+<a id="autoid-145"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.5</span></span> <a id="autoid-144" ></a ><a id="d:conf_int"></a> \(\offsyl \) Given a model family \((M_\theta
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.5</span></span> <a id="autoid-146" ></a ><a id="d:conf_int"></a> \(\offsyl \) Given a model family \((M_\theta
 )_{\theta \in \Pi }\) with range \(R\), a <em>confidence interval</em> with confidence level \(\alpha \) is a pair of deterministic functions \(u(\cdot )\) and \(v(\cdot )\) defined from \(R\) to \(\R \)
 such that \(\P [u(M_\theta )&lt;\theta &lt;v(M_\theta )]=\alpha \) for all \(\theta \in \Pi .\)
 </p>
@@ -1158,8 +1158,8 @@ and credible intervals are approximately equal.
 <!--
 ...... subsection A little history          ......
 -->
-<h5 id="autosec-202"><span class="sectionnumber">7.1.2&#x2003;</span>A little history \(\offsyl \)</h5>
-<a id="notes-autopage-202"></a>
+<h5 id="autosec-203"><span class="sectionnumber">7.1.2&#x2003;</span>A little history \(\offsyl \)</h5>
+<a id="notes-autopage-203"></a>
 
 
 
@@ -1189,7 +1189,7 @@ divide things up in order to learn them, so will only study Bayesian models with
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 21, 2025
+Copyright Nic Freeman, Sheffield University, last updated October 28, 2025
 </p>
 
 </footer>

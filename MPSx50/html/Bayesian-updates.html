@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, October 21, 2025." />
+<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, October 28, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MPS350/4111 — Bayesian updates</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 21, 2025
+last updated: October 28, 2025
 </p>
 
 </header>
@@ -980,17 +980,18 @@ description of the model to writing down the p.d.f.&nbsp;of \(P|_{\{X=4\}}\) as
 
 <!--
 
-                                                                                          1
-                                                                             fP |{X=4} (p) = P[Bin(10, p) = 4]fBeta(2,8) (p)
-                                                                                          Z 
-                                                                                           10
-                                                                                               B(2, 8) 4
-                                                                                         = 4           p (1 − p)10−4 p2−1 (1 − p)8−1
-                                                                                               Z
-                                                                                           1
-                                                                                         = 0 p5 (1 −(2.12)
-                                                                                                     p)13                                                --><a id="eq:propto_helps_example"></a><!--
-                                                                                          Z
+                                                                                                1
+                                                                              fP |{X=4} (p) =     P[Bin(10, p) = 4]fBeta(2,8) (p)
+                                                                                                Z
+                                                                                                   10
+                                                                                                     
+                                                                                          =        4
+                                                                                                     p4 (1 − p)10−4 p2−1 (1 − p)8−1
+                                                                                           ZB(2, 8)
+                                                                                            1
+                                                                                          = 0 p5 (1 − (2.12)
+                                                                                                      p)13                                               --><a id="eq:propto_helps_example"></a><!--
+                                                                                           Z
 
 
 
@@ -1002,10 +1003,10 @@ description of the model to writing down the p.d.f.&nbsp;of \(P|_{\{X=4\}}\) as
 
 
 \begin{align}
-f_{P|_{\{X=4\}}}(p) &amp;=\frac {1}{Z}\P [\Bin (10,p)=4]f_{\Beta (2,8)}(p) \notag \\ &amp;=\frac {\binom {10}{4}\mc {B}(2,8)}{Z}\,p^4(1-p)^{10-4}p^{2-1}(1-p)^{8-1} \notag \\
+f_{P|_{\{X=4\}}}(p) &amp;=\frac {1}{Z}\P [\Bin (10,p)=4]f_{\Beta (2,8)}(p) \notag \\ &amp;=\frac {\binom {10}{4}}{Z\mc {B}(2,8)}\,p^4(1-p)^{10-4}p^{2-1}(1-p)^{8-1} \notag \\
 &amp;=\frac {1}{Z&apos;}\,p^{5}(1-p)^{13} \label {eq:propto_helps_example}
 \end{align}
-for \(p\in [0,1]\), and zero elsewhere. Note that we have written \(\frac {1}{Z&apos;}=\frac {\binom {10}{4}\mc {B}(2,8)}{Z}\) in the last line, without having to do any computation. We only need to
+for \(p\in [0,1]\), and zero elsewhere. Note that we have written \(\frac {1}{Z&apos;}=\frac {\binom {10}{4}}{Z\mc {B}(2,8)}\) in the last line, without having to do any computation. We only need to
 care about the part of the formula that depends on \(p\), because the rest will be a normalizing constant. From Lemma <a href="Equality-in-distribution.html#l:eqd_pmf_pdf_ignore_consts">1.2.5</a>
 we can recognize <span class="textup">(<a href="Bayesian-updates.html#eq:propto_helps_example">2.12</a>)</span> as the p.d.f.&nbsp;of the \(\Beta (6,14)\) distribution.
 </p>
@@ -1051,7 +1052,7 @@ numerically without relying on families of well-known distributions. This provid
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 21, 2025
+Copyright Nic Freeman, Sheffield University, last updated October 28, 2025
 </p>
 
 </footer>

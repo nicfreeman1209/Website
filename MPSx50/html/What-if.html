@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, October 21, 2025." />
+<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, October 28, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MPS350/4111 — What if?</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: October 21, 2025
+last updated: October 28, 2025
 </p>
 
 </header>
@@ -890,13 +890,13 @@ inference works as intended, and then we’ll do some things to break it.
 <li>
 <p>
 <span class="listmarker"> <span class="theoremheaderplain">Example 4.4.1</span></span> <a id="autoid-108" ></a ><a id="ex:exp_gamma_true_1"></a> Let \((X,\Theta )\) be a continuous
-Bayesian model with model family \(M_\lambda \sim \Exp (\lambda )^{\otimes n}\) and parameter \(\lambda \in (0,\infty )\). Take the prior to be \(\Theta \sim \Gamma (\alpha ,\beta )\), where
+Bayesian model with model family \(M_\lambda \sim \Exp (\lambda )^{\otimes n}\) and parameter \(\lambda \in (0,\infty )\). Take the prior to be \(\Lambda \sim \Gam (\alpha ,\beta )\), where
 \(\alpha ,\beta \in (0,\infty )\).
 </p>
 
 <p>
 For now, we choose the prior with \(\alpha =\beta =1\). We will feed our model data consisting of i.i.d.&nbsp;samples from the \(\Exp (1)\) distribution. This corresponds to a true value of the parameter given
-by \(\lambda ^*=1\). In other words, if we set \(\Theta =\lambda \) in our Bayesian model then the samples it would produce for \(X\) would have exactly the same distribution as the data. So, we hope that
+by \(\lambda ^*=1\). In other words, if we set \(\Lambda =\lambda \) in our Bayesian model then the samples it would produce for \(X\) would have exactly the same distribution as the data. So, we hope that
 Bayesian updates based on this data will result in a posterior density with its mass near to \(1\).
 </p>
 
@@ -961,8 +961,8 @@ true value, we can see the posterior densities becoming more and more focused on
 <li>
 <p>
 <span class="listmarker"> <span class="theoremheaderplain">Example 4.4.2</span></span> <a id="autoid-110" ></a ><a id="ex:exp_gamma_wrong_model"></a> Here we use the same model as in
-Example <a href="What-if.html#ex:exp_gamma_true_1">4.4.1</a>, but now we feed our model data consisting of i.i.d.&nbsp;samples from the \(\ChiSquared (2)\) distribution. In this case there is no value of
-the parameter \(\lambda \) for which our model \((X,\Theta )\) is a good representation of the data. We are interested to see what happens:
+Example <a href="What-if.html#ex:exp_gamma_true_1">4.4.1</a>, but now we feed our model data consisting of i.i.d.&nbsp;samples from the \(\ChiSquared (3)\) distribution. In this case there is no value of
+the parameter \(\lambda \) for which our model \((X,\Lambda )\) is a good representation of the data. We are interested to see what happens:
 </p>
 <div class="center">
 
@@ -1055,8 +1055,8 @@ parameter. The key point is that in this case the true value is outside of the r
 <p>
 The posteriors are focusing on the value \(\lambda =2\), but the most conspicuous feature is that the posterior distributions place no weight at all outside of \([2,3]\). In fact we knew this in advance, because
 Theorems <a href="Bayesian-updates.html#t:bayes_thm_discrete_data">2.4.1</a> and <a href="Bayesian-models-continuous-data.html#t:bayes_thm_continuous_data">3.1.2</a> both include the
-fact that the range of \(\Theta |_{\{X=x\}}\) is equal to the range of \(\Theta \), in this case \([2,3]\). This means that, no matter how much data we give to our model, it will never converge towards the true
-value \(\lambda ^*=1\). It is trying to do the next best thing, and get as close as possible. We won’t draw the predictive distributions for this case, but the same story applies there.
+fact that the range of \(\Lambda |_{\{X=x\}}\) is equal to the range of \(\Lambda \), in this case \([2,3]\). This means that, no matter how much data we give to our model, it will never converge towards the
+true value \(\lambda ^*=1\). It is trying to do the next best thing, and get as close as possible. We won’t draw the predictive distributions for this case, but the same story applies there.
 </p>
 
 
@@ -1104,7 +1104,7 @@ might occur.
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 21, 2025
+Copyright Nic Freeman, Sheffield University, last updated October 28, 2025
 </p>
 
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, October 21, 2025." />
+<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, October 28, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MPS350/4111 — Hypothesis testing, odds ratios and Bayes factors</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -232,14 +232,14 @@ MathJax = {
 
 
 
-<a id="notes-autopage-209"></a>
+<a id="notes-autopage-210"></a>
 <nav class="topnavigation"><a href="notes.html" class="linkhome" >
 Home</a></nav>
 
 <header>
 
 <p>
-last updated: October 21, 2025
+last updated: October 28, 2025
 </p>
 
 </header>
@@ -870,8 +870,8 @@ Home</a>
 <!--
 ...... section Hypothesis testing, odds ratios and Bayes factors ......
 -->
-<h4 id="autosec-210"><span class="sectionnumber">7.3&#x2003;</span>Hypothesis testing, odds ratios and Bayes factors</h4>
-<a id="notes-autopage-210"></a>
+<h4 id="autosec-211"><span class="sectionnumber">7.3&#x2003;</span>Hypothesis testing, odds ratios and Bayes factors</h4>
+<a id="notes-autopage-211"></a>
 <a id="notes-autofile-33"></a>
 
 <a id="s:hyp_testing"></a>
@@ -885,10 +885,10 @@ Hypothesis testing is surprisingly simple within the Bayesian framework. We firs
 
 
 
-<a id="autoid-149"></a>
+<a id="autoid-151"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Definition 7.3.1</span></span> <a id="autoid-150" ></a ><a id="d:odds_ratios"></a> Let \(A\) and \(B\) be events such that \(\P
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.3.1</span></span> <a id="autoid-152" ></a ><a id="d:odds_ratios"></a> Let \(A\) and \(B\) be events such that \(\P
 [A\cup B]=1\) and \(A\cap B=\emptyset \). The <em>odds ratio</em> of \(A\) against \(B\) is
 </p>
 
@@ -941,10 +941,10 @@ where \(\theta \) represents the true value of the parameter i.e.&nbsp;the value
 
 
 
-<a id="autoid-151"></a>
+<a id="autoid-153"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Definition 7.3.2</span></span> <a id="autoid-152" ></a >The <em>prior odds</em> of \(H_0\) against \(H_1\) is defined to be
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.3.2</span></span> <a id="autoid-154" ></a >The <em>prior odds</em> of \(H_0\) against \(H_1\) is defined to be
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{7.}{4}\)</span>
@@ -1044,10 +1044,10 @@ _1\). In other words, \(B\) is the ratio of the likelihood of \(H_0\) compared t
 
 
 
-<a id="autoid-153"></a>
+<a id="autoid-155"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Lemma 7.3.3</span></span> <a id="autoid-154" ></a ><a id="l:bayes_factor_likelihood_ratio"></a> In the notation above, the
+<span class="listmarker"> <span class="theoremheaderplain">Lemma 7.3.3</span></span> <a id="autoid-156" ></a ><a id="l:bayes_factor_likelihood_ratio"></a> In the notation above, the
 Bayes factor satisfies \(B=\frac {L_{X|_{\{\Theta \in \Pi _0\}}}(x)}{L_{X|_{\{\Theta \in \Pi _1\}}}(x)}\) where \(L\) denotes the likelihood function.
 </p>
 
@@ -1076,7 +1076,7 @@ href="Exercises-on-Chapter-ref-c-posterior.html#ps:bayes_factor_likelihood_ratio
 </p>
 
 <p>
-As a rough guide to translating the Bayes factor into common language, the following table<sup>1</sup><a id="notes-autopage-213"></a> is sometimes used:
+As a rough guide to translating the Bayes factor into common language, the following table<sup>1</sup><a id="notes-autopage-214"></a> is sometimes used:
 </p>
 
 <span class="hidden"> \(\seteqnumber{0}{7.}{7}\)</span>
@@ -1113,7 +1113,7 @@ Values of the Bayes factor below \(1\) suggest evidence in favour of \(H_1\) ove
 </p>
 <div role="note" class="footnotes">
 
-<a id="notes-autopage-214"></a>
+<a id="notes-autopage-215"></a>
 
 <p>
 <sup>1</sup>&nbsp;From Kass &amp; Raftery (1995).
@@ -1131,10 +1131,10 @@ Values of the Bayes factor below \(1\) suggest evidence in favour of \(H_1\) ove
 
 
 
-<a id="autoid-155"></a>
+<a id="autoid-157"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Example 7.3.4</span></span> <a id="autoid-156" ></a >Returning to Example <a
+<span class="listmarker"> <span class="theoremheaderplain">Example 7.3.4</span></span> <a id="autoid-158" ></a >Returning to Example <a
 href="The-normal-distribution-with-unknown-mean-variance.html#ex:speed_camera_2">4.5.3</a>, suppose that we wished to test the hypothesis that the speed camera is, on average, overestimating the
 speed to cars. Recall that in this example:
 </p>
@@ -1276,8 +1276,8 @@ Note that we have used a small amount of Bayesian shorthand in this example, by 
 <!--
 ...... subsection Comparison to classical hypothesis testing ......
 -->
-<h5 id="autosec-215"><span class="sectionnumber">7.3.1&#x2003;</span>Comparison to classical hypothesis testing</h5>
-<a id="notes-autopage-215"></a>
+<h5 id="autosec-216"><span class="sectionnumber">7.3.1&#x2003;</span>Comparison to classical hypothesis testing</h5>
+<a id="notes-autopage-216"></a>
 
 
 
@@ -1298,10 +1298,10 @@ You will have seen a different method of carrying out a hypothesis test before, 
 
 
 
-<a id="autoid-157"></a>
+<a id="autoid-159"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Definition 7.3.5</span></span> <a id="autoid-158" ></a ><a id="d:classical_hypothesis_test"></a> \(\offsyl \) The <em>classical
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.3.5</span></span> <a id="autoid-160" ></a ><a id="d:classical_hypothesis_test"></a> \(\offsyl \) The <em>classical
 hypothesis test</em> is the following procedure:
 </p>
 <ul class="enumerate" style="list-style-type:none">
@@ -1370,10 +1370,10 @@ hypothesis test requires careful logic, which opens a door both to human error a
 
 
 
-<a id="autoid-159"></a>
+<a id="autoid-161"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Example 7.3.6</span></span> <a id="autoid-160" ></a ><a id="ex:hans_the_horse"></a> \(\offsyl \) A famous example of one of
+<span class="listmarker"> <span class="theoremheaderplain">Example 7.3.6</span></span> <a id="autoid-162" ></a ><a id="ex:hans_the_horse"></a> \(\offsyl \) A famous example of one of
 these mistakes comes from the ‘clever Hans’ effect. Hans was a horse who appeared to be able to do arithmetic, owned by a mathematics teacher Wilhelm von Osten. Von Osten would ask Hans (by speaking out
 loud) to answer to various questions and Hans would reply by tapping his hoof. The number of taps was interpreted as a numerical answer. Hans answered the vast majority of questions correctly.
 </p>
@@ -1418,7 +1418,7 @@ substantial amount of money from doing so – many in his audience wondered if t
 
 </div>
 
-<figure id="autoid-161" class="figure ">
+<figure id="autoid-163" class="figure ">
 <div class="center">
 
 <p>
@@ -1453,7 +1453,7 @@ Figure&nbsp;7.1:&nbsp;Hans the horse in 1904, correctly answering arithmetic que
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated October 21, 2025
+Copyright Nic Freeman, Sheffield University, last updated October 28, 2025
 </p>
 
 </footer>
