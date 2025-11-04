@@ -37,33 +37,33 @@
 \contentsline {section}{\numberline {4.7}{\ignorespaces Exercises on Chapter \ref {c:conjugate_priors}\relax }}{158}{}
 \contentsline {chapter}{\numberline {5}{\ignorespaces The prior\relax }}{161}{}
 \contentsline {section}{\numberline {5.1}{\ignorespaces Elicitation\relax }}{162}{}
-\contentsline {subsection}{\numberline {5.1.1}{\ignorespaces Psychological biases\relax }}{168}{}
-\contentsline {section}{\numberline {5.2}{\ignorespaces Uninformative priors\relax }}{170}{}
-\contentsline {subsection}{\numberline {5.2.1}{\ignorespaces The philosophy of not knowing anything\relax }}{172}{}
-\contentsline {section}{\numberline {5.3}{\ignorespaces Reference priors\relax }}{177}{}
-\contentsline {section}{\numberline {5.4}{\ignorespaces Exercises on Chapter \ref {c:prior}\relax }}{183}{}
-\contentsline {chapter}{\numberline {6}{\ignorespaces Bayesian Notation\relax }}{186}{}
-\contentsline {section}{\numberline {6.1}{\ignorespaces Exercises on Chapter \ref {c:bayesian_shorthand}\relax }}{190}{}
-\contentsline {chapter}{\numberline {7}{\ignorespaces The posterior\relax }}{192}{}
-\contentsline {section}{\numberline {7.1}{\ignorespaces Credible intervals\relax }}{193}{}
-\contentsline {subsection}{\numberline {7.1.1}{\ignorespaces Credible intervals vs confidence intervals\relax }}{200}{}
-\contentsline {subsection}{\numberline {7.1.2}{\ignorespaces A little history ${\color {darkred}(\mathbf {\oslash })}$\relax }}{202}{}
-\contentsline {section}{\numberline {7.2}{\ignorespaces The connection to maximum likelihood\relax }}{204}{}
-\contentsline {subsection}{\numberline {7.2.1}{\ignorespaces Making the connection precise ${\color {darkred}(\mathbf {\oslash })}$\relax }}{208}{}
-\contentsline {section}{\numberline {7.3}{\ignorespaces Hypothesis testing, odds ratios and Bayes factors\relax }}{210}{}
-\contentsline {subsection}{\numberline {7.3.1}{\ignorespaces Comparison to classical hypothesis testing\relax }}{215}{}
-\contentsline {section}{\numberline {7.4}{\ignorespaces Exercises on Chapter \ref {c:posterior}\relax }}{220}{}
-\contentsline {chapter}{\numberline {8}{\ignorespaces Computational methods\relax }}{223}{}
-\contentsline {section}{\numberline {8.1}{\ignorespaces Approximate Bayesian computation ${\color {darkred}(\mathbf {\oslash })}$\relax }}{224}{}
-\contentsline {section}{\numberline {8.2}{\ignorespaces Metropolis-Hastings\relax }}{227}{}
-\contentsline {subsection}{\numberline {8.2.1}{\ignorespaces The Metropolis-Hastings algorithm\relax }}{228}{}
-\contentsline {subsection}{\numberline {8.2.2}{\ignorespaces The Metropolis algorithm\relax }}{235}{}
-\contentsline {subsection}{\numberline {8.2.3}{\ignorespaces Why does Metropolis-Hastings work? ${\color {darkred}(\mathbf {\oslash })}$\relax }}{237}{}
-\contentsline {section}{\numberline {8.3}{\ignorespaces Markov Chain Monte Carlo\relax }}{241}{}
-\contentsline {subsection}{\numberline {8.3.1}{\ignorespaces MCMC algorithm for the random walk case\relax }}{244}{}
-\contentsline {section}{\numberline {8.4}{\ignorespaces Gibbs sampling\relax }}{246}{}
-\contentsline {section}{\numberline {8.5}{\ignorespaces Exercises on Chapter \ref {c:computational}\relax }}{253}{}
-\contentsline {chapter}{\numberline {A}{\ignorespaces Reference Sheets\relax }}{256}{}
-\contentsline {chapter}{\numberline {B}{\ignorespaces Advice for revision/exams\relax }}{264}{}
-\contentsline {chapter}{\numberline {C}{\ignorespaces Solutions to exercises\relax }}{267}{}
+\contentsline {subsection}{\numberline {5.1.1}{\ignorespaces Psychological biases\relax }}{169}{}
+\contentsline {section}{\numberline {5.2}{\ignorespaces Uninformative priors\relax }}{171}{}
+\contentsline {subsection}{\numberline {5.2.1}{\ignorespaces The philosophy of not knowing anything\relax }}{173}{}
+\contentsline {section}{\numberline {5.3}{\ignorespaces Reference priors\relax }}{178}{}
+\contentsline {section}{\numberline {5.4}{\ignorespaces Exercises on Chapter \ref {c:prior}\relax }}{184}{}
+\contentsline {chapter}{\numberline {6}{\ignorespaces Bayesian Notation\relax }}{187}{}
+\contentsline {section}{\numberline {6.1}{\ignorespaces Exercises on Chapter \ref {c:bayesian_shorthand}\relax }}{191}{}
+\contentsline {chapter}{\numberline {7}{\ignorespaces The posterior\relax }}{193}{}
+\contentsline {section}{\numberline {7.1}{\ignorespaces Credible intervals\relax }}{194}{}
+\contentsline {subsection}{\numberline {7.1.1}{\ignorespaces Credible intervals vs confidence intervals\relax }}{201}{}
+\contentsline {subsection}{\numberline {7.1.2}{\ignorespaces A little history ${\color {darkred}(\mathbf {\oslash })}$\relax }}{203}{}
+\contentsline {section}{\numberline {7.2}{\ignorespaces The connection to maximum likelihood\relax }}{205}{}
+\contentsline {subsection}{\numberline {7.2.1}{\ignorespaces Making the connection precise ${\color {darkred}(\mathbf {\oslash })}$\relax }}{209}{}
+\contentsline {section}{\numberline {7.3}{\ignorespaces Hypothesis testing, odds ratios and Bayes factors\relax }}{211}{}
+\contentsline {subsection}{\numberline {7.3.1}{\ignorespaces Comparison to classical hypothesis testing\relax }}{216}{}
+\contentsline {section}{\numberline {7.4}{\ignorespaces Exercises on Chapter \ref {c:posterior}\relax }}{221}{}
+\contentsline {chapter}{\numberline {8}{\ignorespaces Computational methods\relax }}{224}{}
+\contentsline {section}{\numberline {8.1}{\ignorespaces Approximate Bayesian computation ${\color {darkred}(\mathbf {\oslash })}$\relax }}{225}{}
+\contentsline {section}{\numberline {8.2}{\ignorespaces Metropolis-Hastings\relax }}{228}{}
+\contentsline {subsection}{\numberline {8.2.1}{\ignorespaces The Metropolis-Hastings algorithm\relax }}{229}{}
+\contentsline {subsection}{\numberline {8.2.2}{\ignorespaces The Metropolis algorithm\relax }}{236}{}
+\contentsline {subsection}{\numberline {8.2.3}{\ignorespaces Why does Metropolis-Hastings work? ${\color {darkred}(\mathbf {\oslash })}$\relax }}{238}{}
+\contentsline {section}{\numberline {8.3}{\ignorespaces Markov Chain Monte Carlo\relax }}{242}{}
+\contentsline {subsection}{\numberline {8.3.1}{\ignorespaces MCMC algorithm for the random walk case\relax }}{245}{}
+\contentsline {section}{\numberline {8.4}{\ignorespaces Gibbs sampling\relax }}{247}{}
+\contentsline {section}{\numberline {8.5}{\ignorespaces Exercises on Chapter \ref {c:computational}\relax }}{254}{}
+\contentsline {chapter}{\numberline {A}{\ignorespaces Reference Sheets\relax }}{257}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Advice for revision/exams\relax }}{265}{}
+\contentsline {chapter}{\numberline {C}{\ignorespaces Solutions to exercises\relax }}{268}{}
 
