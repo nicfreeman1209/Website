@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="author" content="Nic Freeman" />
 <meta name="generator" content="LaTeX Lwarp package" />
-<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, December 2, 2025." />
+<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, December 8, 2025." />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MPS350/4111 — Metropolis-Hastings</title>
 <link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
@@ -239,7 +239,7 @@ Home</a></nav>
 <header>
 
 <p>
-last updated: December 2, 2025
+last updated: December 8, 2025
 </p>
 
 </header>
@@ -894,8 +894,8 @@ Section <a href="Markov-Chain-Monte-Carlo.html#s:mcmc">8.3</a>.
 
 <p>
 The Metropolis-Hastings algorithm is a general technique for producing samples from a distribution. We will describe it in the case where we take samples of a continuous random variable \(Y\) with
-p.d.f.&nbsp;\(f_Y\) and range \(R_Y\sw \R ^d\). The key ingredient of the algorithm is a joint distribution \((Y,Q)\), where \(Q|_{\{Y=y\}}\) is well defined for all \(y\in R_Y\), both with the same range as
-\(Y\).
+p.d.f.&nbsp;\(f_Y\) and range \(R_Y\sw \R ^d\). The key ingredient of the algorithm is a joint distribution \((Y,Q)\), where \(Q|_{\{Y=y\}}\) is well defined for all \(y\in R_Y\). For convenience, we also
+assume that \(Q\) and \(Q|_{\{Y=y\}}\) has the same range as \(Y\) – but this requirement can be weakened, see Remark <a href="Metropolis-Hastings.html#r:harris_recurrence">8.2.6</a>.
 </p>
 <div class="theorembodyexample">
 
@@ -1168,7 +1168,12 @@ because the terms on top and bottom involving conditional densities then cancel.
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{3}\)</span>
 <!--
-                                                        /em> algorithm.
+                                                        ving this fact is Exercise <a
+href="Exercises-on-Chapter-ref-c-computational.html#ps:mh_sym_rws"><b>8.6</b></a>.
+</p>
+
+<p>
+This case is known as the <em>random-walk Metropolis</em> algorithm.
 </p>
 
 
@@ -1506,9 +1511,9 @@ obtain the third) and because \(\P [Q\in R]=1\). We thus obtain <span class="tex
 <a id="autoid-176"></a>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain">Remark 8.2.6</span></span> <a id="autoid-177" ></a >It is possible to weaken the conditions on \((Y,Q)\) and allow cases where the
-range of \(Q|_{\{Y=y\}}\) is a subset of the range of \(Y\). In this case it becomes necessary that the random sequence \((y_n)\) defined by the algorithm satisfies the condition \(\P [\exists n\in \N ,
-y_n\in A]=1\) whenever \(\P [Y\in A]&gt;0\), regardless of the starting point of the chain \((y_n)\). This condition is known as <em>Harris recurrence</em>.
+<span class="listmarker"> <span class="theoremheaderplain">Remark 8.2.6</span></span> <a id="autoid-177" ></a ><a id="r:harris_recurrence"></a> It is possible to weaken the conditions on
+\((Y,Q)\) and allow cases where the range of \(Q|_{\{Y=y\}}\) is a subset of the range of \(Y\). In this case it becomes necessary that the random sequence \((y_n)\) defined by the algorithm satisfies the
+condition \(\P [\exists n\in \N , y_n\in A]=1\) whenever \(\P [Y\in A]&gt;0\), regardless of the starting point of the chain \((y_n)\). This condition is known as <em>Harris recurrence</em>.
 </p>
 
 <p>
@@ -1533,7 +1538,7 @@ consequence that we won’t need the discrete case of Metropolis-Hastings within
 <footer>
 
 <p>
-Copyright Nic Freeman, Sheffield University, last updated December 2, 2025
+Copyright Nic Freeman, Sheffield University, last updated December 8, 2025
 </p>
 
 </footer>
