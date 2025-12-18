@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Nic Freeman" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="description" content="MPS350/4111 Bayesian Statistics, Sheffield University, December 18, 2025." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MPS350/4111 — The posterior</title>
+<link rel="stylesheet" type="text/css" href="sans-serif-lwarp-sagebrush.css" />
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+  subequations: "0",
+  section: "",
+  loader: {
+    load: ['[tex]/tagformat', '[tex]/textmacros'],
+  },
+  startup: {
+    ready() {
+      // These would be replaced by import commands if you wanted to make
+      // a proper extension.
+      const Configuration = MathJax._.input.tex.Configuration.Configuration;
+      const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+      const Macro = MathJax._.input.tex.Symbol.Macro;
+      const TexError = MathJax._.input.tex.TexError.default;
+      const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+      const expandable = MathJax._.util.Options.expandable;
+
+        // Insert the replacement string into the TeX string, and check
+        // that there haven't been too many maxro substitutions (prevents
+        // infinite loops).
+        const useArgument = (parser, text) => {
+          parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+          parser.i = 0;
+          if (++parser.macroCount > parser.configuration.options.maxMacros) {
+            throw new TexError('MaxMacroSub1',
+            'MathJax maximum macro substitution count exceeded; ' +
+            'is there a recursive macro call?');
+          }
+        }
+
+        // Create the command map for:
+        //     \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+        new CommandMap('Lwarp-macros', {
+          ifstar: 'IfstarFunction',
+          ifnextchar: 'IfnextcharFunction',
+          ifblank: 'IfblankFunction',
+          ifstrequal: 'IfstrequalFunction',
+          gsubstitute: 'GsubstituteFunction',
+          seteqnumber: 'SeteqnumberFunction'
+        }, {
+          // This function implements an ifstar macro.
+          IfstarFunction(parser, name) {
+             const resultstar = parser.GetArgument(name);
+             const resultnostar = parser.GetArgument(name);
+             const star = parser.GetStar();                 // true if there is a *
+             useArgument(parser, star ? resultstar : resultnostar);
+          },
+
+          // This function implements an ifnextchar macro.
+          IfnextcharFunction(parser, name) {
+            let whichchar = parser.GetArgument(name);
+            if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+              // $ syntax highlighting
+              whichchar = String.fromCodePoint(parseInt(whichchar));
+            }
+            const resultnextchar = parser.GetArgument(name);
+            const resultnotnextchar = parser.GetArgument(name);
+            const gotchar = (parser.GetNext() === whichchar);
+            useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+          },
+
+          // This function implements an ifblank macro.
+          IfblankFunction(parser, name) {
+            const blankarg = parser.GetArgument(name);
+            const resultblank = parser.GetArgument(name);
+            const resultnotblank = parser.GetArgument(name);
+            const isblank = (blankarg.trim() == "");
+            useArgument(parser, isblank ? resultblank : resultnotblank);
+          },
+
+          // This function implements an ifstrequal macro.
+          IfstrequalFunction(parser, name) {
+            const strequalfirst = parser.GetArgument(name);
+            const strequalsecond = parser.GetArgument(name);
+            const resultequal = parser.GetArgument(name);
+            const resultnotequal = parser.GetArgument(name);
+            const isequal = (strequalfirst == strequalsecond);
+            useArgument(parser, isequal ? resultequal : resultnotequal);
+          },
+
+          // This function implements a gsub macro.
+          GsubstituteFunction(parser, name) {
+            const gsubfirst = parser.GetArgument(name);
+            const gsubsecond = parser.GetArgument(name);
+            const gsubthird = parser.GetArgument(name);
+            let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+            useArgument(parser, gsubresult);
+          },
+
+          // This function modifies the equation numbers.
+          SeteqnumberFunction(parser, name) {
+              // Get the macro parameters
+              const star = parser.GetStar();                  // true if there is a *
+              const optBrackets = parser.GetBrackets(name);   // contents of optional brackets
+              const newsubequations = parser.GetArgument(name); // the subequations argument
+              const neweqsection = parser.GetArgument(name); // the eq section argument
+              const neweqnumber = parser.GetArgument(name);   // the eq number argument
+              MathJax.config.subequations=newsubequations ;   // a string with boolean meaning
+              MathJax.config.section=neweqsection ;           // a string with numeric meaning
+              parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+          }
+
+        });
+
+        // Create the Lwarp-macros package
+        Configuration.create('Lwarp-macros', {
+          handler: {macro: ['Lwarp-macros']}
+        });
+
+        MathJax.startup.defaultReady();
+
+        // For forward references:
+        MathJax.startup.input[0].preFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              MathJax.config.subequations = math.inputData.recompile.subequations;
+              MathJax.config.section = math.inputData.recompile.section;
+          }
+        });
+        MathJax.startup.input[0].postFilters.add(({math}) => {
+          if (math.inputData.recompile){
+              math.inputData.recompile.subequations = MathJax.config.subequations;
+              math.inputData.recompile.section = MathJax.config.section;
+          }
+        });
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+    }     // ready
+  },      // startup
+
+  tex: {
+    packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+    tags: "ams",
+         tagformat: {
+             number: function (n) {
+                 if(MathJax.config.subequations==0)
+                     return(MathJax.config.section + n);
+                 else
+                     return(MathJax.config.section + String.fromCharCode(96+n));
+             },
+         },
+  }
+}
+</script>
+
+<script
+    id="MathJax-script"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4222H8D03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J4222H8D03');
+</script>
+<!-- Google tag (gtag.js) -->
+
+
+</head>
+<body>
+
+
+
+<a id="notes-autopage-193"></a>
+<nav class="topnavigation"><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+<header>
+
+<p>
+last updated: December 18, 2025
+</p>
+
+</header>
+
+
+
+<div class="bodyandsidetoc">
+<div class="sidetoccontainer">
+
+
+
+<nav class="sidetoc">
+
+
+
+<div class="sidetoctitle">
+
+<p>
+<span class="sidetocthetitle">Bayesian Statistics</span>
+</p>
+
+<p>
+Contents
+</p>
+</div>
+
+
+
+<div class="sidetoccontents">
+
+<p>
+<a href="notes.html" class="linkhome" >
+Home</a>
+</p>
+
+<p>
+<a href="Introduction.html#autosec-5" class="tocchapter" >
+<span class="sectionnumber">0</span>&#x2003;Introduction</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Introduction.html#autosec-6" class="tocsection" >
+<span class="sectionnumber">0.1</span>&#x2003;Organization</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Outline-course.html#autosec-10" class="tocsection" >
+<span class="sectionnumber">0.2</span>&#x2003;Outline of the course</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Conditioning.html#autosec-12" class="tocchapter" >
+<span class="sectionnumber">1</span>&#x2003;Conditioning</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Conditioning.html#autosec-13" class="tocsection" >
+<span class="sectionnumber">1.1</span>&#x2003;Random variables</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Equality-in-distribution.html#autosec-18" class="tocsection" >
+<span class="sectionnumber">1.2</span>&#x2003;Equality in distribution</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Families-random-variables.html#autosec-28" class="tocsection" >
+<span class="sectionnumber">1.3</span>&#x2003;Families of random variables</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Conditioning-on-location.html#autosec-32" class="tocsection" >
+<span class="sectionnumber">1.4</span>&#x2003;Conditioning on location</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Conditioning-correlations.html#autosec-40" class="tocsection" >
+<span class="sectionnumber">1.5</span>&#x2003;Conditioning and correlations</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Conditioning-on-events-with-zero-probability.html#autosec-47" class="tocsection" >
+<span class="sectionnumber">1.6</span>&#x2003;Conditioning on events with zero probability</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Families-with-random-parameters.html#autosec-54" class="tocsection" >
+<span class="sectionnumber">1.7</span>&#x2003;Families with random parameters</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-conditioning.html#autosec-57" class="tocsection" >
+<span class="sectionnumber">1.8</span>&#x2003;Exercises on Chapter 1</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-discrete-data.html#autosec-62" class="tocchapter" >
+<span class="sectionnumber">2</span>&#x2003;Bayesian models: discrete data</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-discrete-data.html#autosec-63" class="tocsection" >
+<span class="sectionnumber">2.1</span>&#x2003;Models with random parameters</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Discrete-Bayesian-models.html#autosec-67" class="tocsection" >
+<span class="sectionnumber">2.2</span>&#x2003;Discrete Bayesian models</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="The-posterior-distribution.html#autosec-72" class="tocsection" >
+<span class="sectionnumber">2.3</span>&#x2003;The posterior distribution</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Bayesian-updates.html#autosec-80" class="tocsection" >
+<span class="sectionnumber">2.4</span>&#x2003;Bayesian updates</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bayes_models_discrete.html#autosec-85" class="tocsection" >
+<span class="sectionnumber">2.5</span>&#x2003;Exercises on Chapter 2</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-continuous-data.html#autosec-87" class="tocchapter" >
+<span class="sectionnumber">3</span>&#x2003;Bayesian models: continuous data</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Bayesian-models-continuous-data.html#autosec-88" class="tocsection" >
+<span class="sectionnumber">3.1</span>&#x2003;Continuous Bayesian models</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Notation-independent-data.html#autosec-94" class="tocsection" >
+<span class="sectionnumber">3.2</span>&#x2003;Notation: independent data</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-bayes_models_continuous.html#autosec-104" class="tocsection" >
+<span class="sectionnumber">3.3</span>&#x2003;Exercises on Chapter 3</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Conjugate-priors.html#autosec-106" class="tocchapter" >
+<span class="sectionnumber">4</span>&#x2003;Conjugate priors</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Conjugate-priors.html#autosec-108" class="tocsection" >
+<span class="sectionnumber">4.1</span>&#x2003;Notation: proportionality</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Two-more-examples-conjugate-pairs.html#autosec-118" class="tocsection" >
+<span class="sectionnumber">4.2</span>&#x2003;Two more examples of conjugate pairs</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Conjugate-pairs-exponential-family.html#autosec-128" class="tocsection" >
+<span class="sectionnumber">4.3</span>&#x2003;Conjugate pairs and the exponential family \(\color {darkred}(\mathbf {\oslash })\)</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="What-if.html#autosec-132" class="tocsection" >
+<span class="sectionnumber">4.4</span>&#x2003;What if?</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="The-normal-distribution-with-unknown-mean-variance.html#autosec-145" class="tocsection" >
+<span class="sectionnumber">4.5</span>&#x2003;The normal distribution with unknown mean and variance</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="The-limitations-conjugate-pairs.html#autosec-153" class="tocsection" >
+<span class="sectionnumber">4.6</span>&#x2003;The limitations of conjugate pairs</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-conjugate_priors.html#autosec-155" class="tocsection" >
+<span class="sectionnumber">4.7</span>&#x2003;Exercises on Chapter 4</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="The-prior.html#autosec-157" class="tocchapter" >
+<span class="sectionnumber">5</span>&#x2003;The prior</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="The-prior.html#autosec-158" class="tocsection" >
+<span class="sectionnumber">5.1</span>&#x2003;Elicitation</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Uninformative-priors.html#autosec-167" class="tocsection" >
+<span class="sectionnumber">5.2</span>&#x2003;Uninformative priors</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Reference-priors.html#autosec-174" class="tocsection" >
+<span class="sectionnumber">5.3</span>&#x2003;Reference priors</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-prior.html#autosec-180" class="tocsection" >
+<span class="sectionnumber">5.4</span>&#x2003;Exercises on Chapter 5</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Bayesian-Notation.html#autosec-182" class="tocchapter" >
+<span class="sectionnumber">6</span>&#x2003;Bayesian Notation</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Bayesian-Notation.html#autosec-185" class="tocsection" >
+<span class="sectionnumber">6.1</span>&#x2003;Exercises on Chapter 6</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="The-posterior.html#autosec-187" class="tocchapter" >
+<span class="sectionnumber">7</span>&#x2003;The posterior</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="The-posterior.html#autosec-188" class="tocsection" >
+<span class="sectionnumber">7.1</span>&#x2003;Credible intervals</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="The-connection-maximum-likelihood.html#autosec-199" class="tocsection" >
+<span class="sectionnumber">7.2</span>&#x2003;The connection to maximum likelihood</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Hypothesis-testing-odds-ratios-Bayes-factors.html#autosec-205" class="tocsection" >
+<span class="sectionnumber">7.3</span>&#x2003;Hypothesis testing, odds ratios and Bayes factors</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-posterior.html#autosec-215" class="tocsection" >
+<span class="sectionnumber">7.4</span>&#x2003;Exercises on Chapter 7</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Computational-methods.html#autosec-218" class="tocchapter" >
+<span class="sectionnumber">8</span>&#x2003;Computational methods</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Computational-methods.html#autosec-219" class="tocsection" >
+<span class="sectionnumber">8.1</span>&#x2003;Approximate Bayesian computation \(\color {darkred}(\mathbf {\oslash })\)</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Metropolis-Hastings.html#autosec-222" class="tocsection" >
+<span class="sectionnumber">8.2</span>&#x2003;Metropolis-Hastings</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Markov-Chain-Monte-Carlo.html#autosec-236" class="tocsection" >
+<span class="sectionnumber">8.3</span>&#x2003;Markov Chain Monte Carlo</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Gibbs-sampling.html#autosec-241" class="tocsection" >
+<span class="sectionnumber">8.4</span>&#x2003;Gibbs sampling</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Exercises-on-Chapter-ref-c-computational.html#autosec-248" class="tocsection" >
+<span class="sectionnumber">8.5</span>&#x2003;Exercises on Chapter 8</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Reference-Sheets.html#autosec-250" class="tocchapter" >
+<span class="sectionnumber">A</span>&#x2003;Reference Sheets</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Advice-revision-exams.html#autosec-258" class="tocchapter" >
+<span class="sectionnumber">B</span>&#x2003;Advice for revision/exams</a><p>
+
+
+</p>
+
+
+
+<p>
+<a href="Solutions-exercises.html#autosec-261" class="tocchapter" >
+<span class="sectionnumber">C</span>&#x2003;Solutions to exercises</a><p>
+
+
+</p>
+
+
+
+</div>
+
+</nav>
+
+</div>
+
+
+
+<main class="bodycontainer">
+
+
+
+<section class="textbody">
+
+<h1>Bayesian Statistics</h1>
+
+<!--MathJax customizations:-->
+<div data-nosnippet
+      style="display:none"
+>
+
+\(\newcommand{\footnotename}{footnote}\)
+
+\(\def \LWRfootnote {1}\)
+
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+
+\(\let \LWRorighspace \hspace \)
+
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+
+\(\newcommand {\TextOrMath }[2]{#2}\)
+
+\(\newcommand {\mathnormal }[1]{{#1}}\)
+
+\(\newcommand \ensuremath [1]{#1}\)
+
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+
+\(\newcommand {\setlength }[2]{}\)
+
+\(\newcommand {\addtolength }[2]{}\)
+
+\(\newcommand {\setcounter }[2]{}\)
+
+\(\newcommand {\addtocounter }[2]{}\)
+
+\(\newcommand {\arabic }[1]{}\)
+
+\(\newcommand {\number }[1]{}\)
+
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+
+\(\newcommand {\cline }[1]{}\)
+
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+
+\(\newcommand {\protect }{}\)
+
+\(\def \LWRabsorbnumber #1 {}\)
+
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+
+\(\def \mathcode #1={\mathchar }\)
+
+\(\let \delcode \mathcode \)
+
+\(\let \delimiter \mathchar \)
+
+\(\def \oe {\unicode {x0153}}\)
+
+\(\def \OE {\unicode {x0152}}\)
+
+\(\def \ae {\unicode {x00E6}}\)
+
+\(\def \AE {\unicode {x00C6}}\)
+
+\(\def \aa {\unicode {x00E5}}\)
+
+\(\def \AA {\unicode {x00C5}}\)
+
+\(\def \o {\unicode {x00F8}}\)
+
+\(\def \O {\unicode {x00D8}}\)
+
+\(\def \l {\unicode {x0142}}\)
+
+\(\def \L {\unicode {x0141}}\)
+
+\(\def \ss {\unicode {x00DF}}\)
+
+\(\def \SS {\unicode {x1E9E}}\)
+
+\(\def \dag {\unicode {x2020}}\)
+
+\(\def \ddag {\unicode {x2021}}\)
+
+\(\def \P {\unicode {x00B6}}\)
+
+\(\def \copyright {\unicode {x00A9}}\)
+
+\(\def \pounds {\unicode {x00A3}}\)
+
+\(\let \LWRref \ref \)
+
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+
+\( \newcommand {\multicolumn }[3]{#3}\)
+
+\(\require {textcomp}\)
+
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+
+\(\let \Hat \hat \)
+
+\(\let \Check \check \)
+
+\(\let \Tilde \tilde \)
+
+\(\let \Acute \acute \)
+
+\(\let \Grave \grave \)
+
+\(\let \Dot \dot \)
+
+\(\let \Ddot \ddot \)
+
+\(\let \Breve \breve \)
+
+\(\let \Bar \bar \)
+
+\(\let \Vec \vec \)
+
+\(\require {colortbl}\)
+
+\(\let \LWRorigcolumncolor \columncolor \)
+
+\(\renewcommand {\columncolor }[2][named]{\LWRorigcolumncolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\let \LWRorigrowcolor \rowcolor \)
+
+\(\renewcommand {\rowcolor }[2][named]{\LWRorigrowcolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\let \LWRorigcellcolor \cellcolor \)
+
+\(\renewcommand {\cellcolor }[2][named]{\LWRorigcellcolor [#1]{#2}\LWRabsorbtwooptions }\)
+
+\(\renewcommand {\intertext }[2][]{\text {#2}\notag \\}\)
+
+\(\newenvironment {fleqn}[1][]{}{}\)
+
+\(\newenvironment {ceqn}{}{}\)
+
+\(\newenvironment {darray}[2][c]{\begin {array}[#1]{#2}}{\end {array}}\)
+
+\(\newcommand {\dmulticolumn }[3]{#3}\)
+
+\(\newcommand {\LWRnrnostar }[1][0.5ex]{\\[#1]}\)
+
+\(\newcommand {\nr }{\ifstar \LWRnrnostar \LWRnrnostar }\)
+
+\(\newcommand {\mrel }[1]{\begin {aligned}#1\end {aligned}}\)
+
+\(\newcommand {\underrel }[2]{\underset {#2}{#1}}\)
+
+\(\newcommand {\medmath }[1]{#1}\)
+
+\(\newcommand {\medop }[1]{#1}\)
+
+\(\newcommand {\medint }[1]{#1}\)
+
+\(\newcommand {\medintcorr }[1]{#1}\)
+
+\(\newcommand {\mfrac }[2]{\frac {#1}{#2}}\)
+
+\(\newcommand {\mbinom }[2]{\binom {#1}{#2}}\)
+
+\(\newenvironment {mmatrix}{\begin {matrix}}{\end {matrix}}\)
+
+\(\newcommand {\displaybreak }[1][]{}\)
+
+\( \def \offsyl {(\oslash )} \def \msconly {(\Delta )} \)
+
+\( \DeclareMathOperator {\var }{var} \DeclareMathOperator {\cov }{cov} \DeclareMathOperator {\Bin }{Bin} \DeclareMathOperator {\Geo }{Geometric} \DeclareMathOperator {\Beta
+}{Beta} \DeclareMathOperator {\Unif }{Uniform} \DeclareMathOperator {\Gam }{Gamma} \DeclareMathOperator {\Normal }{N} \DeclareMathOperator {\Exp }{Exp} \DeclareMathOperator
+{\Cauchy }{Cauchy} \DeclareMathOperator {\Bern }{Bernoulli} \DeclareMathOperator {\Poisson }{Poisson} \DeclareMathOperator {\Weibull }{Weibull} \DeclareMathOperator {\IGam
+}{IGamma} \DeclareMathOperator {\NGam }{NGamma} \DeclareMathOperator {\ChiSquared }{ChiSquared} \DeclareMathOperator {\Pareto }{Pareto} \DeclareMathOperator {\NBin }{NegBin}
+\DeclareMathOperator {\Studentt }{Student-t} \DeclareMathOperator *{\argmax }{arg\,max} \DeclareMathOperator *{\argmin }{arg\,min} \)
+
+\( \def \to {\rightarrow } \def \iff {\Leftrightarrow } \def \ra {\Rightarrow } \def \sw {\subseteq } \def \mc {\mathcal } \def \mb {\mathbb } \def \sc {\setminus } \def \wt
+{\widetilde } \def \v {\textbf } \def \E {\mb {E}} \def \P {\mb {P}} \def \R {\mb {R}} \def \C {\mb {C}} \def \N {\mb {N}} \def \Q {\mb {Q}} \def \Z {\mb {Z}} \def \B {\mb {B}}
+\def \~{\sim } \def \-{\,;\,} \def \qed {$\blacksquare $} \CustomizeMathJax {\def \1{\unicode {x1D7D9}}} \def \cadlag {c\&grave;{a}dl\&grave;{a}g} \def \p {\partial } \def \l
+{\left } \def \r {\right } \def \Om {\Omega } \def \om {\omega } \def \eps {\epsilon } \def \de {\delta } \def \ov {\overline } \def \sr {\stackrel } \def \Lp {\mc {L}^p} \def
+\Lq {\mc {L}^p} \def \Lone {\mc {L}^1} \def \Ltwo {\mc {L}^2} \def \toae {\sr {\rm a.e.}{\to }} \def \toas {\sr {\rm a.s.}{\to }} \def \top {\sr {\mb {\P }}{\to }} \def \tod {\sr
+{\rm d}{\to }} \def \toLp {\sr {\Lp }{\to }} \def \toLq {\sr {\Lq }{\to }} \def \eqae {\sr {\rm a.e.}{=}} \def \eqas {\sr {\rm a.s.}{=}} \def \eqd {\sr {\rm d}{=}} \def \approxd
+{\sr {\rm d}{\approx }} \def \Sa {(S1)\xspace } \def \Sb {(S2)\xspace } \def \Sc {(S3)\xspace } \)
+
+</div>
+
+<!--
+......     chapter The posterior ......
+-->
+<h3 id="autosec-194">Chapter&nbsp;<span class="sectionnumber">7&#x2003;</span>The posterior</h3>
+<a id="notes-autopage-194"></a>
+<a id="notes-autofile-31"></a>
+
+<a id="c:posterior"></a>
+
+<p>
+After carrying out one or more Bayesian updates, the key piece of information that we obtain is the posterior distribution \(\Theta |_{\{X=x\}}\). In this chapter we analyse the posterior and discuss standard
+methods of presenting Bayesian analysis. Throughout this chapter we work in the situation of a discrete or continuous Bayesian model \((X,\Theta )\), where we have data \(x\) and posterior \(\Theta
+|_{\{X=x\}}\). We keep all of our usual notation: the parameter space is \(\Pi \), the model family is \((M_\theta )_{\theta \in \Pi }\), and the range of the model is \(R\). Note that \(M_\theta \) could
+have the form \(M_\theta \sim (Y_\theta )^{\otimes n}\) for some random variable \(Y_\theta \) with parameter \(\theta \), corresponding to \(n\) i.i.d.&nbsp;data points.
+</p>
+
+<p>
+We have noted in Chapter <a href="The-prior.html#c:prior">5</a> that a well chosen prior distribution can lead to a more accurate posterior distribution, but a poorly chosen posterior can also harm the
+analysis. If different perspectives are involved then the specification of prior beliefs can become complicated. For example, trials of medical treatments involve patients, pharmaceutical companies and regulators, all
+of whom have different levels of trust in each other as well as potentially different prior beliefs. It is common practice to check how much the posterior distribution depends upon the choice of prior, often by varying
+the prior or comparing to a weakly informative prior.
+</p>
+<!--
+......   section Credible intervals ......
+-->
+<h4 id="autosec-195"><span class="sectionnumber">7.1&#x2003;</span>Credible intervals</h4>
+<a id="notes-autopage-195"></a>
+
+
+
+<a id="s:credible_intervals"></a>
+
+<p>
+In this section we look at interval estimates for the unknown parameter \(\theta \). The key term used in the Bayesian framework is the following definition.
+</p>
+<div class="theorembodydefinition">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-137"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.1</span></span> <a id="autoid-138" ></a ><a id="d:credible_interval"></a> A <em>credible interval</em> is a subset
+\(\Pi _0\sw \Pi \) that is chosen to minimize the size of \(\Pi _0\) and maximize \(\P [\Theta |_{\{X=x\}}\in \Pi _0]\).
+</p>
+
+<p>
+This is a practical definition rather than a mathematical one: we must choose how to balance the minimization of \(\Pi _0\) against maximization of \(\P [\Theta |_{\{X=x\}}\in \Pi _0]\) as best we can,
+and in some situations there is no single right answer. They are also sometimes known as <em>high posterior density regions</em>, usually shortened to HPDs or HDRs.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-139"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 7.1.2</span></span> <a id="autoid-140" ></a ><a id="ex:hpd"></a> Suppose that our posterior has come out as \(\Theta
+|_{\{X=x\}}\sim \Normal (0,1.5^2)\).
+</p>
+<div class="center">
+
+<p>
+
+
+<a href="normal_density_hpd.png" target="_blank" ><img
+      src="normal_density_hpd.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+
+<p>
+We choose our credible interval to be \([-5,5]\). This region is much smaller than the range of \(\Theta \), which is the whole of \(\R \). The probability that it contains \(\Theta |_{\{X=x\}}\) is given by
+\(\P [-5\leq N(0,1.5^2)\leq 5]\approx 0.97\).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+More generally, if we are dealing with a continuous distribution with a single peak then it is common to choose a credible interval of the form \(\Pi _0=[a,b]\) where
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+
+<!--
+                                           h            i     h            i   1−p
+                                         P Θ|{X=x} < a = P Θ|{X=x} > b =                                                      (7.1)                                 --><a id="eq:hpd_eq_tails_prob"></a><!--
+                                                                                2
+
+-->
+
+<p>
+
+
+\begin{equation}
+\label {eq:hpd_eq_tails_prob} \P \l [\Theta |_{\{X=x\}}&lt;a\r ]=\P \l [\Theta |_{\{X=x\}}&gt;b\r ]=\frac {1-p}{2}
+\end{equation}
+
+
+</p>
+
+<p>
+and some value is picked for \(p\in (0,1)\). Credible intervals of this type are said to be <em>equally tailed</em>. They always contain the mode of \(\Theta |_{\{X=x\}}\), and from <span
+class="textup">(<a href="The-posterior.html#eq:hpd_eq_tails_prob">7.1</a>)</span> we have \(\P [\Theta |_{\{X=x\}}\in [a,b]]=p\). By symmetry the credible interval in Example <a
+href="The-posterior.html#ex:hpd">7.1.2</a> is equally tailed, and we will give an asymmetric case in Example <a href="The-posterior.html#ex:hpd_uneq_tails">7.1.3</a>.
+</p>
+
+<p>
+A value of \(p\) close to \(1\) gives a wide interval and a high value for \(\P [\Theta |_{\{X=x\}}\in [a,b]]\), whilst a value of \(p\) close to \(0\) gives a thinner interval but a lower value for \(\P [\Theta
+|_{\{X=x\}}\in [a,b]]\). As in Example <a href="The-posterior.html#ex:hpd">7.1.2</a>, we want to choose \(p\in (0,1)\) to make \([a,b]\) thin <em>and</em> make \(\P [\Theta |_{\{X=x\}}\in
+[a,b]]\) large, if possible.
+</p>
+<div class="theorembodyexample">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-141"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Example 7.1.3</span></span> <a id="autoid-142" ></a ><a id="ex:hpd_uneq_tails"></a> Suppose that our posterior has come out as
+\(\Theta |_{\{X=x\}}\sim \Gam (4,3)\). We want an equally tailed credible interval region \([a,b]\) such that \(\P [\Theta |_{\{X=x\}}\in [a,b]]=0.8\).
+</p>
+<div class="center">
+
+<p>
+
+
+<a href="gamma_density_hpd.png" target="_blank" ><img
+      src="gamma_density_hpd.png"
+      style="
+      width:390pt;
+      "
+      class="inlineimage"
+      alt="(image)"
+></a>
+</p>
+</div>
+
+<p>
+The region is chosen by finding \(a\) such that \(\P [\Theta |_{\{X=x\}}&lt;a]=\frac {1-0.8}{2}=0.1\) and \(b\) such that \(\P [\Theta |_{\{X=x\}}&gt;b]=\frac {1-0.8}{2}=0.1\). These values were
+found numerically to be \(a=0.58\) and \(b=2.23\), to two decimal places. You can find the code that generated this example as part of Exercise <a
+href="Exercises-on-Chapter-ref-c-posterior.html#ps:hpd_code"><b>7.5</b></a>.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyremark">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-143"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Remark 7.1.4</span></span> <a id="autoid-144" ></a >\(\offsyl \) It is possible to construct a form of hypothesis testing based on
+credible intervals. For example, we might by choose an equally tailed credible interval \(\Pi _0\) with a \(95\%\) probability of containing \(\Theta |_{\{X=x\}}\), and then we then reject the hypothesis
+\(\theta =\theta _0\) if and only if \(\theta _0\notin \Pi _0\). This approach is known as <em>Lindley’s method</em>.
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+We can define credible intervals for the prior in the same ways as detailed above, with \(\Theta \) in place of \(\Theta |_{\{X=x\}}\). These are less useful for parameter estimation although they can be useful
+for prior elicitation. They are sometimes known as high prior density regions. We implicitly used equally tailed regions of this type in Example <a href="The-prior.html#ex:elicitation_bisection">5.1.1</a>,
+when we asked an elicitee to estimate their 25th and 75th percentiles.
+</p>
+<!--
+......       subsection Credible intervals vs confidence intervals ......
+-->
+<h5 id="autosec-202"><span class="sectionnumber">7.1.1&#x2003;</span>Credible intervals vs confidence intervals</h5>
+<a id="notes-autopage-202"></a>
+
+
+
+<a id="s:conf_vs_cred"></a>
+
+<p>
+I think it is fair to say that many - perhaps even, most - users of confidence intervals could not tell you from memory what a confidence interval <i>is</i>. The formal definition of a confidence interval is the
+following.
+</p>
+<div class="theorembodydefinition">
+
+<ul class="list" style="list-style-type:none">
+
+
+
+<a id="autoid-145"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain">Definition 7.1.5</span></span> <a id="autoid-146" ></a ><a id="d:conf_int"></a> \(\offsyl \) Given a model family \((M_\theta
+)_{\theta \in \Pi }\) with range \(R\), a <em>confidence interval</em> with confidence level \(\alpha \) is a pair of deterministic functions \(u(\cdot )\) and \(v(\cdot )\) defined from \(R\) to \(\R \)
+such that \(\P [u(M_\theta )&lt;\theta &lt;v(M_\theta )]=\alpha \) for all \(\theta \in \Pi .\)
+</p>
+
+<p>
+The point of this definition is that, for the true parameter value \(\theta ^*\) and some observed data \(Y\) that (if our model is good) satisfies \(y\sim M_{\theta ^*}\), then without knowing \(\theta ^*\)
+we can write down an interval \([u(Y),v(Y)]\) for which \(\P [u(Y)&lt;\theta ^*&lt;v(Y)]=\alpha \).
+</p>
+
+
+</li>
+
+</ul>
+
+</div>
+
+<p>
+For example, if \(Y\sim M_\theta \sim \Normal (\theta ,\sigma ^2)\), where \(\sigma \) is known, then \(\P [Y-2\sigma &lt;\theta &lt;Y+2\sigma ]=\P [\theta -2\sigma &lt;Y&lt;\theta
++2\sigma ]\approx 0.95\) so \([Y-2\sigma ,Y+2\sigma ]\) is a 95&percnt; confidence interval. If we have data \(y\sim M_{\theta ^*}\) that we believe was sampled from the model (with its true parameter
+value) then we might say that \([y-2\sigma ,y+2\sigma ]\) is a 95&percnt; confidence interval.
+</p>
+
+<p>
+We now have enough background to discuss how confidence intervals compare to credible intervals:
+</p>
+
+<ul class="itemize" style="list-style-type:none">
+
+
+<li>
+<p>
+<span class="listmarker">•</span> Confidence intervals and credible intervals are different objects: the easiest way to see this is by noting that in Definition <a
+href="The-posterior.html#d:conf_int">7.1.5</a> the parameter \(\theta \) is deterministic and the data is random, whereas in a Bayesian model the parameter and the data are both random variables.
+</p>
+<p>
+This is a subtle point that is easily misunderstood. Many people find the idea of a credible interval more natural, so amongst non-experts you will often see a confidence interval misinterpreted as though it is a
+credible interval.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">•</span> Both confidence intervals and credible intervals are based on the assumption that, for some true parameter value \(\theta ^*\), the model \((M_\theta )\) accurately
+represents the real-world situation that generates the data. Confidence intervals are <em>entirely</em> reliant on this assumption, whereas for credible intervals the prior (of the underlying Bayesian model) also has
+an influence. The key advantage of credible intervals is that, with an informative prior \(\Theta \), we could obtain an credible interval that is significantly smaller than the confidence interval generated by the
+same model family.
+</p>
+<p>
+For example, in early stages of clinical trails of drugs that treat rare conditions (making it difficult to find participants), expert opinion concerning side effects has been used as a prior alongside the experimental
+data, leading to approval of drugs that would not otherwise have demonstrated enough evidence of safety.
+</p>
+</li>
+<li>
+
+
+<p>
+<span class="listmarker">•</span> In many situations, particularly when there is plenty of data available (in which case the influence of the prior is diminished), it is possible to prove that confidence intervals
+and credible intervals are approximately equal.
+</p>
+</li>
+</ul>
+<!--
+......    subsection A little history        ......
+-->
+<h5 id="autosec-204"><span class="sectionnumber">7.1.2&#x2003;</span>A little history \(\offsyl \)</h5>
+<a id="notes-autopage-204"></a>
+
+
+
+<p>
+You will sometimes find that statisticians describe themselves as ‘Bayesian’ or ‘frequentist’, carrying the implication that they prefer to use one family of methods over the other. This may come from greater
+experience with one set of methods or from a preference due to the specifics of a particular model. A technique is said to be ‘frequentist’ if it relies only on repeated sampling of data, rather than e.g.&nbsp;eliciting
+a prior. A confidence interval is an example of a frequentist technique.
+</p>
+
+<p>
+To a great extent this distinction is historical. During the middle of the 20<sup>th</sup> century statistics was dominated by frequentist methods, because they could be implemented for complex models without
+the need for modern computers. Once it was realized that modern computers made Bayesian methods possible, the community that investigated these techniques needed a name and an identity, to distinguish itself
+as something new. The concept of identifying as ‘Bayesian’ or ‘frequentist’ is essentially a relic of that social process, rather than anything with a clear mathematical foundation.
+</p>
+
+<p>
+Modern statistics makes use of both Bayesian and non-Bayesian methods to estimate parameters. Sometimes it mixes the two approaches together or chooses between them for model-specific reasons. We do need to
+divide things up in order to learn them, so will only study Bayesian models within this course – but in general you should maintain an understanding of other approaches too.
+</p>
+
+</section>
+
+</main>
+
+</div>
+
+<footer>
+
+<p>
+Copyright Nic Freeman, Sheffield University, last updated December 18, 2025
+</p>
+
+</footer>
+
+
+
+<nav class="botnavigation"><a href="notes.html" class="linkhome" >
+Home</a></nav>
+
+</body>
+</html>
