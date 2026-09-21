@@ -3,66 +3,67 @@
 \contentsline {subsection}{\numberline {0.1.1}{\ignorespaces Syllabus\relax }}{7}{}
 \contentsline {subsection}{\numberline {0.1.2}{\ignorespaces End-of-chapter questions and problem sheets\relax }}{8}{}
 \contentsline {section}{\numberline {0.2}{\ignorespaces Outline of the course\relax }}{10}{}
-\contentsline {chapter}{\numberline {1}{\ignorespaces Conditioning\relax }}{13}{}
-\contentsline {section}{\numberline {1.1}{\ignorespaces Random variables\relax }}{14}{}
-\contentsline {subsection}{\numberline {1.1.1}{\ignorespaces ${\color {darkred}(\mathbf {\oslash })}$ Technicalities\relax }}{17}{}
-\contentsline {section}{\numberline {1.2}{\ignorespaces Equality in distribution\relax }}{19}{}
-\contentsline {subsection}{\numberline {1.2.1}{\ignorespaces Identifying distributions\relax }}{22}{}
-\contentsline {subsection}{\numberline {1.2.2}{\ignorespaces Normalizing constants\relax }}{25}{}
-\contentsline {section}{\numberline {1.3}{\ignorespaces Families of random variables\relax }}{29}{}
-\contentsline {section}{\numberline {1.4}{\ignorespaces Conditioning on location\relax }}{33}{}
-\contentsline {section}{\numberline {1.5}{\ignorespaces Conditioning and correlations\relax }}{41}{}
-\contentsline {section}{\numberline {1.6}{\ignorespaces Conditioning on events with zero probability\relax }}{48}{}
-\contentsline {section}{\numberline {1.7}{\ignorespaces Families with random parameters\relax }}{55}{}
-\contentsline {section}{\numberline {1.8}{\ignorespaces Exercises on Chapter \ref {c:conditioning}\relax }}{58}{}
-\contentsline {chapter}{\numberline {2}{\ignorespaces Bayesian models: discrete data\relax }}{63}{}
-\contentsline {section}{\numberline {2.1}{\ignorespaces Models with random parameters\relax }}{64}{}
-\contentsline {section}{\numberline {2.2}{\ignorespaces Discrete Bayesian models\relax }}{68}{}
-\contentsline {section}{\numberline {2.3}{\ignorespaces The posterior distribution\relax }}{73}{}
-\contentsline {section}{\numberline {2.4}{\ignorespaces Bayesian updates\relax }}{81}{}
-\contentsline {subsection}{\numberline {2.4.1}{\ignorespaces Historical notes ${\color {darkred}(\mathbf {\oslash })}$\relax }}{84}{}
-\contentsline {section}{\numberline {2.5}{\ignorespaces Exercises on Chapter \ref {c:bayes_models_discrete}\relax }}{86}{}
-\contentsline {chapter}{\numberline {3}{\ignorespaces Bayesian models: continuous data\relax }}{89}{}
-\contentsline {section}{\numberline {3.1}{\ignorespaces Continuous Bayesian models\relax }}{90}{}
-\contentsline {section}{\numberline {3.2}{\ignorespaces Notation: independent data\relax }}{96}{}
-\contentsline {section}{\numberline {3.3}{\ignorespaces Exercises on Chapter \ref {c:bayes_models_continuous}\relax }}{106}{}
-\contentsline {chapter}{\numberline {4}{\ignorespaces Conjugate priors\relax }}{109}{}
-\contentsline {section}{\numberline {4.1}{\ignorespaces Notation: proportionality\relax }}{111}{}
-\contentsline {subsection}{\numberline {4.1.1}{\ignorespaces The Beta-Binomial pair\relax }}{116}{}
-\contentsline {section}{\numberline {4.2}{\ignorespaces Two more examples of conjugate pairs\relax }}{121}{}
-\contentsline {section}{\numberline {4.3}{\ignorespaces Conjugate pairs and the exponential family \({\color {darkred}(\mathbf {\oslash })}\)\relax }}{131}{}
-\contentsline {section}{\numberline {4.4}{\ignorespaces What if?\relax }}{136}{}
-\contentsline {section}{\numberline {4.5}{\ignorespaces The normal distribution with unknown mean and variance\relax }}{149}{}
-\contentsline {section}{\numberline {4.6}{\ignorespaces The limitations of conjugate pairs\relax }}{157}{}
-\contentsline {section}{\numberline {4.7}{\ignorespaces Exercises on Chapter \ref {c:conjugate_priors}\relax }}{159}{}
-\contentsline {chapter}{\numberline {5}{\ignorespaces The prior\relax }}{162}{}
-\contentsline {section}{\numberline {5.1}{\ignorespaces Elicitation\relax }}{163}{}
-\contentsline {subsection}{\numberline {5.1.1}{\ignorespaces Psychological biases\relax }}{170}{}
-\contentsline {section}{\numberline {5.2}{\ignorespaces Uninformative priors\relax }}{172}{}
-\contentsline {subsection}{\numberline {5.2.1}{\ignorespaces The philosophy of not knowing anything\relax }}{174}{}
-\contentsline {section}{\numberline {5.3}{\ignorespaces Reference priors\relax }}{179}{}
-\contentsline {section}{\numberline {5.4}{\ignorespaces Exercises on Chapter \ref {c:prior}\relax }}{185}{}
-\contentsline {chapter}{\numberline {6}{\ignorespaces Bayesian Notation\relax }}{188}{}
-\contentsline {section}{\numberline {6.1}{\ignorespaces Exercises on Chapter \ref {c:bayesian_shorthand}\relax }}{192}{}
-\contentsline {chapter}{\numberline {7}{\ignorespaces The posterior\relax }}{194}{}
-\contentsline {section}{\numberline {7.1}{\ignorespaces Credible intervals\relax }}{195}{}
-\contentsline {subsection}{\numberline {7.1.1}{\ignorespaces Credible intervals vs confidence intervals\relax }}{202}{}
-\contentsline {subsection}{\numberline {7.1.2}{\ignorespaces A little history ${\color {darkred}(\mathbf {\oslash })}$\relax }}{204}{}
-\contentsline {section}{\numberline {7.2}{\ignorespaces The connection to maximum likelihood\relax }}{206}{}
-\contentsline {subsection}{\numberline {7.2.1}{\ignorespaces Making the connection precise ${\color {darkred}(\mathbf {\oslash })}$\relax }}{210}{}
-\contentsline {section}{\numberline {7.3}{\ignorespaces Hypothesis testing, odds ratios and Bayes factors\relax }}{212}{}
-\contentsline {subsection}{\numberline {7.3.1}{\ignorespaces Comparison to classical hypothesis testing\relax }}{217}{}
-\contentsline {section}{\numberline {7.4}{\ignorespaces Exercises on Chapter \ref {c:posterior}\relax }}{222}{}
-\contentsline {chapter}{\numberline {8}{\ignorespaces Computational methods\relax }}{225}{}
-\contentsline {section}{\numberline {8.1}{\ignorespaces Approximate Bayesian computation ${\color {darkred}(\mathbf {\oslash })}$\relax }}{226}{}
-\contentsline {section}{\numberline {8.2}{\ignorespaces Metropolis-Hastings\relax }}{229}{}
-\contentsline {subsection}{\numberline {8.2.1}{\ignorespaces The Metropolis-Hastings algorithm\relax }}{230}{}
-\contentsline {subsection}{\numberline {8.2.2}{\ignorespaces The Metropolis algorithm\relax }}{237}{}
-\contentsline {subsection}{\numberline {8.2.3}{\ignorespaces Why does Metropolis-Hastings work? ${\color {darkred}(\mathbf {\oslash })}$\relax }}{239}{}
-\contentsline {section}{\numberline {8.3}{\ignorespaces Markov Chain Monte Carlo\relax }}{243}{}
-\contentsline {subsection}{\numberline {8.3.1}{\ignorespaces MCMC algorithm for the random walk case\relax }}{246}{}
-\contentsline {section}{\numberline {8.4}{\ignorespaces Exercises on Chapter \ref {c:computational}\relax }}{248}{}
-\contentsline {chapter}{\numberline {A}{\ignorespaces Reference Sheets\relax }}{251}{}
-\contentsline {chapter}{\numberline {B}{\ignorespaces Advice for revision/exams\relax }}{259}{}
-\contentsline {chapter}{\numberline {C}{\ignorespaces Solutions to exercises\relax }}{262}{}
+\contentsline {chapter}{\numberline {1}{\ignorespaces Conditioning\relax }}{12}{}
+\contentsline {section}{\numberline {1.1}{\ignorespaces Random variables\relax }}{13}{}
+\contentsline {subsection}{\numberline {1.1.1}{\ignorespaces ${\color {darkred}(\mathbf {\oslash })}$ Technicalities\relax }}{16}{}
+\contentsline {section}{\numberline {1.2}{\ignorespaces Equality in distribution\relax }}{18}{}
+\contentsline {subsection}{\numberline {1.2.1}{\ignorespaces Identifying distributions\relax }}{21}{}
+\contentsline {subsection}{\numberline {1.2.2}{\ignorespaces Normalizing constants\relax }}{24}{}
+\contentsline {section}{\numberline {1.3}{\ignorespaces Families of random variables\relax }}{28}{}
+\contentsline {section}{\numberline {1.4}{\ignorespaces Conditioning on location\relax }}{32}{}
+\contentsline {section}{\numberline {1.5}{\ignorespaces Conditioning and correlations\relax }}{40}{}
+\contentsline {section}{\numberline {1.6}{\ignorespaces Conditioning on events with zero probability\relax }}{47}{}
+\contentsline {section}{\numberline {1.7}{\ignorespaces Families with random parameters\relax }}{54}{}
+\contentsline {section}{\numberline {1.8}{\ignorespaces Exercises on Chapter \ref {c:conditioning}\relax }}{57}{}
+\contentsline {chapter}{\numberline {2}{\ignorespaces Bayesian models: discrete data\relax }}{62}{}
+\contentsline {section}{\numberline {2.1}{\ignorespaces Models with random parameters\relax }}{63}{}
+\contentsline {section}{\numberline {2.2}{\ignorespaces Discrete Bayesian models\relax }}{67}{}
+\contentsline {section}{\numberline {2.3}{\ignorespaces The posterior distribution\relax }}{72}{}
+\contentsline {section}{\numberline {2.4}{\ignorespaces Bayesian updates\relax }}{80}{}
+\contentsline {subsection}{\numberline {2.4.1}{\ignorespaces Historical notes ${\color {darkred}(\mathbf {\oslash })}$\relax }}{83}{}
+\contentsline {section}{\numberline {2.5}{\ignorespaces Exercises on Chapter \ref {c:bayes_models_discrete}\relax }}{85}{}
+\contentsline {chapter}{\numberline {3}{\ignorespaces Bayesian models: continuous data\relax }}{88}{}
+\contentsline {section}{\numberline {3.1}{\ignorespaces Continuous Bayesian models\relax }}{89}{}
+\contentsline {section}{\numberline {3.2}{\ignorespaces Notation: independent data\relax }}{95}{}
+\contentsline {section}{\numberline {3.3}{\ignorespaces Exercises on Chapter \ref {c:bayes_models_continuous}\relax }}{105}{}
+\contentsline {chapter}{\numberline {4}{\ignorespaces Conjugate priors\relax }}{108}{}
+\contentsline {section}{\numberline {4.1}{\ignorespaces Notation: proportionality\relax }}{110}{}
+\contentsline {subsection}{\numberline {4.1.1}{\ignorespaces The Beta-Binomial pair\relax }}{115}{}
+\contentsline {section}{\numberline {4.2}{\ignorespaces Two more examples of conjugate pairs\relax }}{120}{}
+\contentsline {section}{\numberline {4.3}{\ignorespaces Conjugate pairs and the exponential family \({\color {darkred}(\mathbf {\oslash })}\)\relax }}{130}{}
+\contentsline {section}{\numberline {4.4}{\ignorespaces What if?\relax }}{135}{}
+\contentsline {section}{\numberline {4.5}{\ignorespaces The normal distribution with unknown mean and variance\relax }}{148}{}
+\contentsline {section}{\numberline {4.6}{\ignorespaces The limitations of conjugate pairs\relax }}{156}{}
+\contentsline {section}{\numberline {4.7}{\ignorespaces Exercises on Chapter \ref {c:conjugate_priors}\relax }}{158}{}
+\contentsline {chapter}{\numberline {5}{\ignorespaces The prior\relax }}{161}{}
+\contentsline {section}{\numberline {5.1}{\ignorespaces Elicitation\relax }}{162}{}
+\contentsline {subsection}{\numberline {5.1.1}{\ignorespaces Psychological biases\relax }}{169}{}
+\contentsline {section}{\numberline {5.2}{\ignorespaces Uninformative priors\relax }}{171}{}
+\contentsline {subsection}{\numberline {5.2.1}{\ignorespaces The philosophy of not knowing anything\relax }}{173}{}
+\contentsline {section}{\numberline {5.3}{\ignorespaces Reference priors\relax }}{178}{}
+\contentsline {section}{\numberline {5.4}{\ignorespaces Exercises on Chapter \ref {c:prior}\relax }}{184}{}
+\contentsline {chapter}{\numberline {6}{\ignorespaces Bayesian Notation\relax }}{187}{}
+\contentsline {section}{\numberline {6.1}{\ignorespaces Exercises on Chapter \ref {c:bayesian_shorthand}\relax }}{191}{}
+\contentsline {chapter}{\numberline {7}{\ignorespaces The posterior\relax }}{193}{}
+\contentsline {section}{\numberline {7.1}{\ignorespaces Credible intervals\relax }}{194}{}
+\contentsline {subsection}{\numberline {7.1.1}{\ignorespaces Credible intervals vs confidence intervals\relax }}{201}{}
+\contentsline {subsection}{\numberline {7.1.2}{\ignorespaces A little history ${\color {darkred}(\mathbf {\oslash })}$\relax }}{203}{}
+\contentsline {section}{\numberline {7.2}{\ignorespaces The connection to maximum likelihood\relax }}{205}{}
+\contentsline {subsection}{\numberline {7.2.1}{\ignorespaces Making the connection precise ${\color {darkred}(\mathbf {\oslash })}$\relax }}{209}{}
+\contentsline {section}{\numberline {7.3}{\ignorespaces Hypothesis testing, odds ratios and Bayes factors\relax }}{211}{}
+\contentsline {subsection}{\numberline {7.3.1}{\ignorespaces Comparison to classical hypothesis testing\relax }}{216}{}
+\contentsline {section}{\numberline {7.4}{\ignorespaces Exercises on Chapter \ref {c:posterior}\relax }}{221}{}
+\contentsline {chapter}{\numberline {8}{\ignorespaces Computational methods\relax }}{224}{}
+\contentsline {section}{\numberline {8.1}{\ignorespaces Approximate Bayesian computation ${\color {darkred}(\mathbf {\oslash })}$\relax }}{225}{}
+\contentsline {section}{\numberline {8.2}{\ignorespaces Metropolis-Hastings\relax }}{228}{}
+\contentsline {subsection}{\numberline {8.2.1}{\ignorespaces The Metropolis-Hastings algorithm\relax }}{229}{}
+\contentsline {subsection}{\numberline {8.2.2}{\ignorespaces The Metropolis algorithm\relax }}{236}{}
+\contentsline {subsection}{\numberline {8.2.3}{\ignorespaces Why does Metropolis-Hastings work? ${\color {darkred}(\mathbf {\oslash })}$\relax }}{238}{}
+\contentsline {section}{\numberline {8.3}{\ignorespaces Markov Chain Monte Carlo\relax }}{242}{}
+\contentsline {subsection}{\numberline {8.3.1}{\ignorespaces MCMC algorithm for the random walk case\relax }}{245}{}
+\contentsline {section}{\numberline {8.4}{\ignorespaces Gibbs sampling\relax }}{247}{}
+\contentsline {section}{\numberline {8.5}{\ignorespaces Exercises on Chapter \ref {c:computational}\relax }}{254}{}
+\contentsline {chapter}{\numberline {A}{\ignorespaces Reference Sheets\relax }}{257}{}
+\contentsline {chapter}{\numberline {B}{\ignorespaces Advice for revision/exams\relax }}{265}{}
+\contentsline {chapter}{\numberline {C}{\ignorespaces Solutions to exercises\relax }}{268}{}
 
